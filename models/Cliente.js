@@ -11,6 +11,9 @@ const clienteSchema = new Schema ({
   telefono: {
     type: Number
   },
+  participacion: {
+    type: Number
+  },
   fecha: {
     type: Date,
 		default: Date.now

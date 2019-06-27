@@ -28,6 +28,7 @@ app.use('/users', require('./routes/Users.js'))
 app.use('/ventas', require('./routes/Venta.js'))
 app.use('/manicuristas', require('./routes/Manicuristas.js'))
 app.use('/servicios', require('./routes/Servicios.js'))
+app.use('/metrics', require('./routes/Metrics.js'))
 
 //Static files
 

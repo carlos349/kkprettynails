@@ -36,10 +36,13 @@
 					<router-link class="nav-link text-white font-weight-bold text-uppercase" to="/servicios">Servicios</router-link>
 				</li>
 				<li v-if="auth=='loggedin-admin'" class="nav-item">
-					<router-link class="nav-link text-white font-weight-bold text-uppercase" to="/empleadas">Empleadas</router-link>
+					<router-link class="nav-link text-white font-weight-bold text-uppercase" to="/empleadas">Manicuristas</router-link>
 				</li>
 				<li v-if="auth=='loggedin-admin'" class="nav-item">
 					<router-link class="nav-link text-white font-weight-bold text-uppercase" to="/inventario">Inventario</router-link>
+				</li>
+				<li v-if="auth=='loggedin-admin'" class="nav-item">
+					<router-link class="nav-link text-white font-weight-bold text-uppercase" to="/metricas">Métricas</router-link>
 				</li>
 				<li v-if="auth=='loggedin'" class="nav-item">
 					<a class="nav-link text-white font-weight-bold text-uppercase" href="/" v-on:click="logout">Cerrar Sesion</a>

@@ -89,7 +89,12 @@ ventas.post('/procesar', (req, res) => {
       $inc: {comision:venta.comision}
     })
     .then(comision => {
-      res.json({status: 'Venta registrada'})
+      Cliente.updateOne({identidad: venta.clientedocumento},{
+        $inc: {participacion: 1}
+      })
+      .then(participacion => {
+        res.json({status: 'Venta registrada'})
+      })
     })
     .catch(err => {
       res.send('Error:' + err)

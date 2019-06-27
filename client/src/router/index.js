@@ -10,6 +10,7 @@ import Empleadas from '@/components/Empleadas'
 import Inventario from '@/components/Inventario'
 import Ventas from '@/components/Ventas'
 import Users from '@/components/Users'
+import Metricas from '@/components/Metricas'
 
 Vue.use(Router)
 
@@ -19,6 +20,11 @@ export default new Router({
       path: '/',
       name: 'Login',
       component: Login
+    },
+    {
+      path: '/metricas',
+      name: 'Metricas',
+      component: Metricas
     },
     {
       path: '/venta',
