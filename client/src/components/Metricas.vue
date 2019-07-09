@@ -14,6 +14,7 @@
             <tr class="bg-info text-white text-center">
               <th>Cliente</th>
               <th>Participación</th>
+              
             </tr>
           </thead>
           <tbody>

@@ -76,8 +76,66 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-6">
-
+			<div class="col-md-6 ">
+			  <div class="container bg-white h-100" >
+					<div class="row">
+						<div class="col-md-5">
+							<img class="w-75" src="../assets/logokk.png" alt="">
+						</div>
+						<div class="col-md-6">
+							<div class="col-md-12 p-3">
+								<div class="info">
+									<h3>Numero de factura:<span>000000</span></h3>
+									<h3>Fecha:<span>00/00/0000</span></h3>
+								</div>
+							</div>
+							<div class="col-md-12 clienteInfo float-left">
+								<h4>Cliente:<span>#########</span></h4>
+								<h4>Cedula:<span>*********</span></h4>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-12">
+						<table class="table">
+						  <thead class="thead-dark">
+						    <tr>
+						      <th scope="col">Servicio</th>
+						      <th scope="col">Precio</th>
+						      <th scope="col">Cantidad</th>
+									<th scope="col">Subtotal</th>
+						    </tr>
+						  </thead>
+						  <tbody>
+						    <tr>
+						      <td>Manicure</td>
+						      <td>1000</td>
+						      <td>2</td>
+									<td>2000</td>
+						    </tr>
+						    <tr>
+						      <td>Permanente</td>
+						      <td>2000</td>
+						      <td>3</td>
+									<td>6000</td>
+						    </tr>
+						    <tr>
+						      <td>Degradado</td>
+						      <td>3000</td>
+						      <td>1</td>
+									<td>3000</td>
+						    </tr>
+						  </tbody>
+							<thead class="thead-light">
+						    <tr>
+						      <th scope="col">Total</th>
+						      <th scope="col"></th>
+						      <th scope="col"></th>
+									<th scope="col">11000</th>
+						    </tr>
+						  </thead>
+						</table>
+					</div>
+			  </div>
 			</div>
 		</div>
 		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
