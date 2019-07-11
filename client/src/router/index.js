@@ -11,6 +11,7 @@ import Inventario from '@/components/Inventario'
 import Ventas from '@/components/Ventas'
 import Users from '@/components/Users'
 import Metricas from '@/components/Metricas'
+import Citas from '@/components/Citas'
 
 Vue.use(Router)
 
@@ -25,6 +26,11 @@ export default new Router({
       path: '/metricas',
       name: 'Metricas',
       component: Metricas
+    },
+    {
+      path: '/citas',
+      name: 'Citas',
+      component: Citas
     },
     {
       path: '/venta',

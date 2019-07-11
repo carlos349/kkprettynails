@@ -44,6 +44,9 @@
 				<li v-if="auth=='loggedin-admin'" class="nav-item">
 					<router-link class="nav-link text-white font-weight-bold text-uppercase" to="/metricas">Métricas</router-link>
 				</li>
+				<li v-if="auth=='loggedin-admin'" class="nav-item">
+					<router-link class="nav-link text-white font-weight-bold text-uppercase" to="/citas">Citas</router-link>
+				</li>
 				<li v-if="auth=='loggedin'" class="nav-item">
 					<a class="nav-link text-white font-weight-bold text-uppercase" href="/" v-on:click="logout">Cerrar Sesion</a>
 				</li>
