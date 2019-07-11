@@ -32,8 +32,6 @@
 <script>
   import LineChart from './LineChart.js'
   import axios from 'axios'
-  import VueCal from 'vue-cal'
-  import 'vue-cal/dist/vuecal.css'
 
   class Participacion {
     constructor (nombre, participacion) {
@@ -44,8 +42,7 @@
 
   export default {
     components: {
-      LineChart,
-      VueCal
+      LineChart
     },
     data () {
       return {
@@ -74,11 +71,4 @@
     max-width: 600px;
     margin:  150px auto;
   }
-  .vuecal__menu, .vuecal__cell-events-count {background-color: #42b983;}
-  .vuecal__menu li {border-bottom-color: #fff;color: #fff;}
-  .vuecal__menu li.active {background-color: rgba(255, 255, 255, 0.15);}
-  .vuecal__title-bar {background-color: #e4f5ef;}
-  .vuecal__cell.today, .vuecal__cell.current {background-color: rgba(240, 240, 255, 0.4);}
-  .vuecal:not(.vuecal--day-view) .vuecal__cell.selected {background-color: rgba(235, 255, 245, 0.4);}
-  .vuecal__cell.selected:before {border-color: rgba(66, 185, 131, 0.5);}
-</style>
+  </style>
