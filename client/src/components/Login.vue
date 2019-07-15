@@ -31,17 +31,6 @@
 				password: ''
 			}
 		},
-		beforeCreate() {
-      if (localStorage.getItem('userToken')) {
- 			 this.$swal({
- 				 type: 'error',
- 				 title: 'Ya ingreso',
- 				 showConfirmButton: false,
- 				 timer: 1500
- 			 })
-        router.push({name: 'Home'})
-      }
-   },
 
 		methods: {
 			login() {

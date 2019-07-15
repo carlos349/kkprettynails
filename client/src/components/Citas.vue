@@ -180,6 +180,7 @@
       getCitas () {
         axios.get('citas')
         .then(res => {
+          console.log(res.data)
           this.eventos = res.data
         })
       },

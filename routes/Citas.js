@@ -18,11 +18,11 @@ citas.post('/', (req, res) => {
   }
 
   Citas.findOne({
-    start: req.body.entrada,
-    content: req.body.contenido
+    start: req.body.entrada, //hora de entrada
+    content: req.body.contenido //Empleada que hace el servicio
   })
   .then(citas => {
-    if (!citas) {
+    if (!citas) { //sino encuentra alguna cita a esa hora y con esa empleada
       Citas.create(dataCitas)
       .then(citas => {
         res.json({status: 'cita creada'})
