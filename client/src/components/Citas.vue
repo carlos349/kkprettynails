@@ -66,6 +66,10 @@
                   <option v-for="manicurista of manicuristas" :value='manicurista.nombre'>{{manicurista.nombre}}</option>
                 </select>
 							</div>
+              <div class="form-group">
+								<label for="nombre">Nombre cliente</label>
+								<input type="text" v-model="nombreCliente" class="form-control" name="nombreServicio" placeholder="Nombre del Cliente" >
+							</div>
 							<button class="btn btn-lg btn-info btn-block" type="submit">Registrar cita</button>
 		        </form>
 		      </div>
@@ -84,12 +88,12 @@
 		      <div class="modal-body">
 		        <p>Fecha: {{ selectedEvent.startDate }}</p>
             <strong>Detalle de la cita:</strong><br><br>
-            <ul class="list-group">
+            <ul class="list-group list-group-flush">
               <li class="list-group-item">Manicurista: {{ selectedEvent.content }}</li>
               <li class="list-group-item">Hora de inicio: {{ selectedEvent.startTime }}</li>
               <li class="list-group-item">Hora de finalización: {{ selectedEvent.endTime }}</li>
             </ul><br>
-            <button type="button" class="btn btn-danger">Borrar cita</button>
+            <button type="button" class="btn btn-danger font-weight-bold" v-on:click="borrarCita(selectedEvent._id)">Borrar cita</button>
 		      </div>
 		    </div>
 		  </div>
@@ -147,9 +151,21 @@
         entrada: 'Seleccione',
         salida:'Seleccione',
         fecha: '',
+        nombreCliente: '',
         selectedEvent: {}
       }
     },
+    beforeCreate() {
+      if (!localStorage.getItem('userToken')) {
+ 			 this.$swal({
+ 				 type: 'error',
+ 				 title: 'URL restringida',
+ 				 showConfirmButton: false,
+ 				 timer: 1500
+ 			 })
+        router.push({name: 'Login'})
+      }
+   },
     created(){
       this.getCitas(),
       this.getManicuristas(),
@@ -185,10 +201,11 @@
       registroCita(){
         const horarioEntrada = this.fecha + " " + this.entrada
         const horarioSalida = this.fecha + " " + this.salida
+        const contenidoCompleto = "Servicio: " + this.serv + " - Cliente: " + this.nombreCliente
         axios.post('citas', {
           entrada: horarioEntrada,
           salida: horarioSalida,
-          titulo: this.serv,
+          titulo: contenidoCompleto,
           contenido: this.mani
         })
         .then(res => {
@@ -208,6 +225,21 @@
 						  showConfirmButton: false,
 						  timer: 1500
 						})
+          }
+        })
+      },
+      borrarCita(id){
+        axios.delete('citas/' + id)
+        .then(res => {
+          if(res.data.status == 'Cita Eliminada'){
+            this.$swal({
+						  type: 'success',
+						  title: 'Cita eliminada',
+						  showConfirmButton: false,
+						  timer: 1500
+						})
+            $('#myModalTwo').modal('hide')
+						this.getCitas();
           }
         })
       }

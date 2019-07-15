@@ -39,4 +39,11 @@ citas.post('/', (req, res) => {
   })
 })
 
+citas.delete('/:id', async (req, res) => {
+  const citas = await Citas.findByIdAndRemove(req.params.id)
+  res.json({
+    status: 'Cita Eliminada'
+  })
+})
+
 module.exports = citas

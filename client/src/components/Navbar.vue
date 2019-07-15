@@ -8,9 +8,6 @@
 
 		<div class="collapse navbar-collapse justify-content-md-center" id="navbarToggleExternalContent">
 			<ul class="navbar-nav">
-				<li class="nav-item">
-					<router-link v-if="auth=='no-loggedin'" class="nav-link text-white font-weight-bold text-uppercase" to="/">Inicio</router-link>
-				</li>
 				<li v-if="auth=='loggedin-admin'" class="nav-item">
 					<a class="font-weight-bold text-uppercase nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	          Usuarios
@@ -44,7 +41,7 @@
 				<li v-if="auth=='loggedin-admin'" class="nav-item">
 					<router-link class="nav-link text-white font-weight-bold text-uppercase" to="/metricas">Métricas</router-link>
 				</li>
-				<li v-if="auth=='loggedin-admin'" class="nav-item">
+				<li v-if="auth=='loggedin'" class="nav-item">
 					<router-link class="nav-link text-white font-weight-bold text-uppercase" to="/citas">Citas</router-link>
 				</li>
 				<li v-if="auth=='loggedin'" class="nav-item">
