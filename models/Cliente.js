@@ -8,8 +8,8 @@ const clienteSchema = new Schema ({
   identidad: {
     type: String
   },
-  telefono: {
-    type: Number
+  correo: {
+    type: String
   },
   participacion: {
     type: Number

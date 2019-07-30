@@ -1,9 +1,43 @@
 <template>
 	<div class="container">
-		<h1 class="text-center mt-3">Manicuristas</h1>
+		<h1 class="text-center mt-3 Titulo">Manicuristas</h1>
 		<div class="row">
 			<div class="col-md-12">
-				<table class="table">
+				<table class="table reporteIndividual">
+					<thead class="thead-light">
+						<tr class="respons" >
+							<th class="bg-info text-white text-center">
+								Servicio
+							</th>
+							<th class="bg-info text-white text-center">
+								Cliente
+							</th>
+							<th class="bg-info text-white text-center">
+								Comision
+							</th>
+							<th class="bg-info text-white text-center">
+								Total
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+							<tr v-for="venta of ventas" class="respons">
+								<td class="table-info font-weight-bold text-center">
+									{{venta.servicios}}
+	 							</td>
+								<td class="table-info font-weight-bold text-center">
+									{{venta.cliente}}
+	 							</td>
+								<td class="table-info font-weight-bold text-center">
+									{{venta.comision}}
+	 							</td>
+								<td class="table-info font-weight-bold text-center">
+									{{venta.total}}
+	 							</td>
+							</tr>
+					</tbody>
+				</table>
+				<table class="table tablaManicuristas">
 					<thead class="thead-light">
 						 <tr class="respons">
 							 <th class="bg-info text-white text-center">
@@ -40,6 +74,7 @@
 							<td class="table-info font-weight-bold text-center">
 								<font-awesome-icon icon="trash" v-on:click="eliminarManicurista(manicurista._id)"/>
 								<font-awesome-icon icon="edit" v-on:click="pasarDatosEdit(manicurista.nombre, manicurista.documento,manicurista._id,manicurista.porcentaje,manicurista.comision)"/>
+								<font-awesome-icon icon="copy" class="report" v-on:click="sacarReporte(manicurista.nombre)"/>
 							</td>
  						</tr>
 						<tr>
@@ -130,12 +165,22 @@ class Manicurista{
 		this.comision = comision;
 	}
 }
+class Venta{
+	constructor(servicios, cliente, comision, total) {
+		this.servicios = servicios;
+		this.cliente = cliente;
+		this.comision = comision;
+		this.total = total;
+	}
+}
 
 export default {
 	data(){
 		return {
 			manicurista: new Manicurista(),
 			manicuristas: [],
+			venta: new Venta(),
+			ventas: [],
 			nombreManicurista: '',
 			documentoManicurista: '',
 			porcentajeManicurista: '',
@@ -250,6 +295,27 @@ export default {
 			this.porcentajeManicurista = porcentaje
 			this.idManicuristaEditar = id
 			$('#myModal2').modal('show')
+		},
+		sacarReporte(manicurista){
+			axios.get('ventas/manicurista/' + manicurista)
+			.then(res => {
+				this.ventas = res.data
+				$('.tablaManicuristas').hide()
+				$('.reporteIndividual').show()
+				$('.Titulo').text('Reporte de: '+ manicurista)
+				this.$swal({
+					type: 'success',
+					title: 'espere un segundo',
+					showConfirmButton: false,
+					timer: 1500
+				})
+				setTimeout(() => {
+					print()
+					$('.reporteIndividual').hide()
+					$('.tablaManicuristas').show()
+					$('.Titulo').text('Manicuristas')
+				}, 2000)
+			})
 		}
 	}
 }
@@ -265,5 +331,11 @@ export default {
       font-size: 1.5vw;
     }
   }
+	.report{
+		cursor:pointer;
+	}
+	.reporteIndividual{
+		display:none
+	}
 
 </style>

@@ -14,7 +14,7 @@ ventas.post('/ingresocliente', (req, res) => {
   const ClienteData = {
     nombre: req.body.nombre,
     identidad: req.body.identidad,
-    telefono: req.body.telefono,
+    correo: req.body.correo,
     created: today
   }
 
@@ -42,6 +42,12 @@ ventas.post('/ingresocliente', (req, res) => {
 
 ventas.get('/', async (req, res) => {
   const ventas = await Venta.find()
+  res.json(ventas)
+})
+
+ventas.get('/manicurista/:id', async (req, res) => {
+  const id = req.params.id
+  const ventas = await Venta.find({'manicurista': id})
   res.json(ventas)
 })
 

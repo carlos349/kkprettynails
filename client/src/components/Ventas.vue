@@ -25,7 +25,7 @@
               <th class="bg-info text-white text-center">
                 Total
               </th>
-              <th class="bg-info text-white text-center">
+              <th class="bg-info text-white text-center afuera">
                 Reporte
               </th>
             </tr>
@@ -53,8 +53,8 @@
               <td class="table-info font-weight-bold text-center">
                 {{venta.total}}
               </td>
-              <td class="table-info font-weight-bold text-center">
-                <font-awesome-icon icon="copy"/>
+              <td class="table-info font-weight-bold text-center afuera">
+                <font-awesome-icon icon="copy" class="report" v-on:click="sacarReporte"/>
               </td>
             </tr>
           </tbody>
@@ -104,8 +104,12 @@ export default {
       axios.get('ventas')
       .then(res => {
         this.ventas = res.data
-        console.log(this.ventas)
       })
+    },
+    sacarReporte() {
+      $('.afuera').hide()
+      print()
+      $('.afuera').show()
     }
   }
 }
@@ -120,6 +124,9 @@ export default {
     .respons{
       font-size: 1.5vw;
     }
+  }
+  .report{
+    cursor:pointer;
   }
 
 </style>

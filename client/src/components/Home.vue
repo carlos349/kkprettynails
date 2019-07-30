@@ -151,15 +151,15 @@
 		        <form v-on:submit.prevent="ingresoCliente">
 							<div class="form-group">
 								<label for="nombre">Nombre cliente</label>
-								<input type="text" v-model="nombreCliente" class="form-control" name="nombreCliente" placeholder="Nombre del cliente" >
+								<input type="text" v-model="nombreCliente" class="form-control" name="nombreCliente" placeholder="Nombre del cliente"  requerid>
 							</div>
 							<div class="form-group">
 								<label for="identidad">Identidad del cliente</label>
-								<input type="text" v-model="identidadCliente" class="form-control verificacion" name="identidadCliente" placeholder="Identidad del cliente">
+								<input type="text" v-model="identidadCliente" class="form-control verificacion" name="identidadCliente" placeholder="Identidad del cliente" requerid>
 							</div>
 							<div class="form-group">
-								<label for="telefono">Telefono del cliente</label>
-								<input type="number" v-model="telefonoCliente" class="form-control" name="telefonoCliente" placeholder="Telefono del cliente">
+								<label for="telefono">Correo del cliente</label>
+								<input type="email" v-model="correoCliente" class="form-control" name="correoCliente" placeholder="Correo del cliente">
 							</div>
 							<button class="btn btn-lg btn-info btn-block" type="submit">Ingresar Cliente</button>
 		        </form>
@@ -204,13 +204,13 @@ import router from '../router'
 				nombreCliente: '',
 				identidadCliente: '',
 				precio: '0',
-				telefonoCliente: '',
+				correoCliente: '',
 				documentoManicurista: '',
 				comision: '',
 				nombreManicurista: '',
 				serviciosSelecionados: '',
-				contador:true,
-				inspector:false
+				contador: true,
+				inspector: false
 		 }
 	 },
 	 beforeCreate() {
@@ -224,15 +224,14 @@ import router from '../router'
        router.push({name: 'Login'})
      }
   },
-	 created(){
-			this.getManicuristas();
-		},
-	 methods: {
+ 	created(){
+		this.getManicuristas();
+	},
+	methods: {
 		  getManicuristas(){
 				axios.get('manicuristas')
 				.then(res => {
 					this.manicuristas = res.data
-					console.log(res.data)
 				}),
 				axios.get('servicios')
 				.then(res => {
@@ -242,7 +241,7 @@ import router from '../router'
 				this.indentidadCliente = ""
 				this.inspector = false
 				this.nombreCliente = ""
-				this.telefonoCliente = ""
+				this.correoCliente = ""
 			},
 			verificacionCliente(){
 				axios.post('ventas/verificacioncliente', {
@@ -266,7 +265,7 @@ import router from '../router'
 				axios.post('ventas/ingresocliente', {
 					nombre: this.nombreCliente,
 					identidad: this.identidadCliente,
-					telefono: this.telefonoCliente
+					correo: this.correoCliente
 				})
 				.then(res => {
 					if(res.data.status === 'Registrado'){
@@ -291,7 +290,6 @@ import router from '../router'
 			elegirManicurista(manicurista, indentidadManicurista, comision){
 				$('.manicuristaFocus').val(manicurista)
 				this.documentoManicurista = indentidadManicurista
-				console.log(indentidadManicurista)
 				this.comision = comision
 				this.nombreManicurista = manicurista
 			},
@@ -311,7 +309,6 @@ import router from '../router'
 					const serviciosTotales = servicios + " - " + servicio
 					this.serviciosSelecionados = serviciosTotales
 				}
-				console.log(this.serviciosSelecionados)
 			},
 			procesar() {
 				axios.post('ventas/procesar', {
