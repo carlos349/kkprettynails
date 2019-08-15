@@ -1,7 +1,7 @@
 <template>
-	<nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-info ">
-
-		<a class="navbar-brand" href="#">K · PRETTY · NAILS</a>
+	<nav class="navbar navbar-expand-lg sticky-top navbar-dark" style="background-color:#213b45">
+		<img src="../assets/syswa2.png" style="width:6%;" alt="">
+		<a class="navbar-brand" href="#"></a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     	</button>

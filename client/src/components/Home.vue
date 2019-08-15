@@ -1,27 +1,58 @@
 <template>
-	<div class="container-fluid mt-5">
+	<div class="container mt-5 contenedor">
 		<div class="row">
-			<div class="col-md-6">
+			<div class="col-md-12">
 				<form v-on:submit.prevent="verificacionCliente">
 					<div class="input-group mb-3">
 						  <div class="input-group-prepend">
-						    <button class="btn btn-info" type="submit" id="button-addon1">Cliente</button>
+						    <button class="btn btn-info spanInputs w-100" type="submit" id="button-addon1">Cliente</button>
 						  </div>
 						  <input type="text" v-model="identidadCliente" id="cliente" name="identidad" class="form-control" placeholder="Cedula del cliente" aria-label="Example text with button addon" aria-describedby="button-addon1">
 					</div>
 				</form>
 
+
 				<div class="input-group input-group-lg mb-2 ">
-				  <div class="input-group-prepend">
-				    <span class="font-weight-bold bg-info text-white input-group-text" id="inputGroup-sizing-lg">Manicurista</span>
+				  <div class="input-group-prepend w-25 text-center">
+				    <span class="spanInputs w-100 font-weight-bold text-white input-group-text text-center" id="inputGroup-sizing-lg">Manicurista</span>
 				  </div>
 				  <input type="text" class="form-control manicuristaFocus" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
 				</div>
+				<!-- <div class="input-group input-group-lg mb-2 ">
+				  <div class="input-group-prepend w-25 text-center">
+				    <span class="w-100 font-weight-bold  text-white input-group-text text-center" id="inputGroup-sizing-lg">Servicio</span>
+				  </div>
+				  <input type="text" class="form-control manicuristaFocus" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+				</div> -->
+				<div class="input-group input-group-lg mb-2 " hidden>
+				  <div class="input-group-prepend w-25 text-center" >
+				    <span class="spanInputs w-100 font-weight-bold text-white input-group-text text-center" id="inputGroup-sizing-lg">Diseños</span>
+				  </div>
+					<div class="input-group-prepend">
+						<button class="btn plusBtns btn-outline-dark" type="submit" id="button-addon1">+</button>
+					</div>
+				  <input type="text" class="form-control manicuristaFocus" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+					<div class="input-group-prepend">
+						<button class="btn plusBtns btn-outline-dark" type="submit" id="button-addon1">-</button>
+					</div>
+				</div>
+				<div class="input-group input-group-lg mb-2 " hidden>
+				  <div class="input-group-prepend w-25 text-center">
+				    <span class="spanInputs w-100 font-weight-bold  text-white input-group-text text-center" id="inputGroup-sizing-lg">Parches</span>
+				  </div>
+					<div class="input-group-prepend">
+						<button class="btn plusBtns btn-outline-dark" type="submit" id="button-addon1">+</button>
+					</div>
+				  <input type="text" class="form-control manicuristaFocus" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+					<div class="input-group-prepend">
+						<button class="btn plusBtns btn-outline-dark" type="submit" id="button-addon1">-</button>
+					</div>
+				</div>
 
-				<table class="table">
+				<!-- <table class="table">
 				 <thead class="thead-light">
 						<tr>
-							<th class="bg-info text-white text-center">
+							<th class=" text-white text-center">
 								Nombre
 							</th>
 						</tr>
@@ -33,40 +64,71 @@
 							</td>
 						</tr>
 					</tbody>
-				</table>
+				</table> -->
 				<table class="table">
-					<thead class="thead-light">
+					<thead >
 						<tr>
-							<th class="bg-info text-white">
+							<th class=" text-white">
 								Servicio
 							</th>
-							<th class="bg-info text-white">
+							<th class="text-white">
 								Precio
 							</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr v-for="servicio of servicios" >
-							<td class="table-info font-weight-bold">
-								<button v-if="!inspector" type="button" class="w-75 btn btn-primary" v-on:click="conteoServicio(servicio._id,servicio.nombre, servicio.precio)" disabled>
+							<td class=" font-weight-bold">
+								<button v-if="!inspector" type="button" class="w-75 btn procesar" v-on:click="conteoServicio(servicio._id,servicio.nombre, servicio.precio)" disabled>
 								  {{servicio.nombre}} <span class="badge badge-light conteoServ" v-bind:id="servicio._id">0</span>
 								</button>
-								<button v-else type="button" class="w-75 btn btn-primary" v-on:click="conteoServicio(servicio._id ,servicio.nombre, servicio.precio)">
+								<button v-else type="button" class="w-75 btn procesar" v-on:click="conteoServicio(servicio._id ,servicio.nombre, servicio.precio)">
 								  {{servicio.nombre}} <span class="badge badge-light conteoServ" v-bind:id="servicio._id">0</span>
 								</button>
 
 							</td>
-							<td class="table-info font-weight-bold">
+							<td class=" font-weight-bold text-white">
 								{{servicio.precio}}
 							</td>
 						</tr>
 					</tbody>
 				</table>
-				<button v-if="!inspector" type="button" class="font-weight-bold mb-3 btn btn-info w-100" v-on:click="procesar" disabled>Procesar
-				</button>
-				<button v-else type="button" class="font-weight-bold mb-3 btn btn-info w-100" v-on:click="procesar">Procesar
-				</button>
-				<div class="input-group input-group-lg mb-2">
+				<div class="input-group input-group-lg mb-2 ">
+				  <div class="input-group-prepend w-25 text-center">
+				    <span class="spanInputs w-100 font-weight-bold  text-white input-group-text text-center" id="inputGroup-sizing-lg">Sub-Total</span>
+				  </div>
+				  <input type="text" class="form-control manicuristaFocus" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+				</div>
+				<div class="input-group input-group-lg mb-2 ">
+				  <div class="input-group-prepend w-25 text-center">
+				    <span class="spanInputs w-100 font-weight-bold  text-white input-group-text text-center" id="inputGroup-sizing-lg">Descuento</span>
+				  </div>
+				  <input type="text" class="form-control manicuristaFocus" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+				</div>
+				<div class="input-group input-group-lg mb-2 ">
+				  <div class="input-group-prepend w-25 text-center">
+				    <span class="spanInputs w-100 font-weight-bold  text-white input-group-text text-center" id="inputGroup-sizing-lg">Medio de pago</span>
+				  </div>
+				  <input type="text" class="form-control manicuristaFocus" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+				</div>
+
+
+					<div class="w-100 input-group input-group-lg mb-2">
+					  <div class="input-group-prepend">
+							<span class="input-group-text bg-light font-weight-bold text-white spanInputs" id="inputGroup-sizing-lg ">Total</span>
+					    <span class="input-group-text bg-light font-weight-bold text-white spanInputs" id="inputGroup-sizing-lg ">$</span>
+					  </div>
+					  <input type="text" class="form-control" id="inputTotal" v-model="precio" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+						<div class="input-group-prepend">
+							<button class="btn plusBtns" v-on:click="borrarServicios()" id="button-addon2"><font-awesome-icon icon="trash"/></button>
+						</div>
+					</div>
+					<button v-if="!inspector" type="button" class="font-weight-bold mb-3 btn procesar w-100" v-on:click="procesar" disabled>Procesar
+					</button>
+					<button v-else type="button" class="font-weight-bold mb-3 btn procesar w-100" v-on:click="procesar">Procesar
+					</button>
+
+				<!-- <div class="input-group input-group-lg mb-2">
 				  <div class="input-group-prepend">
 				    <span class="input-group-text bg-light font-weight-bold text-success" id="inputGroup-sizing-lg ">$</span>
 				  </div>
@@ -74,9 +136,9 @@
 					<div class="input-group-prepend">
 						<button class="btn btn-info" v-on:click="borrarServicios()" id="button-addon2"><font-awesome-icon icon="trash"/></button>
 					</div>
-				</div>
+				</div> -->
 			</div>
-			<div class="col-md-6 ">
+			<div class="col-md-6 " hidden>
 			  <div class="container bg-white h-100" >
 					<div class="row">
 						<div class="col-md-5">
@@ -141,7 +203,7 @@
 		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered" role="document">
 		    <div class="modal-content">
-		      <div class="modal-header bg-info">
+		      <div class="modal-header ">
 		        <h5 class="modal-title text-white font-weight-bold" id="exampleModalCenterTitle">Registro cliente</h5>
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 		          <span aria-hidden="true" class="text-white">&times;</span>
@@ -355,3 +417,53 @@ import router from '../router'
 	 }
  }
 </script>
+<style media="screen">
+	input{
+		border:none !important;
+		border-radius:0px !important;
+		border-bottom:2px solid #102229 !important;
+		background-color:transparent !important;
+		color:#fff !important;
+		font-family: 'Raleway', sans-serif;
+		font-weight:600;
+	}
+	.spanInputs{
+		border:none !important;
+		border-right: 2px solid #102229 !important;
+		border-left: 2px solid #102229 !important;
+		border-bottom: 2px solid #102229 !important;
+		border-radius: 0px !important;
+		background-color:transparent !important;
+		font-size: 12px !important;
+		font-family: 'Raleway', sans-serif;
+		font-weight:600;
+	}
+	.plusBtns{
+		border:1px solid #fff;
+		border-radius:50% !important;
+		color:#fff;
+		outline:none !important;
+		margin-left:5px;
+	}
+	.procesar{
+		background-color:#102229;
+		color:#fff;
+		transition: all 0.5s ease-out;
+		font-family: 'Raleway', sans-serif;
+		font-weight:600;
+	}
+	.procesar:hover{
+		color:#102229;
+		background-color:#fff;
+		transition: all 0.5s ease-out;
+	}
+	table{
+		border:none !important;
+	}
+	.contenedor{
+		width:30%;
+		min-width:400px;
+		border:2px solid #102229;
+		padding-top:12px;
+	}
+</style>

@@ -1,22 +1,24 @@
 <template>
-	<div class="container">
-		<div class="row">
-			<div class="col-md-12 mt-5 max-auto">
-				<form v-on:submit.prevent="login">
-					<h1 class="h3 mb-3 font-weight-normal">Acceder</h1>
-					<div class="form-group">
-						<label for="email">Direccion de correo</label>
-						<input type="email" v-model="email" class="form-control" name="email" placeholder="Coloque su correo">
-					</div>
-					<div class="form-group">
-						<label for="password">Contraseña</label>
-						<input type="password" v-model="password" class="form-control" name="password" placeholder="Coloque su contraseña">
-					</div>
-					<button class="btn btn-lg btn-info btn-block" type="submit">Ingresar</button>
-				</form>
+
+		<div class="card cardLogin">
+			<div class="row">
+				<div class="col-md-12  max-auto">
+					<form v-on:submit.prevent="login">
+						<img style="width:12%;margin-left:-3%" src="../assets/syswa.png" alt=""><span class="logoLetra">Syswa</span>
+						<h1 class="h3 font-weight-normal">Iniciar sesión</h1>
+						<div class="form-group">
+							<label for="email">Dirección de correo</label>
+							<input type="email" v-model="email" class="inputLogin" name="email" placeholder="Ingrese su correo">
+						</div>
+						<div class="form-group">
+							<label for="password">Contraseña</label>
+							<input type="password" v-model="password" class="inputLogin" name="password" placeholder="Ingrese su contraseña">
+						</div>
+						<button class="btn btn-lg btn-block botonLogin" type="submit">Ingresar</button>
+					</form>
+				</div>
 			</div>
 		</div>
-	</div>
 </template>
 
 <script>
@@ -77,3 +79,49 @@
 		}
 	}
 </script>
+
+<style media="screen">
+	.cardLogin{
+		position:absolute;
+		top:30%;
+		left:38%;
+		padding:20px;
+		font-family: 'Raleway', sans-serif;
+		font-weight:600;
+		background-color:#2c5363;
+		color:white;
+		width:30%;
+		-webkit-box-shadow: 0px 14px 30px 4px rgba(0,0,0,0.75);
+		-moz-box-shadow: 0px 14px 30px 4px rgba(0,0,0,0.75);
+		box-shadow: 0px 14px 30px 4px rgba(0,0,0,0.75);
+	}
+
+	.inputLogin{
+		width:100%;
+		padding:5px;
+		border:none;
+		border-bottom: 2px solid #213b45;
+		background-color:transparent;
+		outline:none;
+		transition: all 0.5s ease-out;
+	}
+	.logoLetra{
+		/* font-family: 'Beth Ellen', cursive; */
+		font-family: 'Lexend Exa', sans-serif;
+		font-size:20px;
+	}
+	.inputLogin:focus{
+		border-bottom: 2px solid white;
+		transition: all 0.5s ease-out;
+	}
+	.botonLogin{
+		background-color:#102229;
+		color:#fff;
+	}
+	.botonLogin:hover{
+		background-color:#fff;
+		color:#102229;
+		transition: all 0.5s ease-out;
+	}
+
+</style>

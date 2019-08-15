@@ -13,7 +13,7 @@ mongoose.connect('mongodb://localhost/kkprettynails-database', {
 
 
 // settings
-app.set('port', process.env.PORT || 3000)
+app.set('port', process.env.PORT || 4200)
 
 //middlewares
 app.use(morgan('dev'))
