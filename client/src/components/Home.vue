@@ -8,7 +8,7 @@
 						  <div class="input-group-prepend">
 						    <button class="btn btn-info spanInputs w-100" type="submit" id="button-addon1">Cliente</button>
 						  </div>
-						  <input type="text" v-model="identidadCliente" id="cliente" name="identidad" class="form-control" placeholder="Cedula del cliente" aria-label="Example text with button addon" aria-describedby="button-addon1">
+						  <input type="text" v-model="identidadCliente" id="cliente" name="identidad" class="form-control inputs" placeholder="Cedula del cliente" aria-label="Example text with button addon" aria-describedby="button-addon1">
 					</div>
 				</form>
 				<div class="input-group input-group-lg mb-2 ">
@@ -66,13 +66,13 @@
 				  <div class="input-group-prepend w-25 text-center">
 				    <span class="spanInputs w-100 font-weight-bold  text-white input-group-text text-center" id="inputGroup-sizing-lg">Sub-Total</span>
 				  </div>
-				  <input readonly type="text" class="form-control manicuristaFocus" v-model="precio" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+				  <input readonly type="text" class="form-control manicuristaFocus inputs" v-model="precio" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
 				</div>
 				<div class="input-group input-group-lg mb-2 ">
 				  <div class="input-group-prepend w-25 text-center">
 				    <span class="spanInputs w-100 font-weight-bold  text-white input-group-text text-center" id="inputGroup-sizing-lg">Descuento</span>
 				  </div>
-				  <input type="text" v-model="descuento" v-on:change="descuentoFunc" class="form-control manicuristaFocus" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+				  <input type="text" v-model="descuento" v-on:change="descuentoFunc" class="form-control manicuristaFocu inputs" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
 				</div>
 				<div class="input-group input-group-lg mb-2 ">
 				  <div class="input-group-prepend w-25 text-center">
@@ -92,8 +92,8 @@
 							<span class="input-group-text bg-light font-weight-bold text-white spanInputs" id="inputGroup-sizing-lg ">Total</span>
 					    <span class="input-group-text bg-light font-weight-bold text-white spanInputs" id="inputGroup-sizing-lg ">$</span>
 					  </div>
-					  <input readonly type="text" class="form-control" id="inputTotal" v-model="total" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
-						<input readonly type="hidden" class="form-control" id="inputTotal" v-model="totalSinFormato" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+					  <input readonly type="text" class="form-control inputs" id="inputTotal" v-model="total" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+						<input readonly type="hidden" class="form-control inputs" id="inputTotal" v-model="totalSinFormato" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
 						<div class="input-group-prepend">
 							<button class="btn plusBtns" v-on:click="borrarServicios()" id="button-addon2"><font-awesome-icon icon="trash"/></button>
 						</div>
@@ -399,7 +399,7 @@ import router from '../router'
  }
 </script>
 <style media="screen">
-	input{
+	.inputs{
 		border:none !important;
 		border-radius:0px !important;
 		border-bottom:2px solid #102229 !important;
