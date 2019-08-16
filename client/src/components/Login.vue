@@ -59,7 +59,7 @@
 						localStorage.setItem('userToken', res.data.token)
 						this.email = ''
 						this.password = ''
-						router.push({name: 'Home'})
+						router.push({name: 'Citas'})
 						if(res.data.admin){
 							this.emitMethodTwo()
 						}else{

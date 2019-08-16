@@ -16,7 +16,11 @@
 				  <div class="input-group-prepend w-25 text-center">
 				    <span class="spanInputs w-100 font-weight-bold text-white input-group-text text-center" id="inputGroup-sizing-lg">Manicurista</span>
 				  </div>
-				  <input type="text" class="form-control manicuristaFocus" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+					<select class="form-control selectMani" v-model="maniSelect" v-on:change="elegirManicurista()">
+						<option value="">Manicuristas</option>
+						<option v-for="manicurista of manicuristas" >{{manicurista.nombre}}</option>
+					</select>
+
 				</div>
 				<!-- <div class="input-group input-group-lg mb-2 ">
 				  <div class="input-group-prepend w-25 text-center">
@@ -65,45 +69,47 @@
 						</tr>
 					</tbody>
 				</table> -->
-				<table class="table">
-					<thead >
-						<tr>
-							<th class=" text-white">
-								Servicio
-							</th>
-							<th class="text-white">
-								Precio
-							</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr v-for="servicio of servicios" >
-							<td class=" font-weight-bold">
-								<button v-if="!inspector" type="button" class="w-75 btn procesar" v-on:click="conteoServicio(servicio._id,servicio.nombre, servicio.precio)" disabled>
-								  {{servicio.nombre}} <span class="badge badge-light conteoServ" v-bind:id="servicio._id">0</span>
-								</button>
-								<button v-else type="button" class="w-75 btn procesar" v-on:click="conteoServicio(servicio._id ,servicio.nombre, servicio.precio)">
-								  {{servicio.nombre}} <span class="badge badge-light conteoServ" v-bind:id="servicio._id">0</span>
-								</button>
+				<div class="Lista">
+					<table class="table" >
+						<thead >
+							<tr>
+								<th class=" text-white">
+									Servicio
+								</th>
+								<th class="text-white">
+									Precio
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr v-for="servicio of servicios" >
+								<td class="font-weight-bold">
+									<button v-if="!inspector" type="button" class="w-75 btn procesar" v-on:click="conteoServicio(servicio._id,servicio.nombre, servicio.precio)" disabled>
+									  {{servicio.nombre}} <span class="badge badge-light conteoServ" v-bind:id="servicio._id">0</span>
+									</button>
+									<button v-else type="button" class="w-75 btn procesar" v-on:click="conteoServicio(servicio._id ,servicio.nombre, servicio.precio)">
+									  {{servicio.nombre}} <span class="badge badge-light conteoServ" v-bind:id="servicio._id">0</span>
+									</button>
 
-							</td>
-							<td class=" font-weight-bold text-white">
-								{{servicio.precio}}
-							</td>
-						</tr>
-					</tbody>
-				</table>
+								</td>
+								<td class=" font-weight-bold text-white">
+									{{servicio.precio}}
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 				<div class="input-group input-group-lg mb-2 ">
 				  <div class="input-group-prepend w-25 text-center">
 				    <span class="spanInputs w-100 font-weight-bold  text-white input-group-text text-center" id="inputGroup-sizing-lg">Sub-Total</span>
 				  </div>
-				  <input type="text" class="form-control manicuristaFocus" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+				  <input type="text" class="form-control manicuristaFocus" v-model="precio" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
 				</div>
 				<div class="input-group input-group-lg mb-2 ">
 				  <div class="input-group-prepend w-25 text-center">
 				    <span class="spanInputs w-100 font-weight-bold  text-white input-group-text text-center" id="inputGroup-sizing-lg">Descuento</span>
 				  </div>
-				  <input type="text" class="form-control manicuristaFocus" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+				  <input type="text" v-model="descuento" v-on:change="descuentoFunc" class="form-control manicuristaFocus" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
 				</div>
 				<div class="input-group input-group-lg mb-2 ">
 				  <div class="input-group-prepend w-25 text-center">
@@ -118,7 +124,7 @@
 							<span class="input-group-text bg-light font-weight-bold text-white spanInputs" id="inputGroup-sizing-lg ">Total</span>
 					    <span class="input-group-text bg-light font-weight-bold text-white spanInputs" id="inputGroup-sizing-lg ">$</span>
 					  </div>
-					  <input type="text" class="form-control" id="inputTotal" v-model="precio" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+					  <input type="text" class="form-control" id="inputTotal" v-model="total" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
 						<div class="input-group-prepend">
 							<button class="btn plusBtns" v-on:click="borrarServicios()" id="button-addon2"><font-awesome-icon icon="trash"/></button>
 						</div>
@@ -266,13 +272,16 @@ import router from '../router'
 				nombreCliente: '',
 				identidadCliente: '',
 				precio: '0',
+				total:'0',
 				correoCliente: '',
 				documentoManicurista: '',
 				comision: '',
 				nombreManicurista: '',
 				serviciosSelecionados: '',
 				contador: true,
-				inspector: false
+				inspector: false,
+				maniSelect:'',
+				descuento:''
 		 }
 	 },
 	 beforeCreate() {
@@ -349,15 +358,32 @@ import router from '../router'
 					console.log(err)
 				})
 			},
-			elegirManicurista(manicurista, indentidadManicurista, comision){
-				$('.manicuristaFocus').val(manicurista)
-				this.documentoManicurista = indentidadManicurista
-				this.comision = comision
-				this.nombreManicurista = manicurista
+			elegirManicurista(){
+				axios.get('manicuristas/justone/' + this.maniSelect)
+				.then(res => {
+					console.log(res.data.documento)
+					this.documentoManicurista = res.data.documento
+					this.comision = res.data.porcentaje
+					this.nombreManicurista = this.maniSelect
+				})
+			},
+			descuentoFunc(){
+				const descuento = parseFloat(this.descuento) / 100
+				const porcentaje = 1 - parseFloat(descuento)
+				const precioConDescuento = parseFloat(this.precio) * parseFloat(porcentaje)
+				this.total = precioConDescuento
 			},
 			conteoServicio(esto, servicio, precio){
+				const descuento = parseFloat(this.descuento) / 100
+				const porcentaje = 1 - parseFloat(descuento)
 				const precioTotal = parseFloat(this.precio) + parseFloat(precio)
 				this.precio = precioTotal
+				if(this.descuento === ''){
+					this.total = this.precio
+				}else{
+					const precioConDescuento = parseFloat(this.precio) * parseFloat(porcentaje)
+					this.total = precioConDescuento
+				}
 				const conteo = $("#"+esto).text()
 				const conteoTotal = parseFloat(conteo) + 1
 				$("#"+esto).text(conteoTotal)
@@ -376,13 +402,14 @@ import router from '../router'
 				axios.post('ventas/procesar', {
 					cliente: this.nombreCliente,
 					clientedocumento: this.identidadCliente,
-					manicurista: this.nombreManicurista,
+					manicurista: this.maniSelect,
 					servicios: this.serviciosSelecionados,
 					comision: this.comision,
-					total: this.precio,
+					total: this.total,
 					documentoManicurista: this.documentoManicurista
 				})
 				.then(res => {
+					console.log(res)
 					if (res.data.status == "Venta registrada") {
 						setTimeout(function(){
 							$(".conteoServ").text(0);
@@ -434,7 +461,7 @@ import router from '../router'
 		border-bottom: 2px solid #102229 !important;
 		border-radius: 0px !important;
 		background-color:transparent !important;
-		font-size: 12px !important;
+		font-size: 10px !important;
 		font-family: 'Raleway', sans-serif;
 		font-weight:600;
 	}
@@ -466,4 +493,22 @@ import router from '../router'
 		border:2px solid #102229;
 		padding-top:12px;
 	}
+	.selectMani{
+		background-color:#355461 !important;
+		color:#fff !important;
+		border:none !important;
+		border-bottom:2px solid #102229 !important;
+	}
+	.Lista{
+		overflow-x: hidden;
+		overflow-y:scroll;
+		max-height: 400px;
+		height:400px;
+	}
+	.Lista::-webkit-scrollbar {
+    width: 8px;     /* Tamaño del scroll en vertical */
+    height: 8px;    /* Tamaño del scroll en horizontal */
+    display: none;  /* Ocultar scroll */
+	}
+
 </style>

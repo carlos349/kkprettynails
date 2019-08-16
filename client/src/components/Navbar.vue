@@ -1,5 +1,7 @@
 <template>
-	<nav class="navbar navbar-expand-lg sticky-top navbar-dark" style="background-color:#213b45">
+	<nav class="navbar navbar-expand-lg sticky-top navbar-dark" style="background-color:#213b45;-webkit-box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.75);
+-moz-box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.75);
+box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.75);">
 		<img src="../assets/syswa2.png" style="width:6%;" alt="">
 		<a class="navbar-brand" href="#"></a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -22,7 +24,6 @@
 	          Venta
 	        </a>
 	        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-						<router-link class="dropdown-item font-weight-bold text-uppercase" to="/venta">Realizar venta</router-link>
 						<router-link  class="dropdown-item font-weight-bold text-uppercase" to="/verventas">Resumen de ventas</router-link>
 	        </div>
       	</li>

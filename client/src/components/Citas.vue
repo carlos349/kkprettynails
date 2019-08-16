@@ -1,18 +1,48 @@
 <template id="">
   <div class="container-fluid">
-    <h1 class="text-center mt-1">Agenda de citas</h1>
-    <vue-cal
-       :locale="locale"
-       class="calendario"
-       :events="eventos"
-       default-view="month"
-       :disable-views="['years', 'year']"
-       events-on-month-view="short"
-       :on-event-click="onEventClick"
-       :time-from="8 * 60"
-       :time-to="18 * 60">
-    </vue-cal>
-    <button type="button" class="btn btn-info mt-3 citas" name="button" v-on:click="aja()">Crear cita</button>
+    <div class="row">
+      <div id="mySidenav" class="col-sm-2 menuVertical">
+          <ul class="listaMenu">
+            <li v-on:click="aja()"><span></span>Generar cita</li>
+            <router-link class="rout" to="/venta"><li>Procesar venta</li></router-link>
+            <li>Eliminar cita</li>
+                      </ul>
+            <select id="manicuristas" name="manicuristas">
+                <option value="otra">Manicuristas</option>
+                <option v-for="manicurista of manicuristas">{{manicurista.nombre}}</option>
+              </select>
+
+          <vue-cal  class="calendarioo vuecal--rounded-theme vuecal--green-theme"
+                   xsmall
+                   hide-view-selector
+                   :time="false"
+                   events-count-on-year-view
+                   default-view="month"
+                   :locale="locale"
+                   :events="eventos"
+                   :disable-views="['week']">
+          </vue-cal>
+        </div>
+        <div style="padding-left:2%;" id="calen"class="col-sm-12 col-sm-10">
+          <span class="boton"  v-on:click="Menu()">
+            <span id="clo" hidden class="clo">></span>
+            <span id="ope" hidden ><</span>
+            </span>
+
+          <vue-cal
+             :locale="locale"
+             class="calendario"
+             :events="eventos"
+             default-view="month"
+             :disable-views="['years', 'year']"
+             events-on-month-view="short"
+             :on-event-click="onEventClick"
+             :time-from="8 * 60"
+             :time-to="18 * 60">
+          </vue-cal>
+        </div>
+      </div>
+
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered" role="document">
 		    <div class="modal-content">
@@ -199,6 +229,12 @@
       aja() {
         $('#myModal').modal('show')
       },
+      Menu() {
+        $('#mySidenav').toggle('slow')
+        $('#calen').toggleClass("col-sm-12")
+        $('#ope').toggleClass("ope")
+        $('#clo').toggleClass("clo")
+      },
       registroCita(){
         const horarioEntrada = this.fecha + " " + this.entrada
         const horarioSalida = this.fecha + " " + this.salida
@@ -248,22 +284,46 @@
     }
   }
 
+
+
 </script>
 <style media="screen">
-  .vuecal__menu {background-color: #17a2b8;}
+  .vuecal__menu {background-color: #213b45;}
   .vuecal__menu li {border-bottom-color: #fff;color: #fff;}
   .vuecal__menu li.active {background-color: rgba(255, 255, 255, 0.15);}
-  .vuecal__title-bar {background-color: #17a2b8;}
-  .vuecal__cell-date{height:80px;}
-  .vuecal__time-column .vuecal__time-cell{color:black}
-  .vuecal__event{color:#E6E8EF;font-weight:bold}
+  .vuecal__title-bar {background-color: #213b45;color:white;}
+
+  .vuecal__time-column .vuecal__time-cell{color:white;height:1vh;}
+  .vuecal__event{color:#fff;font-weight:bold}
   .vuecal__cell-events-count{margin-top:-40px;font-size:20px;background-color:transparent;color:#17a2b8}
   .vuecal__cell.today, .vuecal__cell.current {background-color: rgba(240, 240, 255, 0.4);}
   .vuecal:not(.vuecal--day-view) .vuecal__cell.selected {background-color: rgba(235, 255, 245, 0.4);}
   .vuecal__cell.selected:before {border-color: rgba(66, 185, 131, 0.5);}
+  .vuecal__cell-date{color:white;font-family: 'Raleway', sans-serif;
+  font-weight:600;}
+  .vuecal__heading span{color:white;font-family: 'Raleway', sans-serif;
+  font-weight:600;}
+  .vuecal--rounded-theme.vuecal--green-theme:not(.vuecal--day-view) .vuecal__cell-content {
+    background-color: #274a58;
+}
+.vuecal--green-theme .vuecal__title-bar {
+    background-color: #213b45;
+}
+  .vuecal__cell-events-count {
+    width: 10px !important;
+    min-width: 0 !important;
+    height: 10px !important;
+    padding: 0 !important;
+    margin-top:1%;
+    color: transparent !important;
+  }
+
   .calendario{
-    max-height: 90vh;
+    max-height: 70vh;
     margin-top:2%
+  }
+  .calendarioo{
+    max-height:40vh;
   }
   .vuecal__event{
     background-color:#4369E8;
@@ -278,5 +338,76 @@
     padding:10px;
     font-weight: bold;
     width: 10%
+  }
+  .menuVertical{
+    height:92.8vh;
+    background-color:#213b45;
+    transition: 0.3s;
+    display:none;
+
+  }
+  .listaMenu{
+    color:white;
+    margin-top:10%;
+    margin-bottom:10%;
+  }
+  .boton{
+    position:absolute;
+    top:40%;
+    left:0;
+    background-color:#213b45;
+    padding:10px;
+    padding-top:20px;
+    padding-bottom:20px;
+    color:white;
+    cursor:pointer;
+  }
+  .ope{
+    display:block !important;
+  }
+  .clo{
+    display:block !important;
+  }
+
+  .listaMenu li{
+    padding:10px;
+    border-right:4px solid #425861;
+    margin-top:5px;
+    list-style-type: none;
+    cursor:pointer;
+    margin-left:-15%;
+    height:5vh;
+  }
+  .listaMenu li:hover{
+    border-top:1px solid #425861;
+    border-bottom:1px solid #425861;
+    border-left:1px solid #425861;
+  }
+  .rout{
+    color:white;
+    text-decoration:none !important;
+
+  }
+  .rout:hover{
+    color:white !important;
+  }
+  #manicuristas{
+    padding:10px;
+    border:none;
+    border-right:4px solid #425861;
+    list-style-type: none;
+    cursor:pointer;
+    height:5vh;
+    background-color:transparent;
+    color:white;
+    font-family: 'Raleway', sans-serif;
+    font-weight:600;
+    width:100%;
+    outline:none;
+    background-color:#213b45;
+  }
+  #manicuristas option{
+    font-family: 'Raleway', sans-serif;
+    font-weight:600;
   }
 </style>

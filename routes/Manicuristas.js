@@ -9,6 +9,11 @@ manicurista.get('/', async (req, res) => {
   res.json(manicuristas)
 })
 
+manicurista.get('/justone/:nombre', async (req, res) => {
+  const manicuristas = await Manicurista.findOne({'nombre':req.params.nombre})
+  res.json(manicuristas)
+})
+
 manicurista.post('/', (req, res) => {
   const dataManicurista = {
     nombre: req.body.nombreManicurista,
