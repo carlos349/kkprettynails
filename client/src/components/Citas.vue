@@ -70,6 +70,8 @@
                   <option value="15:00">15:00 pm</option>
                   <option value="16:00">16:00 pm</option>
                   <option value="17:00">17:00 pm</option>
+                  <option value="18:00">18:00 pm</option>
+                  <option value="19:00">19:00 pm</option>
                 </select>
                 <label for="nombre">Horario Salida</label>
                 <select class="form-control" v-model="salida">
@@ -85,6 +87,7 @@
                   <option value="17:00">17:00 pm</option>
                   <option value="18:00">18:00 pm</option>
                   <option value="19:00">19:00 pm</option>
+                  <option value="19:00">20:00 pm</option>
                 </select>
 							</div>
               <div class="form-group">
