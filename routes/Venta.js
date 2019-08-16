@@ -83,6 +83,8 @@ ventas.post('/procesar', (req, res) => {
     manicurista: req.body.manicurista,
     servicios: req.body.servicios,
     comision: comisionFinal,
+    pago:req.body.mediopago,
+    descuento:req.body.descuento,
     ganancianeta: ganancia,
     ganancialocal: gananciaLocal,
     total: total,

@@ -13,7 +13,13 @@ const VentaSchema = new Schema({
 		type: String
 	},
 	servicios: {
+		type: Array
+	},
+	pago: {
 		type: String
+	},
+	descuento: {
+		type: Number
 	},
 	comision: {
 		type: Number
