@@ -21,7 +21,7 @@
 					</select>
 				</div>
 				<div class="">
-					<input type="text" id="myInput" v-on:keyup="myFunction()" class="form-control buscar" placeholder="Filtrar servicios"/>
+					<input type="text" id="myInput" v-on:keyup="myFunction()" class="form-control buscar inputs" placeholder="Filtrar servicios"/>
 					<font-awesome-icon class="lupa" icon="search"/>
 				</div>
 				<table class="table table-dark" >
