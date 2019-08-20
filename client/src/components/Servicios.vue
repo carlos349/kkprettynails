@@ -2,15 +2,15 @@
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-12 row sectionMetrics">
-				<div class="col-md-3 metrics">
+				<div class="col-md-3 metrics first">
 					<p>Total Servicios</p>
 					<h1>12</h1>
 				</div>
-				<div class="col-md-3 metrics">
-					<p>Manicuristas</p>
+				<div class="col-md-3 metrics second">
+					<p>Servicios mensuales</p>
 					<h1>2</h1>
 				</div>
-				<div class="col-md-3 metrics">
+				<div class="col-md-3 metrics three">
 					<p>Inventario</p>
 					<h1>50</h1>
 				</div>
@@ -44,22 +44,22 @@
 			<div class="col-md-8 ">
 				<div class="shadow">
 					<div class="tbl-header">
-				<table  class="table table-dark" >
+				<table  class="table table-dark" style="color:#fff !important" >
 					<thead>
 						<tr>
-							 <th class="text-white ">
+							 <th>
 								 Nombre
 							 </th>
-							 <th class="text-white">
+							 <th>
 								 Tiempo
 							 </th>
-							 <th class="text-white">
+							 <th>
 								 Precio
 							 </th>
-							 <th class="text-white">
+							 <th>
 								 Prestadores
 							 </th>
-							 <th class="text-white">
+							 <th>
 								 Borrar/Eliminar
 							 </th>
 							 
@@ -68,7 +68,7 @@
 				</table>
 				</div>
 				<div class="Lista tbl-content">
-					<table class="table table-dark">
+					<table class="table table-light table-borderless table-striped">
 						<tbody>
 							<tr v-for="servicio of servicios">
 								<td class="font-weight-bold">
@@ -245,7 +245,7 @@
 			presSelect(prestador,index){
 				if ($("#"+index).prop("checked")!=true) {
 					for (let i = 0; i < this.prestadoresSeleccionados.length; i++) {
-						if (this.prestadoresSeleccionados[i]== prestador ) {
+						if (this.prestadoresSeleccionados[i] == prestador ) {
 							this.prestadoresSeleccionados.splice(i, 1)
 							break
 						}
@@ -310,18 +310,18 @@
 <style>
 	.metrics{
 		height: auto;
-		background-color: #213b45;
+		background-color: #fff;
 		margin:20px;
-		color: azure;
+		color:#fff;
 		padding: 10px;
 		padding-right: 15px;
-		-webkit-box-shadow: 0px 0px 14px -2px rgba(0,0,0,0.75);
--moz-box-shadow: 0px 0px 14px -2px rgba(0,0,0,0.75);
-box-shadow: 0px 0px 14px -2px rgba(0,0,0,0.75);
+		box-shadow: 0 0.46875rem 2.1875rem rgba(4,9,20,0.03), 0 0.9375rem 1.40625rem rgba(4,9,20,0.03), 0 0.25rem 0.53125rem rgba(4,9,20,0.05), 0 0.125rem 0.1875rem rgba(4,9,20,0.03);
+		border-radius:5px;
 	}
 	.metrics p{
 		font-size: 1em;
 		margin-top: 10px;
+		
 	}
 	.metrics h1{
 		float: right;
@@ -332,20 +332,20 @@ box-shadow: 0px 0px 14px -2px rgba(0,0,0,0.75);
 	}
 	table{
 		border:none !important;
-		background-color:#213b45 !important;
 		margin-bottom:0 !important;
 		table-layout: fixed;
+		color:#102229 !important
 	}
 	.forms{
-		background-color:#213b45;
-		-webkit-box-shadow: 0px 0px 14px -2px rgba(0,0,0,0.75);
-		-moz-box-shadow: 0px 0px 14px -2px rgba(0,0,0,0.75);
-		box-shadow: 0px 0px 14px -2px rgba(0,0,0,0.75);
+		background-color:#fff;
+		box-shadow: 0 0.46875rem 2.1875rem rgba(4,9,20,0.03), 0 0.9375rem 1.40625rem rgba(4,9,20,0.03), 0 0.25rem 0.53125rem rgba(4,9,20,0.05), 0 0.125rem 0.1875rem rgba(4,9,20,0.03);
 		padding: 20px;
 		overflow-x: hidden;
 		overflow-y:scroll;
-		max-height: 450px;
+		max-height: 470px;
 		height:auto;
+		border-radius:5px;
+		border-radius:5px;
 	}
 	.forms::-webkit-scrollbar {
 		width: 8px;     /* Tamaño del scroll en vertical */
@@ -355,9 +355,9 @@ box-shadow: 0px 0px 14px -2px rgba(0,0,0,0.75);
 	.Lista{
 		overflow-x: hidden;
 		overflow-y:scroll;
-		max-height: 400px;
+		max-height: 420px;
 		height:auto;
-		
+		border-radius:5px;
 	}
 	.Lista::-webkit-scrollbar {
 		width: 8px;     /* Tamaño del scroll en vertical */
@@ -369,12 +369,12 @@ box-shadow: 0px 0px 14px -2px rgba(0,0,0,0.75);
 		border-radius:0px !important;
 		border-bottom:2px solid #102229 !important;
 		background-color:transparent !important;
-		color:#fff !important;
+		color:#102229 !important;
 		font-family: 'Raleway', sans-serif;
 		font-weight:600;
 	}
 	label{
-		color:azure
+		color:#102229
 	}
 	.selectMani{
 		background-color:#355461 !important;
@@ -390,23 +390,23 @@ box-shadow: 0px 0px 14px -2px rgba(0,0,0,0.75);
 		font-weight:600;
 	}
 	.add:hover{
-		background-color:azure;
+		background-color:#ccc;
 		
 	}
 
 	.conCheck {
-  display: inline-block;
-  margin-left: 5%;
-  position: relative;
-  padding-left: 35px;
-  margin-bottom: 12px;
-  cursor: pointer;
-  font-size: 1em;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
+		display: inline-block;
+		margin-left: 5%;
+		position: relative;
+		padding-left: 35px;
+		margin-bottom: 12px;
+		cursor: pointer;
+		font-size: 1em;
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+	}
 
 /* Hide the browser's default checkbox */
 .conCheck input {
@@ -434,7 +434,7 @@ box-shadow: 0px 0px 14px -2px rgba(0,0,0,0.75);
 
 /* When the checkbox is checked, add a blue background */
 .conCheck input:checked ~ .checkmark {
-  background-color: #2196F3;
+  background-color: #102229;
 }
 
 /* Create the checkmark/indicator (hidden when not checked) */
@@ -460,5 +460,25 @@ box-shadow: 0px 0px 14px -2px rgba(0,0,0,0.75);
   -webkit-transform: rotate(45deg);
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);
+}
+.first{
+	background: #00c6ff;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to left, #0072ff, #00c6ff);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to left, #0072ff, #00c6ff); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
+.second{
+	background: #FF512F;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to left, #F09819, #FF512F);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to left, #F09819, #FF512F); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
+.three{
+background: #3CA55C;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to left, #B5AC49, #3CA55C);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to left, #B5AC49, #3CA55C); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+
+
 }
 </style>

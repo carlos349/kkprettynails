@@ -452,7 +452,7 @@ import router from '../router'
 		margin-bottom:0 !important;
 	}
 	.contenedor{
-		width:60%;
+		width:30%;
 		min-width:400px;
 		border:2px solid #102229;
 		padding-top:12px;

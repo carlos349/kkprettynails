@@ -308,9 +308,9 @@
   .vuecal__cell.today, .vuecal__cell.current {background-color: rgba(240, 240, 255, 0.4);}
   .vuecal:not(.vuecal--day-view) .vuecal__cell.selected {background-color: rgba(235, 255, 245, 0.4);}
   .vuecal__cell.selected:before {border-color: rgba(66, 185, 131, 0.5);}
-  .vuecal__cell-date{color:white;font-family: 'Raleway', sans-serif;
+  .vuecal__cell-date{color:#000;font-family: 'Raleway', sans-serif;
   font-weight:600;}
-  .vuecal__heading span{color:white;font-family: 'Raleway', sans-serif;
+  .vuecal__heading span{color:#000;font-family: 'Raleway', sans-serif;
   font-weight:600;}
   .vuecal--rounded-theme.vuecal--green-theme:not(.vuecal--day-view) .vuecal__cell-content {
     background-color: #274a58;
