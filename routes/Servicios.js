@@ -13,7 +13,9 @@ servicio.get('/', async (req,res) => {
 servicio.post('/', (req,res) => {
   const dataServicios = {
     nombre:req.body.nombreServicio,
-    precio:req.body.precioServicio
+    tiempo:req.body.tiempoServicio,
+    precio:req.body.precioServicio,
+    prestadores:req.body.prestadores
   }
   Servicio.findOne({
     nombre: req.body.nombreServicio

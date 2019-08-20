@@ -5,8 +5,14 @@ const servicioSchema = new Schema({
   nombre:{
     type:String
   },
+  tiempo:{
+    type:Number
+  },
   precio:{
     type:Number
+  },
+  prestadores:{
+    type:Array
   }
 })
 

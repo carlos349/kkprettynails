@@ -8,7 +8,7 @@
 						  <div class="input-group-prepend">
 						    <button class="btn btn-info spanInputs w-100" type="submit" id="button-addon1">Cliente</button>
 						  </div>
-						  <input type="text" v-model="identidadCliente" id="cliente" name="identidad" class="form-control inputs" placeholder="Cedula del cliente" aria-label="Example text with button addon" aria-describedby="button-addon1">
+						  <input type="text" v-model="identidadCliente" id="cliente" name="identidad" class="form-control inputs" placeholder="Cliente" aria-label="Example text with button addon" aria-describedby="button-addon1">
 					</div>
 				</form>
 				<div class="input-group input-group-lg mb-2 ">
@@ -419,7 +419,7 @@ import router from '../router'
 		font-family: 'Raleway', sans-serif;
 		font-weight:600;
 	}
-	@media (max-width: 2000px) {
+	@media (max-width: 1000px) {
 		.spanInputs{
 			font-size: 0.6em !important;
 		}
@@ -452,7 +452,7 @@ import router from '../router'
 		margin-bottom:0 !important;
 	}
 	.contenedor{
-		width:30%;
+		width:60%;
 		min-width:400px;
 		border:2px solid #102229;
 		padding-top:12px;

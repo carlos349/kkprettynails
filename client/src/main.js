@@ -5,11 +5,11 @@ import App from './App'
 import router from './router'
 import VueSweetalert2 from 'vue-sweetalert2';
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faTrash, faEdit, faCopy, faTimes,faSearch } from '@fortawesome/free-solid-svg-icons'
+import { faTrash, faEdit, faCopy, faTimes, faSearch, faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 require("../node_modules/bootstrap/dist/css/bootstrap.css")
 
-library.add(faTrash,faEdit,faCopy,faTimes,faSearch)
+library.add(faTrash,faEdit,faCopy,faTimes,faSearch, faAngleRight, faAngleLeft)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.config.productionTip = false

@@ -23,10 +23,11 @@
                    :disable-views="['week']">
           </vue-cal>
         </div>
-        <div style="padding-left:2%;" id="calen"class="col-sm-12 col-sm-10">
+        <div style="padding-left:2%;" id="calen" class="col-sm-10">
           <span class="boton"  v-on:click="Menu()">
-            <span id="clo" hidden class="clo">></span>
-            <span id="ope" hidden ><</span>
+            <font-awesome-icon :icon="['fas', 'angle-left']" id="clo" hidden class="clo" />
+            <font-awesome-icon :icon="['fas', 'angle-right']" id="ope" hidden />
+            
             </span>
 
           <vue-cal
@@ -351,7 +352,7 @@
     height:92.8vh;
     background-color:#213b45;
     transition: 0.3s;
-    display:none;
+    
 
   }
   .listaMenu{
