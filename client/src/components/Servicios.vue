@@ -17,6 +17,7 @@
 			</div>
 			<div class="col-md-4">
 				<div class="forms">
+					<h2>Crear Servicio</h2>
 					<form v-on:submit.prevent="registroServicio">
 						<div class="form-group">
 							<label for="name">Nombre del servicio</label>
@@ -32,7 +33,7 @@
 						</div>
 						<label for="name">Prestador</label>
 						<div class="form-group row" >
-								<label v-for="(manicurista, index) of manicuristas" class="conCheck col-sm-5">{{manicurista.nombre}}
+								<label v-for="(manicurista, index) of manicuristas" class="conCheck col-sm-2">{{manicurista.nombre}}
 								<input :id="index" v-on:click="presSelect(manicurista.documento,index)" type="checkbox">
 								<span class="checkmark"></span>
 								</label>
@@ -43,7 +44,7 @@
 			</div>
 			<div class="col-md-8 ">
 				<div class="shadow">
-					<div class="tbl-header">
+					
 				<table  class="table table-dark" style="color:#fff !important" >
 					<thead>
 						<tr>
@@ -66,7 +67,7 @@
 						 </tr>
 					</thead>
 				</table>
-				</div>
+				
 				<div class="Lista tbl-content">
 					<table class="table table-light table-borderless table-striped">
 						<tbody>
@@ -91,6 +92,39 @@
 					</table>
 				</div>
 				</div>
+			</div>
+			<div class="col-md-4" style="margin-top:20px;">
+				<div class="shadow">
+					<table  class="table table-dark" style="color:#fff !important" >
+						<thead>
+							<tr>
+								<th>
+									Servicio
+								</th>
+								<th class="text-center">
+									Cantidad
+								</th>				
+							</tr>
+						</thead>
+					</table>
+					<div class="Lista">
+						<table class="table table-light table-borderless table-striped">
+							<tbody>
+								<tr v-for="servicesQuantityPerMonth of servicesQuantityPerMonths">
+									<td class="font-weight-bold">
+										{{servicesQuantityPerMonth.nombre}}
+									</td>
+									<td class="font-weight-bold text-center">
+										{{servicesQuantityPerMonth.cantidad}}
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-8">
+
 			</div>
 		</div>
 		<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -148,6 +182,13 @@
 			this.prestador = prestador;
 		}
 	}
+
+	class ServicesQuantityPerMonths{
+		constructor(nombre, cantidad){
+			this.nombre = nombre;
+			this.cantidad = cantidad;
+		}
+	}
 	export default {
 		data() {
 			return {
@@ -163,8 +204,9 @@
 				prestadoresSeleccionados:[],
 				nombreServi:'',
 				tiempoServi:'',
-				precioServi:''
-
+				precioServi:'',
+				servicesQuantityPerMonth: new ServicesQuantityPerMonths(),
+				servicesQuantityPerMonths: []
 			}
 		},
 		beforeCreate() {
@@ -181,6 +223,7 @@
 		created(){
 			 this.getServicios();
 			 this.getManicuristas();
+			 this.ServicesQuantityPerMonthFunc();
  		},
 		methods: {
 			getServicios() {
@@ -303,6 +346,15 @@
 				var scrollWidth = $('.tbl-content').width() - $('.tbl-content table').width();
 				$('.tbl-header').css({'padding-right':scrollWidth});
 				}).resize();
+			},
+			ServicesQuantityPerMonthFunc(){
+				axios.get('/servicios/ServicesQuantityPerMonth')
+				.then(res => {
+					for (let index = 0; index < res.data.length; index++) {
+						this.servicesQuantityPerMonths.push(res.data[index].servicio.servicio)
+					}
+					
+				})
 			}
 		}
 	}
@@ -401,84 +453,84 @@
 		padding-left: 35px;
 		margin-bottom: 12px;
 		cursor: pointer;
-		font-size: 1em;
+		font-size: 0.8em;
 		-webkit-user-select: none;
 		-moz-user-select: none;
 		-ms-user-select: none;
 		user-select: none;
 	}
 
-/* Hide the browser's default checkbox */
-.conCheck input {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-  height: 0;
-  width: 0;
-}
+		/* Hide the browser's default checkbox */
+	.conCheck input {
+		position: absolute;
+		opacity: 0;
+		cursor: pointer;
+		height: 0;
+		width: 0;
+	}
 
-/* Create a custom checkbox */
-.checkmark {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 25px;
-  width: 25px;
-  background-color: #eee;
-}
+	/* Create a custom checkbox */
+	.checkmark {
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: 25px;
+		width: 25px;
+		background-color: #eee;
+	}
 
-/* On mouse-over, add a grey background color */
-.conCheck:hover input ~ .checkmark {
-  background-color: #ccc;
-}
+	/* On mouse-over, add a grey background color */
+	.conCheck:hover input ~ .checkmark {
+		background-color: #ccc;
+	}
 
-/* When the checkbox is checked, add a blue background */
-.conCheck input:checked ~ .checkmark {
-  background-color: #102229;
-}
+	/* When the checkbox is checked, add a blue background */
+	.conCheck input:checked ~ .checkmark {
+		background-color: #102229;
+	}
 
-/* Create the checkmark/indicator (hidden when not checked) */
-.checkmark:after {
-  content: "";
-  position: absolute;
-  display: none;
-}
+	/* Create the checkmark/indicator (hidden when not checked) */
+	.checkmark:after {
+		content: "";
+		position: absolute;
+		display: none;
+	}
 
-/* Show the checkmark when checked */
-.conCheck input:checked ~ .checkmark:after {
-  display: inline-block;
-}
+	/* Show the checkmark when checked */
+	.conCheck input:checked ~ .checkmark:after {
+		display: inline-block;
+	}
 
-/* Style the checkmark/indicator */
-.conCheck .checkmark:after {
-  left: 9px;
-  top: 5px;
-  width: 5px;
-  height: 10px;
-  border: solid white;
-  border-width: 0 3px 3px 0;
-  -webkit-transform: rotate(45deg);
-  -ms-transform: rotate(45deg);
-  transform: rotate(45deg);
-}
-.first{
-	background: #00c6ff;  /* fallback for old browsers */
-background: -webkit-linear-gradient(to left, #0072ff, #00c6ff);  /* Chrome 10-25, Safari 5.1-6 */
-background: linear-gradient(to left, #0072ff, #00c6ff); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	/* Style the checkmark/indicator */
+	.conCheck .checkmark:after {
+		left: 9px;
+		top: 5px;
+		width: 5px;
+		height: 10px;
+		border: solid white;
+		border-width: 0 3px 3px 0;
+		-webkit-transform: rotate(45deg);
+		-ms-transform: rotate(45deg);
+		transform: rotate(45deg);
+	}
+	.first{
+		background: #00c6ff;  /* fallback for old browsers */
+		background: -webkit-linear-gradient(to left, #0072ff, #00c6ff);  /* Chrome 10-25, Safari 5.1-6 */
+		background: linear-gradient(to left, #0072ff, #00c6ff); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
-}
-.second{
-	background: #FF512F;  /* fallback for old browsers */
-background: -webkit-linear-gradient(to left, #F09819, #FF512F);  /* Chrome 10-25, Safari 5.1-6 */
-background: linear-gradient(to left, #F09819, #FF512F); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	}
+	.second{
+		background: #FF512F;  /* fallback for old browsers */
+		background: -webkit-linear-gradient(to left, #F09819, #FF512F);  /* Chrome 10-25, Safari 5.1-6 */
+		background: linear-gradient(to left, #F09819, #FF512F); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
-}
-.three{
-background: #3CA55C;  /* fallback for old browsers */
-background: -webkit-linear-gradient(to left, #B5AC49, #3CA55C);  /* Chrome 10-25, Safari 5.1-6 */
-background: linear-gradient(to left, #B5AC49, #3CA55C); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
-
-
-}
+	}
+	.three{
+		background: #3CA55C;  /* fallback for old browsers */
+		background: -webkit-linear-gradient(to left, #B5AC49, #3CA55C);  /* Chrome 10-25, Safari 5.1-6 */
+		background: linear-gradient(to left, #B5AC49, #3CA55C); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	}
+	.forms h2{
+		font-family: 'Raleway', sans-serif;
+	}
 </style>

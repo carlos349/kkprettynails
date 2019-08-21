@@ -5,9 +5,163 @@ const cors = require('cors')
 const Venta = require('../models/Venta')
 const Cliente = require('../models/Cliente')
 const Manicurista = require('../models/Manicurista')
+const January = require('../models/January')
+const February = require('../models/February')
+const March = require('../models/March')
+const April = require('../models/April')
+const May = require('../models/May')
+const June = require('../models/June')
+const July = require('../models/July')
+const August = require('../models/August')
+const September = require('../models/September')
+const October = require('../models/October')
+const November = require('../models/November')
+const December = require('../models/December')
 ventas.use(cors())
 
+ventas.put('/updateServicesMonth/:service', (req, res) => {
+  const thisDate = new Date()
+  const date = thisDate.getMonth()
+  const services = req.params.service
 
+  let mes  = 'mes'
+
+  if (date === 0) {
+    mes = January
+  }else if (date === 1) {
+    mes = February
+  }else if (date === 2) {
+    mes = March
+  }else if (date === 3) {
+    mes = April
+  }else if (date === 4) {
+    mes = May
+  }else if (date === 5) {
+    mes = June
+  }else if (date === 6) {
+    mes = July
+  }else if (date === 7) {
+    mes = August
+  }else if (date === 8) {
+    mes = September
+  }else if (date === 9) {
+    mes = October
+  }else if (date === 10) {
+    mes = November
+  }else if (date === 11) {
+    mes = December
+  }
+
+  const createServices = {
+      servicio:{
+        servicio:{
+          nombre:services,
+          cantidad:1
+        }
+      }
+  }
+
+  for (let index = 0; index < 12; index++) {
+    if (date === index) {
+      mes.findOne({'servicio.servicio.nombre':services})
+        .then(back => {
+          if(!back){
+            mes.create(createServices)
+            .then(back => {
+              res.json({'status':'ok'})
+            })
+            .catch(err => {
+              res.send('error: ' + err)
+            })
+          }else{
+            mes.updateOne({'servicio.servicio.nombre':services},{$inc:{'servicio.servicio.cantidad':1}})
+            .then(back => {
+              res.json({'status':'ok'})
+            })
+            .catch(err => {
+              res.send('error: ' + err)
+            })
+          }
+        })
+        .catch(err => {
+          res.send('error: ' + err)
+        })
+    }
+  }
+
+})
+
+ventas.put('/updateServicesMonthDiscount/:service', (req, res) => {
+  const thisDate = new Date()
+  const date = thisDate.getMonth()
+  const services = req.params.service
+  
+  let mes  = 'mes'
+
+  if (date === 0) {
+    mes = January
+  }else if (date === 1) {
+    mes = February
+  }else if (date === 2) {
+    mes = March
+  }else if (date === 3) {
+    mes = April
+  }else if (date === 4) {
+    mes = May
+  }else if (date === 5) {
+    mes = June
+  }else if (date === 6) {
+    mes = July
+  }else if (date === 7) {
+    mes = August
+  }else if (date === 8) {
+    mes = September
+  }else if (date === 9) {
+    mes = October
+  }else if (date === 10) {
+    mes = November
+  }else if (date === 11) {
+    mes = December
+  }
+
+  const createServices = {
+      servicio:{
+        servicio:{
+          nombre:services,
+          cantidad:1
+        }
+      }
+  }
+
+  for (let index = 0; index < 12; index++) {
+    if (date === index) {
+      mes.findOne({'servicio.servicio.nombre':services})
+        .then(back => {
+          if(!back){
+            mes.create(createServices)
+            .then(back => {
+              res.json({'status':'ok'})
+            })
+            .catch(err => {
+              res.send('error: ' + err)
+            })
+          }else{
+            mes.updateOne({'servicio.servicio.nombre':services},{$inc:{'servicio.servicio.cantidad':-1}})
+            .then(back => {
+              res.json({'status':'ok'})
+            })
+            .catch(err => {
+              res.send('error: ' + err)
+            })
+          }
+        })
+        .catch(err => {
+          res.send('error: ' + err)
+        })
+    }
+  }
+
+})
 
 ventas.post('/ingresocliente', (req, res) => {
   const today = new Date()
@@ -115,3 +269,4 @@ ventas.post('/procesar', (req, res) => {
 
 
 module.exports = ventas
+

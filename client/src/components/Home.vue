@@ -24,7 +24,7 @@
 					<input type="text" id="myInput" v-on:keyup="myFunction()" class="form-control buscar inputs" placeholder="Filtrar servicios"/>
 					<font-awesome-icon class="lupa" icon="search"/>
 				</div>
-				<table class="table table-dark" >
+				<table class="table table-dark tableBg" >
 					<thead>
 						<tr>
 							<th class="text-left pl-4 text-white">
@@ -37,7 +37,7 @@
 					</thead>
 				</table>
 				<div class="Lista">
-					<table class="table table-dark" id="myTable">
+					<table class="table table-dark tableBg" id="myTable">
 						<tbody>
 							<tr v-for="(servicio, index) of servicios" >
 								<td class="font-weight-bold">
@@ -311,7 +311,12 @@ import router from '../router'
 					}else{
 						this.descuentoFunc()
 					}
+					axios.put('ventas/updateServicesMonthDiscount/' + servicio)
+					.catch(err => {
+						console.log(err)
+					})
 				}
+				
 
 			},
 			descuentoFunc(){
@@ -341,7 +346,11 @@ import router from '../router'
 				$("#"+esto).text(conteoTotal)
 				const servicios = {'servicio': servicio}
 				this.serviciosSelecionados.push(servicios)
-				console.log(this.serviciosSelecionados)
+				
+				axios.put('ventas/updateServicesMonth/' + servicio)
+				.catch(err => {
+					console.log(err)
+				})
 			},
 			procesar() {
 				axios.post('ventas/procesar', {
@@ -404,7 +413,7 @@ import router from '../router'
 		border-radius:0px !important;
 		border-bottom:2px solid #102229 !important;
 		background-color:transparent !important;
-		color:#fff !important;
+		color:#000 !important;
 		font-family: 'Raleway', sans-serif;
 		font-weight:600;
 	}
@@ -418,10 +427,19 @@ import router from '../router'
 		font-size: 1em !important;
 		font-family: 'Raleway', sans-serif;
 		font-weight:600;
+		color:#000 !important
 	}
 	@media (max-width: 1000px) {
 		.spanInputs{
 			font-size: 0.6em !important;
+		}
+		.contenedor{
+			width:40%;
+			min-width:400px;
+			border:2px solid #102229;
+			padding-top:12px;
+			background-color: #fff;
+			min-width: 455px;
 		}
 	}
 	.plusBtns{
@@ -446,7 +464,7 @@ import router from '../router'
 		background-color:#fff;
 		transition: all 0.5s ease-out;
 	}
-	table{
+	.tableBg{
 		border:none !important;
 		background-color:#213b45 !important;
 		margin-bottom:0 !important;
@@ -456,6 +474,8 @@ import router from '../router'
 		min-width:400px;
 		border:2px solid #102229;
 		padding-top:12px;
+		background-color: #fff;
+		min-width: 555px;
 	}
 	.selectMani{
 		background-color:#355461 !important;
