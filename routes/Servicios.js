@@ -1,5 +1,5 @@
 const express = require('express');
-const servicio = express.Router()
+const service = express.Router()
 const cors = require('cors');
 
 //Models
@@ -18,15 +18,15 @@ const November = require('../models/November')
 const December = require('../models/December')
 
 //router
-servicio.use(cors())
+service.use(cors())
 
 //Apis
-servicio.get('/', async (req,res) => {
+service.get('/', async (req,res) => {
   const servicios = await Servicio.find()
   res.json(servicios)
 })
 
-servicio.post('/', (req,res) => {
+service.post('/', (req,res) => {
   const dataServicios = {
     nombre:req.body.nombreServicio,
     tiempo:req.body.tiempoServicio,
@@ -55,14 +55,14 @@ servicio.post('/', (req,res) => {
   })
 })
 
-servicio.delete('/:id', async (req, res) => {
+service.delete('/:id', async (req, res) => {
     await Servicio.findByIdAndRemove(req.params.id);
     res.json({
       status: 'Servicio eliminado'
     })
 })
 
-servicio.put('/:id', (req, res) => {
+service.put('/:id', (req, res) => {
     Servicio.findByIdAndUpdate(req.params.id, {
       $set: {
         nombre: req.body.nombre,
@@ -77,41 +77,102 @@ servicio.put('/:id', (req, res) => {
     })
 })
 
-servicio.get('/ServicesQuantityPerMonth', (req, res) => {
+service.get('/ServicesChartQuantity', (req, res) => {
+
+
+  let chartdata = {
+    labels: [],
+    datasets: [ 
+      {
+        label: 'Ventas',
+        backgroundColor: '#0086ff',
+        data: []
+      }
+    ]
+  }
+
   const thisDate = new Date()
   const date = thisDate.getMonth()
 
-  let mes  = 'mes'
+  let Month = 'Month'
 
   if (date === 0) {
-    mes = January
+    Month = January
   }else if (date === 1) {
-    mes = February
+    Month = February
   }else if (date === 2) {
-    mes = March
+    Month = March
   }else if (date === 3) {
-    mes = April
+    Month = April
   }else if (date === 4) {
-    mes = May
+    Month = May
   }else if (date === 5) {
-    mes = June
+    Month = June
   }else if (date === 6) {
-    mes = July
+    Month = July
   }else if (date === 7) {
-    mes = August
+    Month = August
   }else if (date === 8) {
-    mes = September
+    Month = September
   }else if (date === 9) {
-    mes = October
+    Month = October
   }else if (date === 10) {
-    mes = November
+    Month = November
   }else if (date === 11) {
-    mes = December
+    Month = December
   }
 
   for (let index = 0; index < 12; index++) {
     if (date === index) {
-      mes.find()
+      Month.find()
+      .then(back => {
+        for (let indexTwo = 0; indexTwo < back.length; indexTwo++) {
+          chartdata.labels.push(back[indexTwo].servicio.servicio.nombre)
+          chartdata.datasets[0].data.push(back[indexTwo].servicio.servicio.cantidad)
+        }
+        res.json(chartdata)
+      })
+    }
+  }
+
+  
+})
+
+service.get('/ServicesQuantityPerMonth', (req, res) => {
+  const thisDate = new Date()
+  const date = thisDate.getMonth()
+
+  let Month  = 'Month'
+
+  if (date === 0) {
+    Month = January
+  }else if (date === 1) {
+    Month = February
+  }else if (date === 2) {
+    Month = March
+  }else if (date === 3) {
+    Month = April
+  }else if (date === 4) {
+    Month = May
+  }else if (date === 5) {
+    Month = June
+  }else if (date === 6) {
+    Month = July
+  }else if (date === 7) {
+    Month = August
+  }else if (date === 8) {
+    Month = September
+  }else if (date === 9) {
+    Month = October
+  }else if (date === 10) {
+    Month = November
+  }else if (date === 11) {
+    Month = December
+  }
+
+  for (let index = 0; index < 12; index++) {
+    if (date === index) {
+      Month.find()
       .then(back => {
         res.json(back)
       })
@@ -120,4 +181,4 @@ servicio.get('/ServicesQuantityPerMonth', (req, res) => {
 
 })
 
-module.exports = servicio
+module.exports = service

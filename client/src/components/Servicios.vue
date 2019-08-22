@@ -4,15 +4,15 @@
 			<div class="col-md-12 row sectionMetrics">
 				<div class="col-md-3 metrics first">
 					<p>Total Servicios</p>
-					<h1>12</h1>
+					<h1>{{TotalServicios}}</h1>
 				</div>
 				<div class="col-md-3 metrics second">
 					<p>Servicios mensuales</p>
-					<h1>2</h1>
+					<h1>{{TotalCantidadServicios}}</h1>
 				</div>
 				<div class="col-md-3 metrics three">
-					<p>Inventario</p>
-					<h1>50</h1>
+					<p>Prestadores</p>
+					<h1>{{TotalPrestadores}}</h1>
 				</div>
 			</div>
 			<div class="col-md-4">
@@ -86,6 +86,7 @@
 								</td>
 								<td class="font-weight-bold">
 									<font-awesome-icon icon="trash" v-on:click="eliminarServicio(servicio._id)"/>
+									<font-awesome-icon icon="edit" />
 								</td>
 							</tr>
 						</tbody>
@@ -107,7 +108,7 @@
 							</tr>
 						</thead>
 					</table>
-					<div class="Lista">
+					<div class="ListaTwo">
 						<table class="table table-light table-borderless table-striped">
 							<tbody>
 								<tr v-for="servicesQuantityPerMonth of servicesQuantityPerMonths">
@@ -123,8 +124,10 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-8">
-
+			<div class="col-md-8 chart">
+				<div class="small">
+					<line-chart v-if="loaded" :chartdata="chartdata" :options="options" :styles="myStyles"/>
+				</div>
 			</div>
 		</div>
 		<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -157,6 +160,7 @@
 
 <script type="text/javascript">
 	import axios from 'axios'
+	import LineChart from './LineChart.js'
 	import router from '../router'
 
 	class Manicurista{
@@ -190,6 +194,9 @@
 		}
 	}
 	export default {
+		components: {
+			LineChart
+		},
 		data() {
 			return {
 				manicurista: new Manicurista(),
@@ -206,7 +213,17 @@
 				tiempoServi:'',
 				precioServi:'',
 				servicesQuantityPerMonth: new ServicesQuantityPerMonths(),
-				servicesQuantityPerMonths: []
+				servicesQuantityPerMonths: [],
+				loaded: false,
+				chartdata: null,
+				height:360,
+				options: {
+					responsive: true,
+					maintainAspectRatio: false
+				},
+				TotalServicios:'0',
+				TotalCantidadServicios:'0',
+				TotalPrestadores: '0'
 			}
 		},
 		beforeCreate() {
@@ -224,12 +241,14 @@
 			 this.getServicios();
 			 this.getManicuristas();
 			 this.ServicesQuantityPerMonthFunc();
+			 this.ServicesQuantityChartFunc();
  		},
 		methods: {
 			getServicios() {
 				axios.get('servicios')
 				.then(res => {
 					this.servicios = res.data
+					this.TotalServicios = res.data.length
 				})
 				this.nombreServicio = ' '
 				this.precioServicio = ' '
@@ -341,20 +360,38 @@
 				axios.get('manicuristas')
 				.then(res => {
 					this.manicuristas = res.data
+					this.TotalPrestadores = res.data.length
 				})
-				$(window).on("load resize ", function() {
-				var scrollWidth = $('.tbl-content').width() - $('.tbl-content table').width();
-				$('.tbl-header').css({'padding-right':scrollWidth});
-				}).resize();
 			},
 			ServicesQuantityPerMonthFunc(){
 				axios.get('/servicios/ServicesQuantityPerMonth')
 				.then(res => {
 					for (let index = 0; index < res.data.length; index++) {
 						this.servicesQuantityPerMonths.push(res.data[index].servicio.servicio)
+						this.TotalCantidadServicios = parseFloat(this.TotalCantidadServicios) + parseFloat(this.servicesQuantityPerMonths[index].cantidad)
 					}
-					
 				})
+			},
+			ServicesQuantityChartFunc(){
+				this.loaded = false
+				axios.get('/servicios/ServicesChartQuantity')
+				.then(res => {	
+					console.log(res.data)
+					const userlist = res.data
+					this.chartdata = userlist
+					this.loaded = true
+				})
+				.catch(err => {
+					console.error(err)
+				})
+			}
+		},
+		computed: {
+			myStyles () {
+				return {
+					height: `${this.height}px`,
+					position: 'relative'
+				}
 			}
 		}
 	}
@@ -412,6 +449,18 @@
 		border-radius:5px;
 	}
 	.Lista::-webkit-scrollbar {
+		width: 8px;     /* Tamaño del scroll en vertical */
+		height: 8px;    /* Tamaño del scroll en horizontal */
+		display: none;  /* Ocultar scroll */
+	}
+	.ListaTwo{
+		overflow-x: hidden;
+		overflow-y:scroll;
+		max-height: 310px;
+		height:auto;
+		border-radius:5px;
+	}
+	.ListaTwo::-webkit-scrollbar {
 		width: 8px;     /* Tamaño del scroll en vertical */
 		height: 8px;    /* Tamaño del scroll en horizontal */
 		display: none;  /* Ocultar scroll */
@@ -532,5 +581,11 @@
 	}
 	.forms h2{
 		font-family: 'Raleway', sans-serif;
+	}
+	.small{
+		background-color: #fff;
+		margin-top: 20px;
+		box-shadow: 0 0.46875rem 2.1875rem rgba(4,9,20,0.03), 0 0.9375rem 1.40625rem rgba(4,9,20,0.03), 0 0.25rem 0.53125rem rgba(4,9,20,0.05), 0 0.125rem 0.1875rem rgba(4,9,20,0.03);
+		border-radius: 5px;
 	}
 </style>

@@ -1,23 +1,17 @@
-import { Line } from 'vue-chartjs'
+import { Bar } from 'vue-chartjs'
 
 export default {
-  extends: Line,
-  data: () => ({
+  extends: Bar,
+  props: {
     chartdata: {
-      labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-      datasets: [
-        {
-          label: 'Ventas',
-          backgroundColor: '#f87979',
-          data: [40, 20, 12, 39, 10, 40, 39, 80, 40, 20, 12, 11]
-        }
-      ]
+      type: Object,
+      default: null
     },
     options: {
-      responsive: true,
-      maintainAspectRatio: false
+      type: Object,
+      default: null
     }
-  }),
+  },
 
   mounted () {
     this.renderChart(this.chartdata, this.options)
