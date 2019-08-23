@@ -168,12 +168,11 @@ ventas.post('/ingresocliente', (req, res) => {
   const ClienteData = {
     nombre: req.body.nombre,
     identidad: req.body.identidad,
-    correo: req.body.correo,
     created: today
   }
 
   Cliente.findOne({
-    identidad: req.body.identidad
+    nombre: req.body.nombre
   })
   .then(cliente => {
     console.log(cliente)
@@ -208,7 +207,7 @@ ventas.get('/manicurista/:id', async (req, res) => {
 ventas.post('/verificacioncliente', (req, res) => {
 
   Cliente.findOne({
-    identidad: req.body.identidad
+    nombre: req.body.identidad
   })
   .then(cliente => {
     if (!cliente) {

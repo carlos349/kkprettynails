@@ -8,17 +8,20 @@
 						  <div class="input-group-prepend">
 						    <button class="btn btn-info spanInputs w-100" type="submit" id="button-addon1">Cliente</button>
 						  </div>
-						  <input type="text" v-model="identidadCliente" id="cliente" name="identidad" class="form-control inputs" placeholder="Cliente" aria-label="Example text with button addon" aria-describedby="button-addon1">
+						  <input type="text" v-model="nombreCliente" id="cliente" name="identidad" class="form-control inputs" placeholder="Cliente" aria-label="Example text with button addon" aria-describedby="button-addon1">
 					</div>
 				</form>
 				<div class="input-group input-group-lg mb-2 ">
 				  <div class="input-group-prepend w-25 text-center">
 				    <span class="spanInputs w-100 font-weight-bold text-white input-group-text text-center" id="inputGroup-sizing-lg">Manicurista</span>
 				  </div>
-					<select class="form-control selectMani" v-model="maniSelect" v-on:change="elegirManicurista()">
-						<option value="">Manicuristas</option>
-						<option v-for="manicurista of manicuristas" >{{manicurista.nombre}}</option>
-					</select>
+					<autocomplete	
+						:search="search"
+						placeholder="Buscar manicurista"
+						aria-label="Buscar manicurista"
+						@submit="handleSubmit"
+						class="auto">
+					</autocomplete>
 				</div>
 				<div class="">
 					<input type="text" id="myInput" v-on:keyup="myFunction()" class="form-control buscar inputs" placeholder="Filtrar servicios"/>
@@ -40,7 +43,7 @@
 					<table class="table table-dark tableBg" id="myTable">
 						<tbody>
 							<tr v-for="(servicio, index) of servicios" >
-								<td class="font-weight-bold">
+								<td v-if="servicio.active" class="font-weight-bold">
 									<button v-if="!inspector" type="button" class="w-75 btn procesar text-left" v-on:click="conteoServicio(servicio._id,servicio.nombre, servicio.precio)" disabled>
 									  {{servicio.nombre}} <span class="badge badge-light conteoServ mt-1 float-right" v-bind:id="servicio._id">0</span>
 									</button>
@@ -55,7 +58,7 @@
 									</button>
 
 								</td>
-								<td class=" font-weight-bold text-white text-left">
+								<td v-if="servicio.active" class=" font-weight-bold text-white text-left">
 									{{servicio.precio}}
 								</td>
 							</tr>
@@ -69,9 +72,10 @@
 				  <input readonly type="text" class="form-control manicuristaFocus inputs" v-model="precio" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
 				</div>
 				<div class="input-group input-group-lg mb-2 ">
-				  <div class="input-group-prepend w-25 text-center">
-				    <span class="spanInputs w-100 font-weight-bold  text-white input-group-text text-center" id="inputGroup-sizing-lg">Descuento</span>
-				  </div>
+				  <div class="input-group-prepend">
+					<span class="input-group-text bg-light font-weight-bold text-white spanInputs" id="inputGroup-sizing-lg">Descuento</span>
+					<span class="input-group-text bg-light font-weight-bold text-white spanInputs" id="inputGroup-sizing-lg ">%</span>
+					  </div>
 				  <input type="text" v-model="descuento" v-on:change="descuentoFunc" class="form-control manicuristaFocu inputs" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
 				</div>
 				<div class="input-group input-group-lg mb-2 ">
@@ -89,7 +93,7 @@
 
 					<div class="w-100 input-group input-group-lg mb-2">
 					  <div class="input-group-prepend">
-							<span class="input-group-text bg-light font-weight-bold text-white spanInputs" id="inputGroup-sizing-lg ">Total</span>
+							<span class="input-group-text bg-light font-weight-bold text-white spanInputs" id="inputGroup-sizing-lg">Total</span>
 					    <span class="input-group-text bg-light font-weight-bold text-white spanInputs" id="inputGroup-sizing-lg ">$</span>
 					  </div>
 					  <input readonly type="text" class="form-control inputs" id="inputTotal" v-model="total" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
@@ -110,7 +114,7 @@
 		  <div class="modal-dialog modal-dialog-centered" role="document">
 		    <div class="modal-content">
 		      <div class="modal-header ">
-		        <h5 class="modal-title text-white font-weight-bold" id="exampleModalCenterTitle">Registro cliente</h5>
+		        <h5 class="modal-title font-weight-bold" id="exampleModalCenterTitle">Registro cliente</h5>
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 		          <span aria-hidden="true" class="text-white">&times;</span>
 		        </button>
@@ -122,14 +126,10 @@
 								<input type="text" v-model="nombreCliente" class="form-control" name="nombreCliente" placeholder="Nombre del cliente"  requerid>
 							</div>
 							<div class="form-group">
-								<label for="identidad">Identidad del cliente</label>
-								<input type="text" v-model="identidadCliente" class="form-control verificacion" name="identidadCliente" placeholder="Identidad del cliente" requerid>
+								<label for="identidad">Instagram o E-Mail del cliente</label>
+								<input type="text" v-model="instagramCliente" class="form-control verificacion" name="identidadCliente" placeholder="Instagram o E-mail del cliente" requerid>
 							</div>
-							<div class="form-group">
-								<label for="telefono">Correo del cliente</label>
-								<input type="email" v-model="correoCliente" class="form-control" name="correoCliente" placeholder="Correo del cliente">
-							</div>
-							<button class="btn btn-lg btn-info btn-block" type="submit">Ingresar Cliente</button>
+							<button class="btn btn-lg procesar btn-block" type="submit">Ingresar Cliente</button>
 		        </form>
 		      </div>
 		    </div>
@@ -143,10 +143,16 @@
 <script type="text/javascript">
 import axios from 'axios'
 import router from '../router'
+import Autocomplete from '@trevoreyre/autocomplete-vue'
 	class Manicurista{
 		constructor(nombre, comision) {
 			this.nombre = nombre;
 			this.comision = comision;
+		}
+	}
+	class ArregloManicuristas{
+		constructor(nombre) {
+			this.nombre = nombre;
 		}
 	}
 	class Servicio{
@@ -165,28 +171,30 @@ import router from '../router'
 		 return {
 			 manicurista: new Manicurista(),
 			 manicuristas:[],
+			 arregloManicurista: new ArregloManicuristas(),
+			 arregloManicuristas:[],
 			 servicio: new Servicio(),
 			 servicios: [],
 			 classHeader: {
-					'Accept': 'application/json',
-					'Content-type': 'application/json'
-				},
-				nombreCliente: '',
-				identidadCliente: '',
-				precio: '0',
-				total:'0',
-				correoCliente: '',
-				documentoManicurista: '',
-				comision: '',
-				nombreManicurista: '',
-				serviciosSelecionado:  new ServiciosSelecionados(),
-				serviciosSelecionados: [],
-				contador: true,
-				inspector: false,
-				maniSelect:'',
-				descuento:'',
-				pagoTipo:'',
-				totalSinFormato:'0'
+				'Accept': 'application/json',
+				'Content-type': 'application/json'
+			},
+			nombreCliente: '',
+			instagramCliente: '',
+			precio: '0',
+			total:'0',
+			correoCliente: '',
+			documentoManicurista: '',
+			comision: '',
+			nombreManicurista: '',
+			serviciosSelecionado:  new ServiciosSelecionados(),
+			serviciosSelecionados: [],
+			contador: true,
+			inspector: false,
+			maniSelect:'',
+			descuento:'',
+			pagoTipo:'',
+			totalSinFormato:'0'
 		 }
 	 },
 	 beforeCreate() {
@@ -199,12 +207,33 @@ import router from '../router'
 			 })
        router.push({name: 'Login'})
      }
-  },
+  	},
  	created(){
 		this.getManicuristas();
+		this.arrayMani();
 	},
 	methods: {
-		  getManicuristas(){
+			arrayMani(){
+				setTimeout(() => {
+					for (let index = 0; index < this.manicuristas.length; index++) {
+						this.arregloManicuristas.push(this.manicuristas[index].nombre)
+					}
+				}, 1000);
+			},
+		  	search(input) {
+				
+				if (input.length < 1) { return [] }
+				return this.arregloManicuristas.filter(manicurista => {
+					return manicurista.toLowerCase()
+					.startsWith(input.toLowerCase())
+				})
+				
+			},
+			handleSubmit(result) {
+				this.maniSelect = result
+				this.elegirManicurista()
+			},
+		  	getManicuristas(){
 				axios.get('manicuristas')
 				.then(res => {
 					this.manicuristas = res.data
@@ -239,7 +268,7 @@ import router from '../router'
 			},
 			verificacionCliente(){
 				axios.post('ventas/verificacioncliente', {
-					identidad: this.identidadCliente
+					identidad: this.nombreCliente
 				})
 				.then(res => {
 					if(res.data.status == 'Cliente no existe'){
@@ -258,8 +287,7 @@ import router from '../router'
 			ingresoCliente() {
 				axios.post('ventas/ingresocliente', {
 					nombre: this.nombreCliente,
-					identidad: this.identidadCliente,
-					correo: this.correoCliente
+					identidad: this.instagramCliente
 				})
 				.then(res => {
 					if(res.data.status === 'Registrado'){
@@ -284,7 +312,6 @@ import router from '../router'
 			elegirManicurista(){
 				axios.get('manicuristas/justone/' + this.maniSelect)
 				.then(res => {
-					console.log(res.data.documento)
 					this.documentoManicurista = res.data.documento
 					this.comision = res.data.porcentaje
 					this.nombreManicurista = this.maniSelect
@@ -297,7 +324,6 @@ import router from '../router'
 						this.serviciosSelecionados.splice(i, 1)
 						break
 					}
-
 				}
 				if ($("#"+esto).text() != "0") {
 					const conteo = $("#"+esto).text()
@@ -368,20 +394,8 @@ import router from '../router'
 					console.log(res)
 					if (res.data.status == "Venta registrada") {
 						setTimeout(function(){
-							$(".conteoServ").text(0);
-							$("#inputTotal").val(0);
-							$(".manicuristaFocus").val("");
-							$("#cliente").val("");
-							$("#button-addon1").removeClass("bg-success");
-							this.nombreCliente = ' ';
-							this.identidadCliente = '0';
-							this.nombreManicurista = ' ';
-							this.serviciosSelecionados = ' ';
-							this.comision = ' ';
-							this.precio = '0';
-							this.documentoManicurista = ' ';
+							location.reload()
 						},400)
-						this.getManicuristas()
 						this.$swal({
 						  type: 'success',
 						  title: 'Venta procesada',
@@ -424,7 +438,7 @@ import router from '../router'
 		border-bottom: 2px solid #102229 !important;
 		border-radius: 0px !important;
 		background-color:transparent !important;
-		font-size: 1em !important;
+		font-size: 0.9em !important;
 		font-family: 'Raleway', sans-serif;
 		font-weight:600;
 		color:#000 !important
@@ -514,5 +528,18 @@ import router from '../router'
 		color: #cccccc;
 		font-family: 'Raleway', sans-serif;
 		font-weight:600;
+	}
+	.auto{
+		width: 75%;
+	}
+	.autocomplete{
+		width: 100% !important;
+	}
+	.autocomplete-input{
+		background-color: transparent !important;
+		border: none !important;
+		border-bottom:2px solid #102229 !important;
+		border-radius: 0px;
+		width: 100% !important;
 	}
 </style>

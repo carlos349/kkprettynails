@@ -21,7 +21,7 @@
 					<form v-on:submit.prevent="registroServicio">
 						<div class="form-group">
 							<label for="name">Nombre del servicio</label>
-							<input v-model="nombreServi" type="text" class="form-control inputs" placeholder="servicio">
+							<input v-model="nombreServi" type="text" class="form-control inputs" placeholder="Nombre servicio">
 						</div>
 						<div class="form-group">
 							<label for="name">Tiempo</label>
@@ -29,12 +29,12 @@
 						</div>
 						<div class="form-group">
 							<label for="name">Precio</label>
-							<input v-model="precioServi" type="text" class="form-control inputs" placeholder="servicio">
+							<input v-model="precioServi" type="text" class="form-control inputs" placeholder="Precio">
 						</div>
 						<label for="name">Prestador</label>
 						<div class="form-group row" >
 								<label v-for="(manicurista, index) of manicuristas" class="conCheck col-sm-2">{{manicurista.nombre}}
-								<input :id="index" v-on:click="presSelect(manicurista.documento,index)" type="checkbox">
+								<input :id="index" class="checkFirst" v-on:click="presSelect(manicurista.documento,index)" type="checkbox">
 								<span class="checkmark"></span>
 								</label>
 						</div>
@@ -60,8 +60,8 @@
 							 <th>
 								 Prestadores
 							 </th>
-							 <th>
-								 Borrar/Eliminar
+							 <th class="text-center">
+								 Funciones
 							 </th>
 							 
 						 </tr>
@@ -84,9 +84,10 @@
 								<td class="font-weight-bold">
 									{{servicio.prestadores.length}}
 								</td>
-								<td class="font-weight-bold">
-									<font-awesome-icon icon="trash" v-on:click="eliminarServicio(servicio._id)"/>
-									<font-awesome-icon icon="edit" />
+								<td class="font-weight-bold text-center">
+									<button style="width:40%;" v-on:click="desactivarServicio(servicio._id)" v-if="servicio.active" class=" btn btn-success">Activo</button>
+									<button style="width:40%;" v-on:click="desactivarServicio(servicio._id)" v-if="!servicio.active" class=" btn btn-danger">Inactivo</button>
+									<button style="width:40%;" v-on:click="pasarDatosEdit(servicio.nombre, servicio.tiempo, servicio.precio, servicio.prestadores, servicio._id)" class=" btn btn-warning">Editar</button>
 								</td>
 							</tr>
 						</tbody>
@@ -130,8 +131,8 @@
 				</div>
 			</div>
 		</div>
-		<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-		  <div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal fade" id="myModal2" tabindex="-1"  role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		  <div class="modal-dialog modal-dialog-centered"  >
 		    <div class="modal-content">
 		      <div class="modal-header bg-info">
 		        <h5 class="modal-title text-white font-weight-bold" id="exampleModalCenterTitle">Registro cliente</h5>
@@ -139,15 +140,27 @@
 		          <span aria-hidden="true" class="text-white">&times;</span>
 		        </button>
 		      </div>
-		      <div class="modal-body">
+		      <div  class="modal-body">
 		        <form v-on:submit.prevent="actualizacionServicios">
 					<div class="form-group">
 						<label for="nombre">Nombre del servicio</label>
 						<input type="text" v-model="nombreServicio" class="form-control" name="nombreServicio" placeholder="Nombre del servicio" >
 					</div>
 					<div class="form-group">
-						<label for="identidad">Precio del servicio</label>
-						<input type="text" v-model="precioServicio" class="form-control verificacion" name="precioServicio" placeholder="Precio del servicio">
+						<label for="nombre">Tiempo</label>
+						<input type="text" v-model="tiempoServicio" class="form-control" name="nombreServicio" placeholder="0 min" >
+					</div>
+					<div class="form-group">
+						<label for="nombre">Precio del servicio</label>
+						<input type="text" v-model="precioServicio" class="form-control" name="nombreServicio" placeholder="Precio del servicio" >
+					</div>
+					<div class="form-group row" >
+						<label v-for="(manicurista, index) of manicuristas" class="conCheck col-sm-2">{{manicurista.nombre}}
+
+						<input :class="manicurista.documento" class="desMarc" v-on:click="presSelectTwo(manicurista.documento,index)"  type="checkbox">
+						
+						<span class="checkmark"></span>
+						</label>
 					</div>
 					<button class="btn btn-lg btn-info btn-block" type="submit">Actualizar servicio</button>
 		        </form>
@@ -159,6 +172,8 @@
 </template>
 
 <script type="text/javascript">
+	
+			
 	import axios from 'axios'
 	import LineChart from './LineChart.js'
 	import router from '../router'
@@ -187,6 +202,12 @@
 		}
 	}
 
+	class PrestadoresSeleccionadosTwos{
+		constructor(prestador){
+			this.prestador = prestador;
+		}
+	}
+
 	class ServicesQuantityPerMonths{
 		constructor(nombre, cantidad){
 			this.nombre = nombre;
@@ -204,11 +225,15 @@
 				servicio: new Servicio(),
  			 	servicios: [],
 				nombreServicio: '',
+				tiempoServicio: '',
 				precioServicio: '',
+				prestadoresEdit: '',
 				idServicioEditar: '',
 				prestadorSelect:'',
 				prestadoresSeleccionado : new PrestadoresSeleccionados(),
+				prestadoresSeleccionadoTwo : new PrestadoresSeleccionadosTwos(),
 				prestadoresSeleccionados:[],
+				prestadoresSeleccionadosTwos:[],
 				nombreServi:'',
 				tiempoServi:'',
 				precioServi:'',
@@ -242,6 +267,13 @@
 			 this.getManicuristas();
 			 this.ServicesQuantityPerMonthFunc();
 			 this.ServicesQuantityChartFunc();
+
+			 $(document).ready(function() { 
+				 $(".show").on("click", function(){
+					 console.log("hola")
+				 })
+			});
+			 
  		},
 		methods: {
 			getServicios() {
@@ -253,18 +285,10 @@
 				this.nombreServicio = ' '
 				this.precioServicio = ' '
 			},
-			eliminarServicio(id){
-				axios.delete('servicios/' + id)
+			desactivarServicio(id){
+				axios.put('servicios/' + id)
 				.then(res => {
-					if (res.data.status == 'Servicio eliminado'){
-						this.$swal({
-						  type: 'success',
-						  title: 'Servicio eliminado',
-						  showConfirmButton: false,
-						  timer: 1500
-						})
-						this.getServicios();
-					}
+					this.getServicios();
 				})
 				.catch(err => {
 					this.$swal({
@@ -305,7 +329,12 @@
 				})
 			},
 			presSelect(prestador,index){
-				if ($("#"+index).prop("checked")!=true) {
+
+				if ($(".checkFirst").is(":checked") == false ) {
+					this.prestadoresSeleccionados = []
+				}
+
+				if ($("#"+index).prop("checked")!=true ) {
 					for (let i = 0; i < this.prestadoresSeleccionados.length; i++) {
 						if (this.prestadoresSeleccionados[i] == prestador ) {
 							this.prestadoresSeleccionados.splice(i, 1)
@@ -315,9 +344,25 @@
 				}
 				else{
 						let select = prestador
-						const prestadorSelect = {"prestador": select}
 						this.prestadoresSeleccionados.push(prestador)
 					}
+					console.log(this.prestadoresSeleccionados)
+			},
+			presSelectTwo(prestador,index){
+				if ($("."+prestador).prop("checked")!=true ) {
+					for (let i = 0; i < this.prestadoresSeleccionadosTwos.length; i++) {
+						if (this.prestadoresSeleccionadosTwos[i] == prestador ) {
+							this.prestadoresSeleccionadosTwos.splice(i, 1)
+							break
+						}
+					}
+				}
+				else{
+						let select = prestador
+						const prestadorSelect = {"prestador": select}
+						this.prestadoresSeleccionadosTwos.push(prestador)
+					}
+					console.log(this.prestadoresSeleccionadosTwos)
 			},
 			abrirModalRegistro(){
 				$('#myModal').modal('show')
@@ -325,8 +370,10 @@
 			actualizacionServicios(){
 				const id = this.idServicioEditar
 				axios.put('servicios/' + id, {
-					nombre: this.nombreServicio,
-					precio: this.precioServicio
+					nombreServicio: this.nombreServicio,
+					tiempoServicio: this.tiempoServicio,
+					precioServicio: this.precioServicio,
+					prestadores: this.prestadoresSeleccionadosTwos
 				})
 				.then(res => {
 					if(res.data.status == 'Servicio actualizado'){
@@ -350,10 +397,23 @@
 					}
 				})
 			},
-			pasarDatosEdit(nombre, precio, id){
+			pasarDatosEdit(nombre,tiempo, precio, prestadores, id){
+				this.prestadoresSeleccionadosTwos = []
+				$(".desMarc").prop("checked", false)
 				this.nombreServicio = nombre
+				this.tiempoServicio = tiempo
 				this.precioServicio = precio
+				this.prestadoresEdit = prestadores
 				this.idServicioEditar = id
+				for (let i = 0; i < this.prestadoresEdit.length; i++) {
+					if ($("."+this.prestadoresEdit[i])) {
+
+						$("."+this.prestadoresEdit[i]).prop("checked", "true")
+						this.prestadoresSeleccionadosTwos.push(this.prestadoresEdit[i])
+					}
+					
+				}
+				console.log(this.prestadoresSeleccionadosTwos)
 				$('#myModal2').modal('show')
 			},
 			getManicuristas(){
@@ -362,6 +422,7 @@
 					this.manicuristas = res.data
 					this.TotalPrestadores = res.data.length
 				})
+				
 			},
 			ServicesQuantityPerMonthFunc(){
 				axios.get('/servicios/ServicesQuantityPerMonth')
@@ -384,7 +445,9 @@
 				.catch(err => {
 					console.error(err)
 				})
-			}
+			},
+			
+			
 		},
 		computed: {
 			myStyles () {

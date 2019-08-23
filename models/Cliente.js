@@ -8,9 +8,6 @@ const clienteSchema = new Schema ({
   identidad: {
     type: String
   },
-  correo: {
-    type: String
-  },
   participacion: {
     type: Number
   },

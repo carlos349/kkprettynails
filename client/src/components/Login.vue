@@ -33,7 +33,14 @@
 				password: ''
 			}
 		},
-
+		create(){
+			localStorage.setItem('logged-in', 'no-logged')
+		},
+		beforeCreate() {
+		if (localStorage.getItem('userToken')) {
+				router.push({name: 'Citas'})
+			}
+		},
 		methods: {
 			login() {
 				axios.post('users/login', {
@@ -72,9 +79,11 @@
 			},
 			emitMethod() {
 				EventBus.$emit('logged-in', 'loggedin')
+				localStorage.setItem('logged-in', 'no-admin')
 			},
 			emitMethodTwo() {
 				EventBus.$emit('logged-in', 'loggedin-admin')
+				localStorage.setItem('logged-in', 'admin')
 			}
 		}
 	}

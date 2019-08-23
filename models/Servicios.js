@@ -13,6 +13,9 @@ const servicioSchema = new Schema({
   },
   prestadores:{
     type:Array
+  },
+  active:{
+    type:Boolean
   }
 })
 

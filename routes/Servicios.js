@@ -31,7 +31,8 @@ service.post('/', (req,res) => {
     nombre:req.body.nombreServicio,
     tiempo:req.body.tiempoServicio,
     precio:req.body.precioServicio,
-    prestadores:req.body.prestadores
+    prestadores:req.body.prestadores,
+    active:true
   }
   Servicio.findOne({
     nombre: req.body.nombreServicio
@@ -55,18 +56,50 @@ service.post('/', (req,res) => {
   })
 })
 
-service.delete('/:id', async (req, res) => {
-    await Servicio.findByIdAndRemove(req.params.id);
-    res.json({
-      status: 'Servicio eliminado'
-    })
+service.put('/:id', (req, res) => {
+  Servicio.findOne({_id:req.params.id})
+  .then(servicios => {
+    if (servicios.active) {
+      Servicio.findByIdAndUpdate(req.params.id, {
+        $set: {active:false}
+      })
+      .then(back => {
+        res.json({
+          status:false
+        })
+      })
+      .catch(err => {
+        res.send("error:" + err)
+      })
+    }
+    else{
+      Servicio.findByIdAndUpdate(req.params.id, {
+        $set: {active:true}
+      })
+      .then(back => {
+        res.json({
+          status:true
+        })
+      })
+      .catch(err => {
+        res.send("error:" + err)
+      })
+    }
+    console.log(servicios)
+  })
+    // await Servicio.findByIdAndRemove(req.params.id);
+    // res.json({
+    //   status: 'Servicio eliminado'
+    // })
 })
 
 service.put('/:id', (req, res) => {
     Servicio.findByIdAndUpdate(req.params.id, {
       $set: {
-        nombre: req.body.nombre,
-        precio: req.body.precio
+        nombre:req.body.nombreServicio,
+        tiempo:req.body.tiempoServicio,
+        precio:req.body.precioServicio,
+        prestadores:req.body.prestadores
       }
     })
     .then(servicio => {

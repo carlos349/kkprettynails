@@ -74,6 +74,7 @@ export default {
 	methods: {
 		logout() {
 			localStorage.removeItem('userToken')
+			localStorage.setItem('logged-in', 'no-loggedin')
 		},
 	},
 
@@ -81,6 +82,15 @@ export default {
 		EventBus.$on('logged-in', status => {
 			this.auth = status
 		})
+		const User = localStorage.getItem('logged-in')
+		console.log(User)
+		if (User === 'no-admin') {
+			this.auth = 'loggedin'
+		}else if(User === 'admin'){
+			this.auth = 'loggedin-admin'
+		}else{
+			this.auth = 'no-loggedin'
+		}
 	}
 }
 </script>
