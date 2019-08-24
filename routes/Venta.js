@@ -227,7 +227,6 @@ ventas.post('/procesar', (req, res) => {
   const comision = '0.' + req.body.comision
   const comisionFinal = parseFloat(total) * parseFloat(comision)
   const comisionDosdecimales = comisionFinal.toFixed(2)
-  console.log(comisionDosdecimales)
   const ganancia = parseFloat(total) * 0.10
   const gananciaLocal = parseFloat(total) * 0.50
   const venta = {

@@ -5,10 +5,6 @@ const VentaSchema = new Schema({
 	cliente: {
 		type: String
 	},
-	clientedocumento: {
-		type: String,
-		required: true
-	},
 	manicurista: {
 		type: String
 	},
