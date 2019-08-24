@@ -381,7 +381,6 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 			procesar() {
 				axios.post('ventas/procesar', {
 					cliente: this.nombreCliente,
-					clientedocumento: this.identidadCliente,
 					manicurista: this.maniSelect,
 					servicios: this.serviciosSelecionados,
 					comision: this.comision,

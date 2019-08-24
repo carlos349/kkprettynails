@@ -232,7 +232,6 @@ ventas.post('/procesar', (req, res) => {
   const gananciaLocal = parseFloat(total) * 0.50
   const venta = {
     cliente: req.body.cliente,
-    clientedocumento: req.body.clientedocumento,
     manicurista: req.body.manicurista,
     servicios: req.body.servicios,
     comision: comisionFinal,
