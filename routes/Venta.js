@@ -249,7 +249,7 @@ ventas.post('/procesar', (req, res) => {
       $inc: {comision:venta.comision}
     })
     .then(comision => {
-      Cliente.updateOne({identidad: venta.clientedocumento},{
+      Cliente.updateOne({nombre: venta.cliente},{
         $inc: {participacion: 1}
       })
       .then(participacion => {
