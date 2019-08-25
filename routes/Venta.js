@@ -264,6 +264,72 @@ ventas.post('/procesar', (req, res) => {
   })
 })
 
+ventas.get('/GetSalesPerMonth', (req, res) => {
+  const thisDate = new Date()
+  const date = thisDate.getMonth()
+
+  let month  = 'month'
+
+  if (date === 0) {
+    month = 'Enero'
+  }else if (date === 1) {
+    month = 'Febrero'
+  }else if (date === 2) {
+    month = 'Marzo'
+  }else if (date === 3) {
+    month = 'Abril'
+  }else if (date === 4) {
+    month = 'Mayo'
+  }else if (date === 5) {
+    month = 'Junio'
+  }else if (date === 6) {
+    month = 'Julio'
+  }else if (date === 7) {
+    month = 'Agosto'
+  }else if (date === 8) {
+    month = 'Septiembre'
+  }else if (date === 9) {
+    month = 'Octubre'
+  }else if (date === 10) {
+    month = 'Noviembre'
+  }else if (date === 11) {
+    month = 'Deciembre'
+  }
+  
+  let chartdata = {
+    labels: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31],
+    datasets: [ 
+      {
+        label: month,
+        backgroundColor: '#7c2929',
+        data: []
+      }
+    ]
+  }
+
+  Venta.find()
+  .then(ventas => {
+    for (let indexOne = 0; indexOne < chartdata.labels.length; indexOne++) {
+      let datasets = chartdata.labels[indexOne]
+      let sumaDia = 0
+      for (let index = 0; index < ventas.length; index++) {
+        if (datasets === ventas[index].fecha.getDate() && date === ventas[index].fecha.getMonth()) {
+          sumaDia = parseFloat(ventas[index].total) + parseFloat(sumaDia)
+        }
+      }
+      if (sumaDia == 0) {
+        chartdata.datasets[0].data.push('0')
+      }else{
+        chartdata.datasets[0].data.push(sumaDia)
+      }
+    }
+    res.json(chartdata)
+  })
+  
+
+
+})
+
 
 module.exports = ventas
 

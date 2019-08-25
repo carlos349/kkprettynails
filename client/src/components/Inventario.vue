@@ -1,3 +1,3 @@
 <template>
-	<h1>inventario</h1>
+	<h1>invent</h1>
 </template>

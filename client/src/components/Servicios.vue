@@ -173,7 +173,6 @@
 
 <script type="text/javascript">
 	
-			
 	import axios from 'axios'
 	import LineChart from './LineChart.js'
 	import router from '../router'
@@ -267,12 +266,6 @@
 			 this.getManicuristas();
 			 this.ServicesQuantityPerMonthFunc();
 			 this.ServicesQuantityChartFunc();
-
-			 $(document).ready(function() { 
-				 $(".show").on("click", function(){
-					 console.log("hola")
-				 })
-			});
 			 
  		},
 		methods: {
@@ -626,9 +619,10 @@
 		transform: rotate(45deg);
 	}
 	.first{
-		background: #00c6ff;  /* fallback for old browsers */
-		background: -webkit-linear-gradient(to left, #0072ff, #00c6ff);  /* Chrome 10-25, Safari 5.1-6 */
-		background: linear-gradient(to left, #0072ff, #00c6ff); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+		background: #a73737;  /* fallback for old browsers */
+		background: -webkit-linear-gradient(to right, #7a2828, #a73737);  /* Chrome 10-25, Safari 5.1-6 */
+		background: linear-gradient(to right, #7a2828, #a73737); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
 
 	}
 	.second{
