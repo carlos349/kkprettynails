@@ -101,6 +101,7 @@
 						<div class="input-group-prepend">
 							<button class="btn plusBtns" v-on:click="borrarServicios()" id="button-addon2"><font-awesome-icon icon="trash"/></button>
 						</div>
+						<input type="date" v-model="fechaVenta">
 					</div>
 					<button v-if="!inspector" type="button" class="font-weight-bold mb-3 btn procesar w-100" v-on:click="procesar" disabled>Procesar
 					</button>
@@ -182,6 +183,7 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 			nombreCliente: '',
 			instagramCliente: '',
 			precio: '0',
+			fechaVenta:'',
 			total:'0',
 			correoCliente: '',
 			documentoManicurista: '',
@@ -351,6 +353,7 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 					const porcentaje = 1 - parseFloat(descuento)
 					const precioConDescuento = parseFloat(this.totalSinFormato) * parseFloat(porcentaje)
 					this.total = this.formatPrice(precioConDescuento)
+					this.totalSinFormato = precioConDescuento
 				}
 			},
 			conteoServicio(esto, servicio, precio){
@@ -365,6 +368,7 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 				}else{
 					const precioConDescuento = parseFloat(this.totalSinFormato) * parseFloat(porcentaje)
 					this.total = this.formatPrice(precioConDescuento)
+					this.totalSinFormato = precioConDescuento
 				}
 
 				const conteo = $("#"+esto).text()
@@ -386,6 +390,7 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 					comision: this.comision,
 					mediopago:this.pagoTipo,
 					descuento:this.descuento,
+					fecha:this.fechaVenta,
 					total: this.totalSinFormato,
 					documentoManicurista: this.documentoManicurista
 				})

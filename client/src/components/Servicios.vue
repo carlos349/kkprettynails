@@ -279,7 +279,7 @@
 				this.precioServicio = ' '
 			},
 			desactivarServicio(id){
-				axios.put('servicios/' + id)
+				axios.put('servicios/changeActive/' + id)
 				.then(res => {
 					this.getServicios();
 				})
@@ -293,40 +293,59 @@
 				})
 			},
 			registroServicio(){
-				axios.post('servicios', {
-					nombreServicio: this.nombreServi,
-					precioServicio: this.precioServi,
-					tiempoServicio: this.tiempoServi,
-					prestadores: this.prestadoresSeleccionados
-
-				})
-				.then(res => {
-					if(res.data.status == 'Servicio creado'){
+				if (this.nombreServi == '' && this.precioServi == '' && this.tiempoServi == '') {
+					this.$swal({
+						type: 'error',
+						title: 'Llene todos los campos',
+						showConfirmButton: false,
+						timer: 1500
+					})
+				}else{
+					if (this.prestadoresSeleccionados.length == 0) {
 						this.$swal({
-						  type: 'success',
-						  title: 'Servicio creado',
-						  showConfirmButton: false,
-						  timer: 1500
+							type: 'error',
+							title: 'Seleccione almenos un prestador',
+							showConfirmButton: false,
+							timer: 1500
 						})
-						$('#myModal').modal('hide')
-						this.getServicios();
 					}else{
-						this.$swal({
-						  type: 'error',
-						  title: 'El servicio ya existe',
-						  showConfirmButton: false,
-						  timer: 1500
+						axios.post('servicios', {
+							nombreServicio: this.nombreServi,
+							precioServicio: this.precioServi,
+							tiempoServicio: this.tiempoServi,
+							prestadores: this.prestadoresSeleccionados
+
 						})
-						$('#myModal').modal('hide')
+						.then(res => {
+							if(res.data.status == 'Servicio creado'){
+								this.$swal({
+								type: 'success',
+								title: 'Servicio creado',
+								showConfirmButton: false,
+								timer: 1500
+								})
+								this.getServicios();
+								this.nombreServi = ''
+								this.precioServi = ''
+								this.tiempoServi = ''
+								this.prestadoresSeleccionados = []
+								$('.checkFirst').prop('checked', false)
+							}else{
+								this.$swal({
+								type: 'error',
+								title: 'El servicio ya existe',
+								showConfirmButton: false,
+								timer: 1500
+								})
+							}
+						})
 					}
-				})
+				}
 			},
 			presSelect(prestador,index){
-
 				if ($(".checkFirst").is(":checked") == false ) {
 					this.prestadoresSeleccionados = []
 				}
-
 				if ($("#"+index).prop("checked")!=true ) {
 					for (let i = 0; i < this.prestadoresSeleccionados.length; i++) {
 						if (this.prestadoresSeleccionados[i] == prestador ) {
@@ -336,10 +355,9 @@
 					}
 				}
 				else{
-						let select = prestador
-						this.prestadoresSeleccionados.push(prestador)
-					}
-					console.log(this.prestadoresSeleccionados)
+					let select = prestador
+					this.prestadoresSeleccionados.push(prestador)
+				}
 			},
 			presSelectTwo(prestador,index){
 				if ($("."+prestador).prop("checked")!=true ) {
@@ -366,9 +384,10 @@
 					nombreServicio: this.nombreServicio,
 					tiempoServicio: this.tiempoServicio,
 					precioServicio: this.precioServicio,
-					prestadores: this.prestadoresSeleccionadosTwos
+					prestadores: this.prestadoresSeleccionadosTwos,
 				})
 				.then(res => {
+					console.log(res)
 					if(res.data.status == 'Servicio actualizado'){
 						this.$swal({
 						  type: 'success',

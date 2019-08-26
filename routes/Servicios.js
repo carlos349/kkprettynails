@@ -56,7 +56,7 @@ service.post('/', (req,res) => {
   })
 })
 
-service.put('/:id', (req, res) => {
+service.put('/changeActive/:id', (req, res) => {
   Servicio.findOne({_id:req.params.id})
   .then(servicios => {
     if (servicios.active) {
@@ -87,10 +87,6 @@ service.put('/:id', (req, res) => {
     }
     console.log(servicios)
   })
-    // await Servicio.findByIdAndRemove(req.params.id);
-    // res.json({
-    //   status: 'Servicio eliminado'
-    // })
 })
 
 service.put('/:id', (req, res) => {
@@ -99,7 +95,7 @@ service.put('/:id', (req, res) => {
         nombre:req.body.nombreServicio,
         tiempo:req.body.tiempoServicio,
         precio:req.body.precioServicio,
-        prestadores:req.body.prestadores
+        prestadores:req.body.prestadores,
       }
     })
     .then(servicio => {
@@ -111,8 +107,6 @@ service.put('/:id', (req, res) => {
 })
 
 service.get('/ServicesChartQuantity', (req, res) => {
-
-
   let chartdata = {
     labels: [],
     datasets: [ 

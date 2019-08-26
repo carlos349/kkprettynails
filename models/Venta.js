@@ -26,6 +26,12 @@ const VentaSchema = new Schema({
 	ganancialocal: {
 		type: Number
 	},
+	reinversion: {
+		type: Number
+	},
+	credito: {
+		type: Number
+	},
 	total: {
 		type: Number
 	},
