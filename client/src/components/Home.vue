@@ -88,25 +88,22 @@
 						<option value="efectivo">Efectivo</option>
 					</select>
 				</div>
-
-
-
-					<div class="w-100 input-group input-group-lg mb-2">
-					  <div class="input-group-prepend">
-							<span class="input-group-text bg-light font-weight-bold text-white spanInputs" id="inputGroup-sizing-lg">Total</span>
-					    <span class="input-group-text bg-light font-weight-bold text-white spanInputs" id="inputGroup-sizing-lg ">$</span>
-					  </div>
-					  <input readonly type="text" class="form-control inputs" id="inputTotal" v-model="total" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
-						<input readonly type="hidden" class="form-control inputs" id="inputTotal" v-model="totalSinFormato" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
-						<div class="input-group-prepend">
-							<button class="btn plusBtns" v-on:click="borrarServicios()" id="button-addon2"><font-awesome-icon icon="trash"/></button>
-						</div>
-						<input type="date" v-model="fechaVenta">
+				<div class="w-100 input-group input-group-lg mb-2">
+					<div class="input-group-prepend">
+						<span class="input-group-text bg-light font-weight-bold text-white spanInputs" id="inputGroup-sizing-lg">Total</span>
+					<span class="input-group-text bg-light font-weight-bold text-white spanInputs" id="inputGroup-sizing-lg ">$</span>
 					</div>
-					<button v-if="!inspector" type="button" class="font-weight-bold mb-3 btn procesar w-100" v-on:click="procesar" disabled>Procesar
-					</button>
-					<button v-else type="button" class="font-weight-bold mb-3 btn procesar w-100" v-on:click="procesar">Procesar
-					</button>
+					<input readonly type="text" class="form-control inputs" id="inputTotal" v-model="total" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+					<input readonly type="hidden" class="form-control inputs" id="inputTotal" v-model="totalSinFormato" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+					<div class="input-group-prepend">
+						<button class="btn plusBtns" v-on:click="borrarServicios()" id="button-addon2"><font-awesome-icon icon="trash"/></button>
+					</div>
+					<input type="date" v-model="fechaVenta">
+				</div>
+				<button v-if="!inspector" type="button" class="font-weight-bold mb-3 btn procesar w-100" v-on:click="procesar" disabled>Procesar
+				</button>
+				<button v-else type="button" class="font-weight-bold mb-3 btn procesar w-100" v-on:click="procesar">Procesar
+				</button>
 			</div>
 
 			</div>

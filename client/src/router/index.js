@@ -4,7 +4,7 @@ import Home from '@/components/Home'
 import Login from '@/components/Login'
 import Register from '@/components/Register'
 import Profile from '@/components/Profile'
-import Venta from '@/components/Venta'
+import Gastos from '@/components/Gastos'
 import Servicios from '@/components/Servicios'
 import Empleadas from '@/components/Empleadas'
 import Inventario from '@/components/Inventario'
@@ -58,9 +58,9 @@ export default new Router({
       component: Profile
     },
     {
-      path: '/venta',
-      name: 'Venta',
-      component: Venta
+      path: '/gastos',
+      name: 'Gastos',
+      component: Gastos
     },
     {
       path: '/servicios',

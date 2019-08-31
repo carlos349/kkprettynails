@@ -6,16 +6,28 @@
 					<h2>{{ventas.length}}</h2>
 				</div>
 				<div class="col-md-3 col-sm-5 metrics second">
-					<p>Total local</p>
-					<h2>{{totalLocal}} $</h2>
+          <div class="row metricTotal">
+            <div class="col-sm-6 ant"><h6>Mes anterior</h6></div>
+            <div class="col-sm-6 ant"><h5>{{localAnterior}} $</h5></div>
+            <div class="col-sm-4"><p>Total local</p></div>
+            <div class="col-sm-8"><h1>{{totalLocal}} $</h1></div> 
+          </div>
 				</div>
 				<div class="col-md-3 col-sm-5 metrics three">
-					<p>Total ganancia</p>
-					<h2>{{gananciaNeta}} $</h2>
+          <div class="row metricTotal">
+            <div class="col-sm-6 ant"><h6>Mes anterior</h6></div>
+            <div class="col-sm-6 ant"><h5>{{netaAnterior}} $</h5></div>
+            <div class="col-sm-4"><p>Ganancia</p></div>
+            <div class="col-sm-8"><h1>{{gananciaNeta}} $</h1></div> 
+          </div>
 				</div>
         <div class="col-md-3 col-sm-5 metrics four">
-					<p>Total</p>
-					<h2>{{gananciaTotal}} $</h2>
+          <div class="row metricTotal">
+            <div class="col-sm-6 ant"><h6>Mes anterior</h6></div>
+            <div class="col-sm-6 ant"><h5>{{totalAnterior}} $</h5></div>
+            <div class="col-sm-4"><p>Total</p></div>
+            <div class="col-sm-8"><h1>{{gananciaTotal}} $</h1></div> 
+          </div>
 				</div>
 			</div>
       <div class="row BotonesDespliegue">
@@ -36,6 +48,9 @@
           <thead class="thead-light">
             <tr class="respons">
               <th class="text-center">
+                Fecha
+              </th>
+              <th class="text-center">
                 Servicios
               </th>
               <th class="text-center">
@@ -45,13 +60,10 @@
                 Manicurista
               </th>
               <th class="text-center">
-                Descuento
-              </th>
-              <th class="text-center">
                 Tipo de pago
               </th>
               <th class="text-center">
-                fechas
+                Descuento
               </th>
               <th class="text-center">
                 Comision
@@ -71,12 +83,14 @@
       <div class="Listas">
         <table class="table table-striped">
           <tbody >
-            <tr v-for="venta of ventas" class="respons fix">
+            <tr v-for="(venta, index) of ventas" class="respons fix">
+              <td class=" font-weight-bold text-center">
+                 {{fechas[index]}}
+              </td>
               <td class="font-weight-bold text-left">
                 <div v-for="(servicio,index) of venta.servicios">
-                  
                   {{index+1}}.- {{servicio.servicio}}
-                  </div>
+                </div>
               </td>
               <td class=" font-weight-bold text-center">
                 {{venta.cliente}}
@@ -85,25 +99,22 @@
                 {{venta.manicurista}}
               </td>
               <td class=" font-weight-bold text-center">
-                {{venta.descuento}}%
-              </td>
-              <td class=" font-weight-bold text-center">
                 {{venta.pago}}
               </td>
               <td class=" font-weight-bold text-center">
-                {{venta.fecha}}
+                {{venta.descuento}}%
               </td>
               <td class=" font-weight-bold text-center">
-                {{venta.comision}}
+                {{formatPrice(venta.comision)}}
               </td>
               <td class=" font-weight-bold text-center">
-                {{venta.ganancialocal}}
+                {{formatPrice(venta.ganancialocal)}}
               </td>
               <td class=" font-weight-bold text-center">
-                {{venta.ganancianeta}}
+                {{formatPrice(venta.ganancianeta)}}
               </td>
               <td class=" font-weight-bold text-center">
-                {{venta.total}}
+                {{formatPrice(venta.total)}}
               </td>
             </tr>
           </tbody>
@@ -130,6 +141,12 @@ class Ventas{
 	}
 }
 
+class Fechas{
+	constructor(fecha) {
+		this.fecha = fecha;
+	}
+}
+
 export default {
   components: {
 		LineChart
@@ -138,9 +155,14 @@ export default {
     return {
       venta: new Ventas(),
       ventas: [],
+      fecha: new Fechas(),
+      fechas: [],
       totalLocal: 0,
+      localAnterior : 0,
       gananciaNeta: 0,
+      netaAnterior : 0,
       gananciaTotal: 0,
+      totalAnterior : 0,
       options: {
         responsive: true,
         maintainAspectRatio: false
@@ -170,7 +192,14 @@ export default {
     getVentas(){
       axios.get('ventas')
       .then(res => {
+        console.log(res.data)
         this.ventas = res.data
+        let fechaBien = ''
+        for (let index = 0; index < res.data.length; index++) {
+          let fech = new Date(res.data[index].fecha)
+          fechaBien = fech.getDate() +"-"+ (fech.getMonth() + 1) +"-"+fech.getFullYear() +" "+ fech.getHours()+":"+ fech.getMinutes()
+          this.fechas.push(fechaBien)
+        }
       })
     },
     sacarReporte() {
@@ -180,18 +209,42 @@ export default {
     },
     totales(){
       setTimeout(() => {
+        var fechaTotales = new Date()
+        var mesTotales = fechaTotales.getMonth()
         for (let i = 0; i < this.ventas.length; i++) {
-          this.totalLocal = parseFloat(this.ventas[i].ganancialocal) + parseFloat(this.totalLocal)
+          var fechL = new Date(this.ventas[i].fecha)
+          if (mesTotales == fechL.getMonth() ) {
+            this.totalLocal = parseFloat(this.ventas[i].ganancialocal) + parseFloat(this.totalLocal)
+          }      
+          else if (mesTotales - 1 == fechL.getMonth() ){
+            this.localAnterior = parseFloat(this.ventas[i].ganancialocal) + parseFloat(this.localAnterior)
+          }
         }
         for (let i = 0; i < this.ventas.length; i++) {
-          this.gananciaNeta = parseFloat(this.ventas[i].ganancianeta) + parseFloat(this.gananciaNeta)
+          var fechN = new Date(this.ventas[i].fecha)
+          if (mesTotales == fechN.getMonth() ) {
+            this.gananciaNeta = parseFloat(this.ventas[i].ganancianeta) + parseFloat(this.gananciaNeta)
+          }      
+          else if (mesTotales - 1 == fechN.getMonth() ){
+            this.netaAnterior = parseFloat(this.ventas[i].ganancianeta) + parseFloat(this.netaAnterior)
+          }
         }
         for (let i = 0; i < this.ventas.length; i++) {
-          this.gananciaTotal = parseFloat(this.ventas[i].total) + parseFloat(this.gananciaTotal)
+          var fech = new Date(this.ventas[i].fecha)
+          if (mesTotales == fech.getMonth() ) {
+            this.gananciaTotal = parseFloat(this.ventas[i].total) + parseFloat(this.gananciaTotal)
+          }      
+          else if (mesTotales - 1 == fech.getMonth() ){
+            this.totalAnterior = parseFloat(this.ventas[i].total) + parseFloat(this.totalAnterior)
+          }
+          console.log(this.totalAnterior)
         }
         this.totalLocal = this.formatPrice(this.totalLocal)
         this.gananciaNeta = this.formatPrice(this.gananciaNeta)
         this.gananciaTotal = this.formatPrice(this.gananciaTotal)
+        this.localAnterior = this.formatPrice(this.localAnterior)
+        this.netaAnterior = this.formatPrice(this.netaAnterior)
+        this.totalAnterior = this.formatPrice(this.totalAnterior)
       }, 500);
      
     },
@@ -309,22 +362,19 @@ export default {
   .metrics{
 		height: auto;
 		background-color: #fff;
-		margin:20px;
+		margin:10px;
+    padding: auto;
+    margin-top: 20px;
 		color:#fff;
-		padding: 10px;
-		padding-right: 15px;
 		box-shadow: 0 0.46875rem 2.1875rem rgba(4,9,20,0.03), 0 0.9375rem 1.40625rem rgba(4,9,20,0.03), 0 0.25rem 0.53125rem rgba(4,9,20,0.05), 0 0.125rem 0.1875rem rgba(4,9,20,0.03);
 		border-radius:5px;
 	}
 	.metrics p{
-		font-size: 1em;
+		font-size: 1.3em;
 		margin-top: 10px;
 		
 	}
-	.metrics h2{
-		float: right;
-		margin-top: -47px;
-	}
+	
 	.sectionMetricss{
 		margin-left: 0.5%;
 	}
@@ -342,5 +392,11 @@ export default {
 		box-shadow: 0 0.46875rem 2.1875rem rgba(4,9,20,0.03), 0 0.9375rem 1.40625rem rgba(4,9,20,0.03), 0 0.25rem 0.53125rem rgba(4,9,20,0.05), 0 0.125rem 0.1875rem rgba(4,9,20,0.03);
 		border-radius: 5px;
 	}
+  .metricTotal{
+    margin-top: 3%;
+  }
+  .ant{
+    opacity: .8;
+  }
 
 </style>

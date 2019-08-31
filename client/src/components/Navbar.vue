@@ -10,25 +10,18 @@ box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.75);">
 
 		<div class="collapse navbar-collapse justify-content-md-center" id="navbarToggleExternalContent">
 			<ul class="navbar-nav">
+				<li style="color:#fff">{{fecha}}</li>
 				<li v-if="auth=='loggedin-admin'" class="nav-item">
 					<a class="font-weight-bold text-uppercase nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-	          Usuarios
-	        </a>
-	        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink2">
-						<router-link class="dropdown-item font-weight-bold text-uppercase" to="/register">Registrar usuario</router-link>
-						<router-link class="dropdown-item font-weight-bold text-uppercase" to="/Usuarios">Ver usuarios</router-link>
-	        </div>
+					Usuarios
+					</a>
+					<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink2">
+								<router-link class="dropdown-item font-weight-bold text-uppercase" to="/register">Registrar usuario</router-link>
+								<router-link class="dropdown-item font-weight-bold text-uppercase" to="/Usuarios">Ver usuarios</router-link>
+					</div>
 				</li>
-				<li v-if="auth=='loggedin-admin'" class="nav-item dropdown">
-	        <a class="font-weight-bold text-uppercase nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-	          Venta
-	        </a>
-	        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-						<router-link  class="dropdown-item font-weight-bold text-uppercase" to="/verventas">Resumen de ventas</router-link>
-	        </div>
-      	</li>
-				<li v-if="auth=='loggedin'" class="nav-item">
-					<router-link class="nav-link text-white font-weight-bold text-uppercase" to="/venta">Ventas</router-link>
+				<li v-if="auth=='loggedin-admin'" class="nav-item">
+					<router-link class="nav-link text-white font-weight-bold text-uppercase" to="/verventas">Ventas</router-link>
 				</li>
 				<li v-if="auth=='loggedin-admin'" class="nav-item">
 					<router-link class="nav-link text-white font-weight-bold text-uppercase" to="/servicios">Servicios</router-link>
@@ -38,6 +31,9 @@ box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.75);">
 				</li>
 				<li v-if="auth=='loggedin-admin'" class="nav-item">
 					<router-link class="nav-link text-white font-weight-bold text-uppercase" to="/inventario">Inventario</router-link>
+				</li>
+				<li v-if="auth=='loggedin-admin'" class="nav-item">
+					<router-link class="nav-link text-white font-weight-bold text-uppercase" to="/gastos">Gastos</router-link>
 				</li>
 				<li v-if="auth=='loggedin-admin'" class="nav-item">
 					<router-link class="nav-link text-white font-weight-bold text-uppercase" to="/metricas">Métricas</router-link>
@@ -67,7 +63,8 @@ export default {
 	data() {
 		return {
 			auth: 'no-loggedin',
-			user: ''
+			user: '',
+			fecha: new Date()
 		}
 	},
 
