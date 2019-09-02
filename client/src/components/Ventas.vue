@@ -87,28 +87,30 @@
               </td>
               <td style="width: 75% !important;" class="font-weight-bold text-left">
                 <div  v-for="(servicio,indexTwo) of venta.servicios">
-                  {{arreglarServicios(servicio.servicio,indexOne, indexTwo)}}
+                  {{servicio.servicio}}
                 </div>
               </td>
-              <td  class=" font-weight-bold text-center">
+              <td  class=" font-weight-bold text-left">
                 {{venta.cliente}}
               </td>
-              <td class=" font-weight-bold text-center">
-                {{venta.manicurista}}
+              <td class=" font-weight-bold text-left">
+                <input hidden :value="venta.manicurista" type="text">
+                <div v-on:click="editarTabla()">{{venta.manicurista}}</div>
+                
               </td>
               <td style="width: 30% !important;" class=" font-weight-bold text-center">
                 {{venta.descuento}}%
               </td>
-              <td class=" font-weight-bold text-center">
+              <td class=" font-weight-bold text-right">
                 {{formatPrice(venta.comision)}}
               </td>
-              <td class=" font-weight-bold text-center">
+              <td class=" font-weight-bold text-right">
                 {{formatPrice(venta.ganancialocal)}}
               </td>
-              <td class=" font-weight-bold text-center">
+              <td class=" font-weight-bold text-right">
                 {{formatPrice(venta.ganancianeta)}}
               </td>
-              <td class=" font-weight-bold text-center">
+              <td class=" font-weight-bold text-right">
                 {{formatPrice(venta.total)}}
               </td>
             </tr>
@@ -194,7 +196,7 @@ export default {
         let fechaBien = ''
         for (let index = 0; index < res.data.length; index++) {
           let fech = new Date(res.data[index].fecha)
-          fechaBien = fech.getDate() +"-"+ (fech.getMonth() + 1) +"-"+fech.getFullYear() +" "+ fech.getHours()+":"+ fech.getMinutes()
+          fechaBien = fech.getDate() +"/"+ (fech.getMonth() + 1) +"/"+fech.getFullYear() +" "+" ("+ fech.getHours()+":"+ fech.getMinutes()+")"
           this.fechas.push(fechaBien)
         }
       })
@@ -289,8 +291,12 @@ export default {
         this.serviciosArray.push(value)
         return  value + " (" + conteo + ")"
       }   
-    }
+    },
+    editarTabla(){
+    console.log("hola")
   },
+  },
+  
   computed: {
     myStyles (){
       return {
