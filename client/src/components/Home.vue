@@ -76,7 +76,7 @@
 					<span class="input-group-text bg-light font-weight-bold text-white spanInputs" id="inputGroup-sizing-lg">Descuento</span>
 					<span class="input-group-text bg-light font-weight-bold text-white spanInputs" id="inputGroup-sizing-lg ">%</span>
 					  </div>
-				  <input type="text" v-model="descuento" v-on:change="descuentoFunc" class="form-control manicuristaFocu inputs" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+				  <input type="text" placeholder="0" v-model="descuento" v-on:change="descuentoFunc" class="form-control manicuristaFocu inputs" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
 				</div>
 				<div class="input-group input-group-lg mb-2 ">
 				  <div class="input-group-prepend w-25 text-center">

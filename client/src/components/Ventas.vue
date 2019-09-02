@@ -50,7 +50,7 @@
               <th class="text-center">
                 Fecha
               </th>
-              <th class="text-center">
+              <th style="width: 16.6% !important;" class="text-center">
                 Servicios
               </th>
               <th class="text-center">
@@ -59,10 +59,7 @@
               <th class="text-center">
                 Manicurista
               </th>
-              <th class="text-center">
-                Tipo de pago
-              </th>
-              <th class="text-center">
+              <th style="width: 6.7% !important;" class="text-center">
                 Descuento
               </th>
               <th class="text-center">
@@ -75,33 +72,31 @@
                 Ganancia
               </th>
               <th class="text-center">
-                Total
+                Total 
               </th>
             </tr>
           </thead>
         </table>
       <div class="Listas">
-        <table class="table table-striped">
+        <table style="font-size:.8em" class="table table-striped">
           <tbody >
-            <tr v-for="(venta, index) of ventas" class="respons fix">
+            <tr v-for="(venta, indexOne) of ventas" class="respons fix">
               <td class=" font-weight-bold text-center">
-                 {{fechas[index]}}
+                 <font-awesome-icon style="margin-right:4%" v-if="venta.pago === 'tarjeta'" icon="credit-card" />
+                 <font-awesome-icon style="margin-right:4%;margin-top:5%;" v-else-if="venta.pago === 'efectivo'" icon="dollar-sign" />{{fechas[indexOne]}}
               </td>
-              <td class="font-weight-bold text-left">
-                <div v-for="(servicio,index) of venta.servicios">
-                  {{index+1}}.- {{servicio.servicio}}
+              <td style="width: 75% !important;" class="font-weight-bold text-left">
+                <div  v-for="(servicio,indexTwo) of venta.servicios">
+                  {{arreglarServicios(servicio.servicio,indexOne, indexTwo)}}
                 </div>
               </td>
-              <td class=" font-weight-bold text-center">
+              <td  class=" font-weight-bold text-center">
                 {{venta.cliente}}
               </td>
               <td class=" font-weight-bold text-center">
                 {{venta.manicurista}}
               </td>
-              <td class=" font-weight-bold text-center">
-                {{venta.pago}}
-              </td>
-              <td class=" font-weight-bold text-center">
+              <td style="width: 30% !important;" class=" font-weight-bold text-center">
                 {{venta.descuento}}%
               </td>
               <td class=" font-weight-bold text-center">
@@ -163,6 +158,8 @@ export default {
       netaAnterior : 0,
       gananciaTotal: 0,
       totalAnterior : 0,
+      serviciosArray : [],
+      conteoGlobal : 0,
       options: {
         responsive: true,
         maintainAspectRatio: false
@@ -237,7 +234,6 @@ export default {
           else if (mesTotales - 1 == fech.getMonth() ){
             this.totalAnterior = parseFloat(this.ventas[i].total) + parseFloat(this.totalAnterior)
           }
-          console.log(this.totalAnterior)
         }
         this.totalLocal = this.formatPrice(this.totalLocal)
         this.gananciaNeta = this.formatPrice(this.gananciaNeta)
@@ -264,6 +260,35 @@ export default {
     formatPrice(value) {
         let val = (value/1).toFixed(2).replace('.', ',')
         return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+    },
+    arreglarServicios(value, index, indexTwo){
+      var conteo = 0
+      if (indexTwo == 0) {
+        this.serviciosArray = []
+        for (let i = 0; i < this.ventas[index].servicios.length; i++) {
+          if (value === this.ventas[index].servicios[i].servicio ) {
+            conteo++
+          } 
+        }  
+      }
+      else{ 
+        for (let c = 0; c < this.serviciosArray.length; c++) {
+          if (value == this.serviciosArray[c]) { 
+            return
+          }
+          else{
+            for (let i = 0; i < this.ventas[index].servicios.length; i++) {
+            if (value === this.ventas[index].servicios[i].servicio ) {
+              conteo++ 
+              } 
+            }
+          }
+        }
+      }
+      if (conteo > 0) {
+        this.serviciosArray.push(value)
+        return  value + " (" + conteo + ")"
+      }   
     }
   },
   computed: {
@@ -320,8 +345,13 @@ export default {
   }
   .table{
     table-layout: fixed;
+    border-collapse: separate ;
     border:none !important;
     box-shadow: 0 0.46875rem 2.1875rem rgba(4,9,20,0.03), 0 0.9375rem 1.40625rem rgba(4,9,20,0.03), 0 0.25rem 0.53125rem rgba(4,9,20,0.05), 0 0.125rem 0.1875rem rgba(4,9,20,0.03);
+  }
+  td{
+    padding: 0;
+    width: 50% !important;
   }
   .Listas{
 		overflow-x: hidden;

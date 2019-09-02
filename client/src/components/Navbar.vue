@@ -8,9 +8,9 @@ box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.75);">
       <span class="navbar-toggler-icon"></span>
     	</button>
 
-		<div class="collapse navbar-collapse justify-content-md-center" id="navbarToggleExternalContent">
+		<div class="collapse navbar-collapse justify-content-md-center" id="navbarToggleExternalContent"><li style="color:#fff;margin-right:100px !important;" class="nav-item font-weight-bold text-uppercase nav-link">{{fecha.getDate()}}-{{fecha.getMonth()}}-{{fecha.getFullYear()}} </li>
 			<ul class="navbar-nav">
-				<li style="color:#fff">{{fecha}}</li>
+				
 				<li v-if="auth=='loggedin-admin'" class="nav-item">
 					<a class="font-weight-bold text-uppercase nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					Usuarios
