@@ -174,7 +174,7 @@
 <script type="text/javascript">
 	
 	import axios from 'axios'
-	import LineChart from './LineChart.js'
+	import LineChart from '../plugins/LineChart.js'
 	import router from '../router'
 
 	class Manicurista{

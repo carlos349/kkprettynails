@@ -10,7 +10,6 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import Autocomplete from '@trevoreyre/autocomplete-vue'
 import '@trevoreyre/autocomplete-vue/dist/style.css'
 
-
 require("../node_modules/bootstrap/dist/css/bootstrap.css")
 
 library.add(faTrash,faEdit,faCopy,faTimes,faSearch, faAngleRight, faAngleLeft, faCreditCard, faDollarSign)
