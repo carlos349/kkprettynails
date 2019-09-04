@@ -132,7 +132,6 @@
               <li class="list-group-item">Hora de inicio: {{ selectedEvent.startTime }}</li>
               <li class="list-group-item">Hora de finalización: {{ selectedEvent.endTime }}</li>
             </ul><br>
-            <v-btn small color="accent">Primary</v-btn> 
             <button type="button" class="btn btn-danger font-weight-bold" v-on:click="borrarCita(selectedEvent._id)">Borrar cita</button>
 		      </div>
 		    </div>
@@ -143,7 +142,6 @@
 </template>
 <script type="text/javascript">
   import axios from 'axios'
-  import Vuetify from '../plugins/vuetify'
   import VueCal from 'vue-cal'
   import 'vue-cal/dist/vuecal.css'
 
