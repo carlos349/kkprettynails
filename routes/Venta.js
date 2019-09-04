@@ -91,6 +91,105 @@ ventas.put('/updateServicesMonth/:service', (req, res) => {
 
 })
 
+ventas.get('/getMonthPerMonthSelected/:month', (req, res) => {
+  const monthSelected = new Date(req.params.month) 
+  const date = monthSelected.getMonth()
+
+  let month  = 'month'
+  let monthTwo = 'month'
+
+  if (date === 0) {
+    month = 'Enero'
+    monthTwo = 'Diciembre'
+  }else if (date === 1) {
+    month = 'Febrero'
+    monthTwo = 'Enero'
+  }else if (date === 2) {
+    month = 'Marzo'
+    monthTwo = 'Febrero'
+  }else if (date === 3) {
+    month = 'Abril'
+    monthTwo = 'Marzo'
+  }else if (date === 4) {
+    month = 'Mayo'
+    monthTwo = 'Abril'
+  }else if (date === 5) {
+    month = 'Junio'
+    monthTwo = 'Mayo'
+  }else if (date === 6) {
+    month = 'Julio'
+    monthTwo = 'Junio'
+  }else if (date === 7) {
+    month = 'Agosto'
+    monthTwo = 'Julio'
+  }else if (date === 8) {
+    month = 'Septiembre'
+    monthTwo = 'Agosto'
+  }else if (date === 9) {
+    month = 'Octubre'
+    monthTwo = 'Septiembre'
+  }else if (date === 10) {
+    month = 'Noviembre'
+    monthTwo = 'Octubre'
+  }else if (date === 11) {
+    month = 'Deciembre'
+    monthTwo = 'Noviembre'
+  }
+
+  let chartdata = {
+    labels: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31],
+    datasets: [ 
+      {
+        label: monthTwo,
+        backgroundColor: '#f4861f',
+        data: []
+      },
+      {
+        label: month,
+        backgroundColor: '#7c2929',
+        data: []
+      }
+    ]
+  }
+
+  let salesArray = []
+
+  Venta.find()
+  .then(ventas => {
+    for (let indexOne = 0; indexOne < chartdata.labels.length; indexOne++) {
+      let datasets = chartdata.labels[indexOne]
+      let sumDay = 0
+      let sumDayTwo = 0
+      for (let index = 0; index < ventas.length; index++) {
+        if (datasets === ventas[index].fecha.getDate() && date === ventas[index].fecha.getMonth()) {
+          sumDay = parseFloat(ventas[index].total) + parseFloat(sumDay)
+          salesArray.push(ventas[index])
+        }
+      }
+      for (let indexTwo = 0; indexTwo < ventas.length; indexTwo++) {
+        if (datasets === ventas[indexTwo].fecha.getDate() && date - 1 === ventas[indexTwo].fecha.getMonth()) {
+          sumDayTwo = parseFloat(ventas[indexTwo].total) + parseFloat(sumDayTwo)
+        }else if (datasets === ventas[indexTwo].fecha.getDate() && ventas[indexTwo].fecha.getMonth() == 11) {
+          sumDayTwo = parseFloat(ventas[indexTwo].total) + parseFloat(sumDayTwo)
+        }
+      }
+      if (sumDayTwo == 0) {
+        chartdata.datasets[0].data.push('0')
+      }else{
+        chartdata.datasets[0].data.push(sumDayTwo)
+      }
+
+      if (sumDay == 0) {
+        chartdata.datasets[1].data.push('0')
+      }else{
+        chartdata.datasets[1].data.push(sumDay)
+      }
+    }
+    res.json({'chart': chartdata, 'sales': salesArray})
+  })
+
+})
+
 ventas.put('/updateServicesMonthDiscount/:service', (req, res) => {
   const thisDate = new Date()
   const date = thisDate.getMonth()
@@ -175,7 +274,6 @@ ventas.post('/ingresocliente', (req, res) => {
     nombre: req.body.nombre
   })
   .then(cliente => {
-    console.log(cliente)
     if (!cliente) {
       Cliente.create(ClienteData)
       .then(cliente => {
@@ -222,7 +320,6 @@ ventas.post('/verificacioncliente', (req, res) => {
 })
 
 ventas.post('/procesar', (req, res) => {
-  console.log(req.body.fecha)
   let today = ''
   if (req.body.fecha == '') {
     today = new Date()
@@ -251,7 +348,6 @@ ventas.post('/procesar', (req, res) => {
     total: total,
     fecha: today
   }
-  console.log(venta)
   const documentoManicurista = req.body.documentoManicurista
   Venta.create(venta)
   .then(venta => {
@@ -342,7 +438,6 @@ ventas.get('/GetSalesPerMonth', (req, res) => {
       let sumDay = 0
       let sumDayTwo = 0
       for (let index = 0; index < ventas.length; index++) {
-        console.log(ventas[index].fecha.getDate())
         if (datasets === ventas[index].fecha.getDate() && date === ventas[index].fecha.getMonth()) {
           sumDay = parseFloat(ventas[index].total) + parseFloat(sumDay)
         }
