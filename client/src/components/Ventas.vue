@@ -81,36 +81,36 @@
         <table style="font-size:.8em" class="table table-striped">
           <tbody >
             <tr v-for="(venta, indexOne) of ventas" class="respons fix">
-              <td class=" font-weight-bold text-center">
+              <td class="  text-center">
                  <font-awesome-icon style="margin-right:4%" v-if="venta.pago === 'tarjeta'" icon="credit-card" />
                  <font-awesome-icon style="margin-right:4%;margin-top:5%;" v-else-if="venta.pago === 'efectivo'" icon="dollar-sign" />{{fechas[indexOne]}}
               </td>
-              <td style="width: 75% !important;" class="font-weight-bold text-left">
+              <td style="width: 75% !important;" class=" text-left">
                 <div  v-for="(servicio,indexTwo) of venta.servicios">
                   {{servicio.servicio}}
                 </div>
               </td>
-              <td  class=" font-weight-bold text-left">
+              <td  class="  text-left">
                 {{venta.cliente}}
               </td>
-              <td class=" font-weight-bold text-left">
+              <td class="  text-left">
                 <input hidden :value="venta.manicurista" type="text">
                 <div v-on:click="editarTabla()">{{venta.manicurista}}</div>
                 
               </td>
-              <td style="width: 30% !important;" class=" font-weight-bold text-center">
+              <td style="width: 30% !important;" class="  text-center">
                 {{venta.descuento}}%
               </td>
-              <td class=" font-weight-bold text-right">
+              <td class="  text-right">
                 {{formatPrice(venta.comision)}}
               </td>
-              <td class=" font-weight-bold text-right">
+              <td class="  text-right">
                 {{formatPrice(venta.ganancialocal)}}
               </td>
-              <td class=" font-weight-bold text-right">
+              <td class="  text-right">
                 {{formatPrice(venta.ganancianeta)}}
               </td>
-              <td class=" font-weight-bold text-right">
+              <td class="  text-right">
                 {{formatPrice(venta.total)}}
               </td>
             </tr>
