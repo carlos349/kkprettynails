@@ -45,6 +45,12 @@ box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.75);">
 					<router-link class="nav-link text-white font-weight-bold text-uppercase" to="/citas">Citas</router-link>
 				</li>
 				<li v-if="auth=='loggedin'" class="nav-item">
+					<router-link class="nav-link text-white font-weight-bold text-uppercase" to="/caja">Caja</router-link>
+				</li>
+				<li v-if="auth=='loggedin-admin'" class="nav-item">
+					<router-link class="nav-link text-white font-weight-bold text-uppercase" to="/caja">Caja</router-link>
+				</li>
+				<li v-if="auth=='loggedin'" class="nav-item">
 					<a class="nav-link text-white font-weight-bold text-uppercase" href="/" v-on:click="logout">Cerrar Sesion</a>
 				</li>
 				<li v-if="auth=='loggedin-admin'" class="nav-item">
