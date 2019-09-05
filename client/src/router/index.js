@@ -12,6 +12,7 @@ import Ventas from '@/components/Ventas'
 import Users from '@/components/Users'
 import Metricas from '@/components/Metricas'
 import Citas from '@/components/Citas'
+import reporteCierre from '@/components/reporteCierre'
 
 Vue.use(Router)
 
@@ -76,6 +77,11 @@ export default new Router({
       path: '/inventario',
       name: 'Inventario',
       component: Inventario
+    },
+    {
+      path: '/reportecierre',
+      name: 'reportecierre',
+      component: reporteCierre
     }
   ]
 })

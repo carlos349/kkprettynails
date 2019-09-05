@@ -3,6 +3,8 @@ const ventas = express.Router()
 const cors = require('cors')
 
 const Venta = require('../models/Venta')
+const VentaDia = require('../models/VentaDia')
+const Cierres = require('../models/Cierres')
 const Cliente = require('../models/Cliente')
 const Manicurista = require('../models/Manicurista')
 const January = require('../models/January')
@@ -89,6 +91,67 @@ ventas.put('/updateServicesMonth/:service', (req, res) => {
     }
   }
 
+})
+
+ventas.get('/getClosing', (req, res) => {
+  const dateNow = new Date()
+  const date = dateNow.getDate()
+  const Month = dateNow.getMonth()
+  Cierres.find()
+  .then(cierre => {
+    for (let index = 0; index < cierre.length; index++) {
+      if (date === cierre[index].fecha.getDate() && Month === cierre[index].fecha.getMonth()) {
+        res.json(cierre[index])
+        break
+      }
+    }
+  })
+})
+
+ventas.get('/CloseDay', (req, res) => {
+  const dateNow = new Date()
+
+  let DaySales = {
+    total: 0,
+    totalLocal: 0,
+    totalGanancia: 0,
+    totalReinversion: 0,
+    totalCredito: 0,
+    totalComision: 0,
+    fecha: dateNow
+  }
+
+  VentaDia.find()
+  .then(ventas => {
+    if (ventas.length > 0) {
+      for (let index = 0; index < ventas.length; index++) {
+        DaySales.total = parseFloat(DaySales.total) + parseFloat(ventas[index].total)
+        DaySales.totalLocal = parseFloat(DaySales.totalLocal) + parseFloat(ventas[index].ganancialocal)
+        DaySales.totalGanancia = parseFloat(DaySales.totalGanancia) + parseFloat(ventas[index].ganancianeta)
+        DaySales.totalReinversion = parseFloat(DaySales.totalReinversion) + parseFloat(ventas[index].reinversion)
+        DaySales.totalCredito = parseFloat(DaySales.totalCredito) + parseFloat(ventas[index].credito)
+        DaySales.totalComision = parseFloat(DaySales.totalComision) + parseFloat(ventas[index].comision)
+      }
+      Cierres.create(DaySales)
+      .then(back => {
+        VentaDia.remove({})
+        .then(back => {
+          res.json({'status':'ok'})
+        })
+        .catch(err => {
+          res.send(err)
+        })
+      })
+      .catch(err => {
+        res.send(err)
+      })
+    }else{
+      res.json({'status':'bad'})
+    }
+  })
+  .catch(err => {
+    res.send(err)
+  })
 })
 
 ventas.get('/getMonthPerMonthSelected/:month', (req, res) => {
@@ -350,16 +413,25 @@ ventas.post('/procesar', (req, res) => {
   }
   const documentoManicurista = req.body.documentoManicurista
   Venta.create(venta)
-  .then(venta => {
+  .then(ventas => {
     Manicurista.updateOne({documento:documentoManicurista},{
-      $inc: {comision:venta.comision}
+      $inc: {comision:ventas.comision}
     })
     .then(comision => {
-      Cliente.updateOne({nombre: venta.cliente},{
+      Cliente.updateOne({nombre: ventas.cliente},{
         $inc: {participacion: 1}
       })
       .then(participacion => {
-        res.json({status: 'Venta registrada'})
+        VentaDia.create(venta)
+        .then(venta => {
+          res.json({status: 'Venta registrada'})
+        })
+        .catch(err => {
+          res.send('Error:' + err)
+        })
+      })
+      .catch(err => {
+        res.send('Error:' + err)
       })
     })
     .catch(err => {
