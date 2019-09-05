@@ -134,8 +134,10 @@
 
 		  </div>
 		</div>
+		<button class="CierreDia" v-on:click="daySaleClose">
+			<font-awesome-icon style="margin-right:4%;margin-top:5%;" icon="cloud-upload-alt" />
+		</button>
 	</div>
-</div>
 </template>
 
 <script type="text/javascript">
@@ -416,9 +418,45 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 				this.totalSinFormato = 0;
 			},
 			formatPrice(value) {
-        let val = (value/1).toFixed(2).replace('.', ',')
-        return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
-    }
+				let val = (value/1).toFixed(2).replace('.', ',')
+				return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+			},
+			daySaleClose(){
+				this.$swal({
+					title: '¿Estás seguro de hacer el Cierre?',
+					text: 'No puedes revertir esta acción',
+					type: 'warning',
+					showCancelButton: true,
+					confirmButtonText: 'Si hacer Cierre',
+					cancelButtonText: 'No hacer Cierre',
+					showCloseButton: true,
+					showLoaderOnConfirm: true
+				})
+				.then((result) => {
+					if(result.value) {
+						axios.get('/ventas/CloseDay')
+						.then(res => {
+							if (res.data.status == 'ok') {
+							this.$swal({
+								type: 'succes',
+								title: 'Se hizo el cierre satisfactoriamente',
+								showConfirmButton: false,
+								timer: 1500
+							})
+							}else{
+							this.$swal({
+								type: 'error',
+								title: 'Sin ventas el dia no se puede cerrar',
+								showConfirmButton: false,
+								timer: 1500
+							})
+							}
+						})
+					}else {
+						this.$swal('No se hizo el cierre', 'Aborto la acción', 'info')
+					}
+				})
+			},
 	 }
  }
 </script>
@@ -543,4 +581,27 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 		border-radius: 0px;
 		width: 100% !important;
 	}
+	.CierreDia{
+    width: 60px;
+    height:60px;
+    border-radius: 50%;
+    background-color:#a73737;
+    color: azure;
+    cursor: pointer;
+    border:none;
+    -webkit-box-shadow: -1px 2px 15px 38px rgba (0,0,0,0.75);
+    -moz-box-shadow: -1px 2px 15px 38px rgba (0,0,0,0.75);
+    box-shadow: -1px 2px 15px 38px rgba (0,0,0,0.75);
+    position:fixed;
+    top:90%;
+    right:2%;
+    font-size: 1.3em;
+    outline: none !important;
+    transition: all 0.5s ease-out;
+  }
+  .CierreDia:hover{
+    background-color:#0F2027;
+    color: azure;
+    transition: all 0.5s ease-out;
+  }
 </style>

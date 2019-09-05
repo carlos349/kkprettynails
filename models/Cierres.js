@@ -2,22 +2,25 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const CierresSchema = new Schema ({
-    total: {
+    aperturaEfectivo: {
         type: Number
     },
-    totalLocal:{
+    aperturaBanco:{
         type: Number
     },
-    totalGanancia: {
+    totalApertura: {
         type: Number
     },
-    totalReinversion: {
+    cierreEfectivo: {
         type: Number
     },
-    totalCredito: {
+    cierreBanco: {
         type: Number
     },
-    totalComision: {
+    totalCierre: {
+        type: Number
+    },
+    gastos: {
         type: Number
     },
     fecha:{
