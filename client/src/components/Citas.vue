@@ -1,9 +1,9 @@
 <template id="">
   <div class="container-fluid">
     <div class="row">
-      <div id="mySidenav" class="col-sm-2 menuVertical">
+      <div v-bind:style="{ 'background-image': 'linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),url(' + require('../assets/sidebar.jpg') + ')' , 'background-size': 'cover' }" id="mySidenav" class="col-sm-2 menuVertical">
           <ul class="listaMenu">
-            <li v-on:click="aja()"><span></span>Generar cita</li>
+            <li  data-toggle="modal" data-target=".bd-example-modal-xl" v-on:click="aja()"><span></span>Generar cita</li>
             <router-link class="rout" to="/venta"><li>Procesar venta</li></router-link>
             <li>Eliminar cita</li>
                       </ul>
@@ -43,78 +43,75 @@
           </vue-cal>
         </div>
       </div>
+      
 
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-		  <div class="modal-dialog modal-dialog-centered" role="document">
-		    <div class="modal-content">
-		      <div class="modal-header bg-info">
-		        <h5 class="modal-title text-white font-weight-bold" id="exampleModalCenterTitle">Registrar manicurista</h5>
-		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-		          <span aria-hidden="true" class="text-white">&times;</span>
-		        </button>
-		      </div>
-		      <div class="modal-body">
-		        <form v-on:submit.prevent="registroCita">
-							<div class="form-group">
-								<label for="nombre">Fecha</label>
-								<input type="date" v-model="fecha" class="form-control" name="nombreManicurista" placeholder="Nombre de la manicurista" >
-                <label for="nombre">Horario entrada</label>
-                <select class="form-control" v-model="entrada">
-                  <option>Seleccione</option>
-                  <option value="08:00">08:00 am</option>
-                  <option value="09:00">09:00 am</option>
-                  <option value="10:00">10:00 am</option>
-                  <option value="11:00">11:00 am</option>
-                  <option value="12:00">12:00 am</option>
-                  <option value="13:00">13:00 pm</option>
-                  <option value="14:00">14:00 pm</option>
-                  <option value="15:00">15:00 pm</option>
-                  <option value="16:00">16:00 pm</option>
-                  <option value="17:00">17:00 pm</option>
-                  <option value="18:00">18:00 pm</option>
-                  <option value="19:00">19:00 pm</option>
-                </select>
-                <label for="nombre">Horario Salida</label>
-                <select class="form-control" v-model="salida">
-                  <option>Seleccione</option>
-                  <option value="09:00">09:00 am</option>
-                  <option value="10:00">10:00 am</option>
-                  <option value="11:00">11:00 am</option>
-                  <option value="12:00">12:00 pm</option>
-                  <option value="13:00">13:00 pm</option>
-                  <option value="14:00">14:00 pm</option>
-                  <option value="15:00">15:00 pm</option>
-                  <option value="16:00">16:00 pm</option>
-                  <option value="17:00">17:00 pm</option>
-                  <option value="18:00">18:00 pm</option>
-                  <option value="19:00">19:00 pm</option>
-                  <option value="19:00">20:00 pm</option>
-                </select>
-							</div>
-              <div class="form-group">
-								<label for="identidad">Servicio</label>
-                <select class="form-control" v-model="serv">
-                  <option>Seleccione</option>
-                  <option v-for="servicio of servicios" :value='servicio.nombre'>{{servicio.nombre}}</option>
-                </select>
-							</div>
-							<div class="form-group">
-								<label for="identidad">Manicurista</label>
-                <select class="form-control" v-model="mani" >
-                  <option>Seleccione</option>
-                  <option v-for="manicurista of manicuristas" :value='manicurista.nombre'>{{manicurista.nombre}}</option>
-                </select>
-							</div>
-              <div class="form-group">
-								<label for="nombre">Nombre cliente</label>
-								<input type="text" v-model="nombreCliente" class="form-control" name="nombreServicio" placeholder="Nombre del Cliente" >
-							</div>
-							<button class="btn btn-lg btn-info btn-block" type="submit">Registrar cita</button>
-		        </form>
-		      </div>
-		    </div>
-		  </div>
-		</div>
+    <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-xl">
+      <div v-bind:style="{ 'background-image': 'url(' + require('../assets/fondo.jpg') + ')' , 'background-size': 'cover' }" class="modal-content armarCita p-3">
+        <div style="box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);background-color:rgba(0, 0, 0, 0.5)" class="container p-3">
+          <div class="row">
+            <div style="font-size:1.5em;color:azure;" class="col-md-12 text-center p-3">Arma tu cita</div>
+            <div style="background-color:rgba(0, 0, 0, 0.4);color:azure;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14)" class="col-md-12 font-weight-bold px-3">
+              <div style="margin:auto" class="row text-center">
+                <div class="wOne p-3 mx-auto col-md-3 marc">Servicio</div>
+                <div class="wTwo p-3 mx-auto col-md-3">Manicurista</div>
+                <div class="wThree p-3 mx-auto col-md-3">Tiempo</div>
+              </div>
+            </div>
+            <div class="col-md-12 p-3 processOne">
+              <div class="col-md-12 text-center p-2" style="font-size:1.2em;color:#9e9e9e">Selecciona los servicios a utlizar</div>
+              <div style="height:40vh;overflow:hidden;overflow-x: hidden;
+		overflow-y:scroll;" class="scroll row p-1" >
+                <div class="col-md-6" v-for="(servicio,index) of servicios">
+                  <div class="p-2 servPretty" v-on:click="marcarServicio(servicio.prestadores,servicio.nombre,servicio.tiempo,index)">
+                    <div class="row">
+                      <div class="serviInfo col-md-2"><font-awesome-icon icon="user-check" class="mr-2"/>{{servicio.prestadores.length}}</div>
+                      <div class="serviInfo col-md-7">{{servicio.nombre}}</div>
+                      <div class="col-md-3">{{servicio.tiempo}}Mins <span :id="index" class="serviInfoPrestadores ml-2">0</span> </div> 
+                    </div>
+                  </div>
+                </div>   
+              </div>
+            </div>
+            <div class="col-md-12 p-3 processTwo">
+              <div class="col-md-12 text-center p-2" style="font-size:1.2em;color:#9e9e9e">Selecciona una manicurista</div>
+              <div style="height:40vh;overflow:hidden;overflow-x: hidden;
+		          overflow-y:scroll;" class="scroll row p-1" >
+                <div class="col-md-4" v-for="(manicurista,index) of manicuristas">
+                  <div  class="p-3 col-md-12">
+                    <div style="cursor:pointer;" v-on:click="selectManic(manicurista.nombre,index)" class="fotoMani col-md-12 text-center"><img :id="'mani'+index" class="imgMani" src="../assets/silueta-mujer.jpg" alt=""></div>
+                    <div class="col-md-12 text-white text-center">{{manicurista.nombre}}</div>
+                  </div>
+                </div>   
+              </div>
+            </div>
+            <div class="col-md-12 p-3 processThree">
+              <div class="col-md-12 text-center p-2" style="font-size:1.2em;color:#9e9e9e">¿A que hora se realizara?</div>
+              <div class="container">
+                <div class="mx-auto">
+                <div class="row">
+                  
+                  <div class="col-md-5 mx-auto text-right"><input maxlength="2" placeholder="Hora" class="hora" type="number" min="0" max="24"></div>
+                  <div style="font-size:3em" class="col-md-1 mx-auto text-center text-white">:</div>
+                  <div class="col-md-5 mx-auto text-left"><input minlength="1" maxlength="2" placeholder="Min" class="hora" type="number" min="0" max="60"></div>
+                </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="row">
+                <div class="col-md-4 "> <button v-on:click="prevOne()" disabled class="botonW Ant">Anterior</button></div>
+                <div class="col-md-4 text-center"> <button id="redo" class="botonW " v-on:click="redo()"><font-awesome-icon style="color:#ff5722" icon="redo"/></button></div>
+                <div class="col-md-4 text-right"><button v-on:click="nextOne()" disabled class="botonW Sig">Siguiente</button></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+      </div>
+    </div>
+
     <div class="modal fade" id="myModalTwo" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered" role="document">
 		    <div class="modal-content">
@@ -176,6 +173,7 @@
     },
     data () {
       return {
+        image: "'../assets/fondo.jpg'",
         locale: ['es'],
         start:'',
         startHora:'',
@@ -209,7 +207,14 @@
       this.getCitas(),
       this.getManicuristas(),
       this.getServicios()
-    },
+
+      $( document ).ready(function() {
+        $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+      })
+        console.log( "ready!" );
+      });
+      },
     methods: {
       onEventClick(event, e){
         this.selectedEvent = event
@@ -217,6 +222,7 @@
         e.stopPropagation()
       },
       getCitas () {
+         $('[data-toggle="tooltip"]').tooltip()
         axios.get('citas')
         .then(res => {
           console.log(res.data)
@@ -238,11 +244,75 @@
       aja() {
         $('#myModal').modal('show')
       },
+      marcarServicio(prestadores,nombre,tiempo,index){
+        $("#redo").show()
+        $(".Sig").addClass("marcar")
+        $(".Sig").prop("disabled", false)
+        $("#"+index).text(parseFloat($("#"+index).text())+1)
+      },
+      redo(){
+        $("#redo").hide()
+        $(".serviInfoPrestadores").text(0)
+        $(".Sig").removeClass("marcar")
+        $(".Sig").prop("disabled", true)
+      },
+      nextOne(){
+        if($(".processTwo").css("display") == "block"){
+          $(".Sig").removeClass("marcar")
+          $(".Sig").prop("disabled", true)
+          $(".Sig").text("Crear")
+          $(".wTwo").removeClass("marc")
+          $(".wThree").addClass("marc")
+          $(".processTwo").hide()
+          $(".processThree").show()
+        }
+        else{
+          $(".Sig").removeClass("marcar")
+          $(".Sig").prop("disabled", true)
+          $("#redo").hide()
+          $(".processOne").hide()
+          $(".processTwo").show()
+          $(".Ant").addClass("marcar")
+          $(".Ant").prop("disabled", false)
+          $(".wOne").removeClass("marc")
+          $(".wTwo").addClass("marc")
+        }
+        
+      },
+      prevOne(){
+        if($(".processTwo").css("display") == "block"){
+          $(".processOne").show()
+          $(".processTwo").hide()
+          $(".Sig").addClass("marcar")
+          $(".wOne").addClass("marc")
+          $(".wTwo").removeClass("marc")
+          $("#redo").show()
+          $(".Sig").prop("disabled", false)
+          $(".Ant").removeClass("marcar")
+          $(".Ant").prop("disabled", true)
+        }
+        else if($(".processThree").css("display") == "block"){
+          $(".imgMani").removeClass("maniMarcado")
+          $(".processTwo").show()
+          $(".processThree").hide()
+          $(".wTwo").addClass("marc")
+          $(".wThree").removeClass("marc")
+          $(".Sig").prop("disabled", true)
+          $(".Sig").text("Siguiente")
+        }
+      },
       Menu() {
         $('#mySidenav').toggle('slow')
         $('#calen').toggleClass("col-sm-12")
         $('#ope').toggleClass("ope")
         $('#clo').toggleClass("clo")
+      },
+      selectManic(nombre, index){
+        $(".Sig").prop("disabled", false)
+        $(".Sig").addClass("marcar")
+        $(".imgMani").removeClass("maniMarcado")
+        $("#mani"+index).addClass("maniMarcado")
+        
       },
       registroCita(){
         const horarioEntrada = this.fecha + " " + this.entrada
@@ -413,13 +483,102 @@
     background-color:transparent;
     color:white;
     font-family: 'Raleway', sans-serif;
-    font-weight:600;
     width:100%;
     outline:none;
     background-color:#213b45;
   }
   #manicuristas option{
     font-family: 'Raleway', sans-serif;
-    font-weight:600;
   }
+
+  .armarCita{
+    font-weight: 300 !important;
+  }
+  .marc{
+    background-color: #ff5722;
+    border-radius: 5px;
+    color: azure;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,.14)
+  }
+  .servPretty{
+    background-color: #3f51b5;
+    color:#fff;
+    cursor: pointer;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);
+    border:4px solid transparent;
+  }
+  .serviInfo{
+    
+    border-right: 1px solid #fff;
+  }
+  .serviInfoPrestadores{
+    background-color: #ff5722;
+    padding: 3px;
+    padding-left: 8px;
+    padding-right: 8px;
+    border-radius: 50%;
+  }
+  .botonW{
+    background-color: rgba(0,0,0,.12);
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);
+    padding: 15px;
+    border-radius: 5px;
+    border: none;
+    outline: none !important;
+  }
+  .marcar{
+    background-color: #ff5722;
+    color:#fff;
+  }
+  #redo{
+    display: none;
+  }
+  .processTwo{
+    display:none;
+  }
+  .processThree{
+    display: none;
+  }
+
+  .scroll::-webkit-scrollbar {
+		width: 8px;     /* Tamaño del scroll en vertical */
+		height: 8px;    /* Tamaño del scroll en horizontal */
+	
+	}
+
+  .imgMani{
+    border:4px solid rgba(255, 255, 255, .3);
+    width:70%;
+    padding: 5px;
+    border-radius:5px;
+  }
+  .maniMarcado{
+    border:4px solid #ff5722;
+    width:70%;
+    padding: 5px;
+    border-radius:5px;
+  }
+
+  input[type="number"]::-webkit-outer-spin-button, 
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type="number"] {
+      -moz-appearance: textfield;
+  }
+
+  .hora{
+    background-color: rgba(0,0,0,.5);
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);
+    padding: 15px;
+    border-radius: 5px;
+    border: none;
+    color: azure;
+    font-size: 2em;
+    width: 35%;
+    outline: none !important;
+    text-align: center
+  }
+
 </style>

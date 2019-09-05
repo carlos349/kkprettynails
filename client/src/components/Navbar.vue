@@ -1,5 +1,5 @@
 <template>
-	<nav class="navbar navbar-expand-lg sticky-top navbar-dark" style="background-color:#213b45;-webkit-box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.75);
+	<nav class="navbar navbar-expand-lg sticky-top navbar-dark" v-bind:style="{ 'background-image': 'url(' + require('../assets/fondo.jpg') + ')' , 'background-size': 'cover' }"style="background-color:#213b45;-webkit-box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.75);
 -moz-box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.75);
 box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.75);">
 		<img src="../assets/syswa2.png" style="width:6%;" alt="">
