@@ -1,11 +1,11 @@
 <template>
     <div class="container-fluid">
       <div class="col-md-12 row sectionMetricss">
-				<div class="col-md-2 col-sm-5 metrics first">
+				<div class="col-md-2 col-sm-5 metricss first">
 					<p>Total de ventas</p>
 					<h2>{{ventas.length}}</h2>
 				</div>
-				<div class="col-md-3 col-sm-5 metrics second">
+				<div class="col-md-3 col-sm-5 metricss second">
           <div class="row metricTotal">
             <div class="col-sm-6 ant"><h6>Mes anterior</h6></div>
             <div class="col-sm-6 ant"><h5 class="text-right">{{localAnterior}} $</h5></div>
@@ -13,7 +13,7 @@
             <div class="col-sm-8"><h3 class="text-right mt-2">{{totalLocal}} $</h3></div> 
           </div>
 				</div>
-				<div class="col-md-3 col-sm-5 metrics three">
+				<div class="col-md-3 col-sm-5 metricss three">
           <div class="row metricTotal">
             <div class="col-sm-6 ant"><h6>Mes anterior</h6></div>
             <div class="col-sm-6 ant"><h5 class="text-right">{{netaAnterior}} $</h5></div>
@@ -21,7 +21,7 @@
             <div class="col-sm-8"><h3 class="text-right mt-2">{{gananciaNeta}} $</h3></div> 
           </div>
 				</div>
-        <div class="col-md-3 col-sm-5 metrics four">
+        <div class="col-md-3 col-sm-5 metricss four">
           <div class="row metricTotal">
             <div class="col-sm-6 ant"><h6>Mes anterior</h6></div>
             <div class="col-sm-6 ant"><h5 class="text-right">{{totalAnterior}} $</h5></div>
@@ -186,6 +186,9 @@
         </table>
       </div>
       </div>
+      <button class="CierreDia" v-on:click="daySaleClose">
+        <font-awesome-icon style="margin-right:4%;margin-top:5%;" icon="cloud-upload-alt" />
+      </button>
     </div>
 </template>
 
@@ -366,6 +369,7 @@ export default {
             showConfirmButton: false,
             timer: 1500
           })
+          this.loaded = true
         }else{
           const userlist = res.data.chart
           this.chartdata = userlist
@@ -387,6 +391,45 @@ export default {
           this.totales(month);
         }
       })
+    },
+    daySaleClose(){
+      this.$swal({
+        title: '¿Estás seguro de hacer el Cierre?',
+        text: 'No puedes revertir esta acción',
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Si hacer Cierre',
+        cancelButtonText: 'No hacer Cierre',
+        showCloseButton: true,
+        showLoaderOnConfirm: true
+      }).then((result) => {
+        if(result.value) {
+          axios.get('/ventas/CloseDay')
+          .then(res => {
+            if (res.data.status == 'ok') {
+              this.$swal({
+                  type: 'succes',
+                  title: 'Se hizo el cierre satisfactoriamente',
+                  showConfirmButton: false,
+                  timer: 500
+              })
+              setTimeout(() => {
+                router.push({name: 'reportecierre'})
+              }, 500);
+            }else{
+              this.$swal({
+                  type: 'error',
+                  title: 'Sin ventas el dia no se puede cerrar',
+                  showConfirmButton: false,
+                  timer: 1500
+              })
+            }
+          })
+        } else {
+          this.$swal('No se hizo el cierre', 'Aborto la acción', 'info')
+        }
+      })
+      
     },
     formatPrice(value) {
         let val = (value/1).toFixed(2).replace('.', ',')
@@ -435,10 +478,10 @@ export default {
 </script>
 <style media="screen">
   @media (max-width: 1450px) {
-    .metrics p{
+    .metricss p{
       font-size: .6em;
     }
-    .metrics h2{
+    .metricss h2{
       margin-top: 0 !important;
       font-size: 1em;
       float:left !important;
@@ -448,10 +491,10 @@ export default {
     .respons{
       font-size: 2vw;
     }
-    .metrics p{
+    .metricss p{
       font-size: .6em
     }
-    .metrics h1{
+    .metricss h1{
       font-size: 1em
     }
   }
@@ -464,9 +507,9 @@ export default {
     cursor:pointer;
   }
   .BotonesDespliegue button{
-    background: #a73737;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #7a2828, #a73737);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #7a2828, #a73737); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: #0F2027;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #2C5364, #203A43, #0F2027);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #2C5364, #203A43, #0F2027); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     border:none !important;
     padding: 12px;
     font-size: 1.1em;
@@ -484,9 +527,20 @@ export default {
     font-family: 'Raleway', sans-serif !important;
     letter-spacing: 0.15em;
     color:cornsilk;
+    -webkit-transition: background-color 500ms ease-out 1s;
+    -moz-transition: background-color 500ms ease-out 1s;
+    -o-transition: background-color 500ms ease-out 1s;
+    transition: background-color 500ms ease-out 1s;
   }
   .BotonesFiltro button:hover{
-    color:darkgray
+    color:darkgray;
+    background: #0F2027;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #0F2027, #203A43, #2C5364);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #0F2027, #203A43, #2C5364); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    -webkit-transition: background-color 500ms ease-out 1s;
+    -moz-transition: background-color 500ms ease-out 1s;
+    -o-transition: background-color 500ms ease-out 1s;
+    transition: background-color 500ms ease-out 1s;
   }
   .table{
     table-layout: fixed;
@@ -528,13 +582,12 @@ export default {
 
 	}
   .four{
-    background: #1D4350;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #A43931, #1D4350);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #A43931, #1D4350); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
+    background: #a73737;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #a73737, #7a2828);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #a73737, #7a2828); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   }
 
-  .metrics{
+  .metricss{
 		height: auto;
 		background-color: #fff;
 		margin:10px;
@@ -544,7 +597,7 @@ export default {
 		box-shadow: 0 0.46875rem 2.1875rem rgba(4,9,20,0.03), 0 0.9375rem 1.40625rem rgba(4,9,20,0.03), 0 0.25rem 0.53125rem rgba(4,9,20,0.05), 0 0.125rem 0.1875rem rgba(4,9,20,0.03);
 		border-radius:5px;
 	}
-	.metrics p{
+	.metricss p{
 		font-size: 1.3em;
 		margin-top: 10px;
 		
@@ -582,5 +635,27 @@ export default {
 		font-family: 'Raleway', sans-serif;
 		font-weight:600;
 	}
-
+  .CierreDia{
+    width: 60px;
+    height:60px;
+    border-radius: 50%;
+    background-color:#a73737;
+    color: azure;
+    cursor: pointer;
+    border:none;
+    -webkit-box-shadow: -1px 2px 15px 38px rgba (0,0,0,0.75);
+    -moz-box-shadow: -1px 2px 15px 38px rgba (0,0,0,0.75);
+    box-shadow: -1px 2px 15px 38px rgba (0,0,0,0.75);
+    position:fixed;
+    top:90%;
+    right:2%;
+    font-size: 1.3em;
+    outline: none !important;
+    transition: all 0.5s ease-out;
+  }
+  .CierreDia:hover{
+    background-color:#0F2027;
+    color: azure;
+    transition: all 0.5s ease-out;
+  }
 </style>
