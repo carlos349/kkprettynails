@@ -93,19 +93,16 @@ ventas.put('/updateServicesMonth/:service', (req, res) => {
 
 })
 
-ventas.get('/getClosing', (req, res) => {
-  const dateNow = new Date()
-  const date = dateNow.getDate()
-  const Month = dateNow.getMonth()
-  Cierres.find()
+ventas.get('/getClosing/:id', (req, res) => {
+  
+  Cierres.findById(req.params.id)
   .then(cierre => {
-    for (let index = 0; index < cierre.length; index++) {
-      if (date === cierre[index].fecha.getDate() && Month === cierre[index].fecha.getMonth()) {
-        res.json(cierre[index])
-        break
-      }
-    }
+    res.json(cierre)
   })
+  .catch(err => {
+    res.send(err)
+  })
+  
 })
 
 ventas.get('/prueba', (req, res) => {

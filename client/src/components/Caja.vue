@@ -112,6 +112,9 @@
               <th class="text-center">
                 Gastos
               </th>
+              <th class="text-center">
+                Reportes
+              </th>
             </tr>
           </thead>
         </table>
@@ -143,6 +146,9 @@
               <td class="text-right">
                 {{formatPrice(cierre.gastos)}}
               </td>
+              <td class="text-right">
+                <font-awesome-icon icon="copy" class="report" v-on:click="sacarReporte(cierre._id)"/>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -152,6 +158,7 @@
 <script>
 import axios from 'axios'
 import router from '../router'
+import EventBus from './eventBus'
 export default {
     data(){
         return {
@@ -243,6 +250,10 @@ export default {
                 }
             }
         },
+        sacarReporte(id) {
+            localStorage.setItem('report', id)
+            router.push({name:'reportecierre'})
+        }
     }    
 
 }
