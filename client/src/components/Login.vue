@@ -25,7 +25,7 @@
 	import axios from 'axios'
 	import router from '../router'
 	import EventBus from './eventBus'
-
+	import jwtDecode from 'jwt-decode'
 	export default {
 		data(){
 			return {
@@ -64,8 +64,14 @@
 						})
 					}else{
 						localStorage.setItem('userToken', res.data.token)
+						$(".menuVertical").show()
 						this.email = ''
 						this.password = ''
+						const token = localStorage.userToken
+						const decoded = jwtDecode(token)
+						localStorage.setItem('nombre', decoded.first_name)
+						localStorage.setItem('apellido', decoded.last_name)
+						
 						router.push({name: 'Citas'})
 						if(res.data.admin){
 							this.emitMethodTwo()
@@ -93,7 +99,7 @@
 	.cardLogin{
 		position:absolute;
 		top:30%;
-		left:38%;
+		left:18%;
 		padding:20px;
 		font-family: 'Raleway', sans-serif;
 		font-weight:600;

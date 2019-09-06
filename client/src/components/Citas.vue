@@ -86,14 +86,24 @@
               </div>
             </div>
             <div class="col-md-12 p-3 processThree">
-              <div class="col-md-12 text-center p-2" style="font-size:1.2em;color:#9e9e9e">¿A que hora se realizara?</div>
+              <div class="col-md-12 text-center p-2" style="font-size:1.2em;color:#9e9e9e">¿En que fecha y hora se realizara?</div>
               <div class="container">
                 <div class="mx-auto">
                 <div class="row">
-                  
-                  <div class="col-md-5 mx-auto text-right"><input maxlength="2" placeholder="Hora" class="hora" type="number" min="0" max="24"></div>
-                  <div style="font-size:3em" class="col-md-1 mx-auto text-center text-white">:</div>
-                  <div class="col-md-5 mx-auto text-left"><input minlength="1" maxlength="2" placeholder="Min" class="hora" type="number" min="0" max="60"></div>
+                  <div class="col-md-6">
+                    <input class="hora" type="date" name="" id="">
+                  </div>
+                  <div class="col-md-6">
+                    <div class="row">
+                      <div class="col-md-5 mx-auto text-right">
+                      <input maxlength="2" placeholder="Hora" class="hora" type="number" min="0" max="24">
+                      </div>
+                      <div style="font-size:3em" class="col-md-1 mx-auto text-center text-white">:</div>
+                      <div class="col-md-5 mx-auto text-left">
+                        <input minlength="1" maxlength="2" placeholder="Min" class="hora" type="number" min="0" max="60">
+                      </div>
+                    </div> 
+                  </div> 
                 </div>
                 </div>
               </div>
@@ -421,18 +431,12 @@
   .menuVertical{
     height:92.8vh;
     background-color:#213b45;
-    transition: 0.3s;
-    
-
+    transition: 0.3s; 
   }
   .botonn{
     background-color: blue !important;
   }
-  .listaMenu{
-    color:white;
-    margin-top:10%;
-    margin-bottom:10%;
-  }
+  
   .boton{
     position:absolute;
     top:40%;
@@ -451,28 +455,7 @@
     display:block !important;
   }
 
-  .listaMenu li{
-    padding:10px;
-    border-right:4px solid #425861;
-    margin-top:5px;
-    list-style-type: none;
-    cursor:pointer;
-    margin-left:-15%;
-    height:5vh;
-  }
-  .listaMenu li:hover{
-    border-top:1px solid #425861;
-    border-bottom:1px solid #425861;
-    border-left:1px solid #425861;
-  }
-  .rout{
-    color:white;
-    text-decoration:none !important;
-
-  }
-  .rout:hover{
-    color:white !important;
-  }
+ 
   #manicuristas{
     padding:10px;
     border:none;
@@ -576,7 +559,7 @@
     border: none;
     color: azure;
     font-size: 2em;
-    width: 35%;
+    width: 70%;
     outline: none !important;
     text-align: center
   }

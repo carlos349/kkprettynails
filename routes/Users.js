@@ -90,7 +90,8 @@ users.post('/login', (req, res) => {
 					first_name: user.first_name,
 					last_name: user.last_name,
 					email: user.email,
-					admin: user.admin
+					admin: user.admin,
+					image: user.image
 				}
 				let token = jwt.sign(payload, process.env.SECRET_KEY, {
 					expiresIn: 1440

@@ -1,7 +1,7 @@
 <template>
-  <div id="app">
-    <navbar ></navbar>
-    <router-view/>
+  <div class="row" id="app">
+    <navbar class="col-md-2" ></navbar>
+    <router-view style="margin-left:18%" class="col-md-9"/>
   </div>
 </template>
 
