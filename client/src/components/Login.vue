@@ -64,7 +64,7 @@
 						})
 					}else{
 						localStorage.setItem('userToken', res.data.token)
-						$(".menuVertical").show()
+						$(".menuVer").show()
 						this.email = ''
 						this.password = ''
 						const token = localStorage.userToken
@@ -99,7 +99,7 @@
 	.cardLogin{
 		position:absolute;
 		top:30%;
-		left:18%;
+		left:33%;
 		padding:20px;
 		font-family: 'Raleway', sans-serif;
 		font-weight:600;
