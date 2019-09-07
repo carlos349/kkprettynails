@@ -4,6 +4,7 @@
             <h1 class="text-center ">Cierre de caja</h1>
             <h2>Fecha: {{fecha}}</h2>
             <h3>Codigo de operación: {{codigo}}</h3>
+            <h3>Encargado/a del cierre: {{identificacionCierre}}</h3>
         </div>
         <div class="datos mt-4 col-12" v-bind:style="{ 'background-image': 'linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),url(' + require('../assets/fondo.jpg') + ')' , 'background-size': 'cover', 'position': '50% 40%' }">
             <table class="table table-striped">
@@ -76,7 +77,8 @@
                 gastos: 0,
                 cuenta: 0,
                 codigo: '',
-                fecha: ''
+                fecha: '',
+                identificacionCierre:''
             }
         },
         beforeCreate() {
@@ -106,6 +108,7 @@
                     this.cierretotal = res.data.totalCierre
                     this.gastos = res.data.gastos
                     this.codigo = res.data._id
+                    this.identificacionCierre = res.data.identificacionCierre
                     this.cuenta = res.data.totalApertura + res.data.cierreEfectivo + res.data.cierreBanco - res.data.totalCierre
                     const date = new Date(res.data.fecha)
                     this.fecha = date.getDate()+"-"+(date.getMonth() + 1)+"-"+date.getFullYear()
