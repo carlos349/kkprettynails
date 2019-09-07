@@ -93,19 +93,16 @@ ventas.put('/updateServicesMonth/:service', (req, res) => {
 
 })
 
-ventas.get('/getClosing', (req, res) => {
-  const dateNow = new Date()
-  const date = dateNow.getDate()
-  const Month = dateNow.getMonth()
-  Cierres.find()
+ventas.get('/getClosing/:id', (req, res) => {
+  
+  Cierres.findById(req.params.id)
   .then(cierre => {
-    for (let index = 0; index < cierre.length; index++) {
-      if (date === cierre[index].fecha.getDate() && Month === cierre[index].fecha.getMonth()) {
-        res.json(cierre[index])
-        break
-      }
-    }
+    res.json(cierre)
   })
+  .catch(err => {
+    res.send(err)
+  })
+  
 })
 
 ventas.get('/prueba', (req, res) => {
@@ -155,7 +152,51 @@ ventas.get('/Closing', (req, res) => {
   })
 })
 
-ventas.get('/CloseDay', (req, res) => {
+ventas.get('/getClosingDay', (req, res) => {
+  const dateNow = new Date()
+  const formatDate = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()
+
+  dateNow.setDate(dateNow.getDate() + 1)
+  const formatDateTwo = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()
+  
+
+  const data = {
+    efectivo: 0,
+    banco: 0,
+    total: 0
+  }
+  
+  VentaDia.find()
+  .then(ventas => {
+    if (ventas.length > 0) {
+      for (let index = 0; index < ventas.length; index++) {
+        if (ventas[index].pago == 'tarjeta') {
+          data.banco = data.banco + ventas[index].total
+        }else{
+          data.efectivo = data.efectivo + ventas[index].total
+        }
+      }
+      Cierres.find({
+        fecha: { $gte: formatDate, $lte: formatDateTwo }
+      })
+      .then(cierre => {
+        data.total = cierre[0].totalApertura + data.banco + data.efectivo
+        res.json(data)
+      })
+      .catch(err => {
+        res.send(err)
+      })
+    }else{
+      res.json({status: 'bad'})
+    }
+  })
+  .catch(err => {
+    res.send(err )
+  })
+})
+
+ventas.get('/CloseDay/:name', (req, res) => {
+  const closeName = req.params.name
   const dateNow = new Date()
   const formatDate = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()
 
@@ -166,7 +207,8 @@ ventas.get('/CloseDay', (req, res) => {
   let DaySales = {
     cierreEfectivo: 0,
     cierreBanco: 0,
-    totalCierre: 0
+    totalCierre: 0,
+    identificacionCierre: ''
   }
 
   let DaySalesTomorrow = {
@@ -177,6 +219,7 @@ ventas.get('/CloseDay', (req, res) => {
     cierreBanco: 0,
     totalCierre: 0,
     gastos: 0,
+    identificacionCierre: '',
     fecha: dateTomorrow
   }
 
@@ -195,9 +238,10 @@ ventas.get('/CloseDay', (req, res) => {
       })
       .then(cierre => {
         DaySales.totalCierre = cierre[0].totalApertura + DaySales.cierreBanco + DaySales.cierreEfectivo
+        DaySales.identificacionCierre = closeName
         Cierres.findOneAndUpdate({fecha: { $gte: formatDate, $lte: formatDateTwo }}, 
           { 
-           $set : { cierreEfectivo: DaySales.cierreEfectivo, cierreBanco: DaySales.cierreBanco, totalCierre: DaySales.totalCierre }
+           $set : { cierreEfectivo: DaySales.cierreEfectivo, cierreBanco: DaySales.cierreBanco, totalCierre: DaySales.totalCierre, identificacionCierre: DaySales.identificacionCierre  }
           })
           .then(back => {
             DaySalesTomorrow.aperturaEfectivo = DaySales.cierreEfectivo

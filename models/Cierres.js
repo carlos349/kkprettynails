@@ -23,6 +23,9 @@ const CierresSchema = new Schema ({
     gastos: {
         type: Number
     },
+    identificacionCierre: {
+        type: String
+    },
     fecha:{
         type: Date,
 		default: Date.now
