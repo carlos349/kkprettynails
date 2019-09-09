@@ -176,6 +176,7 @@ export default {
 	created(){
 		this.marcarNav()
 		console.log(localStorage)
+		this.intervalM()
 		
 	},
 
@@ -210,9 +211,9 @@ export default {
 		mouseOver(){
 			console.log($(".navS").width())
 			setTimeout(() => {
-				if ($(".navS").width() > "200" && this.authTwo == true) {
+				if ($(".navS").width() > "200" ) {
 				$('.menuText').show("slow")
-				this.authTwo = false
+				
 			}
 			}, 500);
 			
@@ -221,7 +222,15 @@ export default {
 		mouseLeave(){
 			$('.menuText').hide()
 			console.log("leave!")
-			this.authTwo = true
+			
+		},
+		intervalM(){
+			setInterval(() => {
+				if ($(".navS").width() < "100" ) {
+				$('.menuText').hide("slow")
+				
+			}
+			}, 500);
 		}
 	},
 
@@ -258,7 +267,7 @@ export default {
 		overflow: hidden !important;
 	}
 	.navS{
-    width: 80px;
+    width: 85px;
 	overflow: hidden;
   	}
 	.dropdown-menu{
