@@ -264,14 +264,14 @@ ventas.get('/CloseDay/:name', (req, res) => {
                 { 
                 $set : { cierreEfectivo: DaySales.cierreEfectivo, cierreBanco: DaySales.cierreBanco, totalCierre: DaySales.totalCierre, identificacionCierre: DaySales.identificacionCierre  }
                 })
-                .then(done => {
+                .then(editClose => {
                   DaySalesTomorrow.aperturaEfectivo = DaySales.cierreEfectivo
                   DaySalesTomorrow.aperturaBanco = DaySales.cierreBanco
                   DaySalesTomorrow.totalApertura = DaySales.totalCierre
                   Cierres.create(DaySalesTomorrow)
-                  .then(newCierre => {
+                  .then(newClose => {
                     VentaDia.remove({})
-                    .then(finish => {
+                    .then(done => {
                       res.json({status: 'ok'})
                     })
                     .catch(err => {
