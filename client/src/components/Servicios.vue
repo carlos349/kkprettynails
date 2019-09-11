@@ -425,7 +425,6 @@
 					}
 					
 				}
-				console.log(this.prestadoresSeleccionadosTwos)
 				$('#myModal2').modal('show')
 			},
 			getManicuristas(){
