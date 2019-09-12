@@ -1,4 +1,5 @@
 <template>
+<div>
 	<div  v-on:click="marcarNav()" v-bind:style="{ 'background-image': 'linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),url(' + require('../assets/sidebar.jpg') + ')' , 'background-size': 'cover', 'height': '100vh', 'position': 'fixed' }"  class=" pl-2 menuVer navS" v-on:mouseenter="mouseOver()" v-on:mouseleave="mouseLeave()">
 		<div style="border-bottom:1.5px solid  rgba(91, 91, 90, .5);" class="p-3  text-center col-md-12"><img src="../assets/logoNew.png" class="logoNonHover"  alt=""></div>
 
@@ -45,6 +46,18 @@
 						<router-link class="text-white align-middle" to="/Usuarios"> <li><font-awesome-icon class="icons" icon="user-lock" />Ver usuarios</li> </router-link>
 					</ul>
 				</div>
+			</div>
+			<div v-if="auth=='loggedin-admin' || auth == 'loggedin'" class="col-sm-12">
+				
+				<span style="cursor:pointer;" v-on:click="processOpen" class="text-white" to="/caja">
+						<div class="listaMenu row p-3">
+							<div class="col-sm-1">
+								<font-awesome-icon class="icone" icon="tags" />
+							</div>
+							<div class=" menuText pl-4 col-sm-10 ">
+								<span class="nonHover">Procesar venta</span> </div>
+						</div>
+				</span>
 			</div>
 			<div id="Ventas" v-on:click="marcarNav('Ventas')" v-if="auth=='loggedin-admin'" class="col-sm-12">
 				
@@ -106,7 +119,7 @@
 						</div>
 				</router-link>
 			</div>
-			<div id="Citas" v-on:click="marcarNav('Citas')" v-if="auth=='loggedin-admin'|| auth == 'loggedin'" class="col-sm-12">
+			<div id="Citas" v-on:click="marcarNav('Citas')" v-if="auth=='loggedin-admin' || auth == 'loggedin'" class="col-sm-12">
 				
 				<router-link  class=" text-white" to="/citas">
 						<div class="listaMenu row p-3">
@@ -142,26 +155,36 @@
 						</div>
 				</router-link>
 			</div>
-
-          <!-- <vue-cal  class="calendarioo vuecal--rounded-theme vuecal--green-theme"
-                   xsmall
-                   hide-view-selector
-                   :time="false"
-                   events-count-on-year-view
-                   default-view="month"
-                   :locale="locale"
-                   :events="eventos"
-                   :disable-views="['week']">
-          </vue-cal> -->
+			
         </div>
+		<div class="modal fade bd-example-modal-xl" id="myModalThree" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		  <div class="modal-dialog modal-lg " role="document">
+		    <div v-bind:style="{ 'background-image': 'url(' + require('../assets/fondo.jpg') + ')' , 'background-size': 'cover' }"  class="modal-content">
+		      <div class="modal-header ">
+		        <h5 class="modal-title text-white" id="exampleModalCenterTitle">Procesar venta</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true" class="text-white">&times;</span>
+		        </button>
+		      </div>
+		      <div class="modal-body">
+		        <procesar></procesar>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+</div>
 </template>
 
 <script>
+import Procesar from "./Procesar"
 import EventBus from './eventBus'
 import router from '../router'
 import jwtDecode from 'jwt-decode'
 
 export default {
+	components: {
+      'Procesar': Procesar
+    },
 	data() {
 		
 		return {
@@ -189,6 +212,9 @@ export default {
 			localStorage.removeItem('image')
 			localStorage.removeItem('email')
 			$(".menuVer").hide()
+		},
+		processOpen(){
+			$('#myModalThree').modal('show')
 		},
 		marcarNav(name){
 			setTimeout(() => {

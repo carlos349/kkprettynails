@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from '@/components/Home'
+import Procesar from '@/components/Procesar'
 import Login from '@/components/Login'
 import Register from '@/components/Register'
 import Profile from '@/components/Profile'
@@ -35,9 +35,9 @@ export default new Router({
       component: Citas
     },
     {
-      path: '/venta',
-      name: 'Home',
-      component: Home
+      path: '/procesar',
+      name: 'procesar',
+      component: Procesar
     },
     {
       path: '/Usuarios',

@@ -1,6 +1,6 @@
 <template>
 <div>
-	<div class="container mt-5 contenedor">
+	<div class="container contenedor">
 		<div class="row">
 			<div class="col-md-12">
 				<form v-on:submit.prevent="verificacionCliente">
@@ -98,7 +98,7 @@
 					<div class="input-group-prepend">
 						<button class="btn plusBtns" v-on:click="borrarServicios()" id="button-addon2"><font-awesome-icon icon="trash"/></button>
 					</div>
-					<input type="date" v-model="fechaVenta">
+					
 				</div>
 				<button v-if="!inspector" type="button" class="font-weight-bold mb-3 btn procesar w-100" v-on:click="procesar" disabled>Procesar
 				</button>
@@ -441,7 +441,7 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 		font-size: 0.9em !important;
 		font-family: 'Raleway', sans-serif;
 		font-weight:600;
-		color:#000 !important
+		color:#fff !important
 	}
 	@media (max-width: 1000px) {
 		.spanInputs{
@@ -484,12 +484,11 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 		margin-bottom:0 !important;
 	}
 	.contenedor{
-		width:30%;
-		min-width:400px;
-		border:2px solid #102229;
+		width:40%;
+		border:2px solid #ccc;
 		padding-top:12px;
-		background-color: #fff;
-		min-width: 555px;
+		background-color: transparent;
+		min-width: 700px;
 	}
 	.selectMani{
 		background-color:#355461 !important;
@@ -500,8 +499,8 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 	.Lista{
 		overflow-x: hidden;
 		overflow-y:scroll;
-		max-height: 400px;
-		height:400px;
+		max-height: 190px;
+		height:190px;
 	}
 	.Lista::-webkit-scrollbar {
     width: 8px;     /* Tamaño del scroll en vertical */
@@ -516,7 +515,7 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 	.lupa{
 		position:absolute;
 		right:4%;
-		top:13%;
+		top:17%;
 		font-size:1.4em
 	}
 	.buscar::-webkit-input-placeholder {

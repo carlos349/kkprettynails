@@ -5,14 +5,14 @@ import App from './App'
 import router from './router'
 import VueSweetalert2 from 'vue-sweetalert2';
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faRedo, faUserCheck, faTrash, faEdit, faCopy, faTimes, faSearch, faAngleLeft, faAngleRight, faCreditCard, faDollarSign, faCloudUploadAlt, faUsers, faUserLock, faPlus, faClipboardCheck, faTasks, faPollH, faUserTag, faBoxOpen, faSearchDollar, faChartLine, faCashRegister, faCaretDown, faCaretUp, faBoxes, faCheckSquare   } from '@fortawesome/free-solid-svg-icons'
+import { faRedo, faUserCheck, faTrash, faEdit, faCopy, faTimes, faSearch, faAngleLeft, faAngleRight, faCreditCard, faDollarSign, faCloudUploadAlt, faUsers, faUserLock, faPlus, faClipboardCheck, faTasks, faPollH, faUserTag, faBoxOpen, faSearchDollar, faChartLine, faCashRegister, faCaretDown, faCaretUp, faBoxes, faCheckSquare, faTags} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import Autocomplete from '@trevoreyre/autocomplete-vue'
 import '@trevoreyre/autocomplete-vue/dist/style.css'
 
 require("../node_modules/bootstrap/dist/css/bootstrap.css")
 
-library.add(faRedo, faUserCheck, faTrash,faEdit,faCopy,faTimes,faSearch, faAngleRight, faAngleLeft, faCreditCard, faDollarSign, faCloudUploadAlt, faUsers, faUserLock, faPlus, faClipboardCheck, faTasks, faPollH, faUserTag, faBoxOpen, faSearchDollar, faChartLine, faCashRegister, faCaretDown, faCaretUp, faBoxes, faCheckSquare )
+library.add(faRedo, faUserCheck, faTrash,faEdit,faCopy,faTimes,faSearch, faAngleRight, faAngleLeft, faCreditCard, faDollarSign, faCloudUploadAlt, faUsers, faUserLock, faPlus, faClipboardCheck, faTasks, faPollH, faUserTag, faBoxOpen, faSearchDollar, faChartLine, faCashRegister, faCaretDown, faCaretUp, faBoxes, faCheckSquare, faTags )
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.config.productionTip = false
