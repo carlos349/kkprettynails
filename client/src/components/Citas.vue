@@ -3,7 +3,7 @@
     <div class="row">
       <div v-bind:style="{ 'background-image': 'linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),url(' + require('../assets/sidebar.jpg') + ')' , 'background-size': 'cover' }" id="mySidenav" class="col-sm-2 menuVertical">
           <ul class="listaMenu">
-            <li  data-toggle="modal" data-target=".bd-example-modal-xl" v-on:click="aja()"><span></span>Generar cita</li>
+            <li  data-toggle="modal" data-target=".genCita"><span></span>Generar cita</li>
             <router-link class="rout" to="/venta"><li>Procesar venta</li></router-link>
             <li>Eliminar cita</li>
                       </ul>
@@ -45,7 +45,7 @@
       </div>
       
 
-    <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+    <div class="modal fade genCita bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-xl">
       <div v-bind:style="{ 'background-image': 'url(' + require('../assets/fondo.jpg') + ')' , 'background-size': 'cover' }" class="modal-content armarCita p-3">
         <div style="box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);background-color:rgba(0, 0, 0, 0.5)" class="container p-3">
@@ -202,7 +202,9 @@
         salida:'Seleccione',
         fecha: '',
         nombreCliente: '',
-        selectedEvent: {}
+        selectedEvent: {},
+        servicioCita: [],
+        manicuristaCita: []
       }
     },
     beforeCreate() {
@@ -258,6 +260,47 @@
         $('#myModal').modal('show')
       },
       marcarServicio(prestadores,nombre,tiempo,index){
+        
+        console.log(prestadores.length +"--"+ nombre + "--" + tiempo + "--" + index)
+        if (this.servicioCita == '') {
+          this.servicioCita.push(nombre)
+          for (let index = 0; index < prestadores.length; index++) {
+            this.manicuristaCita.push(prestadores[index])
+          }
+          console.log(this.servicioCita)
+        }
+        else{
+          var counter = $("#"+index).text()
+          var inspector = true
+          var inspector2 = true
+          console.log(counter)
+          for (let index = 0; index < this.servicioCita.length; index++) {
+            console.log(nombre + "("+ counter +")" + "-" + this.servicioCita.length )
+            if (this.servicioCita[index] == nombre || this.servicioCita[index] == nombre + "("+ counter +")" ) {
+              this.servicioCita.splice(index,1)
+              this.servicioCita.push(nombre+ "(" + (parseFloat(counter) + parseFloat(1)) + ")")
+              console.log(this.servicioCita)
+              inspector = false
+              break  
+            }
+          }
+          if (inspector == true) {
+            this.servicioCita.push(nombre)
+            console.log(this.servicioCita)
+          }      
+             for (let index = 0; index < this.manicuristaCita.length; index++) {
+                  for (let c = 0; c < prestadores.length; c++) {
+                    if (prestadores[c] != this.manicuristaCita[index]) {
+                      
+                    }
+
+                
+              }
+               
+             } 
+             
+        }
+        console.log(this.manicuristaCita)
         $("#redo").show()
         $(".Sig").addClass("marcar")
         $(".Sig").prop("disabled", false)

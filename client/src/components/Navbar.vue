@@ -157,7 +157,7 @@
 			</div>
 			
         </div>
-		<div class="modal fade bd-example-modal-xl" id="myModalThree" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		<div class="modal fade bd-example-modal-xl" id="myModalThree" tabindex="-1"  aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-lg " role="document">
 		    <div v-bind:style="{ 'background-image': 'url(' + require('../assets/fondo.jpg') + ')' , 'background-size': 'cover' }"  class="modal-content">
 		      <div class="modal-header ">
