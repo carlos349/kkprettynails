@@ -1,6 +1,6 @@
 <template id="">
-  <div class="container-fluid">
-    <div class="row">
+  <div class="container-fluid ">
+    <div class="row pl-2">
       <div v-bind:style="{ 'background-image': 'linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),url(' + require('../assets/sidebar.jpg') + ')' , 'background-size': 'cover' }" id="mySidenav" class="col-sm-2 menuVertical">
           <ul class="listaMenu">
             <li  data-toggle="modal" data-target=".genCita"><span></span>Generar cita</li>
@@ -541,7 +541,7 @@
     width: 10%
   }
   .menuVertical{
-    height:92.8vh;
+    height:100vh;
     background-color:#213b45;
     transition: 0.3s; 
   }
