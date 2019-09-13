@@ -560,12 +560,14 @@ ventas.post('/verificacioncliente', (req, res) => {
 })
 
 ventas.post('/procesar', (req, res) => {
+  console.log(req.body.fecha)
   let today = ''
-  if (req.body.fecha == '') {
+  if (req.body.fecha == 'fecha') {
     today = new Date()
   }else{
-    today = new Date(req.body.fecha + "T21:13:57.817+00:00")
+    today = new Date(req.body.fecha)
   }
+  console.log(today)
   const total = req.body.total
   const comision = '0.' + req.body.comision
   const comisionFinal = parseFloat(total) * parseFloat(comision)

@@ -98,10 +98,11 @@
 					<div class="input-group-prepend">
 						<button class="btn plusBtns" v-on:click="borrarServicios()" id="button-addon2"><font-awesome-icon icon="trash"/></button>
 					</div>
-					
+					<input type="date" class="form-control">
 				</div>
 				<button v-if="!inspector" type="button" class="font-weight-bold mb-3 btn procesar w-100" v-on:click="procesar" disabled>Procesar
 				</button>
+				
 				<button v-else type="button" class="font-weight-bold mb-3 btn procesar w-100" v-on:click="procesar">Procesar
 				</button>
 			</div>
@@ -179,7 +180,7 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 			nombreCliente: '',
 			instagramCliente: '',
 			precio: '0',
-			fechaVenta:'',
+			fechaVenta:'fecha',
 			total:'0',
 			correoCliente: '',
 			documentoManicurista: '',

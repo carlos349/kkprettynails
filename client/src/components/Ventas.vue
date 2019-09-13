@@ -374,6 +374,7 @@ export default {
 
           this.ventas = res.data.sales
           let fechaBien = ''
+          this.fechas = []
           for (let index = 0; index < res.data.sales.length; index++) {
             let fech = new Date(res.data.sales[index].fecha)
             fechaBien = fech.getDate() +"/"+ (fech.getMonth() + 1) +"/"+fech.getFullYear() +" "+" ("+ fech.getHours()+":"+ fech.getMinutes()+")"
