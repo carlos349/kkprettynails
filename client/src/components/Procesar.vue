@@ -39,7 +39,7 @@
 						</tr>
 					</thead>
 				</table>
-				<div class="Lista">
+				<div class="ListaProcesar">
 					<table class="table table-dark tableBg" id="myTable">
 						<tbody>
 							<tr v-for="(servicio, index) of servicios" >
@@ -496,13 +496,13 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 		border:none !important;
 		border-bottom:2px solid #102229 !important;
 	}
-	.Lista{
+	.ListaProcesar{
 		overflow-x: hidden;
 		overflow-y:scroll;
 		max-height: 190px;
 		height:190px;
 	}
-	.Lista::-webkit-scrollbar {
+	.ListaProcesar::-webkit-scrollbar {
     width: 8px;     /* Tamaño del scroll en vertical */
     height: 8px;    /* Tamaño del scroll en horizontal */
     display: none;  /* Ocultar scroll */

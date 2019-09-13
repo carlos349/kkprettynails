@@ -71,7 +71,7 @@
 							</tr>
 						</thead>
 					</table>	
-					<div class="Lista tbl-content">
+					<div class="ListaInventario tbl-content">
 						<table class="table table-light table-borderless table-striped text-left" style="font-size:.8em">
 							<tbody>
 								<tr v-for="(arrayProduct, index) of arrayProducts">
@@ -82,16 +82,16 @@
 										{{arrayProduct.marca}}
 									</td>
 									<td>
-										{{arrayProduct.gramos}}
+										{{arrayProduct.gramos}}Gr.
 									</td>
 									<td>
 										{{arrayProduct.cantidad}}
 									</td>
 									<td>
-										{{arrayProduct.monto}}
+										{{formatPrice(arrayProduct.monto)}}
 									</td>
 									<td>
-										{{arrayProduct.montoTotal}}
+										{{formatPrice(arrayProduct.montoTotal)}}
 									</td>
 									<td>
 										<!-- <div  v-for="(service,indexTwo) of arrayProduct.servicios">
@@ -160,6 +160,15 @@
 		    </div>
 		  </div>
 		</div>
+		<div class="row pt-3">
+			<div class="container formGastos">
+				<form v-on:submit.prevent="registerExpense">
+					<input type="date" placeholder="Gasto" v-model="expenseDate" >
+					<input type="text" style="padding-bottom:11px;" placeholder="Cantidad del gasto" v-model="expenseAmount">
+					<button type="submit" class="btn buttonExpense">Registrar Gasto <font-awesome-icon class="icone" icon="search-dollar" /></button>
+				</form>
+			</div>
+		</div>
 	</div>
 </template>
 <script type="text/javascript">
@@ -168,6 +177,8 @@
 export default {
 	data(){
 		return {
+			expenseDate:'',
+			expenseAmount:'',
 			product: '',
 			brand: '',
 			grams: '',
@@ -278,6 +289,18 @@ export default {
 				console.log(err)
 			})
 		},
+		registerExpense(){
+			axios.post('expenses', {
+				expense: this.expenseAmount,
+				dateSelect: this.expenseDate
+			})
+			.then(res => {
+				console.log(res)
+			})
+			.catch(err => {
+				console.log(err)
+			})
+		},
 		pasarDatosEdit(monto,cantidad,gramos,marca,producto,services,servicesId, id){
 			this.serviceSelectTwo = []
 			$(".desMarc").prop("checked", false)
@@ -337,9 +360,11 @@ export default {
 				this.serviceSelectTwo.push(service)
 				this.serviceIdSelectTwo.push(id)
 			}
-			console.log(this.serviceSelectTwo)|
-			console.log(this.serviceIdSelectTwo)
-		}
+		},
+		formatPrice(value) {
+			let val = (value/1).toFixed(2).replace('.', ',')
+			return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+		},
 	}
 }
 </script>
@@ -356,9 +381,8 @@ export default {
 		padding: 20px;
 		overflow-x: hidden;
 		overflow-y:scroll;
-		max-height: 90vh;
+		max-height: 80vh;
 		height:auto;
-		border-radius:5px;
 		border-radius:5px;
 	}
 	.forms::-webkit-scrollbar {
@@ -377,14 +401,14 @@ export default {
 		background-color:#ccc;
 		
 	}
-	.Lista{
+	.ListaInventario{
 		overflow-x: hidden;
 		overflow-y:scroll;
-		max-height: 420px;
+		max-height: 75vh;
 		height:auto;
 		border-radius:5px;
 	}
-	.Lista::-webkit-scrollbar {
+	.ListaInventario::-webkit-scrollbar {
 		width: 8px;     /* Tamaño del scroll en vertical */
 		height: 8px;    /* Tamaño del scroll en horizontal */
 		display: none;  /* Ocultar scroll */
@@ -462,4 +486,48 @@ export default {
 		-ms-transform: rotate(45deg);
 		transform: rotate(45deg);
 	}
+	.buttonExpense{
+		border: solid 2px #FF512F;
+		color:#FF512F;
+		font-family: 'Raleway', sans-serif;
+		font-weight:600;
+		width: 49%;
+		transition: all 0.5s ease-out;
+	}
+	.buttonExpense:hover{
+		color:azure;
+		background-color: #FF512F;
+		transition: all 0.5s ease-out;
+	}
+	.buttonExpense .icone{
+		color:#FF512F;
+	}
+	.buttonExpense:hover .icone{
+		color:azure;
+		transition: all 0.5s ease-out;
+	}
+	.formGastos input{
+		width: 25%;
+		padding: 10px;
+		border:none;
+		background: transparent;
+		border-bottom:solid 2px #213b45;
+		outline: none;
+		color:#102229 !important;
+		font-family: 'Raleway', sans-serif;
+		font-weight:600;
+		transition: all 0.3s ease-out;
+	}
+	.formGastos{
+		margin-top: 1%;
+		background-color:#fff;
+		box-shadow: 0 0.46875rem 2.1875rem rgba(4,9,20,0.03), 0 0.9375rem 1.40625rem rgba(4,9,20,0.03), 0 0.25rem 0.53125rem rgba(4,9,20,0.05), 0 0.125rem 0.1875rem rgba(4,9,20,0.03);
+		border-radius: 5px;
+		padding: 15px;
+	}
+	.formGastos input:focus{
+		border-bottom:solid 2px #FF512F;
+		transition: all 0.3s ease-out;
+	}
+	
 </style>
