@@ -565,8 +565,10 @@ ventas.post('/procesar', (req, res) => {
   if (req.body.fecha == 'fecha') {
     today = new Date()
   }else{
+    console.log('estoy aqui')
     today = new Date(req.body.fecha)
   }
+  console.log(req.body.fecha)
   console.log(today)
   const total = req.body.total
   const comision = '0.' + req.body.comision
