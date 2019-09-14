@@ -217,7 +217,7 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 					for (let index = 0; index < this.manicuristas.length; index++) {
 						this.arregloManicuristas.push(this.manicuristas[index].nombre)
 					}
-				}, 1000);
+				}, 2000);
 			},
 		  	search(input) {
 				
