@@ -20,13 +20,15 @@ expenses.post('/', (req, res) => {
 
     dateNow.setDate(dateNow.getDate() + 1)
     const formatDateTwo = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()
-    console.log(formatDate)
-    console.log(formatDateTwo)
     Cierres.findOneAndUpdate({fecha: { $gte: formatDate, $lte: formatDateTwo }},
         { $set : { gastos: expense }
     })
     .then(resp => {
-        res.json({status: 'ok'})
+        if (resp) {
+            res.json({status: 'ok'})
+        }else{
+            res.json({status: 'bad'})
+        }
     })
     .catch(err => {
         res.send(err)

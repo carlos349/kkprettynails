@@ -202,10 +202,15 @@ ventas.get('/CloseDay/:name', (req, res) => {
   const dateTomorrow = new Date(formatDateTwo)
   
   let DaySales = {
+    aperturaEfectivo: 0,
+    aperturaBanco: 0,
+    totalApertura: 0,
     cierreEfectivo: 0,
     cierreBanco: 0,
     totalCierre: 0,
-    identificacionCierre: ''
+    gastos: 0,
+    identificacionCierre: '',
+    fecha: new Date()
   }
 
   let DaySalesTomorrow = {
@@ -243,35 +248,94 @@ ventas.get('/CloseDay/:name', (req, res) => {
         }
       }
       Cierres.find()
-      .then(lastDate => {
-        
-      })
-      Cierres.find({
-        fecha: { $gte: formatDate, $lte: formatDateTwo }
-      })
-      .then(close => {
-        DaySales.identificacionCierre = closeName
-        if (close.length === 0) {
-          Cierres.find().sort({fecha: -1}).limit(1)
-          .then(lastDate => { 
-            DaySalesThree.aperturaEfectivo = lastDate[0].aperturaEfectivo
-            DaySalesThree.aperturaBanco = lastDate[0].aperturaBanco
-            DaySalesThree.totalApertura = lastDate[0].totalApertura
-            DaySales.totalCierre = lastDate[0].totalApertura + DaySales.cierreBanco + DaySales.cierreEfectivo
-            Cierres.create(DaySalesThree)
-            .then(closing => {
-              Cierres.findByIdAndUpdate(closing._id, 
-                { 
-                $set : { cierreEfectivo: DaySales.cierreEfectivo, cierreBanco: DaySales.cierreBanco, totalCierre: DaySales.totalCierre, identificacionCierre: DaySales.identificacionCierre  }
+      .then(allClose => {
+        if (allClose.length === 0) {
+          DaySales.totalCierre = DaySales.cierreBanco + DaySales.cierreEfectivo
+          DaySales.identificacionCierre = closeName
+          Cierres.create(DaySales)
+          .then(first => {
+            console.log(first)
+            DaySalesTomorrow.aperturaEfectivo = DaySales.cierreEfectivo
+            DaySalesTomorrow.aperturaBanco = DaySales.cierreBanco
+            DaySalesTomorrow.totalApertura = DaySales.totalCierre
+            Cierres.create(DaySalesTomorrow)
+            .then(clean => {
+              console.log('llego aqui')
+              VentaDia.remove({})
+                .then(done => {
+                  console.log('ok')
+                  res.json({status: 'ok'})
                 })
-                .then(editClose => {
+                .catch(err => {
+                  res.send(err)
+                })
+            })
+            .catch(err => {
+              res.send(err)
+            })
+          })
+          .catch(err => {
+            res.send(err)
+          })
+        }else{
+          Cierres.find({
+            fecha: { $gte: formatDate, $lte: formatDateTwo }
+          })
+          .then(close => {
+            DaySales.identificacionCierre = closeName
+            if (close.length === 0) {
+              Cierres.find().sort({fecha: -1}).limit(1)
+              .then(lastDate => { 
+                DaySalesThree.aperturaEfectivo = lastDate[0].aperturaEfectivo
+                DaySalesThree.aperturaBanco = lastDate[0].aperturaBanco
+                DaySalesThree.totalApertura = lastDate[0].totalApertura
+                DaySales.totalCierre = lastDate[0].totalApertura + DaySales.cierreBanco + DaySales.cierreEfectivo
+                Cierres.create(DaySalesThree)
+                .then(closing => {
+                  Cierres.findByIdAndUpdate(closing._id, 
+                    { 
+                    $set : { cierreEfectivo: DaySales.cierreEfectivo, cierreBanco: DaySales.cierreBanco, totalCierre: DaySales.totalCierre, identificacionCierre: DaySales.identificacionCierre  }
+                    })
+                    .then(editClose => {
+                      DaySalesTomorrow.aperturaEfectivo = DaySales.cierreEfectivo
+                      DaySalesTomorrow.aperturaBanco = DaySales.cierreBanco
+                      DaySalesTomorrow.totalApertura = DaySales.totalCierre
+                      Cierres.create(DaySalesTomorrow)
+                      .then(newClose => {
+                        VentaDia.remove({})
+                        .then(done => {
+                          res.json({status: 'ok'})
+                        })
+                        .catch(err => {
+                          res.send(err)
+                        })
+                      })
+                      .catch(err => {
+                        res.send(err)
+                      })
+                    })
+                    .catch(err => {
+                      res.send(err)
+                    })
+                })
+                .catch(err => {
+                  res.send(err)
+                })
+              })
+            }else{       
+                DaySales.totalCierre = close[0].totalApertura + DaySales.cierreBanco + DaySales.cierreEfectivo
+                Cierres.findOneAndUpdate({fecha: { $gte: formatDate, $lte: formatDateTwo }}, 
+                { 
+                 $set : { cierreEfectivo: DaySales.cierreEfectivo, cierreBanco: DaySales.cierreBanco, totalCierre: DaySales.totalCierre, identificacionCierre: DaySales.identificacionCierre  }
+                })
+                .then(back => {
                   DaySalesTomorrow.aperturaEfectivo = DaySales.cierreEfectivo
                   DaySalesTomorrow.aperturaBanco = DaySales.cierreBanco
                   DaySalesTomorrow.totalApertura = DaySales.totalCierre
                   Cierres.create(DaySalesTomorrow)
-                  .then(newClose => {
+                  .then(newCierre => {
                     VentaDia.remove({})
-                    .then(done => {
+                    .then(finish => {
                       res.json({status: 'ok'})
                     })
                     .catch(err => {
@@ -285,42 +349,12 @@ ventas.get('/CloseDay/:name', (req, res) => {
                 .catch(err => {
                   res.send(err)
                 })
-            })
-            .catch(err => {
-              res.send(err)
-            })
+            }
           })
-        }else{
-            DaySales.totalCierre = close[0].totalApertura + DaySales.cierreBanco + DaySales.cierreEfectivo
-            Cierres.findOneAndUpdate({fecha: { $gte: formatDate, $lte: formatDateTwo }}, 
-            { 
-             $set : { cierreEfectivo: DaySales.cierreEfectivo, cierreBanco: DaySales.cierreBanco, totalCierre: DaySales.totalCierre, identificacionCierre: DaySales.identificacionCierre  }
-            })
-            .then(back => {
-              DaySalesTomorrow.aperturaEfectivo = DaySales.cierreEfectivo
-              DaySalesTomorrow.aperturaBanco = DaySales.cierreBanco
-              DaySalesTomorrow.totalApertura = DaySales.totalCierre
-              Cierres.create(DaySalesTomorrow)
-              .then(newCierre => {
-                VentaDia.remove({})
-                .then(finish => {
-                  res.json({status: 'ok'})
-                })
-                .catch(err => {
-                  res.send(err)
-                })
-              })
-              .catch(err => {
-                res.send(err)
-              })
-            })
-            .catch(err => {
-              res.send(err)
-            })
+          .catch(err => {
+            res.send(err)
+          })
         }
-      })
-      .catch(err => {
-        res.send(err)
       })
     }else{
       res.json({'status':'bad'})
@@ -560,16 +594,12 @@ ventas.post('/verificacioncliente', (req, res) => {
 })
 
 ventas.post('/procesar', (req, res) => {
-  console.log(req.body.fecha)
   let today = ''
   if (req.body.fecha == 'fecha') {
     today = new Date()
   }else{
-    console.log('estoy aqui')
     today = new Date(req.body.fecha)
   }
-  console.log(req.body.fecha)
-  console.log(today)
   const total = req.body.total
   const comision = '0.' + req.body.comision
   const comisionFinal = parseFloat(total) * parseFloat(comision)

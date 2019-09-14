@@ -295,7 +295,24 @@ export default {
 				dateSelect: this.expenseDate
 			})
 			.then(res => {
-				console.log(res)
+				console.log(res.data)
+				if (res.data.status == 'ok') {
+					this.$swal({
+						type: 'success',
+						title: 'Gastos registrado',
+						showConfirmButton: false,
+						timer: 1500
+					})
+					this.expenseDate = ''
+					this.expenseAmount = ''					
+				}else{
+					this.$swal({
+						type: 'error',
+						title: 'No hay cierres para esa fecha',
+						showConfirmButton: false,
+						timer: 1500
+					})
+				}
 			})
 			.catch(err => {
 				console.log(err)
