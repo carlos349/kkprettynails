@@ -186,9 +186,7 @@ export default {
 	},
 	created(){
 		this.marcarNav()
-		console.log(localStorage)
 		this.intervalM()
-		
 	},
 
 	methods: {
@@ -223,7 +221,6 @@ export default {
 			
 		},
 		mouseOver(){
-			console.log($(".navS").width())
 			setTimeout(() => {
 				if ($(".navS").width() > "200" ) {
 				$('.menuText').show("slow")
@@ -234,9 +231,7 @@ export default {
 			
 		},
 		mouseLeave(){
-			$('.menuText').hide()
-			console.log("leave!")
-			
+			$('.menuText').hide()		
 		},
 		intervalM(){
 			setInterval(() => {

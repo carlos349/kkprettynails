@@ -192,6 +192,86 @@ ventas.get('/getClosingDay', (req, res) => {
   })
 })
 
+ventas.get('/totalSales/:month', (req, res) => {
+  const month = req.params.month
+  const december = 11
+  
+  const dateNow = new Date()
+  const formatDate = dateNow.getFullYear() +"-"+(parseFloat(month) + parseFloat(1))+"-"+"1"
+  const formatDateTwo = dateNow.getFullYear() +"-"+(month - 1)+"-"+"1"
+
+  const formatDateFor = dateNow.getFullYear() +"-"+month+"-"+"10"
+  const formatDateTwoFor = dateNow.getFullYear() +"-"+(month - 1)+"-"+"10"
+
+  if (month == 1) {
+    formatDateTwo = dateNow.getFullYear() +"-"+december+"-"+"1"
+  }
+  let getMonth = new Date(formatDateFor)
+  let getMonthPrev = new Date(formatDateTwoFor)
+
+  if (month == 0) {
+    getMonth = dateNow.getMonth()
+    if (getMonth == 1) {
+      getMonthPrev = 11
+    }else{
+      getMonthPrev = getMonth - 1
+    }
+  }else{
+    getMonth = getMonth.getMonth()
+    if (getMonth == 1) {
+      getMonthPrev = 11
+    }else{
+      getMonthPrev = getMonthPrev.getMonth()
+    }
+  }
+  
+  let totalLocal = 0
+  let gananciaNeta = 0
+  let gananciaTotal = 0
+  let localAnterior = 0
+  let netaAnterior = 0
+  let totalAnterior = 0
+
+  if (month == 0) {
+    Venta.find()
+    .then(resp => {
+      for (let index = 0; index < resp.length; index++) {
+        var fechL = new Date(resp[index].fecha)
+        if (getMonth == fechL.getMonth()) {
+          totalLocal = totalLocal + resp[index].ganancialocal 
+          gananciaNeta = gananciaNeta + resp[index].ganancianeta
+          gananciaTotal = gananciaTotal + resp[index].total
+        }else if (getMonthPrev == fechL.getMonth()) {
+          localAnterior = localAnterior + resp[index].ganancialocal
+          netaAnterior = netaAnterior + resp[index].ganancianeta
+          totalAnterior = totalAnterior + resp[index].total
+        }
+      }
+      res.json({totalLocal: totalLocal, gananciaNeta: gananciaNeta, gananciaTotal: gananciaTotal, localAnterior: localAnterior, netaAnterior: netaAnterior, totalAnterior: totalAnterior })
+    })
+  }else{
+    Venta.find({
+      fecha: { $gte: formatDateTwo, $lte: formatDate  }
+    })
+    .then(resp => {
+      for (let index = 0; index < resp.length; index++) {
+        var fechL = new Date(resp[index].fecha)
+        if (getMonth == fechL.getMonth()) {
+          totalLocal = totalLocal + resp[index].ganancialocal 
+          gananciaNeta = gananciaNeta + resp[index].ganancianeta
+          gananciaTotal = gananciaTotal + resp[index].total
+        }else if (getMonthPrev == fechL.getMonth()) {
+          localAnterior = localAnterior + resp[index].ganancialocal
+          netaAnterior = netaAnterior + resp[index].ganancianeta
+          totalAnterior = totalAnterior + resp[index].total
+        }
+      }
+      res.json({totalLocal: totalLocal, gananciaNeta: gananciaNeta, gananciaTotal: gananciaTotal, localAnterior: localAnterior, netaAnterior: netaAnterior, totalAnterior: totalAnterior})
+    })
+  }
+
+})
+
 ventas.get('/CloseDay/:name', (req, res) => {
   const closeName = req.params.name
   const dateNow = new Date()

@@ -280,7 +280,12 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 					}
 				})
 				.catch(err => {
-					console.log(err)
+					this.$swal({
+						type: 'error',
+						title: 'experimentamos problemas :(',
+						showConfirmButton: false,
+						timer: 1500
+					})
 				})
 			},
 			ingresoCliente() {
@@ -305,8 +310,13 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 					}
 				})
 				.catch(err => {
-					console.log(err)
-				})
+						this.$swal({
+							type: 'error',
+							title: 'experimentamos problemas :(',
+							showConfirmButton: false,
+							timer: 1500
+						})
+					})
 			},
 			elegirManicurista(){
 				axios.get('manicuristas/justone/' + this.maniSelect)
@@ -314,6 +324,14 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 					this.documentoManicurista = res.data.documento
 					this.comision = res.data.porcentaje
 					this.nombreManicurista = this.maniSelect
+				})
+				.catch(err => {
+					this.$swal({
+						type: 'error',
+						title: 'experimentamos problemas :(',
+						showConfirmButton: false,
+						timer: 1500
+					})
 				})
 			},
 			borrarServicio(servicio,index,esto,precio){
@@ -376,35 +394,56 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 				
 				axios.put('ventas/updateServicesMonth/' + servicio)
 				.catch(err => {
-					console.log(err)
+					this.$swal({
+						type: 'error',
+						title: 'experimentamos problemas :(',
+						showConfirmButton: false,
+						timer: 1500
+					})
 				})
 			},
 			procesar() {
-				axios.post('ventas/procesar', {
-					cliente: this.nombreCliente,
-					manicurista: this.maniSelect,
-					servicios: this.serviciosSelecionados,
-					comision: this.comision,
-					mediopago:this.pagoTipo,
-					descuento:this.descuento,
-					fecha:this.fechaVenta,
-					total: this.totalSinFormato,
-					documentoManicurista: this.documentoManicurista
-				})
-				.then(res => {
-					console.log(res)
-					if (res.data.status == "Venta registrada") {
-						setTimeout(function(){
-							location.reload()
-						},400)
+				if (this.nombreCliente != '' && this.maniSelect != '' && this.pagoTipo != '') {
+					axios.post('ventas/procesar', {
+						cliente: this.nombreCliente,
+						manicurista: this.maniSelect,
+						servicios: this.serviciosSelecionados,
+						comision: this.comision,
+						mediopago:this.pagoTipo,
+						descuento:this.descuento,
+						fecha:this.fechaVenta,
+						total: this.totalSinFormato,
+						documentoManicurista: this.documentoManicurista
+					})
+					.then(res => {
+						if (res.data.status == "Venta registrada") {
+							setTimeout(function(){
+								location.reload()
+							},400)
+							this.$swal({
+								type: 'success',
+								title: 'Venta procesada',
+								showConfirmButton: false,
+								timer: 1500
+							})
+						}
+					}).catch(err => {
 						this.$swal({
-						  type: 'success',
-						  title: 'Venta procesada',
-						  showConfirmButton: false,
-						  timer: 1500
+							type: 'error',
+							title: 'experimentamos problemas :(',
+							showConfirmButton: false,
+							timer: 1500
 						})
-					}
-				})
+					})
+				}else{
+					this.$swal({
+						type: 'error',
+						title: 'Complete los datos necesarios',
+						showConfirmButton: false,
+						timer: 1500
+					})
+				}
+				
 			},
 			borrarServicios(){
 				$(".conteoServ").text(0)
