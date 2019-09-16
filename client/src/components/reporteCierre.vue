@@ -14,7 +14,7 @@
                         <th class="text-right">Montos</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="text-white">
                     <tr>
                         <td style="font-size:1.3em">Apertura efectivo</td>
                         <td class="text-right" style="font-size:1.3em">{{formatPrice(aperturaefectivo)}}</td>
@@ -109,7 +109,7 @@
                     this.gastos = res.data.gastos
                     this.codigo = res.data._id
                     this.identificacionCierre = res.data.identificacionCierre
-                    this.cuenta = res.data.totalApertura + res.data.cierreEfectivo + res.data.cierreBanco - res.data.totalCierre
+                    this.cuenta = res.data.gastos + res.data.totalApertura + res.data.cierreEfectivo + res.data.cierreBanco - res.data.totalCierre
                     const date = new Date(res.data.fecha)
                     this.fecha = date.getDate()+"-"+(date.getMonth() + 1)+"-"+date.getFullYear()
                 })

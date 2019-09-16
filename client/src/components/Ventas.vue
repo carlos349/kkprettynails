@@ -220,6 +220,7 @@ export default {
     return {
       venta: new Ventas(),
       ventas: [],
+      ventasAnterior: [],
       fecha: new Fechas(),
       fechas: [],
       totalLocal: 0,
@@ -274,54 +275,15 @@ export default {
       $('.afuera').show()
     },
     totales(month){
-      var fechaTotales = new Date() 
-      var formatDate = fechaTotales.getFullYear()+"-"+month+"-10"
-      var date = new Date(formatDate)
-      var mesTotales = 0
-      if (month === 0) {
-        mesTotales = fechaTotales.getMonth()
-      }else{
-        mesTotales = date.getMonth()
-      }
-    
-      setTimeout(() => {
-        for (let i = 0; i < this.ventas.length; i++) {
-          var fechL = new Date(this.ventas[i].fecha)
-          if (mesTotales == fechL.getMonth() ) {
-            this.totalLocal = parseFloat(this.ventas[i].ganancialocal) + parseFloat(this.totalLocal)
-          }      
-          else if (mesTotales - 1 == fechL.getMonth() ){
-            this.localAnterior = parseFloat(this.ventas[i].ganancialocal) + parseFloat(this.localAnterior)
-          }
-        }
-        for (let i = 0; i < this.ventas.length; i++) {
-          var fechN = new Date(this.ventas[i].fecha)
-          if (mesTotales == fechN.getMonth() ) {
-            this.gananciaNeta = parseFloat(this.ventas[i].ganancianeta) + parseFloat(this.gananciaNeta)
-          }      
-          else if (mesTotales - 1 == fechN.getMonth() ){
-            this.netaAnterior = parseFloat(this.ventas[i].ganancianeta) + parseFloat(this.netaAnterior)
-          }
-        }
-        for (let i = 0; i < this.ventas.length; i++) {
-          var fech = new Date(this.ventas[i].fecha)
-          if (mesTotales == fech.getMonth() ) {
-            this.gananciaTotal = parseFloat(this.ventas[i].total) + parseFloat(this.gananciaTotal)
-          }      
-          else if (mesTotales - 1 == fech.getMonth() ){
-            this.totalAnterior = parseFloat(this.ventas[i].total) + parseFloat(this.totalAnterior)
-          }
-        }
-        this.totalLocal = this.formatPrice(this.totalLocal)
-        this.gananciaNeta = this.formatPrice(this.gananciaNeta)
-        this.gananciaTotal = this.formatPrice(this.gananciaTotal)
-        this.localAnterior = this.formatPrice(this.localAnterior)
-        this.netaAnterior = this.formatPrice(this.netaAnterior)
-        this.totalAnterior = this.formatPrice(this.totalAnterior)
-
-        
-      }, 500);
-     
+      axios.get('ventas/totalSales/'+month)
+      .then(res => {
+        this.totalLocal = this.formatPrice(res.data.totalLocal)
+        this.gananciaNeta = this.formatPrice(res.data.gananciaNeta)
+        this.gananciaTotal = this.formatPrice(res.data.gananciaTotal)
+        this.localAnterior = this.formatPrice(res.data.localAnterior)
+        this.netaAnterior = this.formatPrice(res.data.netaAnterior)
+        this.totalAnterior = this.formatPrice(res.data.totalAnterior)
+      })
     },
     myFunction() {
       var input, filter, table, tr, td, i, txtValue;
@@ -371,9 +333,9 @@ export default {
           const userlist = res.data.chart
           this.chartdata = userlist
           this.loaded = true
-
           this.ventas = res.data.sales
           let fechaBien = ''
+          this.fechas = []
           for (let index = 0; index < res.data.sales.length; index++) {
             let fech = new Date(res.data.sales[index].fecha)
             fechaBien = fech.getDate() +"/"+ (fech.getMonth() + 1) +"/"+fech.getFullYear() +" "+" ("+ fech.getHours()+":"+ fech.getMinutes()+")"

@@ -39,7 +39,7 @@
 						</tr>
 					</thead>
 				</table>
-				<div class="Lista">
+				<div class="ListaProcesar">
 					<table class="table table-dark tableBg" id="myTable">
 						<tbody>
 							<tr v-for="(servicio, index) of servicios" >
@@ -98,10 +98,11 @@
 					<div class="input-group-prepend">
 						<button class="btn plusBtns" v-on:click="borrarServicios()" id="button-addon2"><font-awesome-icon icon="trash"/></button>
 					</div>
-					
+					<input v-model="fechaVenta" type="date" class="form-control">
 				</div>
 				<button v-if="!inspector" type="button" class="font-weight-bold mb-3 btn procesar w-100" v-on:click="procesar" disabled>Procesar
 				</button>
+				
 				<button v-else type="button" class="font-weight-bold mb-3 btn procesar w-100" v-on:click="procesar">Procesar
 				</button>
 			</div>
@@ -179,7 +180,7 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 			nombreCliente: '',
 			instagramCliente: '',
 			precio: '0',
-			fechaVenta:'',
+			fechaVenta:'fecha',
 			total:'0',
 			correoCliente: '',
 			documentoManicurista: '',
@@ -216,7 +217,7 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 					for (let index = 0; index < this.manicuristas.length; index++) {
 						this.arregloManicuristas.push(this.manicuristas[index].nombre)
 					}
-				}, 1000);
+				}, 2000);
 			},
 		  	search(input) {
 				
@@ -279,7 +280,12 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 					}
 				})
 				.catch(err => {
-					console.log(err)
+					this.$swal({
+						type: 'error',
+						title: 'experimentamos problemas :(',
+						showConfirmButton: false,
+						timer: 1500
+					})
 				})
 			},
 			ingresoCliente() {
@@ -304,8 +310,13 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 					}
 				})
 				.catch(err => {
-					console.log(err)
-				})
+						this.$swal({
+							type: 'error',
+							title: 'experimentamos problemas :(',
+							showConfirmButton: false,
+							timer: 1500
+						})
+					})
 			},
 			elegirManicurista(){
 				axios.get('manicuristas/justone/' + this.maniSelect)
@@ -313,6 +324,14 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 					this.documentoManicurista = res.data.documento
 					this.comision = res.data.porcentaje
 					this.nombreManicurista = this.maniSelect
+				})
+				.catch(err => {
+					this.$swal({
+						type: 'error',
+						title: 'experimentamos problemas :(',
+						showConfirmButton: false,
+						timer: 1500
+					})
 				})
 			},
 			borrarServicio(servicio,index,esto,precio){
@@ -375,35 +394,56 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 				
 				axios.put('ventas/updateServicesMonth/' + servicio)
 				.catch(err => {
-					console.log(err)
+					this.$swal({
+						type: 'error',
+						title: 'experimentamos problemas :(',
+						showConfirmButton: false,
+						timer: 1500
+					})
 				})
 			},
 			procesar() {
-				axios.post('ventas/procesar', {
-					cliente: this.nombreCliente,
-					manicurista: this.maniSelect,
-					servicios: this.serviciosSelecionados,
-					comision: this.comision,
-					mediopago:this.pagoTipo,
-					descuento:this.descuento,
-					fecha:this.fechaVenta,
-					total: this.totalSinFormato,
-					documentoManicurista: this.documentoManicurista
-				})
-				.then(res => {
-					console.log(res)
-					if (res.data.status == "Venta registrada") {
-						setTimeout(function(){
-							location.reload()
-						},400)
+				if (this.nombreCliente != '' && this.maniSelect != '' && this.pagoTipo != '') {
+					axios.post('ventas/procesar', {
+						cliente: this.nombreCliente,
+						manicurista: this.maniSelect,
+						servicios: this.serviciosSelecionados,
+						comision: this.comision,
+						mediopago:this.pagoTipo,
+						descuento:this.descuento,
+						fecha:this.fechaVenta,
+						total: this.totalSinFormato,
+						documentoManicurista: this.documentoManicurista
+					})
+					.then(res => {
+						if (res.data.status == "Venta registrada") {
+							setTimeout(function(){
+								location.reload()
+							},400)
+							this.$swal({
+								type: 'success',
+								title: 'Venta procesada',
+								showConfirmButton: false,
+								timer: 1500
+							})
+						}
+					}).catch(err => {
 						this.$swal({
-						  type: 'success',
-						  title: 'Venta procesada',
-						  showConfirmButton: false,
-						  timer: 1500
+							type: 'error',
+							title: 'experimentamos problemas :(',
+							showConfirmButton: false,
+							timer: 1500
 						})
-					}
-				})
+					})
+				}else{
+					this.$swal({
+						type: 'error',
+						title: 'Complete los datos necesarios',
+						showConfirmButton: false,
+						timer: 1500
+					})
+				}
+				
 			},
 			borrarServicios(){
 				$(".conteoServ").text(0)
@@ -496,13 +536,13 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 		border:none !important;
 		border-bottom:2px solid #102229 !important;
 	}
-	.Lista{
+	.ListaProcesar{
 		overflow-x: hidden;
 		overflow-y:scroll;
 		max-height: 190px;
 		height:190px;
 	}
-	.Lista::-webkit-scrollbar {
+	.ListaProcesar::-webkit-scrollbar {
     width: 8px;     /* Tamaño del scroll en vertical */
     height: 8px;    /* Tamaño del scroll en horizontal */
     display: none;  /* Ocultar scroll */

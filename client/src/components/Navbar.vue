@@ -107,18 +107,6 @@
 						</div>
 				</router-link>
 			</div>
-			<div id="Gastos" v-on:click="marcarNav('Gastos')" v-if="auth=='loggedin-admin'" class="col-sm-12">
-				
-				<router-link  class=" text-white" to="/gastos">
-						<div class="listaMenu row p-3">
-							<div class="col-sm-1">
-								<font-awesome-icon class="icone" icon="search-dollar" />
-							</div>
-							<div class=" menuText pl-4 col-sm-10 ">
-								<span class="nonHover">Gastos</span> </div>
-						</div>
-				</router-link>
-			</div>
 			<div id="Citas" v-on:click="marcarNav('Citas')" v-if="auth=='loggedin-admin' || auth == 'loggedin'" class="col-sm-12">
 				
 				<router-link  class=" text-white" to="/citas">
@@ -198,9 +186,7 @@ export default {
 	},
 	created(){
 		this.marcarNav()
-		console.log(localStorage)
 		this.intervalM()
-		
 	},
 
 	methods: {
@@ -235,7 +221,6 @@ export default {
 			
 		},
 		mouseOver(){
-			console.log($(".navS").width())
 			setTimeout(() => {
 				if ($(".navS").width() > "200" ) {
 				$('.menuText').show("slow")
@@ -246,9 +231,7 @@ export default {
 			
 		},
 		mouseLeave(){
-			$('.menuText').hide()
-			console.log("leave!")
-			
+			$('.menuText').hide()		
 		},
 		intervalM(){
 			setInterval(() => {

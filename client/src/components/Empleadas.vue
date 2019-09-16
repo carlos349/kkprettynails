@@ -92,7 +92,7 @@
 				 </table>
 			</div>
 		</div>
-		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		<div class="modal fade" id="myModalEmploye" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered" role="document">
 		    <div class="modal-content">
 		      <div class="modal-header bg-info">
@@ -121,7 +121,7 @@
 		    </div>
 		  </div>
 		</div>
-		<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		<div class="modal fade" id="myModalEmploye2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered" role="document">
 		    <div class="modal-content">
 		      <div class="modal-header bg-info">
@@ -245,7 +245,7 @@ export default {
 						timer: 1500
 					})
 					this.getManicuristas()
-					$('#myModal').modal('hide')
+					$('#myModalEmploye').modal('hide')
 				}else{
 					this.$swal({
 						type: 'error',
@@ -254,12 +254,12 @@ export default {
 						timer: 1500
 					})
 					this.getManicuristas()
-					$('#myModal').modal('hide')
+					$('#myModalEmploye').modal('hide')
 				}
 			})
 		},
 		abrirModalRegistro(){
-			$('#myModal').modal('show')
+			$('#myModalEmploye').modal('show')
 		},
 		actualizarManicurista(){
 			axios.put('manicuristas/' + this.idManicuristaEditar, {
@@ -276,7 +276,7 @@ export default {
 						timer: 1500
 					})
 					this.getManicuristas()
-					$('#myModal2').modal('hide')
+					$('#myModalEmploye2').modal('hide')
 				}else{
 					this.$swal({
 						type: 'error',
@@ -285,7 +285,7 @@ export default {
 						timer: 1500
 					})
 					this.getManicuristas()
-					$('#myModal2').modal('hide')
+					$('#myModalEmploye2').modal('hide')
 				}
 			})
 		},

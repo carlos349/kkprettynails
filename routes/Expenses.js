@@ -2,6 +2,7 @@ const express = require('express');
 const expenses = express.Router()
 const cors = require('cors');
 const Expenses = require('../models/Expenses')
+const Cierres = require('../models/Cierres')
 expenses.use(cors())
 
 
@@ -11,33 +12,29 @@ expenses.get('/', async (req, res) => {
 })
 
 expenses.post('/', (req, res) => {
-    const expense = {
-        expenses: req.body.expense,
-        figure: 0
-    }
-    Expenses.findOne({
-        expenses: req.body.expense
+    const expense = req.body.expense
+    const dateSelect = req.body.dateSelect
+    const dateNow = new Date(dateSelect)
+    dateNow.setDate(dateNow.getDate() + 1)
+    const formatDate = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()
+
+    dateNow.setDate(dateNow.getDate() + 1)
+    const formatDateTwo = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()
+    Cierres.findOneAndUpdate({fecha: { $gte: formatDate, $lte: formatDateTwo }},
+        { $set : { gastos: expense }
     })
-    .then(back => {
-        if (!back) {
-            Expenses.create(expense)
-            .then(back => {
-                res.json({status: 'ok'})
-            })
-            .catch(err => {
-                res.send(err)
-            })
+    .then(resp => {
+        if (resp) {
+            res.json({status: 'ok'})
         }else{
-            res.json({status: 'Gasto ya existe'})
+            res.json({status: 'bad'})
         }
     })
     .catch(err => {
         res.send(err)
     })
+
 })
 
-expenses.get('/GetQuantity', (req, res) => {
-    
-})
 
 module.exports = expenses
