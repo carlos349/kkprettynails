@@ -2,6 +2,7 @@ const express = require('express');
 const citas = express.Router()
 const cors = require('cors');
 const Citas = require('../models/Citas')
+const Clients = require('../models/Cliente')
 citas.use(cors())
 
 citas.get('/', async (req, res) => {
@@ -13,8 +14,10 @@ citas.post('/', (req, res) => {
   const dataCitas = {
     start: req.body.entrada,
     end: req.body.salida,
-    title: req.body.titulo,
-    content: req.body.contenido
+    date: req.body.fecha,
+    services: req.body.titulo,
+    client: req.body.cliente,
+    employe: req.body.contenido
   }
 
   Citas.findOne({
@@ -44,6 +47,11 @@ citas.delete('/:id', async (req, res) => {
   res.json({
     status: 'Cita Eliminada'
   })
+})
+
+citas.get('/getClients', async (req, res) => {
+  const client = await Clients.find()
+  res.json(client)
 })
 
 module.exports = citas

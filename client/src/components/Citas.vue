@@ -1,6 +1,6 @@
 <template id="">
-  <div class="container-fluid ">
-    <div class="row pl-2">
+  <div class="container-fluid">
+    <div class="row">
       <div v-bind:style="{ 'background-image': 'linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),url(' + require('../assets/sidebar.jpg') + ')' , 'background-size': 'cover' }" id="mySidenav" class="col-sm-2 menuVertical">
           <ul class="listaMenu">
             <li  data-toggle="modal" data-target=".genCita"><span></span>Generar cita</li>
@@ -12,7 +12,7 @@
                 <option v-for="manicurista of manicuristas">{{manicurista.nombre}}</option>
               </select>
 
-          <vue-cal  class="calendarioo vuecal--rounded-theme vuecal--green-theme"
+          <!-- <vue-cal  class="calendarioo vuecal--rounded-theme vuecal--green-theme"
                    xsmall
                    hide-view-selector
                    :time="false"
@@ -21,7 +21,7 @@
                    :locale="locale"
                    :events="eventos"
                    :disable-views="['week']">
-          </vue-cal>
+          </vue-cal> -->
         </div>
         <div style="padding-left:2%;" id="calen" class="col-sm-10">
           <span class="boton"  v-on:click="Menu()">
@@ -55,7 +55,7 @@
               <div style="margin:auto" class="row text-center">
                 <div class="wOne p-3 mx-auto col-md-3 marc">Servicio</div>
                 <div class="wTwo p-3 mx-auto col-md-3">Manicurista</div>
-                <div class="wThree p-3 mx-auto col-md-3">Tiempo</div>
+                <div class="wThree p-3 mx-auto col-md-3">Información</div>
               </div>
             </div>
             <div class="col-md-12 p-3 processOne">
@@ -77,30 +77,44 @@
               <div class="col-md-12 text-center p-2" style="font-size:1.2em;color:#9e9e9e">Selecciona una manicurista</div>
               <div style="height:40vh;overflow:hidden;overflow-x: hidden;
 		          overflow-y:scroll;" class="scroll row p-1" >
-                <div class="col-md-4" v-for="(manicurista,index) of manicuristas">
-                  <div  class="p-3 col-md-12">
-                    <div style="cursor:pointer;" v-on:click="selectManic(manicurista.nombre,index)" class="fotoMani col-md-12 text-center"><img :id="'mani'+index" class="imgMani" src="../assets/silueta-mujer.jpg" alt=""></div>
-                    <div class="col-md-12 text-white text-center">{{manicurista.nombre}}</div>
+                <div class="col-md-4" v-for="(manicurista,index) of manicuristaCita">
+                  <div v-for="(mani,index) of manicuristas" class="p-3 col-md-12" v-if="mani.documento === manicurista ">
+                    
+                      <div style="cursor:pointer;" v-on:click="selectManic(mani.nombre,index)" class="fotoMani col-md-12 text-center"><img :id="'mani'+index" class="imgMani" src="../assets/silueta-mujer.jpg" alt=""></div>
+                      <div  class="col-md-12 text-white text-center"> {{mani.nombre}}</div>
+                    
                   </div>
                 </div>   
               </div>
             </div>
             <div class="col-md-12 p-3 processThree">
-              <div class="col-md-12 text-center p-2" style="font-size:1.2em;color:#9e9e9e">¿En que fecha y hora se realizara?</div>
+              <div class="col-md-12 text-center p-2" style="font-size:1.2em;color:#9e9e9e">Seleccion un cliente, fecha y hora</div>
               <div class="container">
                 <div class="mx-auto">
                 <div class="row">
-                  <div class="col-md-6">
-                    <input class="hora" type="date" name="" id="">
+                  <div class=" mx-auto col-sm-12">
+                    
                   </div>
-                  <div class="col-md-6">
+                  <div class="col-md-8">
+                    <div class="row">
+                       <div class="col-sm-5"><autocomplete	
+                      :search="search"
+                      placeholder="Buscar cliente"
+                      aria-label="Buscar cliente"
+                      @submit="handleSubmit"
+                      class="auto clientB">
+                    </autocomplete></div>
+                    <div class="col-sm-7"><input disabled="true" v-on:change="insertDate()" v-model="fecha" class="hora" type="date" name="" id="Dat"></div>
+                    </div>  
+                  </div>
+                  <div class="col-md-4">
                     <div class="row">
                       <div class="col-md-5 mx-auto text-right">
-                      <input maxlength="2" placeholder="Hora" class="hora" type="number" min="0" max="24">
+                      <input v-model="hora" disabled="true" maxlength="2" placeholder="Hora" class="hora horas" ref="horas" v-on:keyup="verificarHora('horas')"  type="number" min="0" max="24">
                       </div>
                       <div style="font-size:3em" class="col-md-1 mx-auto text-center text-white">:</div>
                       <div class="col-md-5 mx-auto text-left">
-                        <input minlength="1" maxlength="2" placeholder="Min" class="hora" type="number" min="0" max="60">
+                        <input minlength="1" ref="min" disabled="true" v-model="min" maxlength="2" placeholder="Min" class="hora horas" v-on:keyup="verificarHora('min')" type="number" min="0" max="60">
                       </div>
                     </div> 
                   </div> 
@@ -147,6 +161,8 @@
     <button class="CierreDia" v-on:click="daySaleClose">
 			<font-awesome-icon style="margin-right:4%;margin-top:5%;" icon="cloud-upload-alt" />
 		</button>
+
+    
   </div>
 
 </template>
@@ -154,6 +170,7 @@
   import axios from 'axios'
   import VueCal from 'vue-cal'
   import 'vue-cal/dist/vuecal.css'
+  import Autocomplete from '@trevoreyre/autocomplete-vue'
 
   class Event {
     constructor (start, end, title, content) {
@@ -198,13 +215,21 @@
  			 	servicios: [],
         mani: 'Seleccione',
         serv:'Seleccione',
+        hora: '',
+        min: '',
         entrada: 'Seleccione',
         salida:'Seleccione',
         fecha: '',
+        clients: [],
         nombreCliente: '',
         selectedEvent: {},
         servicioCita: [],
-        manicuristaCita: []
+        manicuristaCita: [],
+        manicuristaFinal:'',
+        clientsSelect: '',
+        arregloClient: [],
+        duracion: 0
+
       }
     },
     beforeCreate() {
@@ -222,6 +247,8 @@
       this.getCitas(),
       this.getManicuristas(),
       this.getServicios()
+      this.getClients()
+      this.arrayClient()
 
       $( document ).ready(function() {
         $(function () {
@@ -231,6 +258,67 @@
       });
       },
     methods: {
+      clickedButton: function() {
+			console.log(this.$refs.hora.value.length)
+		},
+      arrayClient(){
+				setTimeout(() => {
+					for (let index = 0; index < this.clients.length; index++) {
+						this.arregloClient.push(this.clients[index].nombre)
+					}
+				}, 1000);
+			},
+      search(input) {
+				
+				if (input.length < 1) { return [] }
+				return this.arregloClient.filter(client => {
+					return client.toLowerCase()
+					.startsWith(input.toLowerCase())
+				})
+				
+      },
+      handleSubmit(result) {
+        this.clientsSelect = result
+        $("#Dat").prop("disabled", false)
+				console.log(this.clientsSelect)
+      },
+      insertDate(){
+        if ($("#Dat").val() == '') {
+          $(".horas").prop("disabled", true)
+          $(".Sig").removeClass("marcar")
+          $(".Sig").prop("disabled", true)
+        }
+        else{
+          $(".horas").prop("disabled", false)
+         
+        }
+      },
+
+      verificarHora(este){
+        
+          if (this.hora.length >= 1 && this.min.length >=1 && this.hora.length < 3 && this.min.length < 3) {
+          $(".Sig").addClass("marcar")
+          $(".Sig").prop("disabled", false)
+        }
+        else{
+          $(".Sig").removeClass("marcar")
+          $(".Sig").prop("disabled", true)
+        }
+      
+        console.log(this.hora + "--" + this.min)
+        
+        
+      },
+      
+      getClients(){
+        
+        axios.get('citas/getClients')
+        .then(res => {
+          console.log(res.data)
+          this.clients = res.data
+        })
+      },
+
       onEventClick(event, e){
         this.selectedEvent = event
         $('#myModalTwo').modal('show')
@@ -261,7 +349,6 @@
       },
       marcarServicio(prestadores,nombre,tiempo,index){
         
-        console.log(prestadores.length +"--"+ nombre + "--" + tiempo + "--" + index)
         if (this.servicioCita == '') {
           this.servicioCita.push(nombre)
           for (let index = 0; index < prestadores.length; index++) {
@@ -272,7 +359,7 @@
         else{
           var counter = $("#"+index).text()
           var inspector = true
-          var inspector2 = true
+          var inspector2 = false
           console.log(counter)
           for (let index = 0; index < this.servicioCita.length; index++) {
             console.log(nombre + "("+ counter +")" + "-" + this.servicioCita.length )
@@ -287,20 +374,24 @@
           if (inspector == true) {
             this.servicioCita.push(nombre)
             console.log(this.servicioCita)
-          }      
-             for (let index = 0; index < this.manicuristaCita.length; index++) {
-                  for (let c = 0; c < prestadores.length; c++) {
-                    if (prestadores[c] != this.manicuristaCita[index]) {
-                      
-                    }
-
-                
+          }  
+          
+            for (let c = 0; c < prestadores.length; c++) {
+              for (let index = 0; index < this.manicuristaCita.length; index++) {
+                  if (prestadores[c] == this.manicuristaCita[index]) {
+                      inspector2 = true
+                      break
+                }
+                  
+              }  
+              if (inspector2 == false) {
+                this.manicuristaCita.push(prestadores[c])
               }
-               
-             } 
+            } 
              
         }
-        console.log(this.manicuristaCita)
+        this.duracion = parseFloat(this.duracion) + parseFloat(tiempo)
+        console.log(this.duracion)
         $("#redo").show()
         $(".Sig").addClass("marcar")
         $(".Sig").prop("disabled", false)
@@ -308,6 +399,8 @@
       },
       redo(){
         $("#redo").hide()
+        this.servicioCita = []
+        this.manicuristaCita = []
         $(".serviInfoPrestadores").text(0)
         $(".Sig").removeClass("marcar")
         $(".Sig").prop("disabled", true)
@@ -321,6 +414,10 @@
           $(".wThree").addClass("marc")
           $(".processTwo").hide()
           $(".processThree").show()
+        }
+        else if ($(".processThree").css("display") == "block") {
+          this.registroCita()
+          
         }
         else{
           $(".Sig").removeClass("marcar")
@@ -348,6 +445,7 @@
           $(".Ant").prop("disabled", true)
         }
         else if($(".processThree").css("display") == "block"){
+          this.manicuristaFinal = ''
           $(".imgMani").removeClass("maniMarcado")
           $(".processTwo").show()
           $(".processThree").hide()
@@ -357,6 +455,51 @@
           $(".Sig").text("Siguiente")
         }
       },
+      registroCita(){
+            const horarioEntrada = this.hora + ":" + this.min
+
+            for (let index = 0; index < this.duracion; index++) {
+              if (this.min < 60) {
+                this.min++
+              }
+              else{
+                this.hora++
+                this.min = 0
+              }
+              
+            }
+            const horarioSalida = this.hora + ":" + this.min
+            const contenido = "Servicios: " + this.servicioCita
+            const mani = this.manicuristaFinal
+            axios.post('citas', {
+              entrada: horarioEntrada,
+              salida: horarioSalida,
+              fecha: this.fecha,
+              cliente: this.clientsSelect,
+              titulo: contenido,
+              contenido: mani
+            })
+            .then(res => {
+              if(res.data.status == 'cita creada'){
+                this.$swal({
+                  type: 'success',
+                  title: 'Cita creada',
+                  showConfirmButton: false,
+                  timer: 1500
+                })
+                $('#myModal').modal('hide')
+                this.getCitas();
+                location.reload()
+              }else{
+                this.$swal({
+                  type: 'error',
+                  title: 'Cita ocupada',
+                  showConfirmButton: false,
+                  timer: 1500
+                })
+              }
+            })
+          },
       Menu() {
         $('#mySidenav').toggle('slow')
         $('#calen').toggleClass("col-sm-12")
@@ -364,42 +507,15 @@
         $('#clo').toggleClass("clo")
       },
       selectManic(nombre, index){
+        this.manicuristaFinal = nombre
+        console.log(this.manicuristaFinal)
         $(".Sig").prop("disabled", false)
         $(".Sig").addClass("marcar")
         $(".imgMani").removeClass("maniMarcado")
         $("#mani"+index).addClass("maniMarcado")
         
       },
-      registroCita(){
-        const horarioEntrada = this.fecha + " " + this.entrada
-        const horarioSalida = this.fecha + " " + this.salida
-        const contenidoCompleto = "Servicio: " + this.serv + " - Cliente: " + this.nombreCliente
-        axios.post('citas', {
-          entrada: horarioEntrada,
-          salida: horarioSalida,
-          titulo: contenidoCompleto,
-          contenido: this.mani
-        })
-        .then(res => {
-          if(res.data.status == 'cita creada'){
-            this.$swal({
-						  type: 'success',
-						  title: 'Cita creada',
-						  showConfirmButton: false,
-						  timer: 1500
-						})
-						$('#myModal').modal('hide')
-						this.getCitas();
-          }else{
-            this.$swal({
-						  type: 'error',
-						  title: 'Cita ocupada',
-						  showConfirmButton: false,
-						  timer: 1500
-						})
-          }
-        })
-      },
+      
       borrarCita(id){
         axios.delete('citas/' + id)
         .then(res => {
@@ -541,7 +657,7 @@
     width: 10%
   }
   .menuVertical{
-    height:100vh;
+    height:92.8vh;
     background-color:#213b45;
     transition: 0.3s; 
   }
@@ -671,7 +787,7 @@
     border: none;
     color: azure;
     font-size: 2em;
-    width: 70%;
+    width: 100%;
     outline: none !important;
     text-align: center
   }
@@ -698,5 +814,22 @@
 		color: azure;
 		transition: all 0.5s ease-out;
 	}
+  .clientB{
+    background-color:#fff;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);
+    padding: 15px;
+    border-radius: 5px;
+    border: none;
+    color: azure;
+    width: 100%;
+    font-size: 2em;
+    outline: none !important;
+    text-align: center
+    
+  }
+
+  .autocomplete-result-list{
+    color: #000;
+  }
 
 </style>
