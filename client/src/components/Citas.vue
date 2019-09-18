@@ -127,7 +127,7 @@
             <div class="col-md-12">
               <div class="row">
                 <div class="col-md-4 "> <button v-on:click="prevOne()" disabled class="botonW Ant">Anterior</button></div>
-                <div class="col-md-4 text-center"> <button id="redo" class="botonW " v-on:click="redo()"><font-awesome-icon style="color:#ff5722" icon="redo"/></button></div>
+                <div class="col-md-4 text-center"> <button id="redo" class="botonW " v-on:click="redo()"><font-awesome-icon style="color:#011627" icon="redo"/></button></div>
                 <div class="col-md-4 text-right"><button v-on:click="nextOne()" disabled class="botonW Sig">Siguiente</button></div>
               </div>
             </div>
@@ -152,10 +152,10 @@
             <strong>Detalle de la cita:</strong><br><br>
             <ul class="list-group">
               <li class="list-group-item" style="background-color: transparent !important">Manicurista: {{ selectedEvent.empleada }}</li>
-              <li class="list-group-item" style="background-color: transparent !important">Hora de inicio: {{ selectedEvent.startTime }}</li>
               <li class="list-group-item"  style="background-color: transparent !important">Servicios:
                 <p v-for="service of selectedEvent.services"> - {{ service }} </p> 
               </li>
+              <li class="list-group-item" style="background-color: transparent !important">Hora de inicio: {{ selectedEvent.startTime }}</li>
               <li class="list-group-item" style="background-color: transparent !important">Hora de finalización: {{ selectedEvent.endTime }}</li>
               
             </ul><br>
@@ -335,6 +335,7 @@
               start: formatDate,
               end: formatDateTwo,
               title: res.data[index].services[0]+" - "+res.data[index].employe,
+              content: res.data[index].cliente,
               cliente: res.data[index].client,
               services: res.data[index].services,
               empleada: res.data[index].employe,
@@ -717,7 +718,8 @@
     font-weight: 300 !important;
   }
   .marc{
-    background-color: #ff5722;
+    background-color: #011627;
+    border:solid 1px azure;
     border-radius: 5px;
     color: azure;
     box-shadow: 0 2px 5px 0 rgba(0,0,0,.14)
@@ -734,7 +736,7 @@
     border-right: 1px solid #fff;
   }
   .serviInfoPrestadores{
-    background-color: #ff5722;
+    background-color: #011627;
     padding: 3px;
     padding-left: 8px;
     padding-right: 8px;
@@ -749,7 +751,7 @@
     outline: none !important;
   }
   .marcar{
-    background-color: #ff5722;
+    background-color: #011627;
     color:#fff;
   }
   #redo{
@@ -775,7 +777,7 @@
     border-radius:5px;
   }
   .maniMarcado{
-    border:4px solid #ff5722;
+    border:4px solid #011627;
     width:70%;
     padding: 5px;
     border-radius:5px;
