@@ -12,16 +12,16 @@
                 <option v-for="manicurista of manicuristas">{{manicurista.nombre}}</option>
               </select>
 
-          <!-- <vue-cal  class="calendarioo vuecal--rounded-theme vuecal--green-theme"
+          <vue-cal  class="calendarioo vuecal--rounded-theme vuecal--green-theme"
                    xsmall
                    hide-view-selector
                    :time="false"
                    events-count-on-year-view
                    default-view="month"
                    :locale="locale"
-                   :events="eventos"
+                   :events="events"
                    :disable-views="['week']">
-          </vue-cal> -->
+          </vue-cal>
         </div>
         <div style="padding-left:2%;" id="calen" class="col-sm-10">
           <span class="boton"  v-on:click="Menu()">
@@ -33,13 +33,13 @@
           <vue-cal
              :locale="locale"
              class="calendario"
-             :events="eventos"
+             :events="events"
              default-view="month"
              :disable-views="['years', 'year']"
              events-on-month-view="short"
              :on-event-click="onEventClick"
-             :time-from="8 * 60"
-             :time-to="18 * 60">
+             :noEventOverlaps = "true"
+             >
           </vue-cal>
         </div>
       </div>
@@ -136,24 +136,28 @@
       </div>
     </div>
 
-    <div class="modal fade" id="myModalTwo" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal fade" id="myModalCitasDescripcion" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered" role="document">
-		    <div class="modal-content">
-		      <div class="modal-header bg-info">
+		    <div v-bind:style="{ 'background-image': 'url(' + require('../assets/fondo.jpg') + ')' , 'background-size': 'cover' }" class="modal-content">
+		      <div class="modal-header">
 		        <h5 class="modal-title text-white font-weight-bold" id="exampleModalCenterTitle">{{ selectedEvent.title }}</h5>
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 		          <span aria-hidden="true" class="text-white">&times;</span>
 		        </button>
 		      </div>
-		      <div class="modal-body">
+		      <div class="modal-body letters">
 		        <p>Fecha: {{ selectedEvent.startDate }}</p>
             <strong>Detalle de la cita:</strong><br><br>
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item">Manicurista: {{ selectedEvent.content }}</li>
-              <li class="list-group-item">Hora de inicio: {{ selectedEvent.startTime }}</li>
-              <li class="list-group-item">Hora de finalización: {{ selectedEvent.endTime }}</li>
+            <ul class="list-group">
+              <li class="list-group-item" style="background-color: transparent !important">Manicurista: {{ selectedEvent.empleada }}</li>
+              <li class="list-group-item" style="background-color: transparent !important">Hora de inicio: {{ selectedEvent.startTime }}</li>
+              <li class="list-group-item"  style="background-color: transparent !important">Servicios:
+                <p v-for="service of selectedEvent.services"> - {{ service }} </p> 
+              </li>
+              <li class="list-group-item" style="background-color: transparent !important">Hora de finalización: {{ selectedEvent.endTime }}</li>
+              
             </ul><br>
-            <button type="button" class="btn btn-danger font-weight-bold" v-on:click="borrarCita(selectedEvent._id)">Borrar cita</button>
+            <button type="button" class="btn font-weight-bold btn-style" v-on:click="borrarCita(selectedEvent.id)">Borrar cita</button>
 		      </div>
 		    </div>
 		  </div>
@@ -204,11 +208,11 @@
     data () {
       return {
         image: "'../assets/fondo.jpg'",
-        locale: ['es'],
+        locale: 'es',
         start:'',
         startHora:'',
         evento: new Event(),
-        eventos: [],
+        events: [],
         manicurista: new Manicurista(),
   			manicuristas: [],
         servicio: new Servicio(),
@@ -244,29 +248,22 @@
       }
    },
     created(){
-      this.getCitas(),
-      this.getManicuristas(),
-      this.getServicios()
+      this.getCitas()
+      this.getManicuristas()
       this.getClients()
+      this.getServicios()
       this.arrayClient()
-
-      $( document ).ready(function() {
-        $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
-      })
-        console.log( "ready!" );
-      });
-      },
+    },
     methods: {
       clickedButton: function() {
-			console.log(this.$refs.hora.value.length)
-		},
+        console.log(this.$refs.hora.value.length)
+      },
       arrayClient(){
 				setTimeout(() => {
 					for (let index = 0; index < this.clients.length; index++) {
 						this.arregloClient.push(this.clients[index].nombre)
 					}
-				}, 1000);
+				}, 4000);
 			},
       search(input) {
 				
@@ -283,6 +280,7 @@
 				console.log(this.clientsSelect)
       },
       insertDate(){
+        console.log(this.fecha)
         if ($("#Dat").val() == '') {
           $(".horas").prop("disabled", true)
           $(".Sig").removeClass("marcar")
@@ -295,8 +293,7 @@
       },
 
       verificarHora(este){
-        
-          if (this.hora.length >= 1 && this.min.length >=1 && this.hora.length < 3 && this.min.length < 3) {
+        if (this.hora.length >= 1 && this.min.length >=1 && this.hora.length < 3 && this.min.length < 3) {
           $(".Sig").addClass("marcar")
           $(".Sig").prop("disabled", false)
         }
@@ -304,32 +301,45 @@
           $(".Sig").removeClass("marcar")
           $(".Sig").prop("disabled", true)
         }
-      
-        console.log(this.hora + "--" + this.min)
-        
-        
       },
       
       getClients(){
-        
         axios.get('citas/getClients')
         .then(res => {
-          console.log(res.data)
           this.clients = res.data
         })
       },
 
       onEventClick(event, e){
         this.selectedEvent = event
-        $('#myModalTwo').modal('show')
+        $('#myModalCitasDescripcion').modal('show')
         e.stopPropagation()
       },
       getCitas () {
-         $('[data-toggle="tooltip"]').tooltip()
         axios.get('citas')
         .then(res => {
-          console.log(res.data)
-          this.eventos = res.data
+          for (let index = 0; index < res.data.length; index++) {
+            let dateNow = new Date(res.data[index].date)
+            let formatDate = ''
+            let formatDateTwo = ''
+            if (dateNow.getMonth() == 10 || dateNow.getMonth() == 11) {
+              formatDate = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()+" "+res.data[index].start
+              formatDateTwo = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()+" "+res.data[index].end
+            }else{
+              formatDate = dateNow.getFullYear() +"-0"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()+" "+res.data[index].start
+              formatDateTwo = dateNow.getFullYear() +"-0"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()+" "+res.data[index].end
+            }
+            let arrayEvents = {
+              start: formatDate,
+              end: formatDateTwo,
+              title: res.data[index].services[0]+" - "+res.data[index].employe,
+              cliente: res.data[index].client,
+              services: res.data[index].services,
+              empleada: res.data[index].employe,
+              id:res.data[index]._id
+            }
+            this.events.push(arrayEvents)
+          }
         })
       },
       getManicuristas(){
@@ -344,9 +354,6 @@
 					this.servicios = res.data
 				})
 			},
-      aja() {
-        $('#myModal').modal('show')
-      },
       marcarServicio(prestadores,nombre,tiempo,index){
         
         if (this.servicioCita == '') {
@@ -373,7 +380,6 @@
           }
           if (inspector == true) {
             this.servicioCita.push(nombre)
-            console.log(this.servicioCita)
           }  
           
             for (let c = 0; c < prestadores.length; c++) {
@@ -391,7 +397,6 @@
              
         }
         this.duracion = parseFloat(this.duracion) + parseFloat(tiempo)
-        console.log(this.duracion)
         $("#redo").show()
         $(".Sig").addClass("marcar")
         $(".Sig").prop("disabled", false)
@@ -456,50 +461,49 @@
         }
       },
       registroCita(){
-            const horarioEntrada = this.hora + ":" + this.min
+        const horarioEntrada = this.hora + ":" + this.min
 
-            for (let index = 0; index < this.duracion; index++) {
-              if (this.min < 60) {
-                this.min++
-              }
-              else{
-                this.hora++
-                this.min = 0
-              }
-              
-            }
-            const horarioSalida = this.hora + ":" + this.min
-            const contenido = "Servicios: " + this.servicioCita
-            const mani = this.manicuristaFinal
-            axios.post('citas', {
-              entrada: horarioEntrada,
-              salida: horarioSalida,
-              fecha: this.fecha,
-              cliente: this.clientsSelect,
-              titulo: contenido,
-              contenido: mani
+        for (let index = 0; index < this.duracion; index++) {
+          if (this.min < 60) {
+            this.min++
+          }
+          else{
+            this.hora++
+            this.min = 0
+          }
+          
+        }
+        const horarioSalida = this.hora + ":" + this.min
+        const mani = this.manicuristaFinal
+        axios.post('citas', {
+          entrada: horarioEntrada,
+          salida: horarioSalida,
+          fecha: this.fecha,
+          cliente: this.clientsSelect,
+          servicios: this.servicioCita,
+          manicuristas: mani
+        })
+        .then(res => {
+          if(res.data.status == 'cita creada'){
+            this.$swal({
+              type: 'success',
+              title: 'Cita creada',
+              showConfirmButton: false,
+              timer: 1500
             })
-            .then(res => {
-              if(res.data.status == 'cita creada'){
-                this.$swal({
-                  type: 'success',
-                  title: 'Cita creada',
-                  showConfirmButton: false,
-                  timer: 1500
-                })
-                $('#myModal').modal('hide')
-                this.getCitas();
-                location.reload()
-              }else{
-                this.$swal({
-                  type: 'error',
-                  title: 'Cita ocupada',
-                  showConfirmButton: false,
-                  timer: 1500
-                })
-              }
+            $('#myModal').modal('hide')
+            this.getCitas();
+            location.reload()
+          }else{
+            this.$swal({
+              type: 'error',
+              title: 'Cita ocupada',
+              showConfirmButton: false,
+              timer: 1500
             })
-          },
+          }
+        })
+      },
       Menu() {
         $('#mySidenav').toggle('slow')
         $('#calen').toggleClass("col-sm-12")
@@ -525,8 +529,9 @@
 						  title: 'Cita eliminada',
 						  showConfirmButton: false,
 						  timer: 1500
-						})
-            $('#myModalTwo').modal('hide')
+            })
+            this.events = []
+            $('#myModalCitasDescripcion').modal('hide')
 						this.getCitas();
           }
         })
@@ -626,6 +631,9 @@
 .vuecal--green-theme .vuecal__title-bar {
     background-color: #213b45;
 }
+  .vuecal__time-column .vuecal__time-cell{
+    color: #0F2027
+  }
   .vuecal__cell-events-count {
     width: 10px !important;
     min-width: 0 !important;
@@ -831,5 +839,28 @@
   .autocomplete-result-list{
     color: #000;
   }
-
+  .letters{
+    font-family: 'Roboto', sans-serif;
+    letter-spacing: .1em;
+    color:aliceblue;
+  }
+  .btn-style{
+    background-color: transparent;
+    border: solid 2px #4F0000;
+    color:aliceblue;
+    font-family: 'Roboto', sans-serif;
+    letter-spacing: .1em;
+    -webkit-transition: background-color 500ms ease-out 1s;
+    -moz-transition: background-color 500ms ease-out 1s;
+    -o-transition: background-color 500ms ease-out 1s;
+    transition: background-color 500ms ease-out 1s;
+  }
+  .btn-style:hover{
+    background-color: #4F0000;
+    color:aliceblue;
+    -webkit-transition: background-color 500ms ease-out 1s;
+    -moz-transition: background-color 500ms ease-out 1s;
+    -o-transition: background-color 500ms ease-out 1s;
+    transition: background-color 500ms ease-out 1s;
+  }
 </style>

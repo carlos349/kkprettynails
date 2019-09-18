@@ -10,19 +10,61 @@ citas.get('/', async (req, res) => {
   res.json(citas)
 })
 
+citas.get('/prueba', (req, res) => {
+  let a = new Date('2019-09-17 10:00')
+  console.log(a)
+})
+
+citas.post('/getDateByMani', (req, res) => {
+  const date = req.body.date
+  const dateNow = new Date(date)
+  formatDate = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()
+
+  dateNow.setDate(dateNow.getDate() + 1)
+  const formatDateTwo = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()
+  
+  const mani = req.body.mani
+  Citas.find({
+    date: { $gte: formatDate, $lte: formatDateTwo },
+    employe: mani
+  })
+  .then(resp => {
+    if (resp) {
+      res.json(resp)
+    }else{
+      res.json({status: 'no date'})
+    }
+  })
+})
+
 citas.post('/', (req, res) => {
+  const DateSelect = new Date(req.body.fecha+" 10:00")
+   
   const dataCitas = {
     start: req.body.entrada,
     end: req.body.salida,
-    date: req.body.fecha,
-    services: req.body.titulo,
+    date: DateSelect,
+    services: req.body.servicios,
     client: req.body.cliente,
-    employe: req.body.contenido
+    employe: req.body.manicuristas
   }
 
   Citas.findOne({
-    start: req.body.entrada, //hora de entrada
-    content: req.body.contenido //Empleada que hace el servicio
+    $and: [
+      {
+        $or: [
+          {
+            start: { $gte: req.body.entrada, $lte: req.body.salida }
+          },
+          {
+            end: { $gte: req.body.entrada, $lte: req.body.salida }
+          }
+        ]
+      }, //hora de entrada
+      {
+        employe: req.body.manicuristas
+      } //Empleada que hace el servicio
+    ]
   })
   .then(citas => {
     if (!citas) { //sino encuentra alguna cita a esa hora y con esa empleada
