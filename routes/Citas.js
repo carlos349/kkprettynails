@@ -39,11 +39,11 @@ citas.post('/getDateByMani', (req, res) => {
 
 citas.post('/', (req, res) => {
   const DateSelect = new Date(req.body.fecha+" 10:00")
-
+  const Datee = new Date(req.body.fecha+" 10:00")
   const dataCitas = {
     start: req.body.entrada,
     end: req.body.salida,
-    date: DateSelect,
+    date: Datee,
     services: req.body.servicios,
     client: req.body.cliente,
     employe: req.body.manicuristas

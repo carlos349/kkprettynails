@@ -335,7 +335,7 @@
               start: formatDate,
               end: formatDateTwo,
               title: res.data[index].services[0]+" - "+res.data[index].employe,
-              content: res.data[index].cliente,
+              content: res.data[index].client,
               cliente: res.data[index].client,
               services: res.data[index].services,
               empleada: res.data[index].employe,
@@ -487,6 +487,7 @@
           manicuristas: mani
         })
         .then(res => {
+          console.log(res.data)
           if(res.data.status == 'cita creada'){
             this.$swal({
               type: 'success',
@@ -496,14 +497,15 @@
             })
             $('#myModal').modal('hide')
             this.getCitas();
-            location.reload()
-          }else{
+          }else if(res.data.status == 'cita ocupada'){
             this.$swal({
               type: 'error',
               title: 'Cita ocupada',
               showConfirmButton: false,
               timer: 1500
             })
+          }else{
+            console.log(res.data)
           }
         })
       },
