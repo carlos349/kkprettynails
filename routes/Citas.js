@@ -39,7 +39,7 @@ citas.post('/getDateByMani', (req, res) => {
 
 citas.post('/', (req, res) => {
   const DateSelect = new Date(req.body.fecha+" 10:00")
-   
+
   const dataCitas = {
     start: req.body.entrada,
     end: req.body.salida,
@@ -49,8 +49,16 @@ citas.post('/', (req, res) => {
     employe: req.body.manicuristas
   }
 
+  formatDate = DateSelect.getFullYear() +"-"+(DateSelect.getMonth() + 1)+"-"+DateSelect.getDate()
+
+  DateSelect.setDate(DateSelect.getDate() + 1)
+  const formatDateTwo = DateSelect.getFullYear() +"-"+(DateSelect.getMonth() + 1)+"-"+DateSelect.getDate()
+  
   Citas.findOne({
     $and: [
+      {
+        date: { $gte: formatDate, $lte: formatDateTwo }
+      },
       {
         $or: [
           {
