@@ -34,6 +34,8 @@
              :locale="locale"
              class="calendario"
              :events="events"
+             :time-from="8 * 60"
+             :time-to="20 * 60"
              default-view="month"
              :disable-views="['years', 'year']"
              events-on-month-view="short"
@@ -651,11 +653,12 @@
     max-height:40vh;
   }
   .vuecal__event{
-    background-color:#4369E8;
-    opacity: 0.5;
+    background-color:#213b45;
+    opacity: 0.9;
+    cursor:pointer;
   }
   .vuecal__event:hover{
-    background-color:#4369E8;
+    background-color:#213b45;
     opacity: 1;
     z-index:10
   }
@@ -846,21 +849,22 @@
   }
   .btn-style{
     background-color: transparent;
-    border: solid 2px #4F0000;
+    border: solid 1px #232c6e;
     color:aliceblue;
+    width: 100%;
     font-family: 'Roboto', sans-serif;
     letter-spacing: .1em;
-    -webkit-transition: background-color 500ms ease-out 1s;
-    -moz-transition: background-color 500ms ease-out 1s;
-    -o-transition: background-color 500ms ease-out 1s;
-    transition: background-color 500ms ease-out 1s;
+    -webkit-transition: background-color 500ms ease-out;
+    -moz-transition: background-color 500ms ease-out;
+    -o-transition: background-color 500ms ease-out;
+    transition: background-color 500ms ease-out;
   }
   .btn-style:hover{
-    background-color: #4F0000;
+    background-color: #232c6e;
     color:aliceblue;
-    -webkit-transition: background-color 500ms ease-out 1s;
-    -moz-transition: background-color 500ms ease-out 1s;
-    -o-transition: background-color 500ms ease-out 1s;
-    transition: background-color 500ms ease-out 1s;
+    -webkit-transition: background-color 500ms ease-out;
+    -moz-transition: background-color 500ms ease-out;
+    -o-transition: background-color 500ms ease-out;
+    transition: background-color 500ms ease-out;
   }
 </style>
