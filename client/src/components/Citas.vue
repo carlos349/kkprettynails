@@ -4,7 +4,7 @@
       <div v-bind:style="{ 'background-image': 'linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),url(' + require('../assets/sidebar.jpg') + ')' , 'background-size': 'cover' }" id="mySidenav" class="col-sm-2 menuVertical">
           <ul class="listaMenu">
             <li  data-toggle="modal" data-target=".genCita"><span></span>Generar cita</li>
-            <router-link class="rout" to="/venta"><li>Procesar venta</li></router-link>
+            
             <li>Eliminar cita</li>
                       </ul>
             <select id="manicuristas" name="manicuristas">
@@ -93,7 +93,7 @@
               <div class="col-md-12 text-center p-2" style="font-size:1.2em;color:#9e9e9e">Seleccion un cliente, fecha y hora</div>
               <div class="container">
                 <div class="mx-auto">
-                <div class="row">
+                <div style="height:40vh" class="row">
                   <div class=" mx-auto col-sm-12">
                     
                   </div>
@@ -428,7 +428,7 @@
           
         }
         else{
-          $(".Sig").removeClass("marcar")
+          
           $(".Sig").prop("disabled", true)
           $("#redo").hide()
           $(".processOne").hide()
@@ -437,6 +437,7 @@
           $(".Ant").prop("disabled", false)
           $(".wOne").removeClass("marc")
           $(".wTwo").addClass("marc")
+
         }
         
       },
@@ -495,6 +496,28 @@
               showConfirmButton: false,
               timer: 1500
             })
+            $(".Sig").removeClass("marcar")
+            $(".Sig").text("Siguiente")
+            $(".Sig").prop("disabled", true)
+            $(".hora").prop("disabled", true)
+            $(".Ant").removeClass("marcar")
+            $(".Ant").prop("disabled", true)
+            $(".processThree").hide()
+            $(".processOne").show()
+            $(".wOne").addClass("marc")
+            $(".wThree").removeClass("marc")
+            this.servicioCita = []
+            this.manicuristaCita = []
+            this.manicuristaFinal = ''
+            this.events = []
+            $(".imgMani").removeClass("maniMarcado")
+            this.min = ''
+            this.hora = ''
+            this.fecha = ''
+            $("#Dat").val(0)
+            $("#Dat").prop("disabled", true)
+            $(".autocomplete-input").val('')
+            $(".serviInfoPrestadores").text(0)
             $('#myModal').modal('hide')
             this.getCitas();
           }else if(res.data.status == 'cita ocupada'){
@@ -615,10 +638,10 @@
 
 </script>
 <style media="screen">
-  .vuecal__menu {background-color: #213b45;}
+  .vuecal__menu {background-image: url(../assets/fondo.jpg) }
   .vuecal__menu li {border-bottom-color: #fff;color: #fff;}
   .vuecal__menu li.active {background-color: rgba(255, 255, 255, 0.15);}
-  .vuecal__title-bar {background-color: #213b45;color:white;}
+  .vuecal__title-bar {background-image: url(../assets/fondo.jpg);;color:white;}
 
   .vuecal__time-column .vuecal__time-cell{color:white;height:1vh;}
   .vuecal__event{color:#fff;font-weight:bold}
@@ -634,7 +657,7 @@
     background-color: #274a58;
 }
 .vuecal--green-theme .vuecal__title-bar {
-    background-color: #213b45;
+    background-image: url(../assets/fondo.jpg);;
 }
   .vuecal__time-column .vuecal__time-cell{
     color: #0F2027
@@ -656,12 +679,12 @@
     max-height:40vh;
   }
   .vuecal__event{
-    background-color:#213b45;
+    background-color:#3a508c ;
     opacity: 0.9;
     cursor:pointer;
   }
   .vuecal__event:hover{
-    background-color:#213b45;
+    background-color:#3a508c ;
     opacity: 1;
     z-index:10
   }
@@ -672,7 +695,7 @@
   }
   .menuVertical{
     height:92.8vh;
-    background-color:#213b45;
+    background-color:#3a508c ;
     transition: 0.3s; 
   }
   .botonn{
@@ -683,7 +706,7 @@
     position:absolute;
     top:40%;
     left:0;
-    background-color:#213b45;
+    background-color:#3a508c ;
     padding:10px;
     padding-top:20px;
     padding-bottom:20px;
@@ -710,7 +733,7 @@
     font-family: 'Raleway', sans-serif;
     width:100%;
     outline:none;
-    background-color:#213b45;
+    background-color:#3a508c ;
   }
   #manicuristas option{
     font-family: 'Raleway', sans-serif;
