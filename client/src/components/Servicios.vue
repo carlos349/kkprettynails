@@ -16,7 +16,7 @@
 				</div>
 			</div>
 			<div class="col-md-4">
-				<div class="forms">
+				<div class="forms" v-bind:style="{ 'background-image': 'url(' + require('../assets/fondo.jpg') + ')' , 'background-size': 'cover' }">
 					<h2>Crear Servicio</h2>
 					<form v-on:submit.prevent="registroServicio">
 						<div class="form-group">
@@ -439,7 +439,7 @@
 				axios.get('/servicios/ServicesQuantityPerMonth')
 				.then(res => {
 					for (let index = 0; index < res.data.length; index++) {
-						this.servicesQuantityPerMonths.push(res.data[index].servicio.servicio)
+						this.servicesQuantityPerMonths.push(res.data[index].registro)
 						this.TotalCantidadServicios = parseFloat(this.TotalCantidadServicios) + parseFloat(this.servicesQuantityPerMonths[index].cantidad)
 					}
 				})
@@ -507,6 +507,7 @@
 		overflow-y:scroll;
 		max-height: 470px;
 		height:auto;
+		color:#fff;
 		border-radius:5px;
 		border-radius:5px;
 	}
@@ -544,12 +545,11 @@
 		border-radius:0px !important;
 		border-bottom:2px solid #102229 !important;
 		background-color:transparent !important;
-		color:#102229 !important;
+		color:#fff !important;
 		font-family: 'Raleway', sans-serif;
-		font-weight:600;
 	}
 	label{
-		color:#102229
+		color:#fff
 	}
 	.selectMani{
 		background-color:#355461 !important;
@@ -558,7 +558,7 @@
 		border-bottom:2px solid #102229 !important;
 	}
 	.add{
-		background-color:#102229;
+		background-color:#374b89;
 		color:#fff;
 		transition: all 0.5s ease-out;
 		font-family: 'Raleway', sans-serif;

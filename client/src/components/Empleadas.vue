@@ -1,151 +1,147 @@
 <template>
-	<div class="container">
-		<h1 class="text-center mt-3 Titulo">Manicuristas</h1>
+	<div class="container-fluid">
 		<div class="row">
-			<div class="col-md-12">
-				<table class="table reporteIndividual">
-					<thead class="thead-light">
-						<tr class="respons" >
-							<th class="bg-info text-white text-center">
-								Servicio
-							</th>
-							<th class="bg-info text-white text-center">
-								Cliente
-							</th>
-							<th class="bg-info text-white text-center">
-								Comision
-							</th>
-							<th class="bg-info text-white text-center">
-								Total
-							</th>
-						</tr>
-					</thead>
-					<tbody>
-							<tr v-for="venta of ventas" class="respons">
-								<td class="table-info font-weight-bold text-center">
-									{{venta.servicios}}
-	 							</td>
-								<td class="table-info font-weight-bold text-center">
-									{{venta.cliente}}
-	 							</td>
-								<td class="table-info font-weight-bold text-center">
-									{{venta.comision}}
-	 							</td>
-								<td class="table-info font-weight-bold text-center">
-									{{venta.total}}
-	 							</td>
+			<div class="col-md-12 row sectionMetricsPrestador">
+				<div class="col-md-5 metrics first">
+					<p>Total prestadores</p>
+					<h1>{{manicuristas.length}}</h1>
+				</div>
+				<div class="col-md-5 metrics second">
+					<p>Servicio mensuales</p>
+					<h1>{{TotalCantidadServicios}}</h1>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="formsPrestadores" v-bind:style="{ 'background-image': 'url(' + require('../assets/fondo.jpg') + ')' , 'background-size': 'cover' }">
+					<h2>Ingresar prestador</h2>
+					<form v-on:submit.prevent="registroPrestador">
+						<div class="form-group">
+							<label for="name">Nombre del prestador</label>
+							<input v-model="nombrePrestador" type="text" class="form-control inputs" placeholder="Nombre del prestador">
+						</div>
+						<div class="form-group">
+							<label for="name">Documento de identificación</label>
+							<input v-model="documento" type="numbre" class="form-control inputs" placeholder="Identificación">
+						</div>
+						<div class="form-group">
+							<label for="name">Porcentaje de ganancia</label>
+							<input v-model="porcentaje" type="text" class="form-control inputs" placeholder="Porcentaje">
+						</div>
+						<button class="btn w-100 add">Agregar prestador</button>
+					</form>
+				</div>
+			</div>
+			<div class="col-md-8">
+				<div class="shadow">	
+					<table  class="table table-dark" style="color:#fff !important" >
+						<thead>
+							<tr>
+								<th>
+									Nombre
+								</th>
+								<th>
+									Porcentaje
+								</th>
+								<th>
+									Identificación
+								</th>
+								<th>
+									Comision mensual
+								</th>
+								<th class="text-center">
+									Funciones
+								</th>	
 							</tr>
-					</tbody>
-				</table>
-				<table class="table tablaManicuristas">
-					<thead class="thead-light">
-						 <tr class="respons">
-							 <th class="bg-info text-white text-center">
-								 Nombre
-							 </th>
-							 <th class="bg-info text-white text-center">
-								 Root
-							 </th>
-							 <th class="bg-info text-white text-center">
-								 Porcentaje
-							 </th>
-							 <th class="bg-info text-white text-center">
-								 Comision
-							 </th>
-							 <th class="bg-info text-white text-center">
-								Operadores
-							 </th>
-						 </tr>
-					 </thead>
-					 <tbody>
-						 <tr v-for="manicurista of manicuristas"  class="respons">
- 							<td class="table-info font-weight-bold text-center">
- 								{{manicurista.nombre}}
- 							</td>
- 							<td class="table-info font-weight-bold text-center">
- 								{{manicurista.documento}}
- 							</td>
-							<td class="table-info font-weight-bold text-center">
- 								{{manicurista.porcentaje}}
- 							</td>
-							<td class="table-info font-weight-bold text-center">
- 								{{manicurista.comision}}
- 							</td>
-							<td class="table-info font-weight-bold text-center">
-								<font-awesome-icon icon="trash" v-on:click="eliminarManicurista(manicurista._id)"/>
-								<font-awesome-icon icon="edit" v-on:click="pasarDatosEdit(manicurista.nombre, manicurista.documento,manicurista._id,manicurista.porcentaje,manicurista.comision)"/>
-								<font-awesome-icon icon="copy" class="report" v-on:click="sacarReporte(manicurista.nombre)"/>
-							</td>
- 						</tr>
-						<tr>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td class="table-info font-weight-bold text-center">
-								<button type="button" name="button" class="btn btn-info" v-on:click="abrirModalRegistro">
-									Registrar
-								</button>
-							</td>
-						</tr>
-					 </tbody>
-				 </table>
+						</thead>
+					</table>
+					<div class="ListaPrestador tbl-content">
+						<table class="table table-light table-borderless table-striped">
+							<tbody>
+								<tr v-for="manicurista of manicuristas">
+									<td class="font-weight-bold">
+										{{manicurista.nombre}}
+									</td>
+									<td class="font-weight-bold">
+										{{manicurista.porcentaje}}
+									</td>
+									<td class="font-weight-bold">
+										{{manicurista.documento}}
+									</td>
+									<td class="font-weight-bold">
+										{{manicurista.comision}}
+									</td>
+									<td class="font-weight-bold text-center">
+										<button style="width:30%;" v-on:click="deletePrestador(manicurista._id)" class=" btn btn-danger"><font-awesome-icon icon="trash" /></button>
+										<button style="width:30%;" v-on:click="pasarDatosEdit(manicurista.nombre, manicurista.documento, manicurista.porcentaje, manicurista._id)" class=" btn btn-warning"><font-awesome-icon icon="edit" /></button>
+										<button style="width:30%;" v-on:click="sacarReporte(manicurista._id)" class=" btn btn-success"><font-awesome-icon icon="copy" /></button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4" style="margin-top:20px;">
+				<div class="shadow">
+					<table  class="table table-dark" style="color:#fff !important" >
+						<thead>
+							<tr>
+								<th>
+									Prestador
+								</th>
+								<th class="text-right">
+									Cantidad de servicios
+								</th>				
+							</tr>
+						</thead>
+					</table>
+					<div class="ListaPrestadorTwo">
+						<table class="table table-light table-borderless table-striped">
+							<tbody>
+								<tr v-for="PrestadorQuantityPerMonth of PrestadorQuantityPerMonths">
+									<td class="font-weight-bold">
+										{{PrestadorQuantityPerMonth.nombre}}
+									</td>
+									<td class="font-weight-bold text-center">
+										{{PrestadorQuantityPerMonth.cantidad}}
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-8 chart">
+				<div class="small">
+					<line-chart v-if="loaded" :chartdata="chartdata" :options="options" :styles="myStyles"/>
+				</div>
 			</div>
 		</div>
-		<div class="modal fade" id="myModalEmploye" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		<div class="modal fade" id="ModalEditPrestador" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered" role="document">
-		    <div class="modal-content">
-		      <div class="modal-header bg-info">
-		        <h5 class="modal-title text-white font-weight-bold" id="exampleModalCenterTitle">Registrar manicurista</h5>
+		    <div v-bind:style="{ 'background-image': 'url(' + require('../assets/fondo.jpg') + ')' , 'background-size': 'cover' }" class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title text-white font-weight-bold" id="exampleModalCenterTitle">Editar Prestador</h5>
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 		          <span aria-hidden="true" class="text-white">&times;</span>
 		        </button>
 		      </div>
-		      <div class="modal-body">
-		        <form v-on:submit.prevent="registroManicurista">
-							<div class="form-group">
-								<label for="nombre">Nombre de la manicurista</label>
-								<input type="text" v-model="nombreManicurista" class="form-control" name="nombreManicurista" placeholder="Nombre de la manicurista" >
-							</div>
-							<div class="form-group">
-								<label for="identidad">Root de la manicurista</label>
-								<input type="text" v-model="documentoManicurista" class="form-control verificacion" name="documentoManicurista" placeholder="Root de la manicurista">
-							</div>
-							<div class="form-group">
-								<label for="identidad">Porcentaje de la manicurista</label>
-								<input type="text" v-model="porcentajeManicurista" class="form-control verificacion" name="porcentajeManicurista" placeholder="Porcentaje de la manicurista">
-							</div>
-							<button class="btn btn-lg btn-info btn-block" type="submit">Registrar Manicurista</button>
-		        </form>
-		      </div>
-		    </div>
-		  </div>
-		</div>
-		<div class="modal fade" id="myModalEmploye2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-		  <div class="modal-dialog modal-dialog-centered" role="document">
-		    <div class="modal-content">
-		      <div class="modal-header bg-info">
-		        <h5 class="modal-title text-white font-weight-bold" id="exampleModalCenterTitle">Acutalizar manicurista</h5>
-		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-		          <span aria-hidden="true" class="text-white">&times;</span>
-		        </button>
-		      </div>
-		      <div class="modal-body">
-		        <form v-on:submit.prevent="actualizarManicurista">
-							<div class="form-group">
-								<label for="nombre">Nombre de la manicurista</label>
-								<input type="text" v-model="nombreManicurista" class="form-control" name="nombreManicurista" placeholder="Nombre de la manicurista" >
-							</div>
-							<div class="form-group">
-								<label for="identidad">Root de la manicurista</label>
-								<input type="text" v-model="documentoManicurista" class="form-control verificacion" name="documentoManicurista" placeholder="Root de la manicurista">
-							</div>
-							<div class="form-group">
-								<label for="identidad">Porcentaje de la manicurista</label>
-								<input type="text" v-model="porcentajeManicurista" class="form-control verificacion" name="porcentajeManicurista" placeholder="Porcentaje de la manicurista">
-							</div>
-							<button class="btn btn-lg btn-info btn-block" type="submit">Actualizar Manicurista</button>
-		        </form>
+		      <div class="modal-body letters">
+				<form v-on:submit.prevent="actualizarPrestador">
+					<div class="form-group">
+						<label for="name">Nombre del prestador</label>
+						<input v-model="nombrePrestadorEdit" type="text" class="form-control inputs" placeholder="Nombre del prestador">
+					</div>
+					<div class="form-group">
+						<label for="name">Documento de identificación</label>
+						<input v-model="documentoPrestadorEdit" type="numbre" class="form-control inputs" placeholder="Identificación">
+					</div>
+					<div class="form-group">
+						<label for="name">Porcentaje de ganancia</label>
+						<input v-model="porcentajePrestadorEdit" type="text" class="form-control inputs" placeholder="Porcentaje">
+					</div>
+					<button class="btn w-100 add">Editar prestador</button>
+				</form>
 		      </div>
 		    </div>
 		  </div>
@@ -155,6 +151,7 @@
 
 <script type="text/javascript">
 import axios from 'axios'
+import LineChart from '../plugins/LineChart.js'
 import router from '../router'
 
 class Manicurista{
@@ -175,16 +172,32 @@ class Venta{
 }
 
 export default {
+	components: {
+		LineChart
+	},
 	data(){
 		return {
 			manicurista: new Manicurista(),
 			manicuristas: [],
 			venta: new Venta(),
 			ventas: [],
-			nombreManicurista: '',
-			documentoManicurista: '',
-			porcentajeManicurista: '',
-			idManicuristaEditar: ''
+			nombrePrestador: '',
+			documento:'',
+			porcentaje:'',
+			idManicuristaEditar: '',
+			PrestadorQuantityPerMonths: [],
+			loaded: false,
+			chartdata: null,
+			TotalCantidadServicios:0,
+			height:360,
+			options: {
+				responsive: true,
+				maintainAspectRatio: false
+			},
+			nombrePrestadorEdit: '',
+			documentoPrestadorEdit: '',
+			porcentajePrestadorEdit: '',
+			idPrestadorEdit: ''
 		}
 	},
 	beforeCreate() {
@@ -197,9 +210,11 @@ export default {
 			})
 			router.push({name: 'Login'})
 		}
- },
+ 	},
 	created(){
 		this.getManicuristas();
+		this.ServicesQuantityPerMonthFunc();
+		this.ServicesQuantityChartFunc();
 	},
 	methods: {
 		getManicuristas(){
@@ -208,10 +223,10 @@ export default {
 				this.manicuristas = res.data
 			})
 		},
-		eliminarManicurista(id){
+		deletePrestador(id){
 			axios.delete('manicuristas/' + id)
 			.then(res => {
-				if(res.data.status = 'Manicurista Eliminada'){
+				if(res.data.status = 'Prestador borrado'){
 					this.$swal({
 						type: 'success',
 						title: 'Manicurista eliminado',
@@ -230,112 +245,246 @@ export default {
 				})
 			})
 		},
-		registroManicurista(){
+		registroPrestador(){
 			axios.post('manicuristas', {
-				nombreManicurista: this.nombreManicurista,
-				documentoManicurista: this.documentoManicurista,
-				porcentajeManicurista: this.porcentajeManicurista
+				nombreManicurista: this.nombrePrestador,
+				documentoManicurista: this.documento,
+				porcentajeManicurista: this.porcentaje
 			})
 			.then(res => {
 				if(res.data.status == 'Manicurista ingresada'){
 					this.$swal({
 						type: 'success',
-						title: 'Manicurista ingresada',
+						title: 'prestador ingresada',
 						showConfirmButton: false,
 						timer: 1500
 					})
 					this.getManicuristas()
-					$('#myModalEmploye').modal('hide')
 				}else{
 					this.$swal({
 						type: 'error',
-						title: 'Manicurista ya existe',
+						title: 'prestador ya existe',
 						showConfirmButton: false,
 						timer: 1500
 					})
-					this.getManicuristas()
-					$('#myModalEmploye').modal('hide')
 				}
 			})
 		},
-		abrirModalRegistro(){
-			$('#myModalEmploye').modal('show')
-		},
-		actualizarManicurista(){
-			axios.put('manicuristas/' + this.idManicuristaEditar, {
-				nombre: this.nombreManicurista,
-				documento: this.documentoManicurista,
-				porcentaje: this.porcentajeManicurista
+		actualizarPrestador(){
+			axios.put('manicuristas/' + this.idPrestadorEdit, {
+				nombre: this.nombrePrestadorEdit,
+				documento: this.documentoPrestadorEdit,
+				porcentaje: this.porcentajePrestadorEdit
 			})
 			.then(res => {
 				if(res.data.status == "Manicurista Editada"){
 					this.$swal({
 						type: 'success',
-						title: 'Manicurista actualizada',
+						title: 'Prestador actualizado',
 						showConfirmButton: false,
 						timer: 1500
 					})
+					$('#ModalEditPrestador').modal('hide')
 					this.getManicuristas()
-					$('#myModalEmploye2').modal('hide')
 				}else{
 					this.$swal({
 						type: 'error',
-						title: 'Manicurista ya existe',
+						title: 'Prestador ya existe',
 						showConfirmButton: false,
 						timer: 1500
 					})
-					this.getManicuristas()
-					$('#myModalEmploye2').modal('hide')
 				}
 			})
 		},
-		pasarDatosEdit(nombre, documento, id, porcentaje){
-			this.nombreManicurista = nombre
-			this.documentoManicurista = documento
-			this.porcentajeManicurista = porcentaje
-			this.idManicuristaEditar = id
-			$('#myModal2').modal('show')
+		pasarDatosEdit(nombre, documento, porcentaje, id){
+			this.nombrePrestadorEdit = nombre
+			this.documentoPrestadorEdit = documento
+			this.porcentajePrestadorEdit = porcentaje
+			this.idPrestadorEdit = id
+			$('#ModalEditPrestador').modal('show')
+		},
+		ServicesQuantityPerMonthFunc(){
+			axios.get('/servicios/PrestadorQuantityPerMonth')
+			.then(res => {
+				console.log(res.data)
+				for (let index = 0; index < res.data.length; index++) {
+					this.PrestadorQuantityPerMonths.push(res.data[index].registro)
+					this.TotalCantidadServicios = parseFloat(this.TotalCantidadServicios) + parseFloat(this.PrestadorQuantityPerMonths[index].cantidad)
+				}
+			})
+		},
+		ServicesQuantityChartFunc(){
+			this.loaded = false
+			axios.get('/servicios/PrestadorChartQuantity')
+			.then(res => {	
+				console.log(res.data)
+				const userlist = res.data
+				this.chartdata = userlist
+				this.loaded = true
+			})
+			.catch(err => {
+				console.error(err)
+			})
 		},
 		sacarReporte(manicurista){
-			axios.get('ventas/manicurista/' + manicurista)
-			.then(res => {
-				this.ventas = res.data
-				$('.tablaManicuristas').hide()
-				$('.reporteIndividual').show()
-				$('.Titulo').text('Reporte de: '+ manicurista)
-				this.$swal({
-					type: 'success',
-					title: 'espere un segundo',
-					showConfirmButton: false,
-					timer: 1500
-				})
-				setTimeout(() => {
-					print()
-					$('.reporteIndividual').hide()
-					$('.tablaManicuristas').show()
-					$('.Titulo').text('Manicuristas')
-				}, 2000)
+			// axios.get('ventas/manicurista/' + manicurista)
+			// .then(res => {
+			// 	this.ventas = res.data
+			// 	$('.tablaManicuristas').hide()
+			// 	$('.reporteIndividual').show()
+			// 	$('.Titulo').text('Reporte de: '+ manicurista)
+			// 	this.$swal({
+			// 		type: 'success',
+			// 		title: 'espere un segundo',
+			// 		showConfirmButton: false,
+			// 		timer: 1500
+			// 	})
+			// 	setTimeout(() => {
+			// 		print()
+			// 		$('.reporteIndividual').hide()
+			// 		$('.tablaManicuristas').show()
+			// 		$('.Titulo').text('Manicuristas')
+			// 	}, 2000)
+			// })
+			this.$swal({
+				type: 'error',
+				title: 'Funcion en proceso, no esta lista :(',
+				showConfirmButton: false,
+				timer: 1500
 			})
+		}
+	},
+	computed: {
+		myStyles () {
+			return {
+				height: `${this.height}px`,
+				position: 'relative'
+			}
 		}
 	}
 }
 </script>
 <style media="screen">
-  @media (max-width: 700px) {
-    .respons{
-      font-size: 2vw;
-    }
-  }
-  @media (max-width: 400px) {
-    .respons{
-      font-size: 1.5vw;
-    }
-  }
+	.metrics{
+		height: auto;
+		background-color: #fff;
+		margin:20px;
+		color:#fff;
+		padding: 10px;
+		padding-right: 15px;
+		box-shadow: 0 0.46875rem 2.1875rem rgba(4,9,20,0.03), 0 0.9375rem 1.40625rem rgba(4,9,20,0.03), 0 0.25rem 0.53125rem rgba(4,9,20,0.05), 0 0.125rem 0.1875rem rgba(4,9,20,0.03);
+		border-radius:5px;
+	}
+	.metrics p{
+		font-size: 1em;
+		margin-top: 10px;
+		
+	}
+	.metrics h1{
+		float: right;
+		margin-top: -55px;
+	}
+	.sectionMetricsPrestador{
+		margin-left: 8%;
+	}
+	table{
+		border:none !important;
+		margin-bottom:0 !important;
+		table-layout: fixed;
+		color:#102229 !important
+	}
+	.first{
+		background: #a73737;  /* fallback for old browsers */
+		background: -webkit-linear-gradient(to right, #7a2828, #a73737);  /* Chrome 10-25, Safari 5.1-6 */
+		background: linear-gradient(to right, #7a2828, #a73737); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	}
+	.second{
+		background: #FF512F;  /* fallback for old browsers */
+		background: -webkit-linear-gradient(to left, #F09819, #FF512F);  /* Chrome 10-25, Safari 5.1-6 */
+		background: linear-gradient(to left, #F09819, #FF512F); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	}
+	.formsPrestadores{
+		background-color:#fff;
+		box-shadow: 0 0.46875rem 2.1875rem rgba(4,9,20,0.03), 0 0.9375rem 1.40625rem rgba(4,9,20,0.03), 0 0.25rem 0.53125rem rgba(4,9,20,0.05), 0 0.125rem 0.1875rem rgba(4,9,20,0.03);
+		padding: 20px;
+		overflow-x: hidden;
+		overflow-y:scroll;
+		max-height: 470px;
+		color:#fff;
+		height:auto;
+		border-radius:5px;
+		border-radius:5px;
+	}
+	label{
+		color:#fff;
+	}
+	.formsPrestadores::-webkit-scrollbar {
+		width: 8px;     /* Tamaño del scroll en vertical */
+		height: 8px;    /* Tamaño del scroll en horizontal */
+		display: none;  /* Ocultar scroll */
+	}
+	.formsPrestadores h2{
+		font-family: 'Raleway', sans-serif;
+	}
+	.inputs{
+		color:#fff !important;
+	}
+	.add{
+		background-color:#374b89;
+		color:#fff;
+		transition: all 0.5s ease-out;
+		font-family: 'Raleway', sans-serif;
+		font-weight:600;
+	}
+	.add:hover{
+		background-color:#ccc;
+		
+	}
+	@media (max-width: 700px) {
+		.respons{
+		font-size: 2vw;
+		}
+	}
+	@media (max-width: 400px) {
+		.respons{
+		font-size: 1.5vw;
+		}
+	}
 	.report{
 		cursor:pointer;
 	}
 	.reporteIndividual{
 		display:none
+	}
+	.small{
+		background-color: #fff;
+		margin-top: 20px;
+		box-shadow: 0 0.46875rem 2.1875rem rgba(4,9,20,0.03), 0 0.9375rem 1.40625rem rgba(4,9,20,0.03), 0 0.25rem 0.53125rem rgba(4,9,20,0.05), 0 0.125rem 0.1875rem rgba(4,9,20,0.03);
+		border-radius: 5px;
+	}
+	.ListaPrestador{
+		overflow-x: hidden;
+		overflow-y:scroll;
+		max-height: 330px;
+		height:auto;
+		border-radius:5px;
+	}
+	.ListaPrestador::-webkit-scrollbar {
+		width: 8px;     /* Tamaño del scroll en vertical */
+		height: 8px;    /* Tamaño del scroll en horizontal */
+		display: none;  /* Ocultar scroll */
+	}
+	.ListaPrestadorTwo{
+		overflow-x: hidden;
+		overflow-y:scroll;
+		max-height: 300px;
+		height:auto;
+		border-radius:5px;
+	}
+	.ListaPrestadorTwo::-webkit-scrollbar {
+		width: 8px;     /* Tamaño del scroll en vertical */
+		height: 8px;    /* Tamaño del scroll en horizontal */
+		display: none;  /* Ocultar scroll */
 	}
 
 </style>

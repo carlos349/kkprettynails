@@ -55,41 +55,46 @@ ventas.put('/updateServicesMonth/:service', (req, res) => {
   }
 
   const createServices = {
-      servicio:{
-        servicio:{
-          nombre:services,
-          cantidad:1
-        }
+      registro:{
+        tipo:'servicio',
+        nombre:services,
+        cantidad:1
       }
   }
 
-  for (let index = 0; index < 12; index++) {
-    if (date === index) {
-      mes.findOne({'servicio.servicio.nombre':services})
-        .then(back => {
-          if(!back){
-            mes.create(createServices)
-            .then(back => {
-              res.json({'status':'ok'})
-            })
-            .catch(err => {
-              res.send('error: ' + err)
-            })
-          }else{
-            mes.updateOne({'servicio.servicio.nombre':services},{$inc:{'servicio.servicio.cantidad':1}})
-            .then(back => {
-              res.json({'status':'ok'})
-            })
-            .catch(err => {
-              res.send('error: ' + err)
-            })
-          }
-        })
-        .catch(err => {
-          res.send('error: ' + err)
-        })
+  mes.findOne({
+    $and:[
+      {'registro.tipo':'servicio'},
+      {'registro.nombre':services}
+    ]
+  })
+  .then(back => {
+    if(!back){
+      mes.create(createServices)
+      .then(back => {
+        res.json({'status':'ok'})
+      })
+      .catch(err => {
+        res.send('error: ' + err)
+      })
+    }else{
+      mes.updateOne({
+        $and:[
+          {'registro.tipo':'servicio'},
+          {'registro.nombre':services}
+        ]
+      },{$inc:{'registro.cantidad':1}})
+      .then(back => {
+        res.json({'status':'ok'})
+      })
+      .catch(err => {
+        res.send('error: ' + err)
+      })
     }
-  }
+  })
+  .catch(err => {
+    res.send('error: ' + err)
+  })
 
 })
 
@@ -578,42 +583,198 @@ ventas.put('/updateServicesMonthDiscount/:service', (req, res) => {
   }
 
   const createServices = {
-      servicio:{
-        servicio:{
-          nombre:services,
-          cantidad:1
-        }
-      }
-  }
-
-  for (let index = 0; index < 12; index++) {
-    if (date === index) {
-      mes.findOne({'servicio.servicio.nombre':services})
-        .then(back => {
-          if(!back){
-            mes.create(createServices)
-            .then(back => {
-              res.json({'status':'ok'})
-            })
-            .catch(err => {
-              res.send('error: ' + err)
-            })
-          }else{
-            mes.updateOne({'servicio.servicio.nombre':services},{$inc:{'servicio.servicio.cantidad':-1}})
-            .then(back => {
-              res.json({'status':'ok'})
-            })
-            .catch(err => {
-              res.send('error: ' + err)
-            })
-          }
-        })
-        .catch(err => {
-          res.send('error: ' + err)
-        })
+    registro:{
+      tipo:'servicio',
+      nombre:services,
+      cantidad:1
     }
+  } 
+
+  mes.findOne({
+    $and:[
+      {'registro.tipo':'servicio'},
+      {'registro.nombre':services}
+    ]
+  })
+  .then(back => {
+    if(!back){
+      mes.create(createServices)
+      .then(back => {
+        res.json({'status':'ok'})
+      })
+      .catch(err => {
+        res.send('error: ' + err)
+      })
+    }else{
+      mes.updateOne({
+        $and:[
+          {'registro.tipo':'servicio'},
+          {'registro.nombre':services}
+        ]
+      },{$inc:{'registro.cantidad':-1}})
+      .then(back => {
+        res.json({'status':'ok'})
+      })
+      .catch(err => {
+        res.send('error: ' + err)
+      })
+    }
+  })
+  .catch(err => {
+    res.send('error: ' + err)
+  })
+})
+
+ventas.put('/updateProviderMonth/:provider', (req, res) => {
+  const thisDate = new Date()
+  const date = thisDate.getMonth()
+  const provider = req.params.provider
+  
+  let mes  = 'mes'
+
+  if (date === 0) {
+    mes = January
+  }else if (date === 1) {
+    mes = February
+  }else if (date === 2) {
+    mes = March
+  }else if (date === 3) {
+    mes = April
+  }else if (date === 4) {
+    mes = May
+  }else if (date === 5) {
+    mes = June
+  }else if (date === 6) {
+    mes = July
+  }else if (date === 7) {
+    mes = August
+  }else if (date === 8) {
+    mes = September
+  }else if (date === 9) {
+    mes = October
+  }else if (date === 10) {
+    mes = November
+  }else if (date === 11) {
+    mes = December
   }
 
+  const createProvider = {
+    registro:{
+      tipo:'Prestador',
+      nombre:provider,
+      cantidad:1
+    }
+  } 
+
+  mes.findOne({
+    $and:[
+      {'registro.tipo':'Prestador'},
+      {'registro.nombre':provider}
+    ]
+  })
+  .then(back => {
+    if(!back){
+      mes.create(createProvider)
+      .then(back => {
+        res.json({'status':'ok'})
+      })
+      .catch(err => {
+        res.send('error: ' + err)
+      })
+    }else{
+      mes.updateOne({
+        $and:[
+          {'registro.tipo':'Prestador'},
+          {'registro.nombre':provider}
+        ]
+      },{$inc:{'registro.cantidad':1}})
+      .then(back => {
+        res.json({'status':'ok'})
+      })
+      .catch(err => {
+        res.send('error: ' + err)
+      })
+    }
+  })
+  .catch(err => {
+    res.send('error: ' + err)
+  })
+})
+
+ventas.put('/updateProviderMonthDiscount/:provider', (req, res) => {
+  const thisDate = new Date()
+  const date = thisDate.getMonth()
+  const provider = req.params.provider
+  
+  let mes  = 'mes'
+
+  if (date === 0) {
+    mes = January
+  }else if (date === 1) {
+    mes = February
+  }else if (date === 2) {
+    mes = March
+  }else if (date === 3) {
+    mes = April
+  }else if (date === 4) {
+    mes = May
+  }else if (date === 5) {
+    mes = June
+  }else if (date === 6) {
+    mes = July
+  }else if (date === 7) {
+    mes = August
+  }else if (date === 8) {
+    mes = September
+  }else if (date === 9) {
+    mes = October
+  }else if (date === 10) {
+    mes = November
+  }else if (date === 11) {
+    mes = December
+  }
+
+  const createProvider = {
+    registro:{
+      tipo:'Prestador',
+      nombre:provider,
+      cantidad:1
+    }
+  } 
+
+  mes.findOne({
+    $and:[
+      {'registro.tipo':'Prestador'},
+      {'registro.nombre':provider}
+    ]
+  })
+  .then(back => {
+    if(!back){
+      mes.create(createProvider)
+      .then(back => {
+        res.json({'status':'ok'})
+      })
+      .catch(err => {
+        res.send('error: ' + err)
+      })
+    }else{
+      mes.updateOne({
+        $and:[
+          {'registro.tipo':'Prestador'},
+          {'registro.nombre':provider}
+        ]
+      },{$inc:{'registro.cantidad':-1}})
+      .then(back => {
+        res.json({'status':'ok'})
+      })
+      .catch(err => {
+        res.send('error: ' + err)
+      })
+    }
+  })
+  .catch(err => {
+    res.send('error: ' + err)
+  })
 })
 
 ventas.post('/ingresocliente', (req, res) => {

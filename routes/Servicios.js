@@ -149,20 +149,15 @@ service.get('/ServicesChartQuantity', (req, res) => {
     Month = December
   }
 
-  for (let index = 0; index < 12; index++) {
-    if (date === index) {
-      Month.find()
-      .then(back => {
-        for (let indexTwo = 0; indexTwo < back.length; indexTwo++) {
-          chartdata.labels.push(back[indexTwo].servicio.servicio.nombre)
-          chartdata.datasets[0].data.push(back[indexTwo].servicio.servicio.cantidad)
-        }
-        res.json(chartdata)
-      })
+  Month.find({'registro.tipo':'servicio'})
+  .then(back => {
+    for (let indexTwo = 0; indexTwo < back.length; indexTwo++) {
+      chartdata.labels.push(back[indexTwo].registro.nombre)
+      chartdata.datasets[0].data.push(back[indexTwo].registro.cantidad)
     }
-  }
+    res.json(chartdata)
+  })
 
-  
 })
 
 service.get('/ServicesQuantityPerMonth', (req, res) => {
@@ -197,15 +192,110 @@ service.get('/ServicesQuantityPerMonth', (req, res) => {
     Month = December
   }
 
-  for (let index = 0; index < 12; index++) {
-    if (date === index) {
-      Month.find()
-      .then(back => {
-        res.json(back)
-      })
-    }
+  Month.find({'registro.tipo':'servicio'})
+  .then(back => {
+    res.json(back)
+  })
+  .catch(err => {
+    res.send(err)
+  })
+  
+})
+
+service.get('/PrestadorChartQuantity', (req, res) => {
+  let chartdata = {
+    labels: [],
+    datasets: [ 
+      {
+        label: 'Servicios',
+        backgroundColor: '#7c2929',
+        data: []
+      }
+    ]
   }
 
+  const thisDate = new Date()
+  const date = thisDate.getMonth()
+
+  let Month = 'Month'
+
+  if (date === 0) {
+    Month = January
+  }else if (date === 1) {
+    Month = February
+  }else if (date === 2) {
+    Month = March
+  }else if (date === 3) {
+    Month = April
+  }else if (date === 4) {
+    Month = May
+  }else if (date === 5) {
+    Month = June
+  }else if (date === 6) {
+    Month = July
+  }else if (date === 7) {
+    Month = August
+  }else if (date === 8) {
+    Month = September
+  }else if (date === 9) {
+    Month = October
+  }else if (date === 10) {
+    Month = November
+  }else if (date === 11) {
+    Month = December
+  }
+
+  Month.find({'registro.tipo':'Prestador'})
+  .then(back => {
+    for (let indexTwo = 0; indexTwo < back.length; indexTwo++) {
+      chartdata.labels.push(back[indexTwo].registro.nombre)
+      chartdata.datasets[0].data.push(back[indexTwo].registro.cantidad)
+    }
+    res.json(chartdata)
+  })
+
+})
+
+service.get('/prestadorQuantityPerMonth', (req, res) => {
+  const thisDate = new Date()
+  const date = thisDate.getMonth()
+
+  let Month  = 'Month'
+
+  if (date === 0) {
+    Month = January
+  }else if (date === 1) {
+    Month = February
+  }else if (date === 2) {
+    Month = March
+  }else if (date === 3) {
+    Month = April
+  }else if (date === 4) {
+    Month = May
+  }else if (date === 5) {
+    Month = June
+  }else if (date === 6) {
+    Month = July
+  }else if (date === 7) {
+    Month = August
+  }else if (date === 8) {
+    Month = September
+  }else if (date === 9) {
+    Month = October
+  }else if (date === 10) {
+    Month = November
+  }else if (date === 11) {
+    Month = December
+  }
+
+  Month.find({'registro.tipo':'Prestador'})
+  .then(back => {
+    res.json(back)
+  })
+  .catch(err => {
+    res.send(err)
+  })
+  
 })
 
 module.exports = service
