@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const january = new Schema ({
-  servicio: {
+  registro: {
     type:Object
   }
 })  

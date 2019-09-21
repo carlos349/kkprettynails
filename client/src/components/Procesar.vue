@@ -231,6 +231,7 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 			handleSubmit(result) {
 				this.maniSelect = result
 				this.elegirManicurista()
+				this.inspector = true
 			},
 		  	getManicuristas(){
 				axios.get('manicuristas')
@@ -276,7 +277,7 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 						$('#button-addon1').addClass('bg-success')
 						$('#myInput').focus()
 						this.nombreCliente = res.data.status
-						this.inspector = true
+						
 					}
 				})
 				.catch(err => {
@@ -358,6 +359,11 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 					.catch(err => {
 						console.log(err)
 					})
+
+					axios.put('ventas/updateProviderMonthDiscount/' + this.maniSelect)
+					.catch(err => {
+						console.log(err)
+					})
 				}
 				
 
@@ -393,6 +399,16 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 				this.serviciosSelecionados.push(servicios)
 				
 				axios.put('ventas/updateServicesMonth/' + servicio)
+				.catch(err => {
+					this.$swal({
+						type: 'error',
+						title: 'experimentamos problemas :(',
+						showConfirmButton: false,
+						timer: 1500
+					})
+				})
+
+				axios.put('ventas/updateProviderMonth/' + this.maniSelect)
 				.catch(err => {
 					this.$swal({
 						type: 'error',
