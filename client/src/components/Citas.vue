@@ -1,34 +1,25 @@
 <template id="">
   <div class="container-fluid">
     <div class="row">
-      <div v-bind:style="{ 'background-image': 'linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),url(' + require('../assets/sidebar.jpg') + ')' , 'background-size': 'cover' }" id="mySidenav" class="col-sm-2 menuVertical">
-          <ul class="listaMenu">
-            <li  data-toggle="modal" data-target=".genCita"><span></span>Generar cita</li>
-            
-            <li>Eliminar cita</li>
-                      </ul>
-            <select id="manicuristas" name="manicuristas">
-                <option value="otra">Manicuristas</option>
-                <option v-for="manicurista of manicuristas">{{manicurista.nombre}}</option>
-              </select>
 
-          <vue-cal  class="calendarioo vuecal--rounded-theme vuecal--green-theme"
-                   xsmall
-                   hide-view-selector
-                   :time="false"
-                   events-count-on-year-view
-                   default-view="month"
-                   :locale="locale"
-                   :events="events"
-                   :disable-views="['week']">
-          </vue-cal>
+          <!--  -->
+
+        <div style="padding-left:2%;" id="calen" class="col-sm-12">
+          <div style="" class="col-sm-12 mx-auto text-center p-1">
+        <div class="row">
+          <div class="col-sm-6">
+            <button  data-toggle="modal" class="generar" data-target=".genCita"><span></span>Generar cita</button>
+          </div>
+          <div class="col-sm-6">
+            <select id="manicuristas" class="generar" name="manicuristas">
+              <option value="otra">Manicuristas</option>
+              <option v-for="manicurista of manicuristas">{{manicurista.nombre}}</option>
+            </select>
+          </div>
         </div>
-        <div style="padding-left:2%;" id="calen" class="col-sm-10">
-          <span class="boton"  v-on:click="Menu()">
-            <font-awesome-icon :icon="['fas', 'angle-left']" id="clo" hidden class="clo" />
-            <font-awesome-icon :icon="['fas', 'angle-right']" id="ope" hidden />
-            
-            </span>
+        
+        
+      </div>
 
           <vue-cal
              :locale="locale"
@@ -127,7 +118,7 @@
             <div class="col-md-12">
               <div class="row">
                 <div class="col-md-4 "> <button v-on:click="prevOne()" disabled class="botonW Ant">Anterior</button></div>
-                <div class="col-md-4 text-center"> <button id="redo" class="botonW " v-on:click="redo()"><font-awesome-icon style="color:#011627" icon="redo"/></button></div>
+                <div class="col-md-4 text-center"> <button id="redo" class="botonW " v-on:click="redo()"><font-awesome-icon style="color:#fff" icon="redo"/></button></div>
                 <div class="col-md-4 text-right"><button v-on:click="nextOne()" disabled class="botonW Sig">Siguiente</button></div>
               </div>
             </div>
@@ -638,10 +629,10 @@
 
 </script>
 <style media="screen">
-  .vuecal__menu {background-image: url(../assets/fondo.jpg) }
+  .vuecal__menu {background-image: url(../assets/fondo.jpg);background-repeat:no-repeat;background-size:cover; }
   .vuecal__menu li {border-bottom-color: #fff;color: #fff;}
   .vuecal__menu li.active {background-color: rgba(255, 255, 255, 0.15);}
-  .vuecal__title-bar {background-image: url(../assets/fondo.jpg);;color:white;}
+  .vuecal__title-bar {background-image: url(../assets/fondo.jpg);background-repeat:no-repeat;background-size:cover;color:white;}
 
   .vuecal__time-column .vuecal__time-cell{color:white;height:1vh;}
   .vuecal__event{color:#fff;font-weight:bold}
@@ -655,9 +646,14 @@
   font-weight:600;}
   .vuecal--rounded-theme.vuecal--green-theme:not(.vuecal--day-view) .vuecal__cell-content {
     background-color: #274a58;
+    height: 10vh !important;
+}
+.vuecal__cell-split {
+    background-color: #274a58;
+    height: 10vh !important;
 }
 .vuecal--green-theme .vuecal__title-bar {
-    background-image: url(../assets/fondo.jpg);;
+    background-image: url(../assets/fondo.jpg);background-repeat:no-repeat;background-size:cover;
 }
   .vuecal__time-column .vuecal__time-cell{
     color: #0F2027
@@ -673,7 +669,7 @@
 
   .calendario{
     max-height: 70vh;
-    margin-top:2%
+    margin-top:.5%
   }
   .calendarioo{
     max-height:40vh;
@@ -722,18 +718,12 @@
 
  
   #manicuristas{
-    padding:10px;
     border:none;
-    border-right:4px solid #425861;
     list-style-type: none;
     cursor:pointer;
-    height:5vh;
     background-color:transparent;
     color:white;
-    font-family: 'Raleway', sans-serif;
-    width:100%;
     outline:none;
-    background-color:#3a508c ;
   }
   #manicuristas option{
     font-family: 'Raleway', sans-serif;
@@ -893,5 +883,14 @@
     -moz-transition: background-color 500ms ease-out;
     -o-transition: background-color 500ms ease-out;
     transition: background-color 500ms ease-out;
+  }
+  .generar{
+    padding: 10px;
+     background-image: url(../assets/fondo.jpg);
+     background-repeat:no-repeat;
+     border:none;
+     color: azure;
+     margin-bottom: -4%;
+     width: 50%;
   }
 </style>

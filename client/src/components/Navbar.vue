@@ -160,6 +160,17 @@
 		    </div>
 		  </div>
 		</div>
+
+<!-- <div id="mydiv">
+  <div id="mydivheader">Click here to move</div>
+  <div class="col-sm-12">
+	  <div class="row">
+		  <div class="col-sm-12 p-1">
+			  <input class="calcuPantalla" type="text">
+		  </div>
+	  </div>
+  </div>
+</div> -->
 </div>
 </template>
 
@@ -187,6 +198,7 @@ export default {
 	created(){
 		this.marcarNav()
 		this.intervalM()
+		
 	},
 
 	methods: {
@@ -357,4 +369,27 @@ export default {
 	  width: 50px;
 	  transition: all 0.5s ease-out;
   }
+
+  #mydiv {
+  position: absolute;
+  width: 30%;
+  z-index: 9;
+  background-color: #f1f1f1;
+  text-align: center;
+  border: 1px solid #d3d3d3;
+}
+
+#mydivheader {
+  padding: 10px;
+  cursor: move;
+  z-index: 10;
+  background-color: #2196F3;
+  color: #fff;
+}
+.calcuPantalla{
+	background-color: #becd94;
+	width: 80%;
+	padding: 10px;
+}
 </style>
+
