@@ -30,64 +30,64 @@
           </div>
 				</div>
 			</div>
-      <div class="row BotonesFiltro">
+      <div class="row">
         <div class="col-md-2 mb-2">
-          <button class="btn w-100" type="button" v-on:click="getMonthPerMonthSelected(1)">
+          <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getMonthPerMonthSelected(1)">
             Enero  
           </button> 
         </div>
         <div class="col-md-2 mb-2">
-          <button class="btn w-100" type="button" v-on:click="getMonthPerMonthSelected(2)">
+          <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getMonthPerMonthSelected(2)">
             Febrero  
           </button> 
         </div>
         <div class="col-md-2 mb-2">
-          <button class="btn w-100" type="button" v-on:click="getMonthPerMonthSelected(3)">
+          <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getMonthPerMonthSelected(3)">
             Marzo  
           </button> 
         </div>
         <div class="col-md-2 mb-2">
-          <button class="btn w-100" type="button" v-on:click="getMonthPerMonthSelected(4)">
+          <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getMonthPerMonthSelected(4)">
             Abril  
           </button> 
         </div>
         <div class="col-md-2">
-          <button class="btn w-100" type="button" v-on:click="getMonthPerMonthSelected(5)">
+          <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getMonthPerMonthSelected(5)">
             Mayo  
           </button> 
         </div>
         <div class="col-md-2 mb-2">
-          <button class="btn w-100" type="button" v-on:click="getMonthPerMonthSelected(6)">
+          <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getMonthPerMonthSelected(6)">
             Junio  
           </button> 
         </div>
         <div class="col-md-2 mb-2">
-          <button class="btn w-100" type="button" v-on:click="getMonthPerMonthSelected(7)">
+          <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getMonthPerMonthSelected(7)">
             Julio  
           </button> 
         </div>
         <div class="col-md-2 mb-2">
-          <button class="btn w-100" type="button" v-on:click="getMonthPerMonthSelected(8)">
+          <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getMonthPerMonthSelected(8)">
             Agosto  
           </button> 
         </div>
         <div class="col-md-2 mb-2">
-          <button class="btn w-100" type="button" v-on:click="getMonthPerMonthSelected(9)">
+          <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getMonthPerMonthSelected(9)">
             Septiembre  
           </button> 
         </div>
         <div class="col-md-2 mb-2">
-          <button class="btn w-100" type="button" v-on:click="getMonthPerMonthSelected(10)">
+          <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getMonthPerMonthSelected(10)">
             Octubre  
           </button> 
         </div>
         <div class="col-md-2 mb-2">
-          <button class="btn w-100" type="button" v-on:click="getMonthPerMonthSelected(11)">
+          <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getMonthPerMonthSelected(11)">
             Noviembre  
           </button> 
         </div>
         <div class="col-md-2 mb-2">
-          <button class="btn w-100" type="button" v-on:click="getMonthPerMonthSelected(12)">
+          <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getMonthPerMonthSelected(12)">
             Diciembre  
           </button> </div> 
       </div>
@@ -427,40 +427,54 @@ export default {
     cursor:pointer;
   }
   .BotonesDespliegue button{
-    background: #0F2027;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #2C5364, #203A43, #0F2027);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #2C5364, #203A43, #0F2027); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    border:none !important;
+    background-size: 300% 100%;
+    background-image: linear-gradient(to right, #29323c, #485563, #404653, #6d7996);
+    box-shadow: 0 4px 15px 0 rgba(45, 54, 65, 0.75);
+    moz-transition: all .4s ease-in-out;
+    -o-transition: all .4s ease-in-out;
+    -webkit-transition: all .4s ease-in-out;
+    transition: all .4s ease-in-out;
     padding: 12px;
     font-size: 1.1em;
     box-shadow: 0 0.46875rem 2.1875rem rgba(4,9,20,0.03), 0 0.9375rem 1.40625rem rgba(4,9,20,0.03), 0 0.25rem 0.53125rem rgba(4,9,20,0.05), 0 0.125rem 0.1875rem rgba(4,9,20,0.03);
     font-family: 'Raleway', sans-serif !important;
     font-weight:600 !important;
-    letter-spacing: .2em
-  }
-  .BotonesFiltro button{
-    background: #0F2027;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #2C5364, #203A43, #0F2027);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #2C5364, #203A43, #0F2027); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    letter-spacing: .2em;
     border:none !important;
-    box-shadow: 0 0.46875rem 2.1875rem rgba(4,9,20,0.03), 0 0.9375rem 1.40625rem rgba(4,9,20,0.03), 0 0.25rem 0.53125rem rgba(4,9,20,0.05), 0 0.125rem 0.1875rem rgba(4,9,20,0.03);
-    font-family: 'Raleway', sans-serif !important;
-    letter-spacing: 0.15em;
-    color:cornsilk;
-    -webkit-transition: background-color 500ms ease-out 1s;
-    -moz-transition: background-color 500ms ease-out 1s;
-    -o-transition: background-color 500ms ease-out 1s;
-    transition: background-color 500ms ease-out 1s;
   }
-  .BotonesFiltro button:hover{
-    color:darkgray;
-    background: #0F2027;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #0F2027, #203A43, #2C5364);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #0F2027, #203A43, #2C5364); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    -webkit-transition: background-color 500ms ease-out 1s;
-    -moz-transition: background-color 500ms ease-out 1s;
-    -o-transition: background-color 500ms ease-out 1s;
-    transition: background-color 500ms ease-out 1s;
+  .BotonesDespliegue button:hover{
+    background-position: 100% 0;
+    moz-transition: all .4s ease-in-out;
+    -o-transition: all .4s ease-in-out;
+    -webkit-transition: all .4s ease-in-out;
+    transition: all .4s ease-in-out;
+  }
+  .BotonesFiltro{
+    width: 200px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    cursor: pointer;
+    height: 55px;
+    text-align:center;
+    border: none;
+    background-size: 300% 100%;
+    background-image: linear-gradient(to right, #29323c, #485563, #404653, #6d7996);
+    box-shadow: 0 4px 15px 0 rgba(45, 54, 65, 0.75);
+    moz-transition: all .4s ease-in-out;
+    -o-transition: all .4s ease-in-out;
+    -webkit-transition: all .4s ease-in-out;
+    transition: all .4s ease-in-out;
+  }
+  .BotonesFiltro:hover{
+    background-position: 100% 0;
+    moz-transition: all .4s ease-in-out;
+    -o-transition: all .4s ease-in-out;
+    -webkit-transition: all .4s ease-in-out;
+    transition: all .4s ease-in-out;
+  }
+  .BotonesFiltro:focus {
+    outline: none;
   }
   .table{
     table-layout: fixed;
@@ -485,31 +499,20 @@ export default {
 		display: none;  /* Ocultar scroll */
 	}
   .first{
-		background: #a73737;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #7a2828, #a73737);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #7a2828, #a73737); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  }
+		background:#3b4254; /* fallback for old browsers */
+	}
 	.second{
-		background: #FF512F;  /* fallback for old browsers */
-		background: -webkit-linear-gradient(to left, #F09819, #FF512F);  /* Chrome 10-25, Safari 5.1-6 */
-		background: linear-gradient(to left, #F09819, #FF512F); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
+		background:#505970; /* fallback for old browsers */
 	}
 	.three{
-		background: #0F2027;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #2C5364, #203A43, #0F2027);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #2C5364, #203A43, #0F2027); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
-	}
+		background:#616c86;
+  }
   .four{
-    background: #a73737;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #a73737, #7a2828);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #a73737, #7a2828); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background:#6A7693;
   }
 
   .metricss{
 		height: auto;
-		background-color: #fff;
 		margin:10px;
     padding: auto;
     margin-top: 20px;

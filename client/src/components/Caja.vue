@@ -20,64 +20,64 @@
                 </div>
             </div>
         </div>
-        <div class="row BotonesFiltro mt-3">
+        <div class="row mt-3">
             <div class="col-md-2 mb-2">
-                <button class="btn w-100" type="button" v-on:click="getPerMonthSelected(0)">
+                <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getPerMonthSelected(0)">
                     Enero  
                 </button> 
             </div>
             <div class="col-md-2 mb-2">
-                <button class="btn w-100" type="button" v-on:click="getPerMonthSelected(1)">
+                <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getPerMonthSelected(1)">
                     Febrero  
                 </button> 
             </div>
             <div class="col-md-2 mb-2">
-                <button class="btn w-100" type="button" v-on:click="getPerMonthSelected(2)">
+                <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getPerMonthSelected(2)">
                     Marzo  
                 </button> 
             </div>
             <div class="col-md-2 mb-2">
-                <button class="btn w-100" type="button" v-on:click="getPerMonthSelected(3)">
+                <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getPerMonthSelected(3)">
                     Abril  
                 </button> 
             </div>
             <div class="col-md-2">
-                <button class="btn w-100" type="button" v-on:click="getPerMonthSelected(4)">
+                <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getPerMonthSelected(4)">
                     Mayo  
                 </button> 
             </div>
             <div class="col-md-2 mb-2">
-                <button class="btn w-100" type="button" v-on:click="getPerMonthSelected(5)">
+                <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getPerMonthSelected(5)">
                     Junio  
                 </button> 
             </div>
             <div class="col-md-2 mb-2">
-                <button class="btn w-100" type="button" v-on:click="getPerMonthSelected(6)">
+                <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getPerMonthSelected(6)">
                     Julio  
                 </button> 
             </div>
             <div class="col-md-2 mb-2">
-                <button class="btn w-100" type="button" v-on:click="getPerMonthSelected(7)">
+                <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getPerMonthSelected(7)">
                     Agosto  
                 </button> 
             </div>
             <div class="col-md-2 mb-2">
-                <button class="btn w-100" type="button" v-on:click="getPerMonthSelected(8)">
+                <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getPerMonthSelected(8)">
                     Septiembre  
                 </button> 
             </div>
             <div class="col-md-2 mb-2">
-                <button class="btn w-100" type="button" v-on:click="getPerMonthSelected(9)">
+                <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getPerMonthSelected(9)">
                     Octubre  
                 </button> 
             </div>
             <div class="col-md-2 mb-2">
-                <button class="btn w-100" type="button" v-on:click="getPerMonthSelected(10)">
+                <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getPerMonthSelected(10)">
                     Noviembre  
                 </button> 
             </div>
             <div class="col-md-2 mb-2">
-                <button class="btn w-100" type="button" v-on:click="getPerMonthSelected(11)">
+                <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getPerMonthSelected(11)">
                     Diciembre  
                 </button> 
             </div> 
@@ -260,24 +260,18 @@ export default {
 </script>
 <style >
     .first{
-        background: #a73737;  /* fallback for old browsers */
-        background: -webkit-linear-gradient(to right, #7a2828, #a73737);  /* Chrome 10-25, Safari 5.1-6 */
-        background: linear-gradient(to right, #7a2828, #a73737); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    }
+		background-color:#3b4254; /* fallback for old browsers */
+	}
 	.second{
-		background: #FF512F;  /* fallback for old browsers */
-		background: -webkit-linear-gradient(to left, #F09819, #FF512F);  /* Chrome 10-25, Safari 5.1-6 */
-		background: linear-gradient(to left, #F09819, #FF512F); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+		background-color:#505970; /* fallback for old browsers */
 	}
 	.three{
-		background: #0F2027;  /* fallback for old browsers */
-        background: -webkit-linear-gradient(to right, #2C5364, #203A43, #0F2027);  /* Chrome 10-25, Safari 5.1-6 */
-        background: linear-gradient(to right, #2C5364, #203A43, #0F2027); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+		background-color:#616c86;
     }
+    
 
     .metricss{
         height: auto;
-        background-color: #fff;
         padding: auto;
         margin-left:50px;
         margin-top: 20px;
@@ -289,29 +283,32 @@ export default {
 		font-size: 1.3em;
 		margin-top: 10px;
 	}
-    .BotonesFiltro button{
-        background: #0F2027;  /* fallback for old browsers */
-        background: -webkit-linear-gradient(to right, #2C5364, #203A43, #0F2027);  /* Chrome 10-25, Safari 5.1-6 */
-        background: linear-gradient(to right, #2C5364, #203A43, #0F2027); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-        border:none !important;
-        box-shadow: 0 0.46875rem 2.1875rem rgba(4,9,20,0.03), 0 0.9375rem 1.40625rem rgba(4,9,20,0.03), 0 0.25rem 0.53125rem rgba(4,9,20,0.05), 0 0.125rem 0.1875rem rgba(4,9,20,0.03);
-        font-family: 'Raleway', sans-serif !important;
-        letter-spacing: 0.15em;
-        color:cornsilk;
-        -webkit-transition: background-color 500ms ease-out 1s;
-        -moz-transition: background-color 500ms ease-out 1s;
-        -o-transition: background-color 500ms ease-out 1s;
-        transition: background-color 500ms ease-out 1s;
+    .BotonesFiltro{
+        width: 200px;
+        font-size: 16px;
+        font-weight: 600;
+        color: #fff;
+        cursor: pointer;
+        height: 55px;
+        text-align:center;
+        border: none;
+        background-size: 300% 100%;
+        background-image: linear-gradient(to right, #29323c, #485563, #404653, #6d7996);
+        box-shadow: 0 4px 15px 0 rgba(45, 54, 65, 0.75);
+        moz-transition: all .4s ease-in-out;
+        -o-transition: all .4s ease-in-out;
+        -webkit-transition: all .4s ease-in-out;
+        transition: all .4s ease-in-out;
     }
-    .BotonesFiltro button:hover{
-        color:darkgray;
-        background: #0F2027;  /* fallback for old browsers */
-        background: -webkit-linear-gradient(to right, #0F2027, #203A43, #2C5364);  /* Chrome 10-25, Safari 5.1-6 */
-        background: linear-gradient(to right, #0F2027, #203A43, #2C5364); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-        -webkit-transition: background-color 500ms ease-out 1s;
-        -moz-transition: background-color 500ms ease-out 1s;
-        -o-transition: background-color 500ms ease-out 1s;
-        transition: background-color 500ms ease-out 1s;
+    .BotonesFiltro:hover{
+        background-position: 100% 0;
+        moz-transition: all .4s ease-in-out;
+        -o-transition: all .4s ease-in-out;
+        -webkit-transition: all .4s ease-in-out;
+        transition: all .4s ease-in-out;
+    }
+    .BotonesFiltro:focus {
+        outline: none;
     }
     .table{
         table-layout: fixed;

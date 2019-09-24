@@ -47,18 +47,18 @@
 									<button v-if="!inspector" type="button" class="w-75 btn procesar text-left" v-on:click="conteoServicio(servicio._id,servicio.nombre, servicio.precio)" disabled>
 									  {{servicio.nombre}} <span class="badge badge-light conteoServ mt-1 float-right" v-bind:id="servicio._id">0</span>
 									</button>
-									<button v-if="!inspector" type="button" class="w-20 btn btn-danger  text-left"  disabled>
+									<button v-if="!inspector" type="button" class="w-20 btn btn-back  text-left"  disabled>
 									  <font-awesome-icon icon="times"/>
 									</button>
 									<button v-else type="button" class="w-75 btn procesar  text-left" v-on:click="conteoServicio(servicio._id ,servicio.nombre, servicio.precio)">
 									  {{servicio.nombre}} <span class="badge badge-light conteoServ mt-1 float-right" v-bind:id="servicio._id">0</span>
 									</button>
-									<button v-if="inspector" type="button" class="w-20 btn btn-danger  text-left" v-on:click="borrarServicio(servicio.nombre,index,servicio._id,servicio.precio)">
+									<button v-if="inspector" type="button" class="w-20 btn btn-back  text-left" v-on:click="borrarServicio(servicio.nombre,index,servicio._id,servicio.precio)">
 									  <font-awesome-icon icon="times"/>
 									</button>
 
 								</td>
-								<td v-if="servicio.active" class=" font-weight-bold text-white text-left">
+								<td v-if="servicio.active" class=" font-weight-bold text-white text-center">
 									{{servicio.precio}}
 								</td>
 							</tr>
@@ -483,9 +483,9 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 		border-radius:0px !important;
 		border-bottom:2px solid #102229 !important;
 		background-color:transparent !important;
-		color:#000 !important;
-		font-family: 'Raleway', sans-serif;
-		font-weight:600;
+		color:#fff !important;
+		font-family: 'Roboto', sans-serif !important;
+		letter-spacing: .09em;
 	}
 	.spanInputs{
 		border:none !important;
@@ -528,6 +528,10 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 		transition: all 0.5s ease-out;
 		font-family: 'Raleway', sans-serif;
 		font-weight:600;
+		cursor:pointer;
+	}
+	.autocomplete-input{
+		color:#fff !important;
 	}
 	.procesar:hover{
 		color:#102229;
@@ -536,7 +540,7 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 	}
 	.tableBg{
 		border:none !important;
-		background-color:#213b45 !important;
+		background-color:#3a3a3a !important;
 		margin-bottom:0 !important;
 	}
 	.contenedor{
@@ -546,8 +550,13 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 		background-color: transparent;
 		min-width: 700px;
 	}
+	.btn-back{
+		background-color:black;
+		color:#fff;
+		cursor:pointer;
+	}
 	.selectMani{
-		background-color:#355461 !important;
+		background-color:#3a3a3a !important;
 		color:#fff !important;
 		border:none !important;
 		border-bottom:2px solid #102229 !important;

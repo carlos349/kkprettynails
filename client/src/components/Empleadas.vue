@@ -12,7 +12,7 @@
 				</div>
 			</div>
 			<div class="col-md-4">
-				<div class="formsPrestadores" v-bind:style="{ 'background-image': 'url(' + require('../assets/fondo.jpg') + ')' , 'background-size': 'cover' }">
+				<div class="formsPrestadores" v-bind:style="{ 'background-image': 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(' + require('../assets/fondo.jpg') + ')' , 'background-size': 'cover' }">
 					<h2>Ingresar prestador</h2>
 					<form v-on:submit.prevent="registroPrestador">
 						<div class="form-group">
@@ -71,9 +71,9 @@
 										{{manicurista.comision}}
 									</td>
 									<td class="font-weight-bold text-center">
-										<button style="width:30%;" v-on:click="deletePrestador(manicurista._id)" class=" btn btn-danger"><font-awesome-icon icon="trash" /></button>
-										<button style="width:30%;" v-on:click="pasarDatosEdit(manicurista.nombre, manicurista.documento, manicurista.porcentaje, manicurista._id)" class=" btn btn-warning"><font-awesome-icon icon="edit" /></button>
-										<button style="width:30%;" v-on:click="sacarReporte(manicurista._id)" class=" btn btn-success"><font-awesome-icon icon="copy" /></button>
+										<button style="width:30%;" v-on:click="deletePrestador(manicurista._id)" class=" btn btn-colorsTrash"><font-awesome-icon icon="trash" /></button>
+										<button style="width:30%;" v-on:click="pasarDatosEdit(manicurista.nombre, manicurista.documento, manicurista.porcentaje, manicurista._id)" class=" btn btn-colorsEdit"><font-awesome-icon icon="edit" /></button>
+										<button style="width:30%;" v-on:click="sacarReporte(manicurista._id)" class=" btn btn-colorsPrint"><font-awesome-icon icon="copy" /></button>
 									</td>
 								</tr>
 							</tbody>
@@ -394,14 +394,10 @@ export default {
 		color:#102229 !important
 	}
 	.first{
-		background: #a73737;  /* fallback for old browsers */
-		background: -webkit-linear-gradient(to right, #7a2828, #a73737);  /* Chrome 10-25, Safari 5.1-6 */
-		background: linear-gradient(to right, #7a2828, #a73737); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+		background: #505970;  /* fallback for old browsers */
 	}
 	.second{
-		background: #FF512F;  /* fallback for old browsers */
-		background: -webkit-linear-gradient(to left, #F09819, #FF512F);  /* Chrome 10-25, Safari 5.1-6 */
-		background: linear-gradient(to left, #F09819, #FF512F); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+		background: #6A7693;  /* fallback for old browsers */
 	}
 	.formsPrestadores{
 		background-color:#fff;
@@ -430,15 +426,15 @@ export default {
 		color:#fff !important;
 	}
 	.add{
-		background-color:#374b89;
-		color:#fff;
+		background-color:#ccc;
+		color: #102229;
 		transition: all 0.5s ease-out;
 		font-family: 'Raleway', sans-serif;
 		font-weight:600;
 	}
 	.add:hover{
-		background-color:#ccc;
-		
+		background-color:#102229;
+		color:#ccc;
 	}
 	@media (max-width: 700px) {
 		.respons{
@@ -485,6 +481,18 @@ export default {
 		width: 8px;     /* Tamaño del scroll en vertical */
 		height: 8px;    /* Tamaño del scroll en horizontal */
 		display: none;  /* Ocultar scroll */
+	}
+	.btn-colorsTrash{
+		background-color: #343a40;
+		color:#fff;
+	}
+	.btn-colorsEdit{
+		background-color:#495057;
+		color:#fff;
+	}
+	.btn-colorsPrint{
+		background-color:#495057;
+		color:#fff;
 	}
 
 </style>

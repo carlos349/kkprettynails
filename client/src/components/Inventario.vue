@@ -2,7 +2,7 @@
 	<div class="container-fluid">
 		<div class="col-12 row pt-5">
 			<div class="col-md-4">
-				<div class="forms">
+				<div class="forms" v-bind:style="{ 'background-image': 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(' + require('../assets/fondo.jpg') + ')' , 'background-size': 'cover' }">
 					<h2>Registrar producto</h2>
 					<form v-on:submit.prevent="addProduct">
 						<div class="form-group">
@@ -103,7 +103,7 @@
 										{{fechas[index]}}
 									</td>
 									<td class="text-center">
-										<button style="width:50%;" v-on:click="pasarDatosEdit(arrayProduct.monto,arrayProduct.cantidad,arrayProduct.gramos,arrayProduct.marca,arrayProduct.producto,arrayProduct.servicios,arrayProduct.serviciosId, arrayProduct._id)" class=" btn btn-warning">
+										<button style="width:50%;" v-on:click="pasarDatosEdit(arrayProduct.monto,arrayProduct.cantidad,arrayProduct.gramos,arrayProduct.marca,arrayProduct.producto,arrayProduct.servicios,arrayProduct.serviciosId, arrayProduct._id)" class="btn btn-colorsEdit">
 											<font-awesome-icon icon="edit" />
 										</button>
 									</td>
@@ -393,7 +393,7 @@ export default {
 		color:#102229 !important;
 	}
 	.forms{
-		background-color:#fff;
+		color:#fff;
 		box-shadow: 0 0.46875rem 2.1875rem rgba(4,9,20,0.03), 0 0.9375rem 1.40625rem rgba(4,9,20,0.03), 0 0.25rem 0.53125rem rgba(4,9,20,0.05), 0 0.125rem 0.1875rem rgba(4,9,20,0.03);
 		padding: 20px;
 		overflow-x: hidden;
@@ -425,6 +425,10 @@ export default {
 		height:auto;
 		border-radius:5px;
 	}
+	.btn-colorsEdit{
+		background-color:#495057;
+		color:#fff;
+	}
 	.ListaInventario::-webkit-scrollbar {
 		width: 8px;     /* Tamaño del scroll en vertical */
 		height: 8px;    /* Tamaño del scroll en horizontal */
@@ -435,8 +439,9 @@ export default {
 		border-radius:0px !important;
 		border-bottom:2px solid #102229 !important;
 		background-color:transparent !important;
-		color:#102229 !important;
+		color:#fff !important;
 		font-weight:400;
+		letter-spacing: .1em;
 	}
 	.conCheck {
 		display: inline-block;

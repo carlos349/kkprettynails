@@ -16,7 +16,7 @@
 				</div>
 			</div>
 			<div class="col-md-4">
-				<div class="forms" v-bind:style="{ 'background-image': 'url(' + require('../assets/fondo.jpg') + ')' , 'background-size': 'cover' }">
+				<div class="forms" v-bind:style="{ 'background-image': 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(' + require('../assets/fondo.jpg') + ')' , 'background-size': 'cover' }">
 					<h2>Crear Servicio</h2>
 					<form v-on:submit.prevent="registroServicio">
 						<div class="form-group">
@@ -79,15 +79,15 @@
 									{{servicio.tiempo}}
 								</td>
 								<td class="font-weight-bold">
-									{{servicio.precio}}
+									{{formatPrice(servicio.precio)}}
 								</td>
 								<td class="font-weight-bold">
 									{{servicio.prestadores.length}}
 								</td>
 								<td class="font-weight-bold text-center">
-									<button style="width:40%;" v-on:click="desactivarServicio(servicio._id)" v-if="servicio.active" class=" btn btn-success">Activo</button>
-									<button style="width:40%;" v-on:click="desactivarServicio(servicio._id)" v-if="!servicio.active" class=" btn btn-danger">Inactivo</button>
-									<button style="width:40%;" v-on:click="pasarDatosEdit(servicio.nombre, servicio.tiempo, servicio.precio, servicio.prestadores, servicio._id)" class=" btn btn-warning">Editar</button>
+									<button style="width:40%;" v-on:click="desactivarServicio(servicio._id)" v-if="servicio.active" class=" btn btn-active">Activo</button>
+									<button style="width:40%;" v-on:click="desactivarServicio(servicio._id)" v-if="!servicio.active" class=" btn btn-inactive">Inactivo</button>
+									<button style="width:40%;" v-on:click="pasarDatosEdit(servicio.nombre, servicio.tiempo, servicio.precio, servicio.prestadores, servicio._id)" class="btn btn-colorsEdit"><font-awesome-icon icon="trash" /></button>
 								</td>
 							</tr>
 						</tbody>
@@ -457,6 +457,10 @@
 					console.error(err)
 				})
 			},
+			formatPrice(value) {
+				let val = (value/1).toFixed(2).replace('.', ',')
+				return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+			},
 			
 			
 		},
@@ -535,6 +539,19 @@
 		height:auto;
 		border-radius:5px;
 	}
+	.btn-colorsEdit{
+		background-color:#495057;
+		color:#fff;
+	}
+	.btn-inactive{
+		background-color: #343a40;
+		color:#fff;
+	}
+	.btn-active{
+		background-color: #fff;
+		color:#343a40;
+		border: 1px solid #343a40;
+	}
 	.ListaTwo::-webkit-scrollbar {
 		width: 8px;     /* Tamaño del scroll en vertical */
 		height: 8px;    /* Tamaño del scroll en horizontal */
@@ -558,17 +575,16 @@
 		border-bottom:2px solid #102229 !important;
 	}
 	.add{
-		background-color:#374b89;
-		color:#fff;
+		background-color:#ccc;
+		color: #102229;
 		transition: all 0.5s ease-out;
 		font-family: 'Raleway', sans-serif;
 		font-weight:600;
 	}
 	.add:hover{
-		background-color:#ccc;
-		
+		background-color:#102229;
+		color:#ccc;
 	}
-
 	.conCheck {
 		display: inline-block;
 		margin-left: 5%;
@@ -637,23 +653,14 @@
 		transform: rotate(45deg);
 	}
 	.first{
-		background: #a73737;  /* fallback for old browsers */
-		background: -webkit-linear-gradient(to right, #7a2828, #a73737);  /* Chrome 10-25, Safari 5.1-6 */
-		background: linear-gradient(to right, #7a2828, #a73737); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
-
+		background:#3b4254; /* fallback for old browsers */
 	}
 	.second{
-		background: #FF512F;  /* fallback for old browsers */
-		background: -webkit-linear-gradient(to left, #F09819, #FF512F);  /* Chrome 10-25, Safari 5.1-6 */
-		background: linear-gradient(to left, #F09819, #FF512F); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
+		background:#505970; /* fallback for old browsers */
 	}
 	.three{
-		background: #3CA55C;  /* fallback for old browsers */
-		background: -webkit-linear-gradient(to left, #B5AC49, #3CA55C);  /* Chrome 10-25, Safari 5.1-6 */
-		background: linear-gradient(to left, #B5AC49, #3CA55C); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-	}
+		background:#616c86;
+  	}
 	.forms h2{
 		font-family: 'Raleway', sans-serif;
 	}

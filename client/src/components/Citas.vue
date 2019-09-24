@@ -131,7 +131,7 @@
 
     <div class="modal fade" id="myModalCitasDescripcion" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered" role="document">
-		    <div v-bind:style="{ 'background-image': 'url(' + require('../assets/fondo.jpg') + ')' , 'background-size': 'cover' }" class="modal-content">
+		    <div v-bind:style="{ 'background-image': 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(' + require('../assets/fondo.jpg') + ')' , 'background-size': 'cover' }" class="modal-content">
 		      <div class="modal-header">
 		        <h5 class="modal-title text-white font-weight-bold" id="exampleModalCenterTitle">{{ selectedEvent.title }}</h5>
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -155,9 +155,12 @@
 		    </div>
 		  </div>
 		</div>
-    <button class="CierreDia" v-on:click="daySaleClose">
-			<font-awesome-icon style="margin-right:4%;margin-top:5%;" icon="cloud-upload-alt" />
-		</button>
+    <div class="box">
+      <button class="CierreDia btn-white btn-animation-1" v-on:click="daySaleClose">
+        <font-awesome-icon icon="cloud-upload-alt" />
+      </button>
+    </div>
+    
 
     
   </div>
@@ -675,12 +678,12 @@
     max-height:40vh;
   }
   .vuecal__event{
-    background-color:#3a508c ;
+    background-color:#343a40 ;
     opacity: 0.9;
     cursor:pointer;
   }
   .vuecal__event:hover{
-    background-color:#3a508c ;
+    background-color:#343a40 ;
     opacity: 1;
     z-index:10
   }
@@ -819,29 +822,86 @@
     outline: none !important;
     text-align: center
   }
-  .CierreDia{
-		width: 60px;
-		height:60px;
-		border-radius: 50%;
-		background-color:#a73737;
-		color: azure;
-		cursor: pointer;
-		border:none;
-		-webkit-box-shadow: -1px 2px 15px 38px rgba (0,0,0,0.75);
-		-moz-box-shadow: -1px 2px 15px 38px rgba (0,0,0,0.75);
-		box-shadow: -1px 2px 15px 38px rgba (0,0,0,0.75);
-		position:fixed;
+  .box{
+    position:fixed;
 		top:90%;
 		right:2%;
-		font-size: 1.3em;
-		outline: none !important;
-		transition: all 0.5s ease-out;
-	}
-	.CierreDia:hover{
-		background-color:#0F2027;
-		color: azure;
-		transition: all 0.5s ease-out;
-	}
+    transform : translate(-50% ,-50%);
+  }
+  .CierreDia:link,
+  .CierreDia:visited{
+    text-decoration: none;
+    text-transform:uppercase;
+    position:relative;
+    top:0;
+    left:0;
+    padding:20px 40px;
+    border-radius:100px;
+    display:inline-block;
+    transition: all .6s;
+  }
+
+  .btn-white{
+    padding: 15px;
+    border-radius:10px;
+    background-color:#fff;
+    color: #102229;
+    border:2px solid #102229;
+    font-size: 1em;
+    outline: none !important;
+  }
+  .btn-white:focus{
+    outline: none !important;
+  }
+
+  .CierreDia:hover{
+    box-shadow:0px 10px 10px rgba(0,0,0,0.2);
+    transform : translateY(-3px);
+  }
+
+  .CierreDia:active{
+    box-shadow:0px 5px 10px rgba(0,0,0,0.2);
+    transform:translateY(-1px);
+  }
+
+  .btn-bottom-animation-1{
+    animation:comeFromBottom 2s ease-out .8s;
+  }
+
+  .CierreDia::after{
+    content:"";
+    text-decoration: none;
+    text-transform:uppercase;
+    position:absolute;
+    width:100%;
+    height:100%;
+    top:0;
+    left:0;
+    border-radius:10px;
+    display:inline-block;
+    z-index:-1;
+    transition: all .5s;
+  }
+
+  .btn-white::after {
+      background:#102229;
+  }
+
+  .btn-animation-1:hover::after {
+      transform: scaleX(1.6) scaleY(1.8);
+      opacity: 0;
+  }
+
+  @keyframes comeFromBottom{
+    0%{
+      opacity:0;
+      transform:translateY(40px);
+    } 
+    100%{
+      opacity:1;
+      transform:translateY(0);
+    }
+  }
   .clientB{
     background-color:#fff;
     box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);
@@ -865,24 +925,16 @@
     color:aliceblue;
   }
   .btn-style{
-    background-color: transparent;
-    border: solid 1px #232c6e;
-    color:aliceblue;
+		background-color:#ccc;
+		color: #102229;
+		transition: all 0.5s ease-out;
+		font-family: 'Raleway', sans-serif;
+		font-weight:600;
     width: 100%;
-    font-family: 'Roboto', sans-serif;
-    letter-spacing: .1em;
-    -webkit-transition: background-color 500ms ease-out;
-    -moz-transition: background-color 500ms ease-out;
-    -o-transition: background-color 500ms ease-out;
-    transition: background-color 500ms ease-out;
-  }
-  .btn-style:hover{
-    background-color: #232c6e;
-    color:aliceblue;
-    -webkit-transition: background-color 500ms ease-out;
-    -moz-transition: background-color 500ms ease-out;
-    -o-transition: background-color 500ms ease-out;
-    transition: background-color 500ms ease-out;
+	}
+	.btn-style:hover{
+		background-color:#343a40;
+		color:#ccc;
   }
   .generar{
     padding: 10px;
