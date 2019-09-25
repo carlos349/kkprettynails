@@ -31,12 +31,25 @@
 							<label for="name">Precio</label>
 							<input v-model="precioServi" type="text" class="form-control inputs" placeholder="Precio">
 						</div>
-						<label for="name">Prestador</label>
-						<div class="form-group row" >
-								<label v-for="(manicurista, index) of manicuristas" class="conCheck col-sm-2">{{manicurista.nombre}}
-								<input :id="index" class="checkFirst" v-on:click="presSelect(manicurista.documento,index)" type="checkbox">
-								<span class="checkmark"></span>
-								</label>
+						<div class="form-group row" style="margin-top:-15px;">
+							<input type="text" id="myInputServ" v-on:keyup="myFunctionServ()" class="form-control buscar inputs" placeholder="Filtrar servicios"/>
+							<div class="ListaProcesar maxHeight">
+								<table class="table table-dark tableBg" id="myTableServ">
+									<tbody>
+										<tr v-for="(manicurista, index) of manicuristas" >
+											<td class="font-weight-bold text-white">
+												{{manicurista.nombre}}
+											</td>
+											<td class="font-weight-bold text-right">
+												<label class="conCheck col-sm-2">
+												<input :id="index" class="checkFirst" v-on:click="presSelect(manicurista.documento,index)" type="checkbox">
+												<span class="checkmark"></span>
+												</label>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
 						</div>
 						<button class="btn w-100 add">Agregar</button>
 					</form>
@@ -87,7 +100,7 @@
 								<td class="font-weight-bold text-center">
 									<button style="width:40%;" v-on:click="desactivarServicio(servicio._id)" v-if="servicio.active" class=" btn btn-active">Activo</button>
 									<button style="width:40%;" v-on:click="desactivarServicio(servicio._id)" v-if="!servicio.active" class=" btn btn-inactive">Inactivo</button>
-									<button style="width:40%;" v-on:click="pasarDatosEdit(servicio.nombre, servicio.tiempo, servicio.precio, servicio.prestadores, servicio._id)" class="btn btn-colorsEdit"><font-awesome-icon icon="trash" /></button>
+									<button style="width:40%;" v-on:click="pasarDatosEdit(servicio.nombre, servicio.tiempo, servicio.precio, servicio.prestadores, servicio._id)" class="btn btn-colorsEdit"><font-awesome-icon icon="edit" /></button>
 								</td>
 							</tr>
 						</tbody>
@@ -133,8 +146,8 @@
 		</div>
 		<div class="modal fade" id="myModal2" tabindex="-1"  role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered"  >
-		    <div class="modal-content">
-		      <div class="modal-header bg-info">
+		    <div class="modal-content" v-bind:style="{ 'background-image': 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(' + require('../assets/fondo.jpg') + ')' , 'background-size': 'cover' }">
+		      <div class="modal-header">
 		        <h5 class="modal-title text-white font-weight-bold" id="exampleModalCenterTitle">Registro cliente</h5>
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 		          <span aria-hidden="true" class="text-white">&times;</span>
@@ -144,15 +157,15 @@
 		        <form v-on:submit.prevent="actualizacionServicios">
 					<div class="form-group">
 						<label for="nombre">Nombre del servicio</label>
-						<input type="text" v-model="nombreServicio" class="form-control" name="nombreServicio" placeholder="Nombre del servicio" >
+						<input type="text" v-model="nombreServicio" class="form-control inputs" name="nombreServicio" placeholder="Nombre del servicio" >
 					</div>
 					<div class="form-group">
 						<label for="nombre">Tiempo</label>
-						<input type="text" v-model="tiempoServicio" class="form-control" name="nombreServicio" placeholder="0 min" >
+						<input type="text" v-model="tiempoServicio" class="form-control inputs" name="nombreServicio" placeholder="0 min" >
 					</div>
 					<div class="form-group">
 						<label for="nombre">Precio del servicio</label>
-						<input type="text" v-model="precioServicio" class="form-control" name="nombreServicio" placeholder="Precio del servicio" >
+						<input type="text" v-model="precioServicio" class="form-control inputs" name="nombreServicio" placeholder="Precio del servicio" >
 					</div>
 					<div class="form-group row" >
 						<label v-for="(manicurista, index) of manicuristas" class="conCheck col-sm-2">{{manicurista.nombre}}
@@ -342,7 +355,7 @@
 					}
 				}
 			},
-			presSelect(prestador,index){
+			presSelect(prestador, index){
 				if ($(".checkFirst").is(":checked") == false ) {
 					this.prestadoresSeleccionados = []
 				}
@@ -358,6 +371,7 @@
 					let select = prestador
 					this.prestadoresSeleccionados.push(prestador)
 				}
+				console.log(this.prestadoresSeleccionados)
 			},
 			presSelectTwo(prestador,index){
 				if ($("."+prestador).prop("checked")!=true ) {
@@ -461,8 +475,24 @@
 				let val = (value/1).toFixed(2).replace('.', ',')
 				return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
 			},
-			
-			
+			myFunctionServ() {
+			  var input, filter, table, tr, td, i, txtValue;
+			  input = document.getElementById("myInputServ");
+			  filter = input.value.toUpperCase();
+			  table = document.getElementById("myTableServ");
+			  tr = table.getElementsByTagName("tr");
+			  for (i = 0; i < tr.length; i++) {
+			    td = tr[i].getElementsByTagName("td")[0];
+			    if (td) {
+			      txtValue = td.textContent || td.innerText;
+			      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+			        tr[i].style.display = "";
+			      } else {
+			        tr[i].style.display = "none";
+			      }
+			    }
+			  }
+			}
 		},
 		computed: {
 			myStyles () {
@@ -488,7 +518,9 @@
 	.metrics p{
 		font-size: 1em;
 		margin-top: 10px;
-		
+	}
+	.maxHeight{
+		max-height: 90px;
 	}
 	.metrics h1{
 		float: right;
@@ -507,9 +539,10 @@
 		background-color:#fff;
 		box-shadow: 0 0.46875rem 2.1875rem rgba(4,9,20,0.03), 0 0.9375rem 1.40625rem rgba(4,9,20,0.03), 0 0.25rem 0.53125rem rgba(4,9,20,0.05), 0 0.125rem 0.1875rem rgba(4,9,20,0.03);
 		padding: 20px;
+		padding-bottom:5px;
 		overflow-x: hidden;
 		overflow-y:scroll;
-		max-height: 470px;
+		max-height: 500px;
 		height:auto;
 		color:#fff;
 		border-radius:5px;
