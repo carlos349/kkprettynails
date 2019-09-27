@@ -13,6 +13,7 @@ import Users from '@/components/Users'
 import Metricas from '@/components/Metricas'
 import Citas from '@/components/Citas'
 import reporteCierre from '@/components/reporteCierre'
+import reportePrestador from '@/components/reportePrestador'
 import Caja from '@/components/Caja'
 
 Vue.use(Router)
@@ -88,6 +89,11 @@ export default new Router({
       path: '/caja',
       name: 'Caja',
       component: Caja
+    },
+    {
+      path: '/reporteprestador',
+      name: 'reporteprestador',
+      component: reportePrestador
     },
   ]
 })

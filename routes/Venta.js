@@ -500,12 +500,12 @@ ventas.get('/getMonthPerMonthSelected/:month', (req, res) => {
     datasets: [ 
       {
         label: monthTwo,
-        backgroundColor: '#f4861f',
+        backgroundColor: '#6A7693',
         data: []
       },
       {
         label: month,
-        backgroundColor: '#7c2929',
+        backgroundColor: '#29323c',
         data: []
       }
     ]
@@ -944,13 +944,15 @@ ventas.get('/GetSalesPerMonth', (req, res) => {
     datasets: [ 
       {
         label: monthTwo,
-        backgroundColor: '#f4861f',
-        data: []
+        backgroundColor: '#6A7693',
+        data: [],
+        fontColor: 'red'
       },
       {
         label: month,
-        backgroundColor: '#7c2929',
-        data: []
+        backgroundColor: '#29323c',
+        data: [],
+        fontColor: 'red'
       }
     ]
   }

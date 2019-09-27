@@ -25,12 +25,25 @@
 							<label for="name">Monto</label>
 							<input v-model="amount" type="text" class="form-control inputs" placeholder="Precio">
 						</div>
-						<label for="name">Servicios</label>
-						<div class="form-group row" >
-								<label v-for="(servicio, index) of servicios" class="conCheck col-md-4">{{servicio.nombre}}
-								<input :id="index" class="checkFirst" v-on:click="presSelect(servicio.nombre, servicio._id, index)" type="checkbox">
-								<span class="checkmark"></span>
-								</label>
+						<div class="form-group row" style="margin-top:-15px;">
+							<input type="text" id="myInputInvent" v-on:keyup="myFunctionInvent()" class="form-control buscar inputs" placeholder="Seleccione servicios"/>
+							<div class="ListaProcesar maxHeightInvent">
+								<table class="table table-dark tableBg" id="myTableInvent">
+									<tbody>
+										<tr v-for="(servicio, index) of servicios" >
+											<td class="font-weight-bold text-white">
+												{{servicio.nombre}}
+											</td>
+											<td class="font-weight-bold text-right">
+												<label class="conCheck col-sm-2">
+												<input :id="index" class="checkFirst" v-on:click="presSelect(servicio.nombre, servicio._id, index)" type="checkbox">
+												<span class="checkmark"></span>
+												</label>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
 						</div>
 						<button class="btn w-100 add">Agregar</button>
 					</form>
@@ -116,9 +129,9 @@
 		</div>
 		<div class="modal fade" id="myModal2" tabindex="-1"  role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered"  >
-		    <div class="modal-content">
-		      <div class="modal-header bg-info">
-		        <h5 class="modal-title text-white font-weight-bold" id="exampleModalCenterTitle">Registro cliente</h5>
+		    <div class="modal-content" v-bind:style="{ 'background-image': 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(' + require('../assets/fondo.jpg') + ')' , 'background-size': 'cover' }">
+		      <div class="modal-header">
+		        <h5 class="modal-title text-white font-weight-bold" id="exampleModalCenterTitle">Edicion del producto</h5>
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 		          <span aria-hidden="true" class="text-white">&times;</span>
 		        </button>
@@ -127,34 +140,45 @@
 		        <form v-on:submit.prevent="updateProducts">
 					<div class="form-group">
 						<label for="nombre">Nombre del servicio</label>
-						<input type="text" v-model="editProduct" class="form-control" name="nombreServicio" placeholder="Nombre del producto" >
+						<input type="text" v-model="editProduct" class="form-control inputs" name="nombreServicio" placeholder="Nombre del producto" >
 					</div>
 					<div class="form-group">
 						<label for="nombre">Marca del producto</label>
-						<input type="text" v-model="editBrand" class="form-control" name="nombreServicio" placeholder="Marca del producto" >
+						<input type="text" v-model="editBrand" class="form-control inputs" name="nombreServicio" placeholder="Marca del producto" >
 					</div>
 					<div class="form-group">
 						<label for="nombre">Gramos del producto</label>
-						<input type="text" v-model="editGrams" class="form-control" name="nombreServicio" placeholder="Gramos del producto" >
+						<input type="text" v-model="editGrams" class="form-control inputs" name="nombreServicio" placeholder="Gramos del producto" >
 					</div>
 					<div class="form-group">
 						<label for="nombre">Cantidad del producto</label>
-						<input type="text" v-model="editQuantity" class="form-control" name="nombreServicio" placeholder="Cantidad del producto" >
+						<input type="text" v-model="editQuantity" class="form-control inputs" name="nombreServicio" placeholder="Cantidad del producto" >
 					</div>
 					<div class="form-group">
 						<label for="nombre">Precio del producto</label>
-						<input type="text" v-model="editAmount" class="form-control" name="nombreServicio" placeholder="Precio del producto" >
+						<input type="text" v-model="editAmount" class="form-control inputs" name="nombreServicio" placeholder="Precio del producto" >
 					</div>
-					<div class="form-group row" >
-						<label v-for="(servicio, index) of servicios" class="conCheck col-md-4">
-						{{servicio.nombre}}
-
-						<input :class="servicio._id" class="desMarc" v-on:click="presSelectTwo(servicio.nombre,servicio._id, index)"  type="checkbox">
-						
-						<span class="checkmark"></span>
-						</label>
+					<div class="form-group row" style="margin-top:-15px;">
+						<input type="text" id="myInputInventEdit" v-on:keyup="myFunctionInventEdit()" class="form-control buscar inputs" placeholder="Seleccione Servicios"/>
+						<div class="ListaProcesar maxHeightEdit">
+							<table class="table table-dark tableBg" id="myTableInventEdit">
+								<tbody>
+									<tr v-for="(servicio, index) of servicios" >
+										<td class="font-weight-bold text-white">
+											{{servicio.nombre}}
+										</td>
+										<td class="font-weight-bold text-right">
+											<label class="conCheck col-sm-2">
+											<input :class="servicio.documento" class="desMarc" v-on:click="presSelectTwo(servicio.nombre,servicio._id, index)" type="checkbox">
+											<span class="checkmark"></span>
+											</label>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
 					</div>
-					<button class="btn btn-lg btn-info btn-block" type="submit">Actualizar producto</button>
+					<button class="btn btn-lg add btn-block" type="submit">Actualizar producto</button>
 		        </form>
 		      </div>
 		    </div>
@@ -382,6 +406,42 @@ export default {
 			let val = (value/1).toFixed(2).replace('.', ',')
 			return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
 		},
+		myFunctionInvent() {
+			var input, filter, table, tr, td, i, txtValue;
+			input = document.getElementById("myInputInvent");
+			filter = input.value.toUpperCase();
+			table = document.getElementById("myTableInvent");
+			tr = table.getElementsByTagName("tr");
+			for (i = 0; i < tr.length; i++) {
+			td = tr[i].getElementsByTagName("td")[0];
+			if (td) {
+				txtValue = td.textContent || td.innerText;
+				if (txtValue.toUpperCase().indexOf(filter) > -1) {
+				tr[i].style.display = "";
+				} else {
+				tr[i].style.display = "none";
+				}
+			}
+			}
+		},
+		myFunctionInventEdit() {
+			var input, filter, table, tr, td, i, txtValue;
+			input = document.getElementById("myInputInventEdit");
+			filter = input.value.toUpperCase();
+			table = document.getElementById("myTableInventEdit");
+			tr = table.getElementsByTagName("tr");
+			for (i = 0; i < tr.length; i++) {
+			td = tr[i].getElementsByTagName("td")[0];
+			if (td) {
+				txtValue = td.textContent || td.innerText;
+				if (txtValue.toUpperCase().indexOf(filter) > -1) {
+				tr[i].style.display = "";
+				} else {
+				tr[i].style.display = "none";
+				}
+			}
+			}
+		},
 	}
 }
 </script>
@@ -428,6 +488,9 @@ export default {
 	.btn-colorsEdit{
 		background-color:#495057;
 		color:#fff;
+	}
+	.maxHeightInvent{
+		max-height: 200px;
 	}
 	.ListaInventario::-webkit-scrollbar {
 		width: 8px;     /* Tamaño del scroll en vertical */
@@ -550,6 +613,9 @@ export default {
 	.formGastos input:focus{
 		border-bottom:solid 2px #FF512F;
 		transition: all 0.3s ease-out;
+	}
+	label{
+		color:#fff;
 	}
 	
 </style>

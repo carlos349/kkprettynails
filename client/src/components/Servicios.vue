@@ -32,7 +32,7 @@
 							<input v-model="precioServi" type="text" class="form-control inputs" placeholder="Precio">
 						</div>
 						<div class="form-group row" style="margin-top:-15px;">
-							<input type="text" id="myInputServ" v-on:keyup="myFunctionServ()" class="form-control buscar inputs" placeholder="Filtrar servicios"/>
+							<input type="text" id="myInputServ" v-on:keyup="myFunctionServ()" class="form-control buscar inputs" placeholder="Seleccione prestadores"/>
 							<div class="ListaProcesar maxHeight">
 								<table class="table table-dark tableBg" id="myTableServ">
 									<tbody>
@@ -140,7 +140,7 @@
 			</div>
 			<div class="col-md-8 chart">
 				<div class="small">
-					<line-chart v-if="loaded" :chartdata="chartdata" :options="options" :styles="myStyles"/>
+					<line-chart v-bind:style="{ 'color': 'red !important'}" v-if="loaded" :chartdata="chartdata" :options="options" :styles="myStyles"/>
 				</div>
 			</div>
 		</div>
@@ -167,15 +167,27 @@
 						<label for="nombre">Precio del servicio</label>
 						<input type="text" v-model="precioServicio" class="form-control inputs" name="nombreServicio" placeholder="Precio del servicio" >
 					</div>
-					<div class="form-group row" >
-						<label v-for="(manicurista, index) of manicuristas" class="conCheck col-sm-2">{{manicurista.nombre}}
-
-						<input :class="manicurista.documento" class="desMarc" v-on:click="presSelectTwo(manicurista.documento,index)"  type="checkbox">
-						
-						<span class="checkmark"></span>
-						</label>
+					<div class="form-group row" style="margin-top:-15px;">
+						<input type="text" id="myInputServEdit" v-on:keyup="myFunctionServEdit()" class="form-control buscar inputs" placeholder="Seleccione prestadores"/>
+						<div class="ListaProcesar maxHeightEdit">
+							<table class="table table-dark tableBg" id="myTableServEdit">
+								<tbody>
+									<tr v-for="(manicurista, index) of manicuristas" >
+										<td class="font-weight-bold text-white">
+											{{manicurista.nombre}}
+										</td>
+										<td class="font-weight-bold text-right">
+											<label class="conCheck col-sm-2">
+											<input :class="manicurista.documento" class="desMarc" v-on:click="presSelectTwo(manicurista.documento,index)" type="checkbox">
+											<span class="checkmark"></span>
+											</label>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
 					</div>
-					<button class="btn btn-lg btn-info btn-block" type="submit">Actualizar servicio</button>
+					<button class="btn btn-lg add btn-block" type="submit">Actualizar servicio</button>
 		        </form>
 		      </div>
 		    </div>
@@ -475,6 +487,24 @@
 				let val = (value/1).toFixed(2).replace('.', ',')
 				return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
 			},
+			myFunctionServEdit() {
+			  var input, filter, table, tr, td, i, txtValue;
+			  input = document.getElementById("myInputServEdit");
+			  filter = input.value.toUpperCase();
+			  table = document.getElementById("myTableServEdit");
+			  tr = table.getElementsByTagName("tr");
+			  for (i = 0; i < tr.length; i++) {
+			    td = tr[i].getElementsByTagName("td")[0];
+			    if (td) {
+			      txtValue = td.textContent || td.innerText;
+			      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+			        tr[i].style.display = "";
+			      } else {
+			        tr[i].style.display = "none";
+			      }
+			    }
+			  }
+			},
 			myFunctionServ() {
 			  var input, filter, table, tr, td, i, txtValue;
 			  input = document.getElementById("myInputServ");
@@ -522,6 +552,9 @@
 	.maxHeight{
 		max-height: 90px;
 	}
+	.maxHeightEdit{
+		max-height: 150px;
+	}
 	.metrics h1{
 		float: right;
 		margin-top: -55px;
@@ -556,7 +589,7 @@
 	.Lista{
 		overflow-x: hidden;
 		overflow-y:scroll;
-		max-height: 420px;
+		max-height: 440px;
 		height:auto;
 		border-radius:5px;
 	}
@@ -702,5 +735,8 @@
 		margin-top: 20px;
 		box-shadow: 0 0.46875rem 2.1875rem rgba(4,9,20,0.03), 0 0.9375rem 1.40625rem rgba(4,9,20,0.03), 0 0.25rem 0.53125rem rgba(4,9,20,0.05), 0 0.125rem 0.1875rem rgba(4,9,20,0.03);
 		border-radius: 5px;
+	}
+	canvas{
+		color:red;
 	}
 </style>
