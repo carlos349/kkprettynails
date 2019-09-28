@@ -2,6 +2,7 @@ const express = require('express');
 const manicurista = express.Router()
 const cors = require('cors');
 const Manicurista = require('../models/Manicurista')
+const Venta = require('../models/Venta')
 manicurista.use(cors())
 
 manicurista.get('/', async (req, res) => {
@@ -11,6 +12,16 @@ manicurista.get('/', async (req, res) => {
 
 manicurista.get('/justone/:nombre', async (req, res) => {
   const manicuristas = await Manicurista.findOne({'nombre':req.params.nombre})
+  res.json(manicuristas)
+})
+
+manicurista.get('/justOneById/:id', async (req, res) => {
+  const manicurista = await Manicurista.findById(req.params.id)
+  res.json(manicurista)
+})
+
+manicurista.get('/SalesByPrest/:nombre', async (req, res) => {
+  const manicuristas = await Venta.find({'manicurista':req.params.nombre})
   res.json(manicuristas)
 })
 
@@ -61,6 +72,20 @@ manicurista.put('/:id', (req, res) => {
   })
   .then(manicurista => {
     res.json({status: 'Manicurista Editada'})
+  })
+  .catch(err => {
+    res.send('error: ' + err)
+  })
+})
+
+manicurista.put('/ClosePrest/:id', (req, res) => {
+  Manicurista.findByIdAndUpdate(req.params.id, {
+    $set: {
+      comision:0
+    }
+  })
+  .then(manicurista => {
+    res.json({status: 'ok'})
   })
   .catch(err => {
     res.send('error: ' + err)

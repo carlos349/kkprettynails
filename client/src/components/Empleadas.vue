@@ -119,7 +119,7 @@
 		</div>
 		<div class="modal fade" id="ModalEditPrestador" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered" role="document">
-		    <div v-bind:style="{ 'background-image': 'url(' + require('../assets/fondo.jpg') + ')' , 'background-size': 'cover' }" class="modal-content">
+		    <div v-bind:style="{ 'background-image': 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(' + require('../assets/fondo.jpg') + ')' , 'background-size': 'cover' }" class="modal-content">
 		      <div class="modal-header">
 		        <h5 class="modal-title text-white font-weight-bold" id="exampleModalCenterTitle">Editar Prestador</h5>
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -245,6 +245,10 @@ export default {
 				})
 			})
 		},
+		sacarReporte(id) {
+            localStorage.setItem('reportePrestador', id)
+            router.push({name:'reporteprestador'})
+        },
 		registroPrestador(){
 			axios.post('manicuristas', {
 				nombreManicurista: this.nombrePrestador,
@@ -324,33 +328,6 @@ export default {
 			})
 			.catch(err => {
 				console.error(err)
-			})
-		},
-		sacarReporte(manicurista){
-			// axios.get('ventas/manicurista/' + manicurista)
-			// .then(res => {
-			// 	this.ventas = res.data
-			// 	$('.tablaManicuristas').hide()
-			// 	$('.reporteIndividual').show()
-			// 	$('.Titulo').text('Reporte de: '+ manicurista)
-			// 	this.$swal({
-			// 		type: 'success',
-			// 		title: 'espere un segundo',
-			// 		showConfirmButton: false,
-			// 		timer: 1500
-			// 	})
-			// 	setTimeout(() => {
-			// 		print()
-			// 		$('.reporteIndividual').hide()
-			// 		$('.tablaManicuristas').show()
-			// 		$('.Titulo').text('Manicuristas')
-			// 	}, 2000)
-			// })
-			this.$swal({
-				type: 'error',
-				title: 'Funcion en proceso, no esta lista :(',
-				showConfirmButton: false,
-				timer: 1500
 			})
 		}
 	},

@@ -112,7 +112,8 @@ service.get('/ServicesChartQuantity', (req, res) => {
     datasets: [ 
       {
         label: 'Ventas',
-        backgroundColor: '#7c2929',
+        backgroundColor: '#29323c',
+        fontColor: 'red',
         data: []
       }
     ]
@@ -208,7 +209,8 @@ service.get('/PrestadorChartQuantity', (req, res) => {
     datasets: [ 
       {
         label: 'Servicios',
-        backgroundColor: '#7c2929',
+        backgroundColor: '#29323c',
+        fontColor: 'red',
         data: []
       }
     ]
