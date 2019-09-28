@@ -11,9 +11,14 @@
             <button  data-toggle="modal" class="generar" data-target=".genCita"><span></span>Generar cita</button>
           </div>
           <div class="col-sm-6">
-            <select id="manicuristas" class="generar" name="manicuristas">
-              <option value="otra">Manicuristas</option>
-              <option v-for="manicurista of manicuristas">{{manicurista.nombre}}</option>
+            <select id="manicuristas" v-model="empByCita" v-on:change="getCitasByEmploye()"  class="generar" name="manicuristas">
+              <option selected="true
+              " >{{this.empByCita}}</option>
+              <option
+               style="color:black">Todos</option>
+              <option style="color:black"  v-for="manicurista of manicuristas">
+                  {{manicurista.nombre}}
+                </option>
             </select>
           </div>
         </div>
@@ -228,7 +233,8 @@
         manicuristaFinal:'',
         clientsSelect: '',
         arregloClient: [],
-        duracion: 0
+        duracion: 0,
+        empByCita : 'Manicurista'
 
       }
     },
@@ -338,6 +344,40 @@
             this.events.push(arrayEvents)
           }
         })
+      },
+      getCitasByEmploye(){
+        if (this.empByCita == "Todos") {
+          this.getCitas()
+        }
+        else{
+          this.events = []
+        axios.get('citas/' + this.empByCita)
+        .then(res => {
+          for (let index = 0; index < res.data.length; index++) {
+            let dateNow = new Date(res.data[index].date)
+            let formatDate = ''
+            let formatDateTwo = ''
+            if (dateNow.getMonth() == 10 || dateNow.getMonth() == 11) {
+              formatDate = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()+" "+res.data[index].start
+              formatDateTwo = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()+" "+res.data[index].end
+            }else{
+              formatDate = dateNow.getFullYear() +"-0"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()+" "+res.data[index].start
+              formatDateTwo = dateNow.getFullYear() +"-0"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()+" "+res.data[index].end
+            }
+            let arrayEvents = {
+              start: formatDate,
+              end: formatDateTwo,
+              title: res.data[index].services[0]+" - "+res.data[index].employe,
+              content: res.data[index].client,
+              cliente: res.data[index].client,
+              services: res.data[index].services,
+              empleada: res.data[index].employe,
+              id:res.data[index]._id
+            }
+            this.events.push(arrayEvents)
+          }
+        })
+        }
       },
       getManicuristas(){
   			axios.get('manicuristas')
