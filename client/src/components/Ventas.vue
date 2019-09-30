@@ -151,7 +151,7 @@
             <tr v-for="(venta, indexOne) of ventas" class="respons fix">
               <td class="  text-center">
                  <font-awesome-icon style="margin-right:4%" v-if="venta.pago === 'tarjeta'" icon="credit-card" />
-                 <font-awesome-icon style="margin-right:4%;margin-top:5%;" v-else-if="venta.pago === 'efectivo'" icon="dollar-sign" />{{fechas[indexOne]}}
+                 <font-awesome-icon style="margin-right:4%;margin-top:5%;" v-else-if="venta.pago === 'efectivo'" icon="dollar-sign" />{{formatDate(venta.fecha)}}
               </td>
               <td style="width: 75% !important;" class=" text-left">
                 <div  v-for="(servicio,indexTwo) of venta.servicios">
@@ -354,6 +354,10 @@ export default {
     formatPrice(value) {
         let val = (value/1).toFixed(2).replace('.', ',')
         return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+    },
+    formatDate(date) {
+        let dateFormat = new Date(date)
+        return dateFormat.getDate()+"-"+(dateFormat.getMonth() + 1)+"-"+dateFormat.getFullYear()
     },
     arreglarServicios(value, index, indexTwo){
       var conteo = 0

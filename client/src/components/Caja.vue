@@ -110,6 +110,9 @@
                 Total Cierre
               </th>
               <th class="text-center">
+                Total
+              </th>
+              <th class="text-center">
                 Gastos
               </th>
               <th class="text-center">
@@ -123,7 +126,7 @@
           <tbody >
             <tr v-for="(cierre, indexOne) of cierres" class="respons fix">
               <td class="text-left">
-                {{fechas[indexOne]}}
+                {{formatDate(cierre.fecha)}}
               </td>
               <td class="text-right">
                 {{formatPrice(cierre.aperturaEfectivo)}}
@@ -142,6 +145,9 @@
               </td>
               <td class="text-right">
                 {{formatPrice(cierre.totalCierre)}}
+              </td>
+              <td class="text-right">
+                {{formatPrice(cierre.total)}}
               </td>
               <td class="text-right">
                 {{formatPrice(cierre.gastos)}}
@@ -192,8 +198,6 @@ export default {
                 const dateNow = new Date()
                 for (let index = 0; index < res.data.length; index++) {
                     let fech = new Date(res.data[index].fecha)
-                    fechaBien = fech.getDate() +"/"+ (fech.getMonth() + 1) +"/"+fech.getFullYear()
-                    this.fechas.push(fechaBien)
                     if (fech.getMonth() === dateNow.getMonth() && fech.getDate() === dateNow.getDate()) {
                         this.efectivo = res.data[index].aperturaEfectivo
                         this.banco = res.data[index].aperturaBanco
@@ -201,6 +205,10 @@ export default {
                     }
                 }
             })
+        },
+        formatDate(date) {
+            let dateFormat = new Date(date)
+            return dateFormat.getDate()+"-"+(dateFormat.getMonth() + 1)+"-"+dateFormat.getFullYear()
         },
         getPerMonthSelected(month){
             axios.get('ventas/closingPerMonth/'+month)
