@@ -10,6 +10,11 @@ citas.get('/', async (req, res) => {
   res.json(citas)
 })
 
+citas.get('/:employe', async (req, res) => {
+  const citasByEmploye = await Citas.find({'employe': req.params.employe})
+  res.json(citasByEmploye)
+})
+
 citas.get('/prueba', (req, res) => {
   let a = new Date('2019-09-17 10:00')
   console.log(a)
