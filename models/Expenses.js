@@ -2,11 +2,18 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const expenses = new Schema ({
-  expenses: {
+  expense: {
     type:String
+  },
+  type: {
+    type: String
   },
   figure: {
     type:Number
+  },
+  date: {
+    type: Date,
+		default: Date.now
   }
 })  
 
