@@ -60,16 +60,43 @@
 					</div>
 					<div class="form-group">
 						<label for="name">Total del adelanto</label>
-						<input v-model="totalAdvancement" type="number" class="form-control inputs" placeholder="Adelanto">
+						<input v-model="totalAdvancement" type="text" class="form-control inputs" placeholder="Adelanto">
 					</div>
                     <div class="form-group">
 						<label for="name">Total del adelanto</label>
 						<input v-model="dateAdvancement" type="date" class="form-control inputs">
 					</div>
-					<ul class="list-group mb-2">
-                        <li v-for="advancement of advancements" class="list-group-item">Razon: {{advancement.reason}} - Total: {{advancement.total}} - fecha: {{formatDate(advancement.date)}}</li>
-                    </ul>
-					<button class="btn w-100 add">Editar prestador</button>
+                    <div class="maxHei">
+                        <table class="table table-light table-borderless table-striped">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Razón
+                                    </th>
+                                    <th>
+                                        Total
+                                    </th>
+                                    <th>
+                                        Fecha
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="advancement of advancements">
+                                    <td>
+                                        {{advancement.reason}}
+                                    </td>
+                                    <td>
+                                        {{advancement.total}}
+                                    </td>
+                                    <td>
+                                        {{formatDate(advancement.date)}}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+					<button class="btn w-100 add mt-3">Editar prestador</button>
 				</form>
 		      </div>
 		    </div>
@@ -130,7 +157,6 @@
         },
         created(){
             this.getClosing();
-            this.SalesQuantityChartFunc();
             this.getAdvancements();
         },
         methods: {
@@ -154,6 +180,15 @@
                         }
                         this.totalVentas = totales
                         this.totalComisiones = comisiones
+                        axios.get('/manicuristas/GetSalesPerMonth/'+this.identificacion)
+                        .then(res => {	
+                            const userlist = res.data
+                            this.chartdata = userlist
+                            this.loaded = true
+                        })
+                        .catch(err => {
+                            console.error(err)
+                        })
                     })
                 })
                 .catch(err => {
@@ -227,20 +262,6 @@
             openPrestDiscount(){
                 $('#ModalEditPrestador').modal('show')
             },
-            SalesQuantityChartFunc(){
-                setTimeout(() => {
-                    this.loaded = false
-                    axios.get('/manicuristas/GetSalesPerMonth/'+this.identificacion)
-                    .then(res => {	
-                        const userlist = res.data
-                        this.chartdata = userlist
-                        this.loaded = true
-                    })
-                    .catch(err => {
-                        console.error(err)
-                    })
-                },1500)
-            },
             getAdvancements(){
                 setTimeout(() => {
                     axios.get('/manicuristas/advancements/'+this.codigo)
@@ -305,5 +326,17 @@
 	.add:hover{
 		background-color:#102229;
 		color:#ccc;
+	}
+    .maxHei{
+		overflow-x: hidden;
+		overflow-y:scroll;
+		max-height: 300px;
+		height:auto;
+		border-radius:5px;
+	}
+	.maxHei::-webkit-scrollbar {
+		width: 8px;     /* Tamaño del scroll en vertical */
+		height: 8px;    /* Tamaño del scroll en horizontal */
+		display: none;  /* Ocultar scroll */
 	}
 </style>

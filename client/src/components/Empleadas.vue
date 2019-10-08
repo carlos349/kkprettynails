@@ -48,6 +48,9 @@
 								<th>
 									Comision mensual
 								</th>
+								<th>
+									Adelantos o bonos
+								</th>
 								<th class="text-center">
 									Funciones
 								</th>	
@@ -69,6 +72,9 @@
 									</td>
 									<td class="font-weight-bold">
 										{{manicurista.comision}}
+									</td>
+									<td class="font-weight-bold">
+										{{manicurista.advancement}}
 									</td>
 									<td class="font-weight-bold text-center">
 										<button style="width:30%;" v-on:click="deletePrestador(manicurista._id)" class=" btn btn-colorsTrash"><font-awesome-icon icon="trash" /></button>

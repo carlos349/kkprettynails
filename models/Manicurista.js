@@ -13,6 +13,9 @@ const manicuristaSchema = new Schema({
   },
   comision:{
     type:Number
+  },
+  advancement: {
+    type:Number
   }
 })
 

@@ -144,7 +144,7 @@
                 {{formatPrice(cierre.cierreBanco)}}
               </td>
               <td class="text-right">
-                {{formatPrice(cierre.totalCierre)}}
+                {{formatPrice(cierre.totalCierre - cierre.gastos)}}
               </td>
               <td class="text-right">
                 {{formatPrice(cierre.total)}}
@@ -194,6 +194,7 @@ export default {
             axios.get('ventas/Closing')
             .then(res => {
                 this.cierres = res.data
+
                 let fechaBien = ''
                 const dateNow = new Date()
                 for (let index = 0; index < res.data.length; index++) {

@@ -33,7 +33,8 @@ manicurista.post('/', (req, res) => {
     nombre: req.body.nombreManicurista,
     documento: req.body.documentoManicurista,
     porcentaje: req.body.porcentajeManicurista,
-    comision: 0
+    comision: 0,
+    advancement:0
   }
 
   Manicurista.findOne({
@@ -85,15 +86,21 @@ manicurista.post('/registerAdvancement', (req, res) => {
   .then(Advancement => {
     Expenses.create(dataExpense)
     .then(expense => {
-      Cierres.findOneAndUpdate({fecha: { $gte: formatDate, $lte: formatDateTwo }},
-        { $inc : { gastos: req.body.total }
-      })
-      .then(close => {
-        if (close) {
-          res.json({status: 'ok'})
-        }else{
-          res.json({status: 'bad'})
-        }
+      Manicurista.findByIdAndUpdate(req.body.prest, { $inc: { advancement: req.body.total }})
+      .then(update => {
+        Cierres.findOneAndUpdate({fecha: { $gte: formatDate, $lte: formatDateTwo }},
+          { $inc : { gastos: req.body.total }
+        })
+        .then(close => {
+          if (close) {
+            res.json({status: 'ok'})
+          }else{
+            res.json({status: 'bad'})
+          }
+        })
+        .catch(err => {
+          res.send(err)
+        })
       })
       .catch(err => {
         res.send(err)
