@@ -102,11 +102,12 @@
                       @submit="handleSubmit"
                       class="auto clientB">
                     </autocomplete></div>
-                    <div class="col-sm-7"><input disabled="true" v-on:change="insertDate()" v-model="fecha" class="hora" type="date" name="" id="Dat"></div>
+                    <div class="col-sm-7"><input v-on:change="insertDate()" v-model="fecha" class="hora" type="date" name="" id="Dat"></div>
                     </div>  
                   </div>
                   <div class="col-md-4">
-                    <div class="row">
+                    
+                    <!-- <div class="row">
                       <div class="col-md-5 mx-auto text-right">
                       <input v-model="hora" disabled="true" maxlength="2" placeholder="Hora" class="hora horas" ref="horas" v-on:keyup="verificarHora('horas')"  type="number" min="0" max="24">
                       </div>
@@ -114,7 +115,14 @@
                       <div class="col-md-5 mx-auto text-left">
                         <input minlength="1" ref="min" disabled="true" v-model="min" maxlength="2" placeholder="Min" class="hora horas" v-on:keyup="verificarHora('min')" type="number" min="0" max="60">
                       </div>
-                    </div> 
+                    </div>  -->
+                  </div>
+                  <div class="col-sm-12">
+                    <div class="horas row">
+                      <div class="col-sm-12 text-center"><h2>Horarios disponibles</h2></div>
+                      <div v-for="(bloques, index) of bloquesHora" v-if="bloques" class="col-sm-1 mx-auto botonHora">{{index}}:00</div>
+                     
+                    </div>
                   </div> 
                 </div>
                 </div>
@@ -234,7 +242,8 @@
         clientsSelect: '',
         arregloClient: [],
         duracion: 0,
-        empByCita : 'Manicurista'
+        empByCita : 'Manicurista',
+        bloquesHora : []
 
       }
     },
@@ -292,6 +301,32 @@
           $(".horas").prop("disabled", false)
          
         }
+        axios.post('citas/getBlocks', {
+          employe: this.manicuristaFinal,
+          date: this.fecha
+        })
+        .then(res => {
+          for (let index = 8; index < 21; index++) {
+            let duracionG = parseFloat(index) + parseFloat(this.duracion)
+            if (res.data[index]) {
+              for (let c = index ; c < duracionG; c++) {
+                if (res.data[c] == false) {
+                  for (let t = index ; t < duracionG; t++) {
+                    res.data[t] = false
+                    
+                  }
+                }
+              }
+            }
+            
+            
+          }
+          this.bloquesHora = res.data
+        })
+        .catch(err => {
+          console.log(err)
+        })
+
       },
 
       verificarHora(este){
@@ -862,6 +897,11 @@
     outline: none !important;
     text-align: center
   }
+  .horas{
+    background-color: rgba(0,0,0,.5);
+    padding: 10px;
+    color: white;
+  }
   .box{
     position:fixed;
 		top:90%;
@@ -942,6 +982,10 @@
       transform:translateY(0);
     }
   }
+  
+  .autocomplete-input{
+    color: black
+  }
   .clientB{
     background-color:#fff;
     box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);
@@ -984,5 +1028,12 @@
      color: azure;
      margin-bottom: -4%;
      width: 50%;
+  }
+  .botonHora{
+    background-color:#011627 ;
+    border: 1px solid white;
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
   }
 </style>
