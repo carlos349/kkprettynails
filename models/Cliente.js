@@ -17,4 +17,4 @@ const clienteSchema = new Schema ({
   }
 })
 
-module.exports = Cliente = mongoose.model('clientes', clienteSchema)
+module.exports = Clientes = mongoose.model('clientes', clienteSchema)

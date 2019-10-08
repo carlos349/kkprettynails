@@ -2,12 +2,17 @@ const express = require('express');
 const citas = express.Router()
 const cors = require('cors');
 const Citas = require('../models/Citas')
-const Clients = require('../models/Cliente')
+const Cliente = require('../models/Cliente')
 citas.use(cors())
 
 citas.get('/', async (req, res) => {
   const citas = await Citas.find()
   res.json(citas)
+})
+
+citas.get('/getClients', async (req, res) => {
+  const client = await Cliente.find()
+  res.json(client)
 })
 
 citas.get('/:employe', async (req, res) => {
@@ -77,7 +82,7 @@ citas.post('/getBlocks', (req,res) => {
       for (let c = 8; c < 21; c++) {
         if (entrada == c) { 
           
-          for (let t = parseFloat(entrada); t <= parseFloat(salida); t++) {
+          for (let t = parseFloat(entrada); t <= parseFloat(salida) - 1; t++) {
             hoursPred[t] = false
             
           }
@@ -184,9 +189,5 @@ citas.delete('/:id', async (req, res) => {
   })
 })
 
-citas.get('/getClients', async (req, res) => {
-  const client = await Clients.find()
-  res.json(client)
-})
 
 module.exports = citas

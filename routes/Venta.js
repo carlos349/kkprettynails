@@ -785,6 +785,7 @@ ventas.post('/ingresocliente', (req, res) => {
   const ClienteData = {
     nombre: req.body.nombre,
     identidad: req.body.identidad,
+    participacion: 0,
     created: today
   }
 

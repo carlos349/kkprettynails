@@ -120,7 +120,7 @@
                   <div class="col-sm-12">
                     <div class="horas row">
                       <div class="col-sm-12 text-center"><h2>Horarios disponibles</h2></div>
-                      <div v-for="(bloques, index) of bloquesHora" v-if="bloques" class="col-sm-1 mx-auto botonHora">{{index}}:00</div>
+                      <div v-for="(bloques, index) of bloquesHora" v-if="bloques" class="col-sm-1 mx-auto botonHora" v-on:click="sumHour(index)">{{index}}:00</div>
                      
                     </div>
                   </div> 
@@ -243,7 +243,8 @@
         arregloClient: [],
         duracion: 0,
         empByCita : 'Manicurista',
-        bloquesHora : []
+        bloquesHora : [],
+        salida:0
 
       }
     },
@@ -271,13 +272,14 @@
       },
       arrayClient(){
 				setTimeout(() => {
+          console.log(this.clients)
 					for (let index = 0; index < this.clients.length; index++) {
 						this.arregloClient.push(this.clients[index].nombre)
 					}
 				}, 4000);
 			},
       search(input) {
-				
+				console.log(this.arregloClient)
 				if (input.length < 1) { return [] }
 				return this.arregloClient.filter(client => {
 					return client.toLowerCase()
@@ -317,11 +319,10 @@
                   }
                 }
               }
-            }
-            
-            
+            }    
           }
           this.bloquesHora = res.data
+          console.log(res.data)
         })
         .catch(err => {
           console.log(err)
@@ -533,21 +534,17 @@
           $(".Sig").text("Siguiente")
         }
       },
+      sumHour(hora){
+        this.hora = hora
+        this.salida = hora + this.duracion
+        $(".Sig").prop("disabled", false)
+        console.log(this.salida)
+      },
       registroCita(){
-        const horarioEntrada = this.hora + ":" + this.min
-
-        for (let index = 0; index < this.duracion; index++) {
-          if (this.min < 60) {
-            this.min++
-          }
-          else{
-            this.hora++
-            this.min = 0
-          }
-          
-        }
-        const horarioSalida = this.hora + ":" + this.min
+        const horarioEntrada = this.hora + ":00"
+        const horarioSalida = this.salida + ":00"
         const mani = this.manicuristaFinal
+
         axios.post('citas', {
           entrada: horarioEntrada,
           salida: horarioSalida,
@@ -557,7 +554,6 @@
           manicuristas: mani
         })
         .then(res => {
-          console.log(res.data)
           if(res.data.status == 'cita creada'){
             this.$swal({
               type: 'success',
