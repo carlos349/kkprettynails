@@ -20,6 +20,9 @@ const CierresSchema = new Schema ({
     totalCierre: {
         type: Number
     },
+    total: {
+        type: Number
+    },
     gastos: {
         type: Number
     },
