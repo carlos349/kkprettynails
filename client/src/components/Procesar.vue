@@ -531,7 +531,7 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 		cursor:pointer;
 	}
 	.autocomplete-input{
-		color:#fff !important;
+		color:black !important;
 	}
 	.procesar:hover{
 		color:#102229;
