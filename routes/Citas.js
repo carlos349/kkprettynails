@@ -143,44 +143,17 @@ citas.post('/', (req, res) => {
 
   DateSelect.setDate(DateSelect.getDate() + 1)
   const formatDateTwo = DateSelect.getFullYear() +"-"+(DateSelect.getMonth() + 1)+"-"+DateSelect.getDate()
-  
-  Citas.findOne({
-    $and: [
-      {
-        date: { $gte: formatDate, $lte: formatDateTwo }
-      },
-      {
-        $or: [
-          {
-            start: { $gte: req.body.entrada, $lte: req.body.salida }
-          },
-          {
-            end: { $gte: req.body.entrada, $lte: req.body.salida }
-          }
-        ]
-      }, //hora de entrada
-      {
-        employe: req.body.manicuristas
-      } //Empleada que hace el servicio
-    ]
-  })
+    
+  Citas.create(dataCitas)
   .then(citas => {
-    if (!citas) { //sino encuentra alguna cita a esa hora y con esa empleada
-      Citas.create(dataCitas)
-      .then(citas => {
-        res.json({status: 'cita creada'})
-      })
-      .catch(err => {
-        res.send('error: ' + err)
-      })
-    }else{
-      res.json({status: 'cita ocupada'})
-    }
+    res.json({status: 'cita creada'})
   })
   .catch(err => {
     res.send('error: ' + err)
   })
+    
 })
+
 
 citas.delete('/:id', async (req, res) => {
   const citas = await Citas.findByIdAndRemove(req.params.id)

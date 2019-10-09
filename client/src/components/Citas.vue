@@ -65,7 +65,7 @@
                     <div class="row">
                       <div class="serviInfo col-md-2"><font-awesome-icon icon="user-check" class="mr-2"/>{{servicio.prestadores.length}}</div>
                       <div class="serviInfo col-md-7">{{servicio.nombre}}</div>
-                      <div class="col-md-3">{{servicio.tiempo}}Mins <span :id="index" class="serviInfoPrestadores ml-2">0</span> </div> 
+                      <div class="col-md-3">{{servicio.tiempo}}H <span :id="index" class="serviInfoPrestadores ml-2">0</span> </div> 
                     </div>
                   </div>
                 </div>   
@@ -93,7 +93,7 @@
                   <div class=" mx-auto col-sm-12">
                     
                   </div>
-                  <div class="col-md-8">
+                  <div class="col-md-12">
                     <div class="row">
                        <div class="col-sm-5"><autocomplete	
                       :search="search"
@@ -120,7 +120,10 @@
                   <div class="col-sm-12">
                     <div class="horas row">
                       <div class="col-sm-12 text-center"><h2>Horarios disponibles</h2></div>
-                      <div v-for="(bloques, index) of bloquesHora" v-if="bloques" class="col-sm-1 mx-auto botonHora" v-on:click="sumHour(index)">{{index}}:00</div>
+                      <div v-for="(bloques, index) of bloquesHora" v-if="bloques" :id="index" class="col-sm-1 mx-auto botonHora" v-on:click="sumHour(index)">{{index}}:00</div>
+                      <br>
+                      <div class="col-sem-12 text-center mx-auto p-3"><h3 class="text-center">{{this.salidaMuestra}}</h3></div>
+                      
                      
                     </div>
                   </div> 
@@ -244,7 +247,8 @@
         duracion: 0,
         empByCita : 'Manicurista',
         bloquesHora : [],
-        salida:0
+        salida:'',
+        salidaMuestra: ''
 
       }
     },
@@ -536,8 +540,12 @@
       },
       sumHour(hora){
         this.hora = hora
-        this.salida = hora + this.duracion
+        this.salida = parseFloat(hora) + parseFloat(this.duracion)
+        this.salidaMuestra = "Hora de salida:" + (parseFloat(hora) + parseFloat(this.duracion)) + ":00"
         $(".Sig").prop("disabled", false)
+        $(".Sig").addClass("marcar")
+        $(".botonHora").removeClass("botonHoraMarc")
+        $("#"+hora).addClass("botonHoraMarc")
         console.log(this.salida)
       },
       registroCita(){
@@ -579,6 +587,10 @@
             this.min = ''
             this.hora = ''
             this.fecha = ''
+            this.salida = ''
+            this.salidaMuestra = ''
+            this.duracion = 0
+            this.bloquesHora = []
             $("#Dat").val(0)
             $("#Dat").prop("disabled", true)
             $(".autocomplete-input").val('')
@@ -1028,6 +1040,15 @@
   .botonHora{
     background-color:#011627 ;
     border: 1px solid white;
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
+  }
+
+  .botonHoraMarc{
+    background-color:#fff ;
+    border: 1px solid #011627;
+    color: #011627;
     border-radius: 5px;
     text-align: center;
     cursor: pointer;
