@@ -184,15 +184,6 @@
 		    </div>
 		  </div>
 		</div>
-		<div class="row pt-3">
-			<div class="container formGastos">
-				<form v-on:submit.prevent="registerExpense">
-					<input type="date" placeholder="Gasto" v-model="expenseDate" >
-					<input type="text" style="padding-bottom:11px;" placeholder="Cantidad del gasto" v-model="expenseAmount">
-					<button type="submit" class="btn buttonExpense">Registrar Gasto <font-awesome-icon class="icone" icon="search-dollar" /></button>
-				</form>
-			</div>
-		</div>
 	</div>
 </template>
 <script type="text/javascript">

@@ -364,7 +364,7 @@
             let dateNow = new Date(res.data[index].date)
             let formatDate = ''
             let formatDateTwo = ''
-            if (dateNow.getMonth() == 10 || dateNow.getMonth() == 11) {
+            if (dateNow.getMonth() == 9 || dateNow.getMonth() == 10 || dateNow.getMonth() == 11) {
               formatDate = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()+" "+res.data[index].start
               formatDateTwo = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()+" "+res.data[index].end
             }else{
@@ -384,6 +384,7 @@
             this.events.push(arrayEvents)
           }
         })
+        console.log(this.events)
       },
       getCitasByEmploye(){
         if (this.empByCita == "Todos") {
@@ -417,6 +418,7 @@
             this.events.push(arrayEvents)
           }
         })
+        console.log(this.events)
         }
       },
       getManicuristas(){
