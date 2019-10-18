@@ -22,7 +22,7 @@
 		</div> -->
 
 		<div class="row pt-2 pl-5">
-			<div class="col-12 mb-3">
+			<div class="col-md-4 mb-3">
 				<div class="forms" v-bind:style="{ 'background-image': 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(' + require('../assets/fondo.jpg') + ')' , 'background-size': 'cover' }">
 					<h2>Registrar gasto</h2>
 					<form v-on:submit.prevent="registerExpense">
@@ -40,6 +40,11 @@
 						</div>
 						<button class="btn w-100 add">Agregar</button>
 					</form>
+				</div>
+			</div>
+			<div class="col-md-8">
+				<div class="small">
+					<line-chart v-if="loaded" :chartdata="chartdata" :options="options" :styles="myStyles"/>
 				</div>
 			</div>
 			<div class="col-12">
@@ -96,6 +101,7 @@
 <script type="text/javascript">
 	import router from '../router'
 	import axios from 'axios'
+	import LineChart from '../plugins/LineChart.js'
 
 	class Expenses{
 		constructor(expenses, figure) {
@@ -105,13 +111,23 @@
 	}
 
 	export default {
+		components: {
+			LineChart
+		},
 		data(){
 			return {
 				expense: new Expenses(),
 				expenses: [],
 				reason: '',
 				amount: '',
-				date: ''
+				date: '',
+				options: {
+					responsive: true,
+					maintainAspectRatio: false
+				},
+				loaded: false,
+				chartdata: null,
+				height:360,
 			}
 		},
 		beforeCreate() {
@@ -127,6 +143,7 @@
 		},
 		created(){
 			this.getExpenses();
+			this.CompareSalesAndExpenses();
 		},
 		methods: {
 			registerExpense(){
@@ -183,6 +200,18 @@
 					console.log(this.expenses)
 				})
 			},
+			CompareSalesAndExpenses(){
+				this.loaded = false
+				axios.get('/manicuristas/CompareSalesAndExpenses')
+				.then(res => {	
+					const userlist = res.data
+					this.chartdata = userlist
+					this.loaded = true
+				})
+				.catch(err => {
+					console.error(err)
+				})
+			},
 			formatDate(date) {
 				let dateFormat = new Date(date)
 				return dateFormat.getDate()+"-"+(dateFormat.getMonth() + 1)+"-"+dateFormat.getFullYear()
@@ -190,6 +219,14 @@
 			formatPrice(value) {
 				let val = (value/1).toFixed(2).replace('.', ',')
 				return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+			}
+		},
+		computed: {
+			myStyles (){
+				return {
+					height: `${this.height}px`,
+					position: 'relative'
+				}
 			}
 		}
 	}
@@ -211,6 +248,12 @@
 		padding-right: 15px;
 		box-shadow: 0 0.46875rem 2.1875rem rgba(4,9,20,0.03), 0 0.9375rem 1.40625rem rgba(4,9,20,0.03), 0 0.25rem 0.53125rem rgba(4,9,20,0.05), 0 0.125rem 0.1875rem rgba(4,9,20,0.03);
 		border-radius:5px;
+	}
+	.small{
+		background-color: #fff;
+		margin-top: 20px;
+		box-shadow: 0 0.46875rem 2.1875rem rgba(4,9,20,0.03), 0 0.9375rem 1.40625rem rgba(4,9,20,0.03), 0 0.25rem 0.53125rem rgba(4,9,20,0.05), 0 0.125rem 0.1875rem rgba(4,9,20,0.03);
+		border-radius: 5px;
 	}
 	.ListaInventario{
 		overflow-x: hidden;

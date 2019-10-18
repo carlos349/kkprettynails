@@ -993,9 +993,6 @@ ventas.get('/GetSalesPerMonth', (req, res) => {
     }
     res.json(chartdata)
   })
-  
-
-
 })
 
 

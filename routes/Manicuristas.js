@@ -270,4 +270,66 @@ manicurista.get('/GetSalesPerMonth/:prestador', (req, res) => {
   })
 })
 
+manicurista.get('/CompareSalesAndExpenses', (req, res) => {
+  const thisDate = new Date()
+  const date = thisDate.getMonth()
+  
+  let chartdata = {
+    labels: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31],
+    datasets: [ 
+      {
+        label: 'Ventas',
+        backgroundColor: '#6A7693',
+        data: [],
+        fontColor: 'red'
+      },
+      {
+        label: 'Gastos',
+        backgroundColor: '#29323c',
+        data: [],
+        fontColor: 'red'
+      }
+    ]
+  }
+
+  Venta.find()
+  .then(ventas => {
+    for (let indexOne = 0; indexOne < chartdata.labels.length; indexOne++) {
+      let datasets = chartdata.labels[indexOne]
+      let sumDay = 0
+      for (let index = 0; index < ventas.length; index++) {
+        if (datasets === ventas[index].fecha.getDate() && date === ventas[index].fecha.getMonth()) {
+          sumDay = parseFloat(ventas[index].total) + parseFloat(sumDay)
+        }
+      }
+
+      if (sumDay == 0) {
+        chartdata.datasets[0].data.push('0')
+      }else{
+        chartdata.datasets[0].data.push(sumDay)
+      }
+    }
+    Expenses.find()
+    .then(expenses => {
+      for (let indexOne = 0; indexOne < chartdata.labels.length; indexOne++) {
+        let datasets = chartdata.labels[indexOne]
+        let sumDay = 0
+        for (let index = 0; index < expenses.length; index++) {
+          if (datasets === expenses[index].date.getDate() && date === expenses[index].date.getMonth()) {
+            sumDay = parseFloat(expenses[index].figure) + parseFloat(sumDay)
+          }
+        }
+  
+        if (sumDay == 0) {
+          chartdata.datasets[1].data.push('0')
+        }else{
+          chartdata.datasets[1].data.push(sumDay)
+        }
+      }
+      res.json(chartdata)
+    })
+    
+  })
+})
+
 module.exports = manicurista
