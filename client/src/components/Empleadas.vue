@@ -51,6 +51,9 @@
 								<th>
 									Adelantos o bonos
 								</th>
+								<th>
+									Total pago
+								</th>
 								<th class="text-center">
 									Funciones
 								</th>	
@@ -71,10 +74,13 @@
 										{{manicurista.documento}}
 									</td>
 									<td class="font-weight-bold">
-										{{manicurista.comision}}
+										{{formatPrice(manicurista.comision)}}
 									</td>
 									<td class="font-weight-bold">
-										{{manicurista.advancement}}
+										{{formatPrice(manicurista.advancement)}}
+									</td>
+									<td class="font-weight-bold">
+										{{formatPrice(manicurista.comision - manicurista.advancement)}}
 									</td>
 									<td class="font-weight-bold text-center">
 										<button style="width:30%;" v-on:click="deletePrestador(manicurista._id)" class=" btn btn-colorsTrash"><font-awesome-icon icon="trash" /></button>
@@ -335,7 +341,11 @@ export default {
 			.catch(err => {
 				console.error(err)
 			})
-		}
+		},
+		formatPrice(value) {
+            let val = (value/1).toFixed(2).replace('.', ',')
+            return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+        }
 	},
 	computed: {
 		myStyles () {

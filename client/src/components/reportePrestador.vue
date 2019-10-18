@@ -4,7 +4,7 @@
             <h1 class="text-center ">Reporte prestador</h1>
             <h2>Fecha: {{fecha}}</h2>
             <h3>Nombre: {{identificacion}}</h3>
-            <button class="btn add float-right" style="margin-top:-50px;" v-on:click="openPrestDiscount">Adelantos</button>
+            <button class="btn add float-right" style="margin-top:-50px;" v-on:click="openPrestDiscount">Adelantos o Bonos</button>
         </div>
         <div class="row">
             <div class="col-12">
@@ -47,7 +47,7 @@
 		  <div class="modal-dialog modal-dialog-centered" role="document">
 		    <div v-bind:style="{ 'background-image': 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(' + require('../assets/fondo.jpg') + ')' , 'background-size': 'cover' }" class="modal-content">
 		      <div class="modal-header">
-		        <h5 class="modal-title text-white font-weight-bold" id="exampleModalCenterTitle">Registrar adelanto</h5>
+		        <h5 class="modal-title text-white font-weight-bold" id="exampleModalCenterTitle">Registrar adelanto o bono</h5>
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 		          <span aria-hidden="true" class="text-white">&times;</span>
 		        </button>
@@ -59,13 +59,19 @@
 						<input v-model="reason" type="text" class="form-control inputs" placeholder="Razon del adelanto">
 					</div>
 					<div class="form-group">
-						<label for="name">Total del adelanto</label>
-						<input v-model="totalAdvancement" type="text" class="form-control inputs" placeholder="Adelanto">
+						<label for="name">Total del adelanto o bono</label>
+						<input v-model="totalAdvancement" type="text" class="form-control inputs" placeholder="Escriba el monto">
 					</div>
                     <div class="form-group">
-						<label for="name">Total del adelanto</label>
+						<label for="name">Fecha del adelanto o bono</label>
 						<input v-model="dateAdvancement" type="date" class="form-control inputs">
 					</div>
+                    <div class="form-group">
+                        <label class="containeer">¿Está registrando un bono?
+                            <input class="ifCheck" type="checkbox" >
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
                     <div class="maxHei">
                         <table class="table table-light table-borderless table-striped">
                             <thead>
@@ -196,34 +202,74 @@
                 })
             },
             RegisterAdevancement(){
-                axios.post('manicuristas/registerAdvancement', {
-                    reason: this.reason,
-                    name: this.identificacion,
-                    prest: this.codigo,
-                    total: this.totalAdvancement,
-                    date: this.dateAdvancement
-                })
-                .then(res => {
-                    if (res.data.status == 'ok') {
-                        this.$swal({
-                            type: 'success',
-                            title: 'Adelanto registrado',
-                            showConfirmButton: false,
-                            timer: 1500
-                        })
-                        this.getAdvancements();
-                    }else{
-                        this.$swal({
-                            type: 'info',
-                            title: 'Se resgistro el adelanto, pero no se registro en el cierre, ya que no hay un cierre de ventas para dicha fecha',
-                            showConfirmButton: true
-                        })
-                        this.getAdvancements();
-                    }
-                })
-                .catch(err => {
-                    console.log(err)
-                })
+                if (this.reason == '' && this.totalAdvancement == '' && this.dateAdvancement == '') {
+                    this.$swal({
+                        type: 'error',
+                        title: 'Por favor, llene los campos',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                }else if($('.ifCheck').prop('checked')){
+                    axios.post('manicuristas/registerAdvancement', {
+                        reason: this.reason,
+                        name: this.identificacion,
+                        prest: this.codigo,
+                        total: this.totalAdvancement,
+                        check: 'Bonus',
+                        date: this.dateAdvancement
+                    })
+                    .then(res => {
+                        if (res.data.status == 'ok') {
+                            this.$swal({
+                                type: 'success',
+                                title: 'Adelanto registrado',
+                                showConfirmButton: false,
+                                timer: 1500
+                            })
+                            this.getAdvancements();
+                        }else{
+                            this.$swal({
+                                type: 'info',
+                                title: 'Se resgistro el adelanto, pero no se registro en el cierre, ya que no hay un cierre de ventas para dicha fecha',
+                                showConfirmButton: true
+                            })
+                            this.getAdvancements();
+                        }
+                    })
+                    .catch(err => {
+                        console.log(err)
+                    })
+                }else{
+                    axios.post('manicuristas/registerAdvancement', {
+                        reason: this.reason,
+                        name: this.identificacion,
+                        prest: this.codigo,
+                        total: this.totalAdvancement,
+                        check: 'Advancement',
+                        date: this.dateAdvancement
+                    })
+                    .then(res => {
+                        if (res.data.status == 'ok') {
+                            this.$swal({
+                                type: 'success',
+                                title: 'Adelanto registrado',
+                                showConfirmButton: false,
+                                timer: 1500
+                            })
+                            this.getAdvancements();
+                        }else{
+                            this.$swal({
+                                type: 'info',
+                                title: 'Se resgistro el adelanto, pero no se registro en el cierre, ya que no hay un cierre de ventas para dicha fecha',
+                                showConfirmButton: true
+                            })
+                            this.getAdvancements();
+                        }
+                    })
+                    .catch(err => {
+                        console.log(err)
+                    })
+                }
             },
             printReport(){
                 this.$swal({
@@ -266,6 +312,7 @@
                 setTimeout(() => {
                     axios.get('/manicuristas/advancements/'+this.codigo)
                     .then(res => {	
+                        console.log(res.data)
                         this.advancements = []
                         this.advancements = res.data
                     })
@@ -339,4 +386,70 @@
 		height: 8px;    /* Tamaño del scroll en horizontal */
 		display: none;  /* Ocultar scroll */
 	}
+    .containeer {
+        display: block;
+        position: relative;
+        padding-left: 35px;
+        margin-bottom: 12px;
+        cursor: pointer;
+        font-size: 22px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+        /* Hide the browser's default checkbox */
+    .containeer input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+    }
+
+        /* Create a custom checkbox */
+    .checkmark {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 25px;
+        width: 25px;
+        background-color: #eee;
+    }
+
+        /* On mouse-over, add a grey background color */
+    .containeer:hover input ~ .checkmark {
+        background-color: #ccc;
+    }
+
+        /* When the checkbox is checked, add a blue background */
+    .containeer input:checked ~ .checkmark {
+        background-color: #2196F3;
+    }
+
+        /* Create the checkmark/indicator (hidden when not checked) */
+    .checkmark:after {
+        content: "";
+        position: absolute;
+        display: none;
+    }
+
+        /* Show the checkmark when checked */
+    .containeer input:checked ~ .checkmark:after {
+        display: block;
+    }
+
+        /* Style the checkmark/indicator */
+    .containeer .checkmark:after {
+        left: 9px;
+        top: 5px;
+        width: 5px;
+        height: 10px;
+        border: solid white;
+        border-width: 0 3px 3px 0;
+        -webkit-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        transform: rotate(45deg);
+    }
 </style>

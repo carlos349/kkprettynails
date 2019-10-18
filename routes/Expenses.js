@@ -13,6 +13,12 @@ expenses.get('/', async (req, res) => {
 
 expenses.post('/', (req, res) => {
     const expense = req.body.expense
+    const dataExpense = {
+        expense: req.body.reason,
+        type: "expense",
+        figure: req.body.amount,
+        date: req.body.dateSelect
+    }
     const dateSelect = req.body.dateSelect
     const dateNow = new Date(dateSelect)
     dateNow.setDate(dateNow.getDate() + 1)
@@ -25,9 +31,21 @@ expenses.post('/', (req, res) => {
     })
     .then(resp => {
         if (resp) {
-            res.json({status: 'ok'})
+            Expenses.create(dataExpense)
+            .then(expense => {
+                res.json({status: 'ok'})
+            })
+            .catch(err => {
+                res.send(err)
+            })  
         }else{
-            res.json({status: 'bad'})
+            Expenses.create(dataExpense)
+            .then(expense => {
+                res.json({status: 'bad'})
+            })
+            .catch(err => {
+                res.send(err)
+            })  
         }
     })
     .catch(err => {

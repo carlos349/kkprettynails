@@ -77,30 +77,50 @@ manicurista.post('/registerAdvancement', (req, res) => {
   }
    const dataExpense = {
     expense:req.body.reason,
-    type:'Advancement',
+    type: req.body.check,
     figure:req.body.total,
     date: req.body.date
    }
 
-  Advancement.create(dataAdvancement)
-  .then(Advancement => {
     Expenses.create(dataExpense)
     .then(expense => {
       Manicurista.findByIdAndUpdate(req.body.prest, { $inc: { advancement: req.body.total }})
       .then(update => {
-        Cierres.findOneAndUpdate({fecha: { $gte: formatDate, $lte: formatDateTwo }},
-          { $inc : { gastos: req.body.total }
-        })
-        .then(close => {
-          if (close) {
-            res.json({status: 'ok'})
-          }else{
-            res.json({status: 'bad'})
-          }
-        })
-        .catch(err => {
-          res.send(err)
-        })
+        if (req.body.check == 'Bonus') {
+          Cierres.findOneAndUpdate({fecha: { $gte: formatDate, $lte: formatDateTwo }},
+            { $inc : { gastos: req.body.total }
+          })
+          .then(close => {
+            if (close) {
+              res.json({status: 'ok'})
+            }else{
+              res.json({status: 'bad'})
+            }
+          })
+          .catch(err => {
+            res.send(err)
+          })
+        }else{
+          Advancement.create(dataAdvancement)
+          .then(advancement => {
+            Cierres.findOneAndUpdate({fecha: { $gte: formatDate, $lte: formatDateTwo }},
+              { $inc : { gastos: req.body.total }
+            })
+            .then(close => {
+              if (close) {
+                res.json({status: 'ok'})
+              }else{
+                res.json({status: 'bad'})
+              }
+            })
+            .catch(err => {
+              res.send(err)
+            })
+          })
+          .catch(err => {
+            res.send(err)
+          })
+        }
       })
       .catch(err => {
         res.send(err)
@@ -109,10 +129,6 @@ manicurista.post('/registerAdvancement', (req, res) => {
     .catch(err => {
       res.send(err)
     })
-  })
-  .catch(err => {
-    res.send("error: " + err)
-  })
 
 })
 
@@ -147,7 +163,8 @@ manicurista.put('/:id', (req, res) => {
 manicurista.put('/ClosePrest/:id', (req, res) => {
   Manicurista.findByIdAndUpdate(req.params.id, {
     $set: {
-      comision:0
+      comision:0,
+      advancement:0
     }
   })
   .then(manicurista => {

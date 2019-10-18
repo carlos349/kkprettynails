@@ -25,7 +25,7 @@
 						</div>
 						<div class="form-group">
 							<label for="name">Tiempo</label>
-							<input v-model="tiempoServi" type="numbre" class="form-control inputs" placeholder="0 min">
+							<input v-model="tiempoServi" v-on:keypress="maxCount" type="number" min="1" max="3" class="form-control inputs" placeholder="0 Horas">
 						</div>
 						<div class="form-group">
 							<label for="name">Precio</label>
@@ -65,7 +65,7 @@
 								 Nombre
 							 </th>
 							 <th>
-								 Tiempo
+								 Tiempo Hr
 							 </th>
 							 <th>
 								 Precio
@@ -89,7 +89,7 @@
 									{{servicio.nombre}}
 								</td>
 								<td class="font-weight-bold">
-									{{servicio.tiempo}}
+									{{servicio.tiempo}} H
 								</td>
 								<td class="font-weight-bold">
 									{{formatPrice(servicio.precio)}}
@@ -161,7 +161,7 @@
 					</div>
 					<div class="form-group">
 						<label for="nombre">Tiempo</label>
-						<input type="text" v-model="tiempoServicio" class="form-control inputs" name="nombreServicio" placeholder="0 min" >
+						<input v-model="tiempoServicio" v-on:keypress="maxCountEdit" type="number" min="1" max="3" class="form-control inputs" name="nombreServicio" placeholder="0 min" >
 					</div>
 					<div class="form-group">
 						<label for="nombre">Precio del servicio</label>
@@ -325,6 +325,13 @@
 						showConfirmButton: false,
 						timer: 1500
 					})
+				}else if(this.tiempoServi > 3){
+					this.$swal({
+						type: 'error',
+						title: 'El tiempo del servicio no puede ser mayor a 3 Horas',
+						showConfirmButton: false,
+						timer: 1500
+					})
 				}else{
 					if (this.prestadoresSeleccionados.length == 0) {
 						this.$swal({
@@ -404,36 +411,66 @@
 			abrirModalRegistro(){
 				$('#myModal').modal('show')
 			},
-			actualizacionServicios(){
-				const id = this.idServicioEditar
-				axios.put('servicios/' + id, {
-					nombreServicio: this.nombreServicio,
-					tiempoServicio: this.tiempoServicio,
-					precioServicio: this.precioServicio,
-					prestadores: this.prestadoresSeleccionadosTwos,
-				})
-				.then(res => {
-					console.log(res)
-					if(res.data.status == 'Servicio actualizado'){
-						this.$swal({
-						  type: 'success',
-						  title: 'Servicio actualizado',
-						  showConfirmButton: false,
-						  timer: 1500
-						})
-						this.getServicios()
-						$('#myModal2').modal('hide')
-					}else{
-						this.$swal({
-						  type: 'error',
-						  title: 'El servicio ya existe',
-						  showConfirmButton: false,
-						  timer: 1500
-						})
-						this.getServicios()
-						$('#myModal2').modal('hide')
+			maxCount(){
+				setTimeout(() => {
+					if (this.tiempoServi > 3) {
+						this.tiempoServi = 3
 					}
-				})
+				}, 500)	
+			},
+			maxCountEdit(){
+				setTimeout(() => {
+					if (this.tiempoServicio > 3) {
+						this.tiempoServicio = 3
+					}
+				}, 500)	
+			},
+			actualizacionServicios(){
+				if (this.nombreServicio == '' && this.tiempoServicio == '' && this.precioServicio == '') {
+					this.$swal({
+						type: 'error',
+						title: 'Llene todos los campos',
+						showConfirmButton: false,
+						timer: 1500
+					})
+				}else if(this.tiempoServicio > 3){
+					this.$swal({
+						type: 'error',
+						title: 'El tiempo del servicio no puede ser mayor a 3 Horas',
+						showConfirmButton: false,
+						timer: 1500
+					})
+				}else{
+					const id = this.idServicioEditar
+					axios.put('servicios/' + id, {
+						nombreServicio: this.nombreServicio,
+						tiempoServicio: this.tiempoServicio,
+						precioServicio: this.precioServicio,
+						prestadores: this.prestadoresSeleccionadosTwos,
+					})
+					.then(res => {
+						console.log(res)
+						if(res.data.status == 'Servicio actualizado'){
+							this.$swal({
+							type: 'success',
+							title: 'Servicio actualizado',
+							showConfirmButton: false,
+							timer: 1500
+							})
+							this.getServicios()
+							$('#myModal2').modal('hide')
+						}else{
+							this.$swal({
+							type: 'error',
+							title: 'El servicio ya existe',
+							showConfirmButton: false,
+							timer: 1500
+							})
+							this.getServicios()
+							$('#myModal2').modal('hide')
+						}
+					})
+				}
 			},
 			pasarDatosEdit(nombre,tiempo, precio, prestadores, id){
 				this.prestadoresSeleccionadosTwos = []
