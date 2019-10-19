@@ -174,6 +174,7 @@
 							this.reason = ''
 							this.amount = ''
 							this.date = ''
+							this.getExpenses()
 						}
 					})
 					.catch(err => {
