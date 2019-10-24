@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 
 const User = require('../models/User')
+const Clientes = require('../models/Cliente')
 users.use(cors())
 
 process.env.SECRET_KEY = 'secret'
@@ -13,6 +14,10 @@ process.env.SECRET_KEY = 'secret'
 users.get('/', async (req, res) => {
 	const userss = await User.find()
   res.json(userss)
+})
+users.get('/Clientes', async (req, res) => {
+	const clients = await Clientes.find()
+  	res.json(clients)
 })
 
 users.delete('/:id', async (req, res) => {

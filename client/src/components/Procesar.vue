@@ -3,14 +3,18 @@
 	<div class="container contenedor">
 		<div class="row">
 			<div class="col-md-12">
-				<form v-on:submit.prevent="verificacionCliente">
-					<div class="input-group mb-3">
-						  <div class="input-group-prepend">
-						    <button class="btn btn-info spanInputs w-100" type="submit" id="button-addon1">Cliente</button>
-						  </div>
-						  <input type="text" v-model="nombreCliente" id="cliente" name="identidad" class="form-control inputs" placeholder="Cliente" aria-label="Example text with button addon" aria-describedby="button-addon1">
+				<div class="input-group mb-3">
+					<div class="input-group-prepend w-25">
+					<button class="btn add w-100" v-on:click="verificacionCliente" id="button-addon1">Ingresar cliente</button>
 					</div>
-				</form>
+					<autocomplete	
+						:search="searchClient"
+						placeholder="Buscar cliente"
+						aria-label="Buscar cliente"
+						@submit="handleSubmitClient"
+						class="auto">
+					</autocomplete>
+				</div>
 				<div class="input-group input-group-lg mb-2 ">
 				  <div class="input-group-prepend w-25 text-center">
 				    <span class="spanInputs w-100 font-weight-bold text-white input-group-text text-center" id="inputGroup-sizing-lg">Manicurista</span>
@@ -34,7 +38,7 @@
 								Servicio
 							</th>
 							<th class="text-center text-white">
-								Precio
+								Precio <font-awesome-icon class="icon-add" icon="plus-square" v-on:click="addService"/>
 							</th>
 						</tr>
 					</thead>
@@ -58,7 +62,7 @@
 									</button>
 
 								</td>
-								<td v-if="servicio.active" class=" font-weight-bold text-white text-center">
+								<td v-if="servicio.active" class=" font-weight-bold text-white text-left">
 									{{servicio.precio}}
 								</td>
 							</tr>
@@ -111,25 +115,71 @@
 		</div>
 		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered" role="document">
-		    <div class="modal-content">
+		    <div class="modal-content" v-bind:style="{ 'background-color': '#1c1c1c'}">
 		      <div class="modal-header ">
-		        <h5 class="modal-title font-weight-bold" id="exampleModalCenterTitle">Registro cliente</h5>
-		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-		          <span aria-hidden="true" class="text-white">&times;</span>
-		        </button>
+		        <h5 class="modal-title font-weight-bold text-white" id="exampleModalCenterTitle">Registro cliente</h5>
+		        
 		      </div>
 		      <div class="modal-body">
 		        <form v-on:submit.prevent="ingresoCliente">
 							<div class="form-group">
 								<label for="nombre">Nombre cliente</label>
-								<input type="text" v-model="nombreCliente" class="form-control" name="nombreCliente" placeholder="Nombre del cliente"  requerid>
+								<input type="text" v-model="nombreCliente" class="form-control inputs" name="nombreCliente" placeholder="Nombre del cliente"  requerid>
 							</div>
 							<div class="form-group">
-								<label for="identidad">Instagram o E-Mail del cliente</label>
-								<input type="text" v-model="instagramCliente" class="form-control verificacion" name="identidadCliente" placeholder="Instagram o E-mail del cliente" requerid>
+								<label for="identidad">Instagram o Correo del cliente</label>
+								<input type="text" v-model="instagramCliente" class="form-control inputs verificacion" name="identidadCliente" placeholder="Instagram o Correo del cliente" requerid>
 							</div>
 							<button class="btn btn-lg procesar btn-block" type="submit">Ingresar Cliente</button>
 		        </form>
+		      </div>
+		    </div>
+
+		  </div>
+		</div>
+		<div class="modal fade" id="myModalAddServiceFast" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		  <div class="modal-dialog modal-dialog-centered" role="document">
+		    <div class="modal-content" v-bind:style="{ 'background-color': '#1c1c1c'}">
+		      <div class="modal-header ">
+		        <h5 class="modal-title text-white font-weight-bold" id="exampleModalCenterTitle">Registrar servicio</h5>
+		        
+		      </div>
+		      <div class="modal-body">
+		        <form v-on:submit.prevent="registroServicio">
+						<div class="form-group">
+							<label for="name">Nombre del servicio</label>
+							<input v-model="nombreServi" type="text" class="form-control inputs" placeholder="Nombre servicio">
+						</div>
+						<div class="form-group">
+							<label for="name">Tiempo</label>
+							<input v-model="tiempoServi" v-on:keypress="maxCount" type="number" min="1" max="3" class="form-control inputs" placeholder="0 Horas">
+						</div>
+						<div class="form-group">
+							<label for="name">Precio</label>
+							<input v-model="precioServi" type="text" class="form-control inputs" placeholder="Precio">
+						</div>
+						<div class="form-group row" style="margin-top:-15px;">
+							<input type="text" id="myInputServFast" v-on:keyup="myFunctionServFast()" class="form-control buscar inputs" placeholder="Seleccione prestadores"/>
+							<div class="ListaProcesarServ maxHeight">
+								<table class="table table-dark tableBg" id="myTableServFast">
+									<tbody>
+										<tr v-for="(manicurista, index) of manicuristas" >
+											<td class="font-weight-bold text-white">
+												{{manicurista.nombre}}
+											</td>
+											<td class="font-weight-bold text-right">
+												<label class="conCheck col-sm-2">
+												<input :id="index" class="checkFirst" v-on:click="presSelect(manicurista.documento,index)" type="checkbox">
+												<span class="checkmark"></span>
+												</label>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<button class="btn w-100 add">Agregar</button>
+					</form>
 		      </div>
 		    </div>
 
@@ -167,13 +217,14 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
  export default{
 	 data() {
 		 return {
-			 manicurista: new Manicurista(),
-			 manicuristas:[],
-			 arregloManicurista: new ArregloManicuristas(),
-			 arregloManicuristas:[],
-			 servicio: new Servicio(),
-			 servicios: [],
-			 classHeader: {
+			manicurista: new Manicurista(),
+			manicuristas:[],
+			arregloManicurista: new ArregloManicuristas(),
+			arregloManicuristas:[],
+			servicio: new Servicio(),
+			servicios: [],
+			prestadoresSeleccionados:[],
+			classHeader: {
 				'Accept': 'application/json',
 				'Content-type': 'application/json'
 			},
@@ -193,7 +244,12 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 			maniSelect:'',
 			descuento:'',
 			pagoTipo:'',
-			totalSinFormato:'0'
+			totalSinFormato:'0',
+			nombreServi:'',
+			tiempoServi:'',
+			precioServi:'',
+			clients: [],
+			arregloClients: []
 		 }
 	 },
 	 beforeCreate() {
@@ -210,6 +266,7 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
  	created(){
 		this.getManicuristas();
 		this.arrayMani();
+		this.arrayUsers();
 	},
 	methods: {
 			arrayMani(){
@@ -219,14 +276,31 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 					}
 				}, 2000);
 			},
+			arrayUsers(){
+				setTimeout(() => {
+					for (let index = 0; index < this.clients.length; index++) {
+						this.arregloClients.push(this.clients[index].nombre+' - '+this.clients[index].identidad)
+					}
+				}, 2000);
+				console.log(this.arregloClients)
+			},
+			searchClient(input){
+				if (input.length < 1) { return [] }
+					return this.arregloClients.filter(manicurista => {
+						return manicurista.toLowerCase()
+						.startsWith(input.toLowerCase())
+				})
+			},
+			handleSubmitClient(result){
+				console.log(result)
+				this.nombreCliente = result
+			},
 		  	search(input) {
-				
 				if (input.length < 1) { return [] }
 				return this.arregloManicuristas.filter(manicurista => {
 					return manicurista.toLowerCase()
 					.startsWith(input.toLowerCase())
 				})
-				
 			},
 			handleSubmit(result) {
 				this.maniSelect = result
@@ -238,6 +312,11 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 				.then(res => {
 					this.manicuristas = res.data
 				}),
+				axios.get('users/clientes')
+				.then(res => {
+					this.clients = res.data
+					console.log(res.data)
+				})
 				axios.get('servicios')
 				.then(res => {
 					this.servicios = res.data
@@ -247,6 +326,13 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 				this.inspector = false
 				this.nombreCliente = ""
 				this.correoCliente = ""
+			},
+			maxCount(){
+				setTimeout(() => {
+					if (this.tiempoServi > 3) {
+						this.tiempoServi = 3
+					}
+				}, 500)	
 			},
 			myFunction() {
 			  var input, filter, table, tr, td, i, txtValue;
@@ -266,28 +352,11 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 			    }
 			  }
 			},
+			addService(){
+				$('#myModalAddServiceFast').modal('show')
+			},
 			verificacionCliente(){
-				axios.post('ventas/verificacioncliente', {
-					identidad: this.nombreCliente
-				})
-				.then(res => {
-					if(res.data.status == 'Cliente no existe'){
-						$('#myModal').modal('show')
-					}else{
-						$('#button-addon1').addClass('bg-success')
-						$('#myInput').focus()
-						this.nombreCliente = res.data.status
-						
-					}
-				})
-				.catch(err => {
-					this.$swal({
-						type: 'error',
-						title: 'experimentamos problemas :(',
-						showConfirmButton: false,
-						timer: 1500
-					})
-				})
+				$('#myModal').modal('show')	
 			},
 			ingresoCliente() {
 				axios.post('ventas/ingresocliente', {
@@ -305,7 +374,10 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 						$('#myModal').modal('hide')
 						$('#button-addon1').addClass('bg-success')
 						$('.manicuristaFocus').focus()
-						this.inspector = true
+						this.clients = []
+						this.arregloClients = []
+						this.getManicuristas();
+						this.arrayUsers();
 					}else{
 						$('.verificacion').addClass('border border-danger')
 					}
@@ -473,8 +545,101 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 			formatPrice(value) {
 				let val = (value/1).toFixed(2).replace('.', ',')
 				return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
-			}
-	 }
+			},
+			myFunctionServFast() {
+			  var input, filter, table, tr, td, i, txtValue;
+			  input = document.getElementById("myInputServFast");
+			  filter = input.value.toUpperCase();
+			  table = document.getElementById("myTableServFast");
+			  tr = table.getElementsByTagName("tr");
+			  for (i = 0; i < tr.length; i++) {
+			    td = tr[i].getElementsByTagName("td")[0];
+			    if (td) {
+			      txtValue = td.textContent || td.innerText;
+			      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+			        tr[i].style.display = "";
+			      } else {
+			        tr[i].style.display = "none";
+			      }
+			    }
+			  }
+			},
+			presSelect(prestador, index){
+				if ($(".checkFirst").is(":checked") == false ) {
+					this.prestadoresSeleccionados = []
+				}
+				if ($("#"+index).prop("checked")!=true ) {
+					for (let i = 0; i < this.prestadoresSeleccionados.length; i++) {
+						if (this.prestadoresSeleccionados[i] == prestador ) {
+							this.prestadoresSeleccionados.splice(i, 1)
+							break
+						}
+					}
+				}
+				else{
+					let select = prestador
+					this.prestadoresSeleccionados.push(prestador)
+				}
+				console.log(this.prestadoresSeleccionados)
+			},
+			registroServicio(){
+				if (this.nombreServi == '' && this.precioServi == '' && this.tiempoServi == '') {
+					this.$swal({
+						type: 'error',
+						title: 'Llene todos los campos',
+						showConfirmButton: false,
+						timer: 1500
+					})
+				}else if(this.tiempoServi > 3){
+					this.$swal({
+						type: 'error',
+						title: 'El tiempo del servicio no puede ser mayor a 3 Horas',
+						showConfirmButton: false,
+						timer: 1500
+					})
+				}else{
+					if (this.prestadoresSeleccionados.length == 0) {
+						this.$swal({
+							type: 'error',
+							title: 'Seleccione almenos un prestador',
+							showConfirmButton: false,
+							timer: 1500
+						})
+					}else{
+						axios.post('servicios', {
+							nombreServicio: this.nombreServi,
+							precioServicio: this.precioServi,
+							tiempoServicio: this.tiempoServi,
+							prestadores: this.prestadoresSeleccionados
+
+						})
+						.then(res => {
+							if(res.data.status == 'Servicio creado'){
+								this.$swal({
+								type: 'success',
+								title: 'Servicio creado',
+								showConfirmButton: false,
+								timer: 1500
+								})
+								this.getManicuristas();
+								this.nombreServi = ''
+								this.precioServi = ''
+								this.tiempoServi = ''
+								this.prestadoresSeleccionados = []
+								$('.checkFirst').prop('checked', false)
+							}else{
+								this.$swal({
+								type: 'error',
+								title: 'El servicio ya existe',
+								showConfirmButton: false,
+								timer: 1500
+								})
+							}
+						})
+					}
+				}
+			},
+	 	}
  }
 </script>
 <style media="screen">
@@ -531,7 +696,14 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 		cursor:pointer;
 	}
 	.autocomplete-input{
-		color:black !important;
+		color:azure !important;
+	}
+	.autocomplete-result-list{
+		background-color: #102229;
+		color:azure;
+	}
+	.autocomplete-result-list li{
+		color:azure;
 	}
 	.procesar:hover{
 		color:#102229;
@@ -568,9 +740,38 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 		height:190px;
 	}
 	.ListaProcesar::-webkit-scrollbar {
-    width: 8px;     /* Tamaño del scroll en vertical */
-    height: 8px;    /* Tamaño del scroll en horizontal */
-    display: none;  /* Ocultar scroll */
+		width: 8px;     /* Tamaño del scroll en vertical */
+		height: 8px;    /* Tamaño del scroll en horizontal */
+		display: none;  /* Ocultar scroll */
+	}
+	label{
+		color: azure;
+	}
+	.add{
+		background-color:#ccc;
+		color: #102229;
+		transition: all 0.5s ease-out;
+		font-family: 'Raleway', sans-serif;
+		font-weight:600;
+	}
+	.add:hover{
+		background-color:#102229;
+		color:#ccc;
+	}
+	.ListaProcesarServ{
+		overflow-x: hidden;
+		overflow-y:scroll;
+		max-height: 190px;
+		height:190px;
+	}
+	.ListaProcesarServ::-webkit-scrollbar {
+		width: 8px;     /* Tamaño del scroll en vertical */
+		height: 8px;    /* Tamaño del scroll en horizontal */
+		display: none;  /* Ocultar scroll */
+	}
+	.maxHeight{
+		max-height: 120px;
+		width: 100%;
 	}
 	.shadowTop{
 		-webkit-box-shadow: 0px -16px 21px -10px rgba(0,0,0,0.75);
@@ -579,10 +780,17 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 	}
 	.lupa{
 		position:absolute;
-		right:4%;
-		top:17%;
+		right:10%;
+		top:18%;
 		font-size:1.4em
 	}
+	.icon-add{
+		position:absolute;
+		right:3%;
+		top:17%;
+		font-size:2.3em;
+		cursor: pointer;
+	}	
 	.buscar::-webkit-input-placeholder {
 		color: #cccccc;
 		font-family: 'Raleway', sans-serif;
@@ -605,5 +813,72 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 		border-bottom:2px solid #102229 !important;
 		border-radius: 0px;
 		width: 100% !important;
+	}
+	.conCheck {
+		display: inline-block;
+		margin-left: 5%;
+		position: relative;
+		padding-left: 35px;
+		margin-bottom: 12px;
+		cursor: pointer;
+		font-size: 0.8em;
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+	}
+
+		/* Hide the browser's default checkbox */
+	.conCheck input {
+		position: absolute;
+		opacity: 0;
+		cursor: pointer;
+		height: 0;
+		width: 0;
+	}
+
+	/* Create a custom checkbox */
+	.checkmark {
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: 25px;
+		width: 25px;
+		background-color: #eee;
+	}
+
+	/* On mouse-over, add a grey background color */
+	.conCheck:hover input ~ .checkmark {
+		background-color: #ccc;
+	}
+
+	/* When the checkbox is checked, add a blue background */
+	.conCheck input:checked ~ .checkmark {
+		background-color: #102229;
+	}
+
+	/* Create the checkmark/indicator (hidden when not checked) */
+	.checkmark:after {
+		content: "";
+		position: absolute;
+		display: none;
+	}
+
+	/* Show the checkmark when checked */
+	.conCheck input:checked ~ .checkmark:after {
+		display: inline-block;
+	}
+
+	/* Style the checkmark/indicator */
+	.conCheck .checkmark:after {
+		left: 9px;
+		top: 5px;
+		width: 5px;
+		height: 10px;
+		border: solid white;
+		border-width: 0 3px 3px 0;
+		-webkit-transform: rotate(45deg);
+		-ms-transform: rotate(45deg);
+		transform: rotate(45deg);
 	}
 </style>
