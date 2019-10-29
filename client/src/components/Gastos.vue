@@ -23,7 +23,7 @@
 
 		<div class="row pt-2 pl-5">
 			<div class="col-md-4 mb-3">
-				<div class="forms" v-bind:style="{ 'background-image': 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(' + require('../assets/fondo.jpg') + ')' , 'background-size': 'cover' }">
+				<div class="forms" v-bind:style="{ 'background-color': '#29323c'}">
 					<h2>Registrar gasto</h2>
 					<form v-on:submit.prevent="registerExpense">
 						<div class="form-group">
@@ -299,24 +299,24 @@
 		display: none;  /* Ocultar scroll */
 	}
 	.add{
-		background-color:#102229;
-		color:#fff;
+		background-color:#ccc;
+		color: #102229;
 		transition: all 0.5s ease-out;
 		font-family: 'Raleway', sans-serif;
 		font-weight:600;
 	}
 	.add:hover{
-		background-color:#ccc;
-		
+		background-color:#102229;
+		color:#fff;
 	}
 	.inputs{
 		border:none !important;
 		border-radius:0px !important;
-		border-bottom:2px solid #102229 !important;
+		border-bottom:2px solid azure !important;
 		background-color:transparent !important;
 		color:#fff !important;
-		font-weight:400;
-		letter-spacing: .1em;
+		font-family: 'Roboto', sans-serif !important;
+		letter-spacing: .09em;
 	}
 	.formGastos input{
 		width: 40%;

@@ -159,7 +159,7 @@
         </div>
 		<div class="modal fade bd-example-modal-xl" id="myModalThree" tabindex="-1"  aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-lg " role="document">
-		    <div v-bind:style="{ 'background-color': '#1c1c1c'}"  class="modal-content">
+		    <div v-bind:style="{ 'background-color': '#29323c'}"  class="modal-content">
 		      <div class="modal-header ">
 		        <h5 class="modal-title text-white" id="exampleModalCenterTitle">Procesar venta</h5>
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">

@@ -2,7 +2,7 @@
 	<div class="container-fluid">
 		<div class="col-12 row pt-5">
 			<div class="col-md-4">
-				<div class="forms" v-bind:style="{ 'background-image': 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(' + require('../assets/fondo.jpg') + ')' , 'background-size': 'cover' }">
+				<div class="forms" v-bind:style="{ 'background-color': '#29323c'}">
 					<h2>Registrar producto</h2>
 					<form v-on:submit.prevent="addProduct">
 						<div class="form-group">
@@ -36,7 +36,7 @@
 											</td>
 											<td class="font-weight-bold text-right">
 												<label class="conCheck col-sm-2">
-												<input :id="index" class="checkFirst" v-on:click="presSelect(servicio.nombre, servicio._id, index)" type="checkbox">
+												<input :class="servicio._id" class="checkFirst" v-on:click="presSelect(servicio.nombre, servicio._id, index)" type="checkbox">
 												<span class="checkmark"></span>
 												</label>
 											</td>
@@ -129,7 +129,7 @@
 		</div>
 		<div class="modal fade" id="myModal2" tabindex="-1"  role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered"  >
-		    <div class="modal-content" v-bind:style="{ 'background-image': 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(' + require('../assets/fondo.jpg') + ')' , 'background-size': 'cover' }">
+		    <div class="modal-content" v-bind:style="{ 'background-color': '#29323c'}">
 		      <div class="modal-header">
 		        <h5 class="modal-title text-white font-weight-bold" id="exampleModalCenterTitle">Edicion del producto</h5>
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -357,11 +357,12 @@ export default {
 			$('#myModal2').modal('show')
 		},
 		presSelect(service, id, index){
+			console.log($("."+id).prop("checked"))
 			if ($(".checkFirst").is(":checked") == false ) {
 				this.serviceSelect = []
 				this.serviceIdSelect = []
 			}
-			if ($("#"+index).prop("checked")!=true ) {
+			if ($("."+id).prop("checked")!=true ) {
 				for (let i = 0; i < this.serviceSelect.length; i++) {
 					if (this.serviceSelect[i] == service && this.serviceIdSelect[i] == id) {
 						this.serviceSelect.splice(i, 1)
@@ -375,6 +376,7 @@ export default {
 				this.serviceSelect.push(service)
 				this.serviceIdSelect.push(id)
 			}
+			console.log(this.serviceSelect)
 		},
 		presSelectTwo(service, id, index){
 			if ($("."+id).prop("checked")!=true ) {
@@ -491,11 +493,11 @@ export default {
 	.inputs{
 		border:none !important;
 		border-radius:0px !important;
-		border-bottom:2px solid #102229 !important;
+		border-bottom:2px solid azure !important;
 		background-color:transparent !important;
 		color:#fff !important;
-		font-weight:400;
-		letter-spacing: .1em;
+		font-family: 'Roboto', sans-serif !important;
+		letter-spacing: .09em;
 	}
 	.conCheck {
 		display: inline-block;

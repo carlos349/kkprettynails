@@ -115,7 +115,7 @@
 		</div>
 		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered" role="document">
-		    <div class="modal-content" v-bind:style="{ 'background-color': '#1c1c1c'}">
+		    <div class="modal-content" v-bind:style="{ 'background-color': '#29323c'}">
 		      <div class="modal-header ">
 		        <h5 class="modal-title font-weight-bold text-white" id="exampleModalCenterTitle">Registro cliente</h5>
 		        
@@ -139,7 +139,7 @@
 		</div>
 		<div class="modal fade" id="myModalAddServiceFast" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered" role="document">
-		    <div class="modal-content" v-bind:style="{ 'background-color': '#1c1c1c'}">
+		    <div class="modal-content" v-bind:style="{ 'background-color': '#29323c'}">
 		      <div class="modal-header ">
 		        <h5 class="modal-title text-white font-weight-bold" id="exampleModalCenterTitle">Registrar servicio</h5>
 		        
@@ -646,7 +646,7 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 	.inputs{
 		border:none !important;
 		border-radius:0px !important;
-		border-bottom:2px solid #102229 !important;
+		border-bottom:2px solid azure !important;
 		background-color:transparent !important;
 		color:#fff !important;
 		font-family: 'Roboto', sans-serif !important;

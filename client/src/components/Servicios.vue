@@ -15,47 +15,7 @@
 					<h1>{{TotalPrestadores}}</h1>
 				</div>
 			</div>
-			<div class="col-md-4">
-				<div class="forms" v-bind:style="{ 'background-image': 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(' + require('../assets/fondo.jpg') + ')' , 'background-size': 'cover' }">
-					<h2>Crear Servicio</h2>
-					<form v-on:submit.prevent="registroServicio">
-						<div class="form-group">
-							<label for="name">Nombre del servicio</label>
-							<input v-model="nombreServi" type="text" class="form-control inputs" placeholder="Nombre servicio">
-						</div>
-						<div class="form-group">
-							<label for="name">Tiempo</label>
-							<input v-model="tiempoServi" v-on:keypress="maxCount" type="number" min="1" max="3" class="form-control inputs" placeholder="0 Horas">
-						</div>
-						<div class="form-group">
-							<label for="name">Precio</label>
-							<input v-model="precioServi" type="text" class="form-control inputs" placeholder="Precio">
-						</div>
-						<div class="form-group row" style="margin-top:-15px;">
-							<input type="text" id="myInputServ" v-on:keyup="myFunctionServ()" class="form-control buscar inputs" placeholder="Seleccione prestadores"/>
-							<div class="ListaProcesar maxHeight">
-								<table class="table table-dark tableBg" id="myTableServ">
-									<tbody>
-										<tr v-for="(manicurista, index) of manicuristas" >
-											<td class="font-weight-bold text-white">
-												{{manicurista.nombre}}
-											</td>
-											<td class="font-weight-bold text-right">
-												<label class="conCheck col-sm-2">
-												<input :id="index" class="checkFirst" v-on:click="presSelect(manicurista.documento,index)" type="checkbox">
-												<span class="checkmark"></span>
-												</label>
-											</td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
-						</div>
-						<button class="btn w-100 add">Agregar</button>
-					</form>
-				</div>
-			</div>
-			<div class="col-md-8 ">
+			<div class="col-md-12 ">
 				<div class="shadow">
 					
 				<table  class="table table-dark" style="color:#fff !important" >
@@ -146,9 +106,9 @@
 		</div>
 		<div class="modal fade" id="myModal2" tabindex="-1"  role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered"  >
-		    <div class="modal-content" v-bind:style="{ 'background-image': 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(' + require('../assets/fondo.jpg') + ')' , 'background-size': 'cover' }">
+		    <div class="modal-content" v-bind:style="{ 'background-color': '#29323c'}">
 		      <div class="modal-header">
-		        <h5 class="modal-title text-white font-weight-bold" id="exampleModalCenterTitle">Registro cliente</h5>
+		        <h5 class="modal-title text-white font-weight-bold" id="exampleModalCenterTitle">Actualizar servicio</h5>
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 		          <span aria-hidden="true" class="text-white">&times;</span>
 		        </button>
@@ -192,6 +152,60 @@
 		      </div>
 		    </div>
 		  </div>
+		</div>
+		<div class="modal fade" id="ModalCreateService" tabindex="-1"  role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		  <div class="modal-dialog modal-dialog-centered"  >
+		    <div class="modal-content" v-bind:style="{ 'background-color': '#29323c'}">
+		      <div class="modal-header">
+		        <h5 class="modal-title text-white font-weight-bold" id="exampleModalCenterTitle">Registro servicio</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true" class="text-white">&times;</span>
+		        </button>
+		      </div>
+		      <div  class="modal-body">
+		        <form v-on:submit.prevent="registroServicio">
+						<div class="form-group">
+							<label for="name">Nombre del servicio</label>
+							<input v-model="nombreServi" type="text" class="form-control inputs" placeholder="Nombre servicio">
+						</div>
+						<div class="form-group">
+							<label for="name">Tiempo</label>
+							<input v-model="tiempoServi" v-on:keypress="maxCount" type="number" min="1" max="3" class="form-control inputs" placeholder="0 Horas">
+						</div>
+						<div class="form-group">
+							<label for="name">Precio</label>
+							<input v-model="precioServi" type="text" class="form-control inputs" placeholder="Precio">
+						</div>
+						<div class="form-group row" style="margin-top:-15px;">
+							<input type="text" id="myInputServ" v-on:keyup="myFunctionServ()" class="form-control buscar inputs" placeholder="Seleccione prestadores"/>
+							<div class="ListaProcesar maxHeight">
+								<table class="table table-dark tableBg" id="myTableServ">
+									<tbody>
+										<tr v-for="(manicurista, index) of manicuristas" >
+											<td class="font-weight-bold text-white">
+												{{manicurista.nombre}}
+											</td>
+											<td class="font-weight-bold text-right">
+												<label class="conCheck col-sm-2">
+												<input :class="manicurista._id" class="checkFirst" v-on:click="presSelect(manicurista.documento,manicurista._id)" type="checkbox">
+												<span class="checkmark"></span>
+												</label>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<button class="btn w-100 add">Agregar</button>
+					</form>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		<div class="box">
+			<button class="createService btn-white btn-animation-1" v-on:click="openModalCreateServices">
+				<font-awesome-icon style="font-size: 1.6em;" icon="plus" />
+			</button>
 		</div>
 	</div>
 </template>
@@ -317,6 +331,9 @@
 					})
 				})
 			},
+			openModalCreateServices(){
+				$('#ModalCreateService').modal('show')
+			},
 			registroServicio(){
 				if (this.nombreServi == '' && this.precioServi == '' && this.tiempoServi == '') {
 					this.$swal({
@@ -374,17 +391,21 @@
 					}
 				}
 			},
-			presSelect(prestador, index){
+			presSelect(prestador, id){
+				console.log(prestador)
+				console.log($("."+id).prop("checked"))
+
 				if ($(".checkFirst").is(":checked") == false ) {
 					this.prestadoresSeleccionados = []
 				}
-				if ($("#"+index).prop("checked")!=true ) {
+				if ($("."+id).prop("checked")!=true ) {
 					for (let i = 0; i < this.prestadoresSeleccionados.length; i++) {
 						if (this.prestadoresSeleccionados[i] == prestador ) {
 							this.prestadoresSeleccionados.splice(i, 1)
 							break
 						}
 					}
+					console.log('entry here')
 				}
 				else{
 					let select = prestador
@@ -587,7 +608,7 @@
 		margin-top: 10px;
 	}
 	.maxHeight{
-		max-height: 90px;
+		max-height: 150px;
 	}
 	.maxHeightEdit{
 		max-height: 150px;
@@ -663,7 +684,7 @@
 	.inputs{
 		border:none !important;
 		border-radius:0px !important;
-		border-bottom:2px solid #102229 !important;
+		border-bottom:2px solid azure !important;
 		background-color:transparent !important;
 		color:#fff !important;
 		font-family: 'Raleway', sans-serif;
@@ -775,5 +796,86 @@
 	}
 	canvas{
 		color:red;
+	}
+	.box{
+    	position:fixed;
+		top:90%;
+		right:2%;
+    	transform : translate(-50% ,-50%);
+  	}
+	.createService:link,
+	.createService:visited{
+		text-decoration: none;
+		text-transform:uppercase;
+		position:relative;
+		top:0;
+		left:0;
+		font-size: 1.6em;
+		padding:20px 40px;
+		border-radius:100px;
+		display:inline-block;
+		transition: all .6s;
+	}
+
+	.btn-white{
+		padding: 15px;
+		border-radius:10px;
+		background-color:#fff;
+		color: #102229;
+		border:2px solid #102229;
+		font-size: 1em;
+		outline: none !important;
+	}
+	.btn-white:focus{
+		outline: none !important;
+	}
+
+	.createService:hover{
+		box-shadow:0px 10px 10px rgba(0,0,0,0.2);
+		transform : translateY(-3px);
+	}
+
+	.createService:active{
+		box-shadow:0px 5px 10px rgba(0,0,0,0.2);
+		transform:translateY(-1px);
+	}
+
+	.btn-bottom-animation-1{
+		animation:comeFromBottom 2s ease-out .8s;
+	}
+
+	.createService::after{
+		content:"";
+		text-decoration: none;
+		text-transform:uppercase;
+		position:absolute;
+		width:100%;
+		height:100%;
+		top:0;
+		left:0;
+		border-radius:10px;
+		display:inline-block;
+		z-index:-1;
+		transition: all .5s;
+	}
+
+	.btn-white::after {
+		background:#102229;
+	}
+
+	.btn-animation-1:hover::after {
+		transform: scaleX(1.6) scaleY(1.8);
+		opacity: 0;
+	}
+
+	@keyframes comeFromBottom{
+		0%{
+		opacity:0;
+		transform:translateY(40px);
+		} 
+		100%{
+		opacity:1;
+		transform:translateY(0);
+		}
 	}
 </style>
