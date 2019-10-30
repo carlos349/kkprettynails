@@ -11,6 +11,16 @@ const clienteSchema = new Schema ({
   participacion: {
     type: Number
   },
+  recomendacion: {
+    type: String
+  },
+  recomendaciones: {
+    type: Number
+  },
+  ultimaFecha: {
+    type: Date, 
+    default: Date.now
+  },
   fecha: {
     type: Date,
 		default: Date.now

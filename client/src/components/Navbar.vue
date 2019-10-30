@@ -95,6 +95,18 @@
 						</div>
 				</router-link>
 			</div>
+			<div id="Clientes" v-on:click="marcarNav('Clientes')" v-if="auth=='loggedin-admin'" class="col-sm-12">
+				
+				<router-link  class=" text-white" to="/clientes">
+						<div class="listaMenu row p-3">
+							<div class="col-sm-1">
+								<font-awesome-icon class="icone" icon="address-book" />
+							</div>
+							<div class=" menuText pl-4 col-sm-10 ">
+								<span class="nonHover">Clientes</span> </div>
+						</div>
+				</router-link>
+			</div>
 			<div id="Inventario" v-on:click="marcarNav('Inventario')" v-if="auth=='loggedin-admin'" class="col-sm-12">
 				
 				<router-link  class=" text-white" to="/inventario">

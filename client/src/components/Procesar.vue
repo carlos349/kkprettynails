@@ -121,17 +121,27 @@
 		        
 		      </div>
 		      <div class="modal-body">
-		        <form v-on:submit.prevent="ingresoCliente">
-							<div class="form-group">
-								<label for="nombre">Nombre cliente</label>
-								<input type="text" v-model="nombreCliente" class="form-control inputs" name="nombreCliente" placeholder="Nombre del cliente"  requerid>
-							</div>
-							<div class="form-group">
-								<label for="identidad">Instagram o Correo del cliente</label>
-								<input type="text" v-model="instagramCliente" class="form-control inputs verificacion" name="identidadCliente" placeholder="Instagram o Correo del cliente" requerid>
-							</div>
-							<button class="btn btn-lg procesar btn-block" type="submit">Ingresar Cliente</button>
-		        </form>
+				  <form v-on:submit.prevent="ingresoCliente">
+					<div class="form-group">
+						<label for="name">Nombre del cliente</label>
+						<input v-model="nombreClienteRegister" type="text" class="form-control inputs" placeholder="Nombre del prestador">
+					</div>
+					<div class="form-group">
+						<label for="identidad">Instagram o Correo del cliente</label>
+						<input v-model="instagramCliente" type="text" class="form-control inputs" placeholder="registre instagram o correo">
+					</div>
+                    <div class="form-group">
+                        <label for="recomendacion">Registre recomendador</label>
+                        <autocomplete	
+                            :search="searchClient"
+                            placeholder="Buscar cliente"
+                            aria-label="Buscar cliente"
+                            @submit="handleSubmitClient"
+                            class="auto">
+                        </autocomplete>
+                    </div>
+					<button class="btn w-100 add">Agregar cliente</button>
+				</form>
 		      </div>
 		    </div>
 
@@ -279,7 +289,7 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 			arrayUsers(){
 				setTimeout(() => {
 					for (let index = 0; index < this.clients.length; index++) {
-						this.arregloClients.push(this.clients[index].nombre+' - '+this.clients[index].identidad)
+						this.arregloClients.push(this.clients[index].nombre+'-'+this.clients[index].identidad)
 					}
 				}, 2000);
 				console.log(this.arregloClients)
@@ -359,37 +369,29 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 				$('#myModal').modal('show')	
 			},
 			ingresoCliente() {
-				axios.post('ventas/ingresocliente', {
-					nombre: this.nombreCliente,
-					identidad: this.instagramCliente
+				axios.post('clients', {
+					nombre:this.nombreClienteRegister,
+					identidad:this.instagramCliente,
+					recomendador:this.nombreCliente
 				})
 				.then(res => {
-					if(res.data.status === 'Registrado'){
+					if (res.data.status == 'Registrado') {
 						this.$swal({
-						  type: 'success',
-						  title: 'Cliente registrado',
-						  showConfirmButton: false,
-						  timer: 1500
-						})
-						$('#myModal').modal('hide')
-						$('#button-addon1').addClass('bg-success')
-						$('.manicuristaFocus').focus()
-						this.clients = []
-						this.arregloClients = []
-						this.getManicuristas();
-						this.arrayUsers();
-					}else{
-						$('.verificacion').addClass('border border-danger')
-					}
-				})
-				.catch(err => {
-						this.$swal({
-							type: 'error',
-							title: 'experimentamos problemas :(',
+							type: 'success',
+							title: 'Cliente registrado',
 							showConfirmButton: false,
 							timer: 1500
 						})
-					})
+						$('#myModal').modal('hide')
+					}else{
+						this.$swal({
+							type: 'error',
+							title: 'El cliente ya existe',
+							showConfirmButton: false,
+							timer: 1500
+						})
+					}
+				})
 			},
 			elegirManicurista(){
 				axios.get('manicuristas/justone/' + this.maniSelect)

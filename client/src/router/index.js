@@ -15,6 +15,7 @@ import Citas from '@/components/Citas'
 import reporteCierre from '@/components/reporteCierre'
 import reportePrestador from '@/components/reportePrestador'
 import Caja from '@/components/Caja'
+import Clientes from '@/components/Clientes'
 
 Vue.use(Router)
 
@@ -64,6 +65,11 @@ export default new Router({
       path: '/gastos',
       name: 'Gastos',
       component: Gastos
+    },
+    {
+      path: '/clientes',
+      name: 'Clientes',
+      component: Clientes
     },
     {
       path: '/servicios',
