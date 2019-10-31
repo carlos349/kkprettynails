@@ -239,6 +239,7 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 				'Content-type': 'application/json'
 			},
 			nombreCliente: '',
+			nombreClienteRegister:'',
 			instagramCliente: '',
 			precio: '0',
 			fechaVenta:'fecha',

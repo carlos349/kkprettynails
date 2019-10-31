@@ -839,6 +839,9 @@ ventas.post('/verificacioncliente', (req, res) => {
 })
 
 ventas.post('/procesar', (req, res) => {
+  let clientEdit = req.body.cliente
+  const finalClient = clientEdit.split("-")
+  console.log(finalClient[0])
   let today = ''
   if (req.body.fecha == 'fecha') {
     today = new Date()
@@ -874,16 +877,24 @@ ventas.post('/procesar', (req, res) => {
       $inc: {comision:ventas.comision}
     })
     .then(comision => {
-      Cliente.updateOne({nombre: ventas.cliente},{
+      Cliente.updateOne({identidad: finalClient[1]},{
         $inc: {participacion: 1}
       })
       .then(participacion => {
-        VentaDia.create(venta)
-        .then(venta => {
-          res.json({status: 'Venta registrada'})
+        Cliente.updateOne({identidad: finalClient[1]},{
+          $set: {ultimaFecha: today}
+        })
+        .then(lasDate => {
+          VentaDia.create(venta)
+          .then(venta => {
+            res.json({status: 'Venta registrada'})
+          })
+          .catch(err => {
+            res.send('Error:' + err)
+          })
         })
         .catch(err => {
-          res.send('Error:' + err)
+          res.send(err)
         })
       })
       .catch(err => {

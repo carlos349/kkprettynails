@@ -25,7 +25,7 @@
 								<th>
 									Recomendación
 								</th>
-                                <th>
+                                <th class="text-center">
                                     Recomendaciones
                                 </th>
                                 <th>
@@ -50,7 +50,7 @@
 									<td class="font-weight-bold">
 										{{client.recomendacion}}
 									</td>
-                                    <td class="font-weight-bold">
+                                    <td class="font-weight-bold text-center">
 										{{client.recomendaciones}}
 									</td>
                                     <td class="font-weight-bold">
@@ -68,6 +68,41 @@
 							</tbody>
 						</table>
 					</div>
+				</div>
+			</div>
+			<div class="col-md-4" style="margin-top:20px;">
+				<div class="shadow">
+					<table  class="table table-dark" style="color:#fff !important" >
+						<thead>
+							<tr>
+								<th>
+									Cliente
+								</th>
+								<th class="text-right">
+									Atenciones
+								</th>				
+							</tr>
+						</thead>
+					</table>
+					<div class="ListaPrestadorTwo">
+						<table class="table table-light table-borderless table-striped">
+							<tbody>
+								<tr v-for="client in clients" v-bind:key="client._id">
+									<td class="font-weight-bold">
+										{{client.nombre}}
+									</td>
+									<td class="font-weight-bold text-right">
+										{{client.participacion}}
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-8 chart">
+				<div class="small">
+					<line-chart v-if="loaded" :chartdata="chartdata" :options="options" :styles="myStyles"/>
 				</div>
 			</div>
         </div>
@@ -118,7 +153,12 @@ import axios from 'axios'
 import jwtDecode from 'jwt-decode'
 import router from '../router'
 import Autocomplete from '@trevoreyre/autocomplete-vue'
+import LineChart from '../plugins/LineChart.js'
+
 export default {
+	components: {
+		LineChart
+	},
     data(){
         return {
             clients: [],
@@ -127,7 +167,14 @@ export default {
             identidadCliente: '',
             fechaCliente:'',
             arregloClients: [],
-            recomendador:''
+			recomendador:'',
+			loaded: false,
+			chartdata: null,
+			height:360,
+			options: {
+				responsive: true,
+				maintainAspectRatio: false
+			},
         }
     },
     beforeCreate() {
@@ -155,7 +202,8 @@ export default {
     },
     created(){
         this.getClients();
-        this.arrayUsers();
+		this.arrayUsers();
+		this.ServicesQuantityChartFunc();
     },
     methods: {
         getClients(){
@@ -184,7 +232,20 @@ export default {
         handleSubmitClientOnClient(result){
             console.log(result)
             this.recomendador = result
-        },
+		},
+		ServicesQuantityChartFunc(){
+			this.loaded = false
+			axios.get('/clients/getTopTenBestClients')
+			.then(res => {	
+				console.log(res.data)
+				const userlist = res.data
+				this.chartdata = userlist
+				this.loaded = true
+			})
+			.catch(err => {
+				console.error(err)
+			})
+		},
         registroCliente(){
             axios.post('clients', {
                 nombre:this.nombreCliente,
@@ -200,7 +261,8 @@ export default {
                         timer: 1500
                     })
                     this.getClients();
-                    this.arrayUsers();
+					this.arrayUsers();
+					this.ServicesQuantityChartFunc();
                     $('#ModalCreateClient').modal('hide')
                 }else{
                     this.$swal({
@@ -219,7 +281,15 @@ export default {
             let dateFormat = new Date(date)
             return dateFormat.getDate()+"-"+(dateFormat.getMonth() + 1)+"-"+dateFormat.getFullYear()+" "+" ("+ dateFormat.getHours()+":"+ dateFormat.getMinutes()+")"
         }
-    }
+	},
+	computed: {
+		myStyles () {
+			return {
+				height: `${this.height}px`,
+				position: 'relative'
+			}
+		}
+	}
 }
 </script>
 <style>
@@ -251,11 +321,41 @@ export default {
 		table-layout: fixed;
 		color:#102229 !important
 	}
+	.ListaPrestador{
+		overflow-x: hidden;
+		overflow-y:scroll;
+		max-height: 300px;
+		height:auto;
+		border-radius:5px;
+	}
+	.ListaPrestador::-webkit-scrollbar {
+		width: 8px;     /* Tamaño del scroll en vertical */
+		height: 8px;    /* Tamaño del scroll en horizontal */
+		display: none;  /* Ocultar scroll */
+	}
+	.ListaPrestadorTwo{
+		overflow-x: hidden;
+		overflow-y:scroll;
+		max-height: 280px;
+		height:auto;
+		border-radius:5px;
+	}
+	.ListaPrestadorTwo::-webkit-scrollbar {
+		width: 8px;     /* Tamaño del scroll en vertical */
+		height: 8px;    /* Tamaño del scroll en horizontal */
+		display: none;  /* Ocultar scroll */
+	}
 	.first{
 		background: #505970;  /* fallback for old browsers */
 	}
 	.second{
 		background: #6A7693;  /* fallback for old browsers */
+	}
+	.small{
+		background-color: #fff;
+		margin-top: 20px;
+		box-shadow: 0 0.46875rem 2.1875rem rgba(4,9,20,0.03), 0 0.9375rem 1.40625rem rgba(4,9,20,0.03), 0 0.25rem 0.53125rem rgba(4,9,20,0.05), 0 0.125rem 0.1875rem rgba(4,9,20,0.03);
+		border-radius: 5px;
 	}
     .box{
     	position:fixed;
