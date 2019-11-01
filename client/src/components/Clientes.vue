@@ -19,7 +19,7 @@
 								<th>
 									Nombre
 								</th>
-								<th>
+								<th style="width:30%;">
 									Instagram / Correo / Teléfono
 								</th>
 								<th>
@@ -34,6 +34,9 @@
                                 <th>
                                     Fecha
                                 </th>
+								<th class="text-center">
+									Editar
+								</th>
 							</tr>
 						</thead>
 					</table>
@@ -44,7 +47,7 @@
 									<td class="font-weight-bold">
 										{{client.nombre}}
 									</td>
-									<td class="font-weight-bold">
+									<td class="font-weight-bold" style="width:30%;">
 										{{client.identidad}}
 									</td>
 									<td class="font-weight-bold">
@@ -59,11 +62,9 @@
                                     <td class="font-weight-bold">
 										{{formatDate(client.fecha)}}
 									</td>
-							<!--    <td class="font-weight-bold text-center">
-										<button style="width:30%;" v-on:click="deletePrestador(manicurista._id)" class=" btn btn-colorsTrash"><font-awesome-icon icon="trash" /></button>
-										<button style="width:30%;" v-on:click="pasarDatosEdit(manicurista.nombre, manicurista.documento, manicurista.porcentaje, manicurista._id)" class=" btn btn-colorsEdit"><font-awesome-icon icon="edit" /></button>
-										<button style="width:30%;" v-on:click="sacarReporte(manicurista._id)" class=" btn btn-colorsPrint"><font-awesome-icon icon="copy" /></button>
-									</td> -->
+							   		<td class="font-weight-bold text-center">
+										<button style="width:30%;" v-on:click="pasarDatosEdit(client.nombre, client.identidad, client._id)" class=" btn btn-colorsEdit"><font-awesome-icon icon="edit" /></button>
+									</td>
 								</tr>
 							</tbody>
 						</table>
@@ -87,12 +88,12 @@
 					<div class="ListaPrestadorTwo">
 						<table class="table table-light table-borderless table-striped">
 							<tbody>
-								<tr v-for="client in clients" v-bind:key="client._id">
+								<tr v-for="clientTwo in clientTwos" v-bind:key="clientTwo._id">
 									<td class="font-weight-bold">
-										{{client.nombre}}
+										{{clientTwo.nombre}}
 									</td>
 									<td class="font-weight-bold text-right">
-										{{client.participacion}}
+										{{clientTwo.participacion}}
 									</td>
 								</tr>
 							</tbody>
@@ -141,6 +142,41 @@
 		    </div>
 		  </div>
 		</div>
+		 <div class="modal fade" id="ModalEditClient" tabindex="-1"  role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		  <div class="modal-dialog modal-dialog-centered"  >
+		    <div class="modal-content" v-bind:style="{ 'background-color': '#29323c'}">
+		      <div class="modal-header">
+		        <h5 class="modal-title text-white font-weight-bold" id="exampleModalCenterTitle">Editar cliente</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true" class="text-white">&times;</span>
+		        </button>
+		      </div>
+		      <div  class="modal-body">
+		        <form v-on:submit.prevent="EditarCliente">
+					<div class="form-group">
+						<label for="name">Nombre del cliente</label>
+						<input v-model="nombreClienteEditar" type="text" class="form-control inputs" placeholder="Nombre del prestador">
+					</div>
+					<div class="form-group">
+						<label for="identidad">Instagram o Correo del cliente</label>
+						<input v-model="identidadClienteEditar" type="text" class="form-control inputs" placeholder="registre instagram o correo">
+					</div>
+                    <!-- <div class="form-group">
+                        <label for="recomendacion">Registre recomendador</label>
+                        <autocomplete	
+                            :search="searchClientOnClientEdit"
+                            placeholder="Buscar cliente"
+                            aria-label="Buscar cliente"
+                            @submit="handleSubmitClientOnClientEdit"
+                            class="auto">
+                        </autocomplete>
+                    </div> -->
+					<button class="btn w-100 add">Agregar cliente</button>
+				</form>
+		      </div>
+		    </div>
+		  </div>
+		</div>
         <div class="box">
 			<button class="createService btn-white btn-animation-1" v-on:click="openModalCreateClient">
 				<font-awesome-icon style="font-size: 1.6em;" icon="user-plus" />
@@ -161,13 +197,17 @@ export default {
 	},
     data(){
         return {
-            clients: [],
+			clients: [],
+			clientTwos:[],
             top: '',
             nombreCliente: '',
-            identidadCliente: '',
-            fechaCliente:'',
+			identidadCliente: '',
+			nombreClienteEditar: '',
+			identidadClienteEditar: '',
+			clienteIdEdit: '',
             arregloClients: [],
 			recomendador:'',
+			recomendadorEdit:'',
 			loaded: false,
 			chartdata: null,
 			height:360,
@@ -201,7 +241,8 @@ export default {
         }
     },
     created(){
-        this.getClients();
+		this.getClients();
+		this.getClientsTwo();
 		this.arrayUsers();
 		this.ServicesQuantityChartFunc();
     },
@@ -209,10 +250,16 @@ export default {
         getClients(){
             axios.get('clients')
             .then(res => {
+				console.log(res.data)
                 this.clients = res.data
+            })
+		},
+		getClientsTwo(){
+            axios.get('clients/bestClient')
+            .then(res => {
+                this.clientTwos = res.data
                 this.top = res.data[0].nombre
             })
-            
         },
         arrayUsers(){
             setTimeout(() => {
@@ -232,6 +279,43 @@ export default {
         handleSubmitClientOnClient(result){
             console.log(result)
             this.recomendador = result
+		},
+		// searchClientOnClientEdit(){
+		// 	if (input.length < 1) { return [] }
+        //         return this.arregloClients.filter(manicurista => {
+        //             return manicurista.toLowerCase()
+        //             .startsWith(input.toLowerCase())
+        //     })
+		// },
+		// handleSubmitClientOnClientEdit(){
+        //     this.recomendadorEdit = result
+		// },
+		pasarDatosEdit(nombre, identidad, _id){
+			this.nombreClienteEditar = nombre
+			this.identidadClienteEditar = identidad
+			this.clienteIdEdit = _id
+			$('#ModalEditClient').modal('show')
+		},
+		EditarCliente(){
+			axios.put('clients/'+this.clienteIdEdit, {
+				nombreClienteEditar: this.nombreClienteEditar,
+				identidadClienteEditar: this.identidadClienteEditar
+			})
+			.then(res => {
+				console.log(res)
+				if (res.data.status == 'Servicio actualizado') {
+					this.$swal({
+                        type: 'success',
+                        title: 'Cliente registrado',
+                        showConfirmButton: false,
+                        timer: 1500
+					})
+					this.getClients();
+					this.arrayUsers();
+					this.ServicesQuantityChartFunc();
+                    $('#ModalEditClient').modal('hide')
+				}
+			})
 		},
 		ServicesQuantityChartFunc(){
 			this.loaded = false
@@ -259,10 +343,15 @@ export default {
                         title: 'Cliente registrado',
                         showConfirmButton: false,
                         timer: 1500
-                    })
+					})
+					this.arregloClients = []
                     this.getClients();
 					this.arrayUsers();
 					this.ServicesQuantityChartFunc();
+					this.nombreCliente = ''
+					this.identidadCliente = ''
+					this.recomendador = ''
+					$('.autocomplete-input').val('')
                     $('#ModalCreateClient').modal('hide')
                 }else{
                     this.$swal({
@@ -314,6 +403,10 @@ export default {
 	}
 	.sectionMetricsPrestador{
 		margin-left: 8%;
+	}
+	.btn-colorsEdit{
+		background-color:#495057;
+		color:#fff;
 	}
 	table{
 		border:none !important;

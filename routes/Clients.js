@@ -6,6 +6,11 @@ const Cliente = require('../models/Cliente')
 clients.use(cors())
 
 clients.get('/', async (req, res) => {
+    const Clients = await Cliente.find().sort({ultimaFecha: -1})
+    res.json(Clients)
+})
+
+clients.get('/bestClient', async (req, res) => {
     const Clients = await Cliente.find().sort({participacion: -1})
     res.json(Clients)
 })
@@ -58,6 +63,22 @@ clients.post('/', (req, res) => {
     })
     .catch(err => {
         res.send(err)
+    })
+})
+
+clients.put('/:id', (req, res) => {
+    
+    Cliente.findByIdAndUpdate(req.params.id, {
+      $set: {
+        nombre:req.body.nombreClienteEditar,
+        identidad:req.body.identidadClienteEditar
+      }
+    })
+    .then(servicio => {
+      res.json({status: 'Servicio actualizado'})
+    })
+    .catch(err => {
+      res.send('error: ' + err)
     })
 })
 
