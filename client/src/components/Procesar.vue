@@ -715,7 +715,7 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 	}
 	.tableBg{
 		border:none !important;
-		background-color:#3a3a3a !important;
+		background-color:#001514 !important;
 		margin-bottom:0 !important;
 	}
 	.contenedor{

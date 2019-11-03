@@ -1016,7 +1016,7 @@
   }
   
   .autocomplete-input{
-    color: black
+    color: black !important;
   }
   .clientB{
     background-color:#fff;

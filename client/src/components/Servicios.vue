@@ -155,11 +155,11 @@
 		</div>
 		<div class="modal fade" id="ModalCreateService" tabindex="-1"  role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered"  >
-		    <div class="modal-content" v-bind:style="{ 'background-color': '#29323c'}">
-		      <div class="modal-header">
-		        <h5 class="modal-title text-white font-weight-bold" id="exampleModalCenterTitle">Registro servicio</h5>
-		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-		          <span aria-hidden="true" class="text-white">&times;</span>
+		    <div class="modal-content p-3" v-bind:style="{ 'background-color': '#ffffff'}">
+		      <div class="modal-header" v-bind:style="{ 'background-color': '#001514'}">
+		        <h3 class="modal-title font-weight-bold text-white" id="exampleModalCenterTitle">Registro de servicio</h3>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close" >
+		          <span aria-hidden="true" class="text-white" v-bind:style="{ 'font-size': '1.5em'}">&times;</span>
 		        </button>
 		      </div>
 		      <div  class="modal-body">
@@ -177,15 +177,15 @@
 							<input v-model="precioServi" type="text" class="form-control inputs" placeholder="Precio">
 						</div>
 						<div class="form-group row" style="margin-top:-15px;">
-							<input type="text" id="myInputServ" v-on:keyup="myFunctionServ()" class="form-control buscar inputs" placeholder="Seleccione prestadores"/>
+							<input type="text" id="myInputServ" v-on:keyup="myFunctionServ()" class="form-control buscar inputs mb-1" placeholder="Seleccione prestadores"/>
 							<div class="ListaProcesar maxHeight">
 								<table class="table table-dark tableBg" id="myTableServ">
 									<tbody>
 										<tr v-for="(manicurista, index) of manicuristas" >
-											<td class="font-weight-bold text-white">
+											<td class="text-white">
 												{{manicurista.nombre}}
 											</td>
-											<td class="font-weight-bold text-right">
+											<td class="text-right">
 												<label class="conCheck col-sm-2">
 												<input :class="manicurista._id" class="checkFirst" v-on:click="presSelect(manicurista.documento,manicurista._id)" type="checkbox">
 												<span class="checkmark"></span>
@@ -684,13 +684,13 @@
 	.inputs{
 		border:none !important;
 		border-radius:0px !important;
-		border-bottom:2px solid azure !important;
+		border-bottom:2px solid #001514 !important;
 		background-color:transparent !important;
-		color:#fff !important;
-		font-family: 'Raleway', sans-serif;
+		color:#001514 !important;
+		font-family: 'Roboto', sans-serif !important;
 	}
 	label{
-		color:#fff
+		color:#001514;
 	}
 	.selectMani{
 		background-color:#355461 !important;
@@ -699,15 +699,18 @@
 		border-bottom:2px solid #102229 !important;
 	}
 	.add{
-		background-color:#ccc;
-		color: #102229;
+		background-color:#001514;
+		color: azure;
 		transition: all 0.5s ease-out;
-		font-family: 'Raleway', sans-serif;
+		font-family: 'Roboto', sans-serif !important;
 		font-weight:600;
+		font-size: 1.2em;
+		letter-spacing: 1px;
+		border-radius:5px;
 	}
 	.add:hover{
-		background-color:#102229;
-		color:#ccc;
+		background-color:#ccc;
+		color:#001514;
 	}
 	.conCheck {
 		display: inline-block;
