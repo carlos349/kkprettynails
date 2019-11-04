@@ -5,7 +5,7 @@
 			<div class="col-md-12">
 				<div class="input-group mb-3">
 					<div class="input-group-prepend w-25">
-					<button class="btn add w-100" v-on:click="verificacionCliente" id="button-addon1">Ingresar cliente</button>
+					<button class="btn addProc w-100" v-on:click="verificacionCliente" id="button-addon1">Ingresar cliente</button>
 					</div>
 					<autocomplete	
 						:search="searchClient"
@@ -17,7 +17,7 @@
 				</div>
 				<div class="input-group input-group-lg mb-2 ">
 				  <div class="input-group-prepend w-25 text-center">
-				    <span class="spanInputs w-100 font-weight-bold text-white input-group-text text-center" id="inputGroup-sizing-lg">Manicurista</span>
+				    <span  class="spanInputs w-100 font-weight-bold  input-group-text text-center" id="inputGroup-sizing-lg">Manicurista</span>
 				  </div>
 					<autocomplete	
 						:search="search"
@@ -31,7 +31,7 @@
 					<input type="text" id="myInput" v-on:keyup="myFunction()" class="form-control buscar inputs" placeholder="Filtrar servicios"/>
 					<font-awesome-icon class="lupa" icon="search"/>
 				</div>
-				<table class="table table-dark tableBg" >
+				<table class="table table-dark" v-bind:style="{ 'background-color': '#1F5673'}" >
 					<thead>
 						<tr>
 							<th class="text-left pl-4 text-white">
@@ -44,7 +44,7 @@
 					</thead>
 				</table>
 				<div class="ListaProcesar">
-					<table class="table table-dark tableBg" id="myTable">
+					<table class="table  tableBg" id="myTable">
 						<tbody>
 							<tr v-for="(servicio, index) of servicios" >
 								<td v-if="servicio.active" class="font-weight-bold">
@@ -62,7 +62,7 @@
 									</button>
 
 								</td>
-								<td v-if="servicio.active" class=" font-weight-bold text-white text-left">
+								<td v-if="servicio.active" class=" font-weight-bold  text-center">
 									{{servicio.precio}}
 								</td>
 							</tr>
@@ -86,7 +86,7 @@
 				  <div class="input-group-prepend w-25 text-center">
 				    <span class="spanInputs w-100 font-weight-bold text-white input-group-text text-center" id="inputGroup-sizing-lg">Medio de pago</span>
 				  </div>
-					<select class="form-control selectMani" v-model="pagoTipo" v-on:change="elegirManicurista()">
+					<select class="form-control selectPago" v-model="pagoTipo" v-on:change="elegirManicurista()">
 						<option value="">Seleccione</option>
 						<option value="tarjeta" >Tarjeta</option>
 						<option value="efectivo">Efectivo</option>
@@ -102,7 +102,7 @@
 					<div class="input-group-prepend">
 						<button class="btn plusBtns" v-on:click="borrarServicios()" id="button-addon2"><font-awesome-icon icon="trash"/></button>
 					</div>
-					<input v-model="fechaVenta" type="date" class="form-control">
+					
 				</div>
 				<button v-if="!inspector" type="button" class="font-weight-bold mb-3 btn procesar w-100" v-on:click="procesar" disabled>Procesar
 				</button>
@@ -649,23 +649,23 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 	.inputs{
 		border:none !important;
 		border-radius:0px !important;
-		border-bottom:2px solid azure !important;
+		border-bottom:2px solid #1F5673 !important;
 		background-color:transparent !important;
-		color:#fff !important;
+		color:black !important;
 		font-family: 'Roboto', sans-serif !important;
 		letter-spacing: .09em;
 	}
 	.spanInputs{
 		border:none !important;
-		border-right: 2px solid #102229 !important;
-		border-left: 2px solid #102229 !important;
-		border-bottom: 2px solid #102229 !important;
+		border-right: 2px solid #1F5673 !important;
+		border-left: 2px solid #1F5673 !important;
+		border-bottom: 2px solid #1F5673 !important;
 		border-radius: 0px !important;
 		background-color:transparent !important;
 		font-size: 0.9em !important;
 		font-family: 'Raleway', sans-serif;
 		font-weight:600;
-		color:#fff !important
+		color:black !important
 	}
 	@media (max-width: 1000px) {
 		.spanInputs{
@@ -681,7 +681,7 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 		}
 	}
 	.plusBtns{
-		background-color:#102229;
+		background-color:#1F5673;
 		border-radius:5px !important;
 		color:#fff;
 		outline:none !important;
@@ -709,29 +709,33 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 		color:azure;
 	}
 	.procesar:hover{
-		color:#102229;
-		background-color:#fff;
+		color:white;
+		background-color:#1F5673;
 		transition: all 0.5s ease-out;
 	}
 	.tableBg{
-		border:none !important;
-		background-color:#001514 !important;
-		margin-bottom:0 !important;
+		
+		background-color:transparent !important;
+		
+	}
+	.tableBg tbody tr{
+		border-radius: 5px;
+		margin-bottom:1% !important;
 	}
 	.contenedor{
 		width:40%;
-		border:2px solid #ccc;
+		border:2px solid #1F5673;
 		padding-top:12px;
 		background-color: transparent;
-		min-width: 700px;
+		min-width: 100%;
 	}
 	.btn-back{
 		background-color:black;
 		color:#fff;
 		cursor:pointer;
 	}
-	.selectMani{
-		background-color:#3a3a3a !important;
+	.selectPago{
+		background-color:#1F5673 !important;
 		color:#fff !important;
 		border:none !important;
 		border-bottom:2px solid #102229 !important;
@@ -750,14 +754,14 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 	label{
 		color: azure;
 	}
-	.add{
-		background-color:#ccc;
-		color: #102229;
+	.addProc{
+		background-color:#28a745;
+		color: #fff;
 		transition: all 0.5s ease-out;
 		font-family: 'Raleway', sans-serif;
 		font-weight:600;
 	}
-	.add:hover{
+	.addProc:hover{
 		background-color:#102229;
 		color:#ccc;
 	}
@@ -783,16 +787,17 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 	}
 	.lupa{
 		position:absolute;
-		right:10%;
-		top:18%;
+		right:8%;
+		top:18.5%;
 		font-size:1.4em
 	}
 	.icon-add{
 		position:absolute;
 		right:3%;
-		top:17%;
+		top:17.5%;
 		font-size:2.3em;
 		cursor: pointer;
+		color: #102230
 	}	
 	.buscar::-webkit-input-placeholder {
 		color: #cccccc;
@@ -816,6 +821,7 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 		border-bottom:2px solid #102229 !important;
 		border-radius: 0px;
 		width: 100% !important;
+		color: black !important;
 	}
 	.conCheck {
 		display: inline-block;

@@ -18,7 +18,7 @@
 			<div class="col-md-12 ">
 				<div class="shadow">
 					
-				<table  class="table table-dark" style="color:#fff !important" >
+				<table  class="table " style="color:#fff !important; background-color: #1F5673" >
 					<thead>
 						<tr>
 							 <th>
@@ -58,9 +58,9 @@
 									{{servicio.prestadores.length}}
 								</td>
 								<td class="font-weight-bold text-center">
-									<button style="width:40%;" v-on:click="desactivarServicio(servicio._id)" v-if="servicio.active" class=" btn btn-active">Activo</button>
+									<button style="width:40%;" v-on:click="desactivarServicio(servicio._id)" v-if="servicio.active" class=" btn btn-success">Activo</button>
 									<button style="width:40%;" v-on:click="desactivarServicio(servicio._id)" v-if="!servicio.active" class=" btn btn-inactive">Inactivo</button>
-									<button style="width:40%;" v-on:click="pasarDatosEdit(servicio.nombre, servicio.tiempo, servicio.precio, servicio.prestadores, servicio._id)" class="btn btn-colorsEdit"><font-awesome-icon icon="edit" /></button>
+									<button style="width:40%;" v-on:click="pasarDatosEdit(servicio.nombre, servicio.tiempo, servicio.precio, servicio.prestadores, servicio._id)" class="btn add"><font-awesome-icon icon="edit" /></button>
 								</td>
 							</tr>
 						</tbody>
@@ -69,8 +69,13 @@
 				</div>
 			</div>
 			<div class="col-md-4" style="margin-top:20px;">
+				<div class="box">
+					<button class="createService btn-white btn-animation-1" v-on:click="openModalCreateServices">
+						 Crear servicio
+					</button>
+				</div>
 				<div class="shadow">
-					<table  class="table table-dark" style="color:#fff !important" >
+					<table  class="table" style="color:#fff !important; background-color: #1F5673" >
 						<thead>
 							<tr>
 								<th>
@@ -115,20 +120,20 @@
 		      </div>
 		      <div  class="modal-body">
 		        <form v-on:submit.prevent="actualizacionServicios">
-					<div class="form-group">
+					<div class="form-group row">
 						<label for="nombre">Nombre del servicio</label>
 						<input type="text" v-model="nombreServicio" class="form-control inputs" name="nombreServicio" placeholder="Nombre del servicio" >
 					</div>
-					<div class="form-group">
+					<div class="form-group row">
 						<label for="nombre">Tiempo</label>
 						<input v-model="tiempoServicio" v-on:keypress="maxCountEdit" type="number" min="1" max="3" class="form-control inputs" name="nombreServicio" placeholder="0 min" >
 					</div>
-					<div class="form-group">
+					<div class="form-group row">
 						<label for="nombre">Precio del servicio</label>
 						<input type="text" v-model="precioServicio" class="form-control inputs" name="nombreServicio" placeholder="Precio del servicio" >
 					</div>
 					<div class="form-group row" style="margin-top:-15px;">
-						<input type="text" id="myInputServEdit" v-on:keyup="myFunctionServEdit()" class="form-control buscar inputs" placeholder="Seleccione prestadores"/>
+						<input type="text" id="myInputServEdit" v-on:keyup="myFunctionServEdit()" class="form-control buscar inputs" placeholder="Buscar prestadores"/>
 						<div class="ListaProcesar maxHeightEdit">
 							<table class="table table-dark tableBg" id="myTableServEdit">
 								<tbody>
@@ -156,7 +161,7 @@
 		<div class="modal fade" id="ModalCreateService" tabindex="-1"  role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered"  >
 		    <div class="modal-content p-3" v-bind:style="{ 'background-color': '#ffffff'}">
-		      <div class="modal-header" v-bind:style="{ 'background-color': '#001514'}">
+		      <div class="modal-header" v-bind:style="{ 'background-color': '#1F5673'}">
 		        <h3 class="modal-title font-weight-bold text-white" id="exampleModalCenterTitle">Registro de servicio</h3>
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close" >
 		          <span aria-hidden="true" class="text-white" v-bind:style="{ 'font-size': '1.5em'}">&times;</span>
@@ -164,25 +169,27 @@
 		      </div>
 		      <div  class="modal-body">
 		        <form v-on:submit.prevent="registroServicio">
-						<div class="form-group">
+						<div class="form-group row">
 							<label for="name">Nombre del servicio</label>
 							<input v-model="nombreServi" type="text" class="form-control inputs" placeholder="Nombre servicio">
 						</div>
-						<div class="form-group">
+						<div class="form-group row">
 							<label for="name">Tiempo</label>
 							<input v-model="tiempoServi" v-on:keypress="maxCount" type="number" min="1" max="3" class="form-control inputs" placeholder="0 Horas">
 						</div>
-						<div class="form-group">
+						<div class="form-group row">
 							<label for="name">Precio</label>
 							<input v-model="precioServi" type="text" class="form-control inputs" placeholder="Precio">
 						</div>
 						<div class="form-group row" style="margin-top:-15px;">
-							<input type="text" id="myInputServ" v-on:keyup="myFunctionServ()" class="form-control buscar inputs mb-1" placeholder="Seleccione prestadores"/>
+							<div class="w-100">
+							<input type="text" id="myInputServ" v-on:keyup="myFunctionServ()" class="form-control buscar inputs mb-1 w-100" placeholder="Buscar prestadores"/>
+							<font-awesome-icon class="lupa-modal" icon="search"/></div>
 							<div class="ListaProcesar maxHeight">
-								<table class="table table-dark tableBg" id="myTableServ">
+								<table class="table table-light table-borderless table-striped" id="myTableServ">
 									<tbody>
-										<tr v-for="(manicurista, index) of manicuristas" >
-											<td class="text-white">
+										<tr  v-for="(manicurista, index) of manicuristas" >
+											<td class="text-black">
 												{{manicurista.nombre}}
 											</td>
 											<td class="text-right">
@@ -202,11 +209,7 @@
 		    </div>
 		  </div>
 		</div>
-		<div class="box">
-			<button class="createService btn-white btn-animation-1" v-on:click="openModalCreateServices">
-				<font-awesome-icon style="font-size: 1.6em;" icon="plus" />
-			</button>
-		</div>
+		
 	</div>
 </template>
 
@@ -668,13 +671,13 @@
 		color:#fff;
 	}
 	.btn-inactive{
-		background-color: #343a40;
+		background-color: #FC7753;
 		color:#fff;
 	}
 	.btn-active{
-		background-color: #fff;
-		color:#343a40;
-		border: 1px solid #343a40;
+		background-color: #18FF6D;
+		color:#495057;
+		
 	}
 	.ListaTwo::-webkit-scrollbar {
 		width: 8px;     /* Tamaño del scroll en vertical */
@@ -699,12 +702,12 @@
 		border-bottom:2px solid #102229 !important;
 	}
 	.add{
-		background-color:#001514;
+		background-color:#1F5673;
 		color: azure;
 		transition: all 0.5s ease-out;
 		font-family: 'Roboto', sans-serif !important;
 		font-weight:600;
-		font-size: 1.2em;
+		
 		letter-spacing: 1px;
 		border-radius:5px;
 	}
@@ -717,7 +720,7 @@
 		margin-left: 5%;
 		position: relative;
 		padding-left: 35px;
-		margin-bottom: 12px;
+		margin-bottom: 20px;
 		cursor: pointer;
 		font-size: 0.8em;
 		-webkit-user-select: none;
@@ -742,12 +745,12 @@
 		left: 0;
 		height: 25px;
 		width: 25px;
-		background-color: #eee;
+		background-color: #1F5673;
 	}
 
 	/* On mouse-over, add a grey background color */
 	.conCheck:hover input ~ .checkmark {
-		background-color: #ccc;
+		background-color: #1F5673;
 	}
 
 	/* When the checkbox is checked, add a blue background */
@@ -780,13 +783,13 @@
 		transform: rotate(45deg);
 	}
 	.first{
-		background:#3b4254; /* fallback for old browsers */
+		background:#1F5673; /* fallback for old browsers */
 	}
 	.second{
-		background:#505970; /* fallback for old browsers */
+		background:rgb(38, 91, 119); /* fallback for old browsers */
 	}
 	.three{
-		background:#616c86;
+		background:rgb(46, 93, 117);
   	}
 	.forms h2{
 		font-family: 'Raleway', sans-serif;
@@ -801,42 +804,27 @@
 		color:red;
 	}
 	.box{
-    	position:fixed;
-		top:90%;
-		right:2%;
-    	transform : translate(-50% ,-50%);
+		
+    	width: 100%;
+    	
   	}
-	.createService:link,
-	.createService:visited{
-		text-decoration: none;
-		text-transform:uppercase;
-		position:relative;
-		top:0;
-		left:0;
-		font-size: 1.6em;
-		padding:20px 40px;
-		border-radius:100px;
-		display:inline-block;
-		transition: all .6s;
-	}
+	
 
 	.btn-white{
-		padding: 15px;
-		border-radius:10px;
-		background-color:#fff;
-		color: #102229;
-		border:2px solid #102229;
-		font-size: 1em;
+		padding: 5px;
+		width: 100%;
+		margin-bottom: 5px;
+		background-color: #28a745;
+		color: #fff;
+		border: none;
+		font-size: 1.3em;
 		outline: none !important;
 	}
 	.btn-white:focus{
 		outline: none !important;
 	}
 
-	.createService:hover{
-		box-shadow:0px 10px 10px rgba(0,0,0,0.2);
-		transform : translateY(-3px);
-	}
+	
 
 	.createService:active{
 		box-shadow:0px 5px 10px rgba(0,0,0,0.2);
@@ -847,20 +835,6 @@
 		animation:comeFromBottom 2s ease-out .8s;
 	}
 
-	.createService::after{
-		content:"";
-		text-decoration: none;
-		text-transform:uppercase;
-		position:absolute;
-		width:100%;
-		height:100%;
-		top:0;
-		left:0;
-		border-radius:10px;
-		display:inline-block;
-		z-index:-1;
-		transition: all .5s;
-	}
 
 	.btn-white::after {
 		background:#102229;
@@ -880,5 +854,11 @@
 		opacity:1;
 		transform:translateY(0);
 		}
+	}
+	.lupa-modal{
+		position:absolute;
+		right:8%;
+		top:51%;
+		font-size:1.4em
 	}
 </style>
