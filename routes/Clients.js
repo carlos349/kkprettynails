@@ -89,7 +89,7 @@ clients.get('/getTopTenBestClients', (req, res) => {
         datasets: [ 
           {
             label: 'Top 10 mejores clientes',
-            backgroundColor: '#29323c',
+            backgroundColor: 'rgba(31, 86, 115, .8)',
             data: []
           }
         ]

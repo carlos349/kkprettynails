@@ -224,12 +224,12 @@ manicurista.get('/GetSalesPerMonth/:prestador', (req, res) => {
     datasets: [ 
       {
         label: monthTwo,
-        backgroundColor: '#6A7693',
+        backgroundColor: 'rgba(31, 86, 115, .8)',
         data: []
       },
       {
         label: month,
-        backgroundColor: '#29323c',
+        backgroundColor: 'rgba(14, 48, 66, .8)',
         data: []
       }
     ]
@@ -279,13 +279,13 @@ manicurista.get('/CompareSalesAndExpenses', (req, res) => {
     datasets: [ 
       {
         label: 'Ventas',
-        backgroundColor: '#6A7693',
+        backgroundColor: 'rgba(31, 86, 115, .8)',
         data: [],
         fontColor: 'red'
       },
       {
         label: 'Gastos',
-        backgroundColor: '#29323c',
+        backgroundColor: 'rgba(14, 48, 66, .8)',
         data: [],
         fontColor: 'red'
       }

@@ -272,7 +272,7 @@ export default {
 		background:#1F5673; /* fallback for old browsers */
 	}
 	.second{
-		background:rgb(38, 91, 119); /* fallback for old browsers */
+		background:rgb(14, 48, 66); /* fallback for old browsers */
 	}
 	.three{
 		background:rgb(46, 93, 117);
