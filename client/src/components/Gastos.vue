@@ -23,8 +23,8 @@
 
 		<div class="row pt-2 pl-5">
 			<div class="col-md-4 mb-3">
-				<div class="forms" v-bind:style="{ 'background-color': '#29323c'}">
-					<h2>Registrar gasto</h2>
+				<div class="forms" >
+					<h2 class="p-3" v-bind:style="{ 'background-color': '#1f5673'}">Registrar gasto</h2>
 					<form v-on:submit.prevent="registerExpense">
 						<div class="form-group">
 							<label for="name">Razón del gasto</label>
@@ -49,7 +49,7 @@
 			</div>
 			<div class="col-12">
 				<div class="shadow">	
-					<table  class="table table-dark" style="color:#fff !important" >
+					<table  class="table" v-bind:style="{ 'background-color': '#1f5673'}" style="color:#fff !important" >
 						<thead>
 							<tr>
 								<th>
@@ -312,11 +312,10 @@
 	.inputs{
 		border:none !important;
 		border-radius:0px !important;
-		border-bottom:2px solid azure !important;
+		border-bottom:2px solid #001514 !important;
 		background-color:transparent !important;
-		color:#fff !important;
+		color:#001514 !important;
 		font-family: 'Roboto', sans-serif !important;
-		letter-spacing: .09em;
 	}
 	.formGastos input{
 		width: 40%;

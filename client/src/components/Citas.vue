@@ -45,10 +45,10 @@
 
     <div class="modal fade genCita bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-xl">
-      <div v-bind:style="{ 'background-image': 'url(' + require('../assets/fondo.jpg') + ')' , 'background-size': 'cover' }" class="modal-content armarCita p-3">
+      <div  class="modal-content armarCita p-3">
         <div style="box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);background-color:rgba(0, 0, 0, 0.5)" class="container p-3">
           <div class="row">
-            <div style="font-size:1.5em;color:azure;" class="col-md-12 text-center p-3">Arma tu cita</div>
+            <div style="font-size:1.5em;color:#011627;" class="col-md-12 text-center p-3">Arma tu cita</div>
             <div style="background-color:rgba(0, 0, 0, 0.4);color:azure;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14)" class="col-md-12 font-weight-bold px-3">
               <div style="margin:auto" class="row text-center">
                 <div class="wOne p-3 mx-auto col-md-3 marc">Servicio</div>
@@ -79,7 +79,7 @@
                   <div v-for="(mani,index) of manicuristas" class="p-3 col-md-12" v-if="mani.documento === manicurista ">
                     
                       <div style="cursor:pointer;" v-on:click="selectManic(mani.nombre,index)" class="fotoMani col-md-12 text-center"><img :id="'mani'+index" class="imgMani" src="../assets/silueta-mujer.jpg" alt=""></div>
-                      <div  class="col-md-12 text-white text-center"> {{mani.nombre}}</div>
+                      <div  class="col-md-12 text-center"> {{mani.nombre}}</div>
                     
                   </div>
                 </div>   
@@ -529,6 +529,7 @@
         else{
           
           $(".Sig").prop("disabled", true)
+          $(".Sig").removeClass("marcar")
           $("#redo").hide()
           $(".processOne").hide()
           $(".processTwo").show()
@@ -844,14 +845,14 @@
     font-weight: 300 !important;
   }
   .marc{
-    background-color: #011627;
+    background-color: #1F5673;
     border:solid 1px azure;
     border-radius: 5px;
     color: azure;
     box-shadow: 0 2px 5px 0 rgba(0,0,0,.14)
   }
   .servPretty{
-    background-color: #3f51b5;
+    background-color: #1F5673;
     color:#fff;
     cursor: pointer;
     box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);

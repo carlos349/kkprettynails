@@ -2,8 +2,8 @@
 	<div class="container-fluid">
 		<div class="col-12 row pt-5">
 			<div class="col-md-4">
-				<div class="forms" v-bind:style="{ 'background-color': '#29323c'}">
-					<h2>Registrar producto</h2>
+				<div class="forms">
+					<h2 class="p-3" v-bind:style="{ 'background-color': '#1f5673'}">Registrar producto</h2>
 					<form v-on:submit.prevent="addProduct">
 						<div class="form-group">
 							<label for="name">Nombre del producto</label>
@@ -25,13 +25,17 @@
 							<label for="name">Monto</label>
 							<input v-model="amount" type="text" class="form-control inputs" placeholder="Precio">
 						</div>
-						<div class="form-group row" style="margin-top:-15px;">
-							<input type="text" id="myInputInvent" v-on:keyup="myFunctionInvent()" class="form-control buscar inputs" placeholder="Seleccione servicios"/>
+						<div class="form-group" style="margin-top:-15px;">
+							<div>
+								<input type="text" id="myInputInvent" v-on:keyup="myFunctionInvent()" class="form-control buscar inputs" placeholder="Buscar servicios"/>
+							<font-awesome-icon class="lupa-modal" icon="search"/>
+							</div>
+							
 							<div class="ListaProcesar maxHeightInvent">
 								<table class="table table-dark tableBg" id="myTableInvent">
 									<tbody>
 										<tr v-for="(servicio, index) of servicios" >
-											<td class="font-weight-bold text-white">
+											<td class="font-weight-bold">
 												{{servicio.nombre}}
 											</td>
 											<td class="font-weight-bold text-right">
@@ -51,7 +55,7 @@
 			</div>
 			<div class="col-md-8">
 				<div class="shadow">	
-					<table  class="table table-dark" style="color:#fff !important" >
+					<table  class="table" style="color:#fff !important" v-bind:style="{ 'background-color': '#1f5673'}" >
 						<thead>
 							<tr>
 								<th>
@@ -451,7 +455,7 @@ export default {
 		padding: 20px;
 		overflow-x: hidden;
 		overflow-y:scroll;
-		max-height: 80vh;
+		max-height: 90vh;
 		height:auto;
 		border-radius:5px;
 	}
@@ -493,11 +497,10 @@ export default {
 	.inputs{
 		border:none !important;
 		border-radius:0px !important;
-		border-bottom:2px solid azure !important;
+		border-bottom:2px solid #001514 !important;
 		background-color:transparent !important;
-		color:#fff !important;
+		color:#001514 !important;
 		font-family: 'Roboto', sans-serif !important;
-		letter-spacing: .09em;
 	}
 	.conCheck {
 		display: inline-block;
@@ -527,7 +530,7 @@ export default {
 		left: 0;
 		height: 25px;
 		width: 25px;
-		background-color: #eee;
+		background-color: #1F5673;
 	}
 
 	/* On mouse-over, add a grey background color */
@@ -609,6 +612,14 @@ export default {
 	}
 	label{
 		color:#fff;
+	}
+
+	.lupa-modal{
+		position:absolute;
+		color:black;
+		right:8%;
+		top:63.5%;
+		font-size:1.4em
 	}
 	
 </style>
