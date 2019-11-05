@@ -13,7 +13,7 @@
 			</div>
 			<div class="col-md-12">
 				<div class="shadow">	
-					<table  class="table table-dark" style="color:#fff !important" >
+					<table  class="table table-dark" style="color:#fff !important; background-color: #1F5673" >
 						<thead>
 							<tr>
 								<th>
@@ -74,8 +74,13 @@
 				</div>
 			</div>
 			<div class="col-md-4" style="margin-top:20px;">
+				<div class="box">
+					<button class="btn-white" v-on:click="openModalCreateEmploye">
+						Registrar prestador
+					</button>
+				</div>
 				<div class="shadow">
-					<table  class="table table-dark" style="color:#fff !important" >
+					<table  class="table table-dark" style="color:#fff !important; background-color: #1F5673" >
 						<thead>
 							<tr>
 								<th>
@@ -111,8 +116,8 @@
 		</div>
 		<div class="modal fade" id="ModalEditPrestador" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered" role="document">
-		    <div v-bind:style="{ 'background-color': '#29323c'}" class="modal-content">
-		      <div class="modal-header">
+		    <div v-bind:style="{ 'background-color': '#ffffff'}" class="modal-content p-3">
+		      <div class="modal-header" v-bind:style="{ 'background-color': '#1F5673'}">
 		        <h5 class="modal-title text-white font-weight-bold" id="exampleModalCenterTitle">Editar Prestador</h5>
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 		          <span aria-hidden="true" class="text-white">&times;</span>
@@ -140,8 +145,8 @@
 		</div>
 		<div class="modal fade" id="ModalCreateEmploye" tabindex="-1"  role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered"  >
-		    <div class="modal-content" v-bind:style="{ 'background-color': '#29323c'}">
-		      <div class="modal-header">
+		    <div class="modal-content p-3" v-bind:style="{ 'background-color': '#ffffff'}">
+		      <div class="modal-header" v-bind:style="{ 'background-color': '#1F5673'}">
 		        <h5 class="modal-title text-white font-weight-bold" id="exampleModalCenterTitle">Registrar prestador</h5>
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 		          <span aria-hidden="true" class="text-white">&times;</span>
@@ -166,11 +171,6 @@
 		      </div>
 		    </div>
 		  </div>
-		</div>
-		<div class="box">
-			<button class="createService btn-white btn-animation-1" v-on:click="openModalCreateEmploye">
-				<font-awesome-icon style="font-size: 1.6em;" icon="user-plus" />
-			</button>
 		</div>
 	</div>
 </template>
@@ -408,10 +408,10 @@ export default {
 		color:#102229 !important
 	}
 	.first{
-		background: #505970;  /* fallback for old browsers */
+		background:#1F5673; /* fallback for old browsers */
 	}
 	.second{
-		background: #6A7693;  /* fallback for old browsers */
+		background:rgb(38, 91, 119); /* fallback for old browsers */
 	}
 	.formsPrestadores{
 		background-color:#fff;
@@ -426,7 +426,7 @@ export default {
 		border-radius:5px;
 	}
 	label{
-		color:#fff;
+		color:#001514;
 	}
 	.formsPrestadores::-webkit-scrollbar {
 		width: 8px;     /* Tamaño del scroll en vertical */
@@ -439,22 +439,24 @@ export default {
 	.inputs{
 		border:none !important;
 		border-radius:0px !important;
-		border-bottom:2px solid azure !important;
+		border-bottom:2px solid #001514 !important;
 		background-color:transparent !important;
-		color:#fff !important;
+		color:#001514 !important;
 		font-family: 'Roboto', sans-serif !important;
-		letter-spacing: .09em;
 	}
 	.add{
-		background-color:#ccc;
-		color: #102229;
+		background-color:#1F5673;
+		color: azure;
 		transition: all 0.5s ease-out;
-		font-family: 'Raleway', sans-serif;
+		font-family: 'Roboto', sans-serif !important;
 		font-weight:600;
+		
+		letter-spacing: 1px;
+		border-radius:5px;
 	}
 	.add:hover{
-		background-color:#102229;
-		color:#ccc;
+		background-color:#ccc;
+		color:#001514;
 	}
 	@media (max-width: 700px) {
 		.respons{
@@ -503,11 +505,11 @@ export default {
 		display: none;  /* Ocultar scroll */
 	}
 	.btn-colorsTrash{
-		background-color: #343a40;
+		background-color: #FC7753;
 		color:#fff;
 	}
 	.btn-colorsEdit{
-		background-color:#495057;
+		background-color:#28a745;
 		color:#fff;
 	}
 	.btn-colorsPrint{
@@ -515,84 +517,21 @@ export default {
 		color:#fff;
 	}
 	.box{
-    	position:fixed;
-		top:90%;
-		right:2%;
-    	transform : translate(-50% ,-50%);
+    	width: 100%;
   	}
-	.createService:link,
-	.createService:visited{
-		text-decoration: none;
-		text-transform:uppercase;
-		position:relative;
-		top:0;
-		left:0;
-		font-size: 1.6em;
-		padding:20px 40px;
-		border-radius:100px;
-		display:inline-block;
-		transition: all .6s;
-	}
 
 	.btn-white{
-		padding: 15px;
-		border-radius:10px;
-		background-color:#fff;
-		color: #102229;
-		border:2px solid #102229;
-		font-size: 1em;
+		padding: 5px;
+		width: 100%;
+		margin-bottom: 5px;
+		background-color: #28a745;
+		color: #fff;
+		border: none;
+		font-size: 1.3em;
 		outline: none !important;
 	}
 	.btn-white:focus{
 		outline: none !important;
 	}
 
-	.createService:hover{
-		box-shadow:0px 10px 10px rgba(0,0,0,0.2);
-		transform : translateY(-3px);
-	}
-
-	.createService:active{
-		box-shadow:0px 5px 10px rgba(0,0,0,0.2);
-		transform:translateY(-1px);
-	}
-
-	.btn-bottom-animation-1{
-		animation:comeFromBottom 2s ease-out .8s;
-	}
-
-	.createService::after{
-		content:"";
-		text-decoration: none;
-		text-transform:uppercase;
-		position:absolute;
-		width:100%;
-		height:100%;
-		top:0;
-		left:0;
-		border-radius:10px;
-		display:inline-block;
-		z-index:-1;
-		transition: all .5s;
-	}
-
-	.btn-white::after {
-		background:#102229;
-	}
-
-	.btn-animation-1:hover::after {
-		transform: scaleX(1.6) scaleY(1.8);
-		opacity: 0;
-	}
-
-	@keyframes comeFromBottom{
-		0%{
-		opacity:0;
-		transform:translateY(40px);
-		} 
-		100%{
-		opacity:1;
-		transform:translateY(0);
-		}
-	}
 </style>

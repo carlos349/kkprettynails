@@ -34,7 +34,7 @@
              :time-to="20 * 60"
              default-view="month"
              :disable-views="['years', 'year']"
-             events-on-month-view="short"
+             events-count-on-month-view
              :on-event-click="onEventClick"
              :noEventOverlaps = "true"
              >
@@ -147,8 +147,8 @@
 
     <div class="modal fade" id="myModalCitasDescripcion" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered" role="document">
-		    <div v-bind:style="{ 'background-image': 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(' + require('../assets/fondo.jpg') + ')' , 'background-size': 'cover' }" class="modal-content">
-		      <div class="modal-header">
+		    <div v-bind:style="{ 'background-color': '#ffffff'}" class="modal-content p-3">
+		      <div class="modal-header" v-bind:style="{ 'background-color': '#1F5673'}">
 		        <h5 class="modal-title text-white font-weight-bold" id="exampleModalCenterTitle">{{ selectedEvent.title }}</h5>
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 		          <span aria-hidden="true" class="text-white">&times;</span>
@@ -158,6 +158,7 @@
 		        <p>Fecha: {{ selectedEvent.startDate }}</p>
             <strong>Detalle de la cita:</strong><br><br>
             <ul class="list-group">
+              <li class="list-group-item" style="background-color: transparent !important">Cliente: {{ selectedEvent.cliente }}</li>
               <li class="list-group-item" style="background-color: transparent !important">Manicurista: {{ selectedEvent.empleada }}</li>
               <li class="list-group-item"  style="background-color: transparent !important">Servicios:
                 <p v-for="service of selectedEvent.services"> - {{ service }} </p> 
@@ -171,8 +172,8 @@
 		    </div>
 		  </div>
 		</div>
-    <div class="box">
-      <button class="CierreDia btn-white btn-animation-1" v-on:click="daySaleClose">
+    <div class="boxDates">
+      <button class="CierreDia btn-whiteDates btn-animation-1" v-on:click="daySaleClose">
         <font-awesome-icon icon="cloud-upload-alt" />
       </button>
     </div>
@@ -739,14 +740,30 @@
 
 </script>
 <style media="screen">
-  .vuecal__menu {background-image: url(../assets/fondo.jpg);background-repeat:no-repeat;background-size:cover; }
+  .vuecal__menu {background-color: #1F5673; }
   .vuecal__menu li {border-bottom-color: #fff;color: #fff;}
   .vuecal__menu li.active {background-color: rgba(255, 255, 255, 0.15);}
-  .vuecal__title-bar {background-image: url(../assets/fondo.jpg);background-repeat:no-repeat;background-size:cover;color:white;}
+  .vuecal__title-bar {background-color: #1F5673;}
 
   .vuecal__time-column .vuecal__time-cell{color:white;height:1vh;}
-  .vuecal__event{color:#fff;font-weight:bold}
-  .vuecal__cell-events-count{margin-top:-40px;font-size:20px;background-color:transparent;color:#17a2b8}
+  .vuecal__event{color:#fff;font-weight:bold;background-color: #1F5673;cursor:pointer;}
+  .vuecal__event:hover{
+    opacity: .8;
+  }
+    /* Dot indicator */
+    .vuecal__cell-events-count {
+      width: 25px;
+      min-width: 0;
+      height: 25px;
+      padding: 5px;
+      padding-top: 8px;
+      font-size: 16px;
+      background-color: #1F5673; 
+    }
+  .vuecal__cell-content {
+    height: 100px;
+  }
+
   .vuecal__cell.today, .vuecal__cell.current {background-color: rgba(240, 240, 255, 0.4);}
   .vuecal:not(.vuecal--day-view) .vuecal__cell.selected {background-color: rgba(235, 255, 245, 0.4);}
   .vuecal__cell.selected:before {border-color: rgba(66, 185, 131, 0.5);}
@@ -755,45 +772,29 @@
   .vuecal__heading span{color:#000;font-family: 'Raleway', sans-serif;
   font-weight:600;}
   .vuecal--rounded-theme.vuecal--green-theme:not(.vuecal--day-view) .vuecal__cell-content {
-    background-color: #274a58;
+    background-color: #1F5673;
     height: 10vh !important;
 }
 .vuecal__cell-split {
-    background-color: #274a58;
+    background-color: #1F5673;
     height: 10vh !important;
 }
 .vuecal--green-theme .vuecal__title-bar {
-    background-image: url(../assets/fondo.jpg);background-repeat:no-repeat;background-size:cover;
+    background-color: #1F5673;
 }
   .vuecal__time-column .vuecal__time-cell{
     color: #0F2027
   }
-  .vuecal__cell-events-count {
-    width: 10px !important;
-    min-width: 0 !important;
-    height: 10px !important;
-    padding: 0 !important;
-    margin-top:1%;
-    color: transparent !important;
-  }
+  
 
   .calendario{
-    max-height: 70vh;
+    max-height: 90vh;
     margin-top:.5%
   }
   .calendarioo{
     max-height:40vh;
   }
-  .vuecal__event{
-    background-color:#343a40 ;
-    opacity: 0.9;
-    cursor:pointer;
-  }
-  .vuecal__event:hover{
-    background-color:#343a40 ;
-    opacity: 1;
-    z-index:10
-  }
+  
   .citas{
     padding:10px;
     font-weight: bold;
@@ -831,10 +832,10 @@
     border:none;
     list-style-type: none;
     cursor:pointer;
-    background-color:transparent;
     color:white;
     outline:none;
   }
+
   #manicuristas option{
     font-family: 'Raleway', sans-serif;
   }
@@ -934,7 +935,7 @@
     padding: 10px;
     color: white;
   }
-  .box{
+  .boxDates{
     position:fixed;
 		top:90%;
 		right:2%;
@@ -953,7 +954,7 @@
     transition: all .6s;
   }
 
-  .btn-white{
+  .btn-whiteDates{
     padding: 15px;
     border-radius:10px;
     background-color:#fff;
@@ -962,7 +963,7 @@
     font-size: 1em;
     outline: none !important;
   }
-  .btn-white:focus{
+  .btn-whiteDates:focus{
     outline: none !important;
   }
 
@@ -995,7 +996,7 @@
     transition: all .5s;
   }
 
-  .btn-white::after {
+  .btn-whiteDates::after {
       background:#102229;
   }
 
@@ -1038,24 +1039,25 @@
   .letters{
     font-family: 'Roboto', sans-serif;
     letter-spacing: .1em;
-    color:aliceblue;
+    color:black;
   }
   .btn-style{
-		background-color:#ccc;
-		color: #102229;
+		background-color:#1F5673;
+		color: azure;
 		transition: all 0.5s ease-out;
-		font-family: 'Raleway', sans-serif;
+		font-family: 'Roboto', sans-serif !important;
 		font-weight:600;
-    width: 100%;
+		width: 100%;
+		letter-spacing: 1px;
+		border-radius:5px;
 	}
 	.btn-style:hover{
-		background-color:#343a40;
-		color:#ccc;
-  }
+		background-color:#ccc;
+		color:#001514;
+	}
   .generar{
     padding: 10px;
-     background-image: url(../assets/fondo.jpg);
-     background-repeat:no-repeat;
+     background-color: #1F5673;
      border:none;
      color: azure;
      margin-bottom: -4%;

@@ -18,7 +18,7 @@
         </div>
         <div class="datos mt-4 col-12" >
             <table class="table table-striped">
-                <thead class="thead-dark">
+                <thead v-bind:style="{ 'background-color': '#1F5673' , 'color':'#fff'}">
                     <tr>
                         <th>Fecha</th>
                         <th>Cliente</th>
@@ -45,8 +45,8 @@
         </div>
         <div class="modal fade" id="ModalEditPrestador" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered" role="document">
-		    <div v-bind:style="{ 'background-image': 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(' + require('../assets/fondo.jpg') + ')' , 'background-size': 'cover' }" class="modal-content">
-		      <div class="modal-header">
+		    <div v-bind:style="{ 'background-color': '#ffffff'}" class="modal-content p-3">
+		      <div class="modal-header" v-bind:style="{ 'background-color': '#1F5673'}">
 		        <h5 class="modal-title text-white font-weight-bold" id="exampleModalCenterTitle">Registrar adelanto o bono</h5>
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 		          <span aria-hidden="true" class="text-white">&times;</span>
@@ -67,14 +67,14 @@
 						<input v-model="dateAdvancement" type="date" class="form-control inputs">
 					</div>
                     <div class="form-group">
-                        <label class="containeer">¿Está registrando un bono?
+                        <label class="containeer"><h4>¿Está registrando un bono?</h4>
                             <input class="ifCheck" type="checkbox" >
                             <span class="checkmark"></span>
                         </label>
                     </div>
-                    <div class="maxHei">
+                    <div class="maxHei" style="margin-top:-30px;">
                         <table class="table table-light table-borderless table-striped">
-                            <thead>
+                            <thead >
                                 <tr>
                                     <th>
                                         Razón
@@ -342,12 +342,12 @@
 </script>
 <style media="screen">
     .recuadro{
-        border: solid 2px #262626;
+        border: solid 2px #1F5673;
         padding: 20px;
         color:#102229;
     }
     .datos{
-        border: solid 2px #262626;
+        border: solid 2px #1F5673;
         padding: 20px;
     }
     .datos table{
@@ -360,19 +360,20 @@
 		border-radius: 5px;
 	}
     label{
-        color:white;
+        color:black;
     }
     .add{
-		background-color:#ccc;
-		color: #102229;
-        padding: 10px;
+		background-color:#1F5673;
+		color: azure;
 		transition: all 0.5s ease-out;
-		font-family: 'Raleway', sans-serif;
+		font-family: 'Roboto', sans-serif !important;
 		font-weight:600;
+		letter-spacing: 1px;
+		border-radius:5px;
 	}
 	.add:hover{
-		background-color:#102229;
-		color:#ccc;
+		background-color:#ccc;
+		color:#001514;
 	}
     .maxHei{
 		overflow-x: hidden;
@@ -409,47 +410,71 @@
     }
 
         /* Create a custom checkbox */
-    .checkmark {
-        position: absolute;
-        top: 0;
-        left: 0;
-        height: 25px;
-        width: 25px;
-        background-color: #eee;
-    }
+    .containeer {
+		display: inline-block;
+		margin-left: 5%;
+		position: relative;
+		padding-left: 35px;
+		margin-bottom: 20px;
+		cursor: pointer;
+		font-size: 0.8em;
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+	}
 
-        /* On mouse-over, add a grey background color */
-    .containeer:hover input ~ .checkmark {
-        background-color: #ccc;
-    }
+		/* Hide the browser's default checkbox */
+	.containeer input {
+		position: absolute;
+		opacity: 0;
+		cursor: pointer;
+		height: 0;
+		width: 0;
+	}
 
-        /* When the checkbox is checked, add a blue background */
-    .containeer input:checked ~ .checkmark {
-        background-color: #2196F3;
-    }
+	/* Create a custom checkbox */
+	.checkmark {
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: 25px;
+		width: 25px;
+		background-color: #1F5673;
+	}
 
-        /* Create the checkmark/indicator (hidden when not checked) */
-    .checkmark:after {
-        content: "";
-        position: absolute;
-        display: none;
-    }
+	/* On mouse-over, add a grey background color */
+	.containeer:hover input ~ .checkmark {
+		background-color: #1F5673;
+	}
 
-        /* Show the checkmark when checked */
-    .containeer input:checked ~ .checkmark:after {
-        display: block;
-    }
+	/* When the checkbox is checked, add a blue background */
+	.containeer input:checked ~ .checkmark {
+		background-color: #102229;
+	}
 
-        /* Style the checkmark/indicator */
-    .containeer .checkmark:after {
-        left: 9px;
-        top: 5px;
-        width: 5px;
-        height: 10px;
-        border: solid white;
-        border-width: 0 3px 3px 0;
-        -webkit-transform: rotate(45deg);
-        -ms-transform: rotate(45deg);
-        transform: rotate(45deg);
-    }
+	/* Create the checkmark/indicator (hidden when not checked) */
+	.checkmark:after {
+		content: "";
+		position: absolute;
+		display: none;
+	}
+
+	/* Show the checkmark when checked */
+	.containeer input:checked ~ .checkmark:after {
+		display: inline-block;
+	}
+
+	/* Style the checkmark/indicator */
+	.containeer .checkmark:after {
+		left: 9px;
+		top: 5px;
+		width: 5px;
+		height: 10px;
+		border: solid white;
+		border-width: 0 3px 3px 0;
+		-webkit-transform: rotate(45deg);
+		-ms-transform: rotate(45deg);
+		transform: rotate(45deg);
+	}
 </style>

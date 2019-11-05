@@ -13,7 +13,7 @@
 			</div>
             <div class="col-md-12">
 				<div class="shadow">	
-					<table  class="table table-dark" style="color:#fff !important" >
+					<table  class="table" style="color:#fff !important; background-color: #1F5673" >
 						<thead>
 							<tr>
 								<th>
@@ -41,7 +41,7 @@
 						</thead>
 					</table>
 					<div class="ListaPrestador tbl-content">
-						<table class="table table-light table-borderless table-striped">
+						<table class="table table-light table-borderless table-striped" >
 							<tbody>
                                 <tr v-for="client in clients" v-bind:key="client._id">
 									<td class="font-weight-bold">
@@ -72,8 +72,13 @@
 				</div>
 			</div>
 			<div class="col-md-4" style="margin-top:20px;">
+				 <div class="box">
+					<button class="btn-white" v-on:click="openModalCreateClient">
+						Registrar cliente
+					</button>
+				</div>
 				<div class="shadow">
-					<table  class="table table-dark" style="color:#fff !important" >
+					<table  class="table table-dark" style="color:#fff !important; background-color: #1F5673" >
 						<thead>
 							<tr>
 								<th>
@@ -109,11 +114,11 @@
         </div>
         <div class="modal fade" id="ModalCreateClient" tabindex="-1"  role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered"  >
-		    <div class="modal-content" v-bind:style="{ 'background-color': '#29323c'}">
-		      <div class="modal-header">
+		    <div class="modal-content p-3" v-bind:style="{ 'background-color': '#ffffff'}">
+		      <div class="modal-header" v-bind:style="{ 'background-color': '#1F5673'}">
 		        <h5 class="modal-title text-white font-weight-bold" id="exampleModalCenterTitle">Registrar cliente</h5>
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-		          <span aria-hidden="true" class="text-white">&times;</span>
+		          <span aria-hidden="true" class="text-white" v-bind:style="{ 'font-size': '1.5em'}">&times;</span>
 		        </button>
 		      </div>
 		      <div  class="modal-body">
@@ -133,7 +138,7 @@
                             placeholder="Buscar cliente"
                             aria-label="Buscar cliente"
                             @submit="handleSubmitClientOnClient"
-                            class="auto">
+                            class="auto autoClient w-100">
                         </autocomplete>
                     </div>
 					<button class="btn w-100 add">Agregar cliente</button>
@@ -144,11 +149,11 @@
 		</div>
 		 <div class="modal fade" id="ModalEditClient" tabindex="-1"  role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered"  >
-		    <div class="modal-content" v-bind:style="{ 'background-color': '#29323c'}">
-		      <div class="modal-header">
+		    <div class="modal-content p-3" v-bind:style="{ 'background-color': '#ffffff'}">
+		      <div class="modal-header" v-bind:style="{ 'background-color': '#1F5673'}">
 		        <h5 class="modal-title text-white font-weight-bold" id="exampleModalCenterTitle">Editar cliente</h5>
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-		          <span aria-hidden="true" class="text-white">&times;</span>
+		          <span aria-hidden="true" class="text-white" v-bind:style="{ 'font-size': '1.5em'}">&times;</span>
 		        </button>
 		      </div>
 		      <div  class="modal-body">
@@ -176,11 +181,6 @@
 		      </div>
 		    </div>
 		  </div>
-		</div>
-        <div class="box">
-			<button class="createService btn-white btn-animation-1" v-on:click="openModalCreateClient">
-				<font-awesome-icon style="font-size: 1.6em;" icon="user-plus" />
-			</button>
 		</div>
     </div>
 </template>
@@ -405,8 +405,21 @@ export default {
 		margin-left: 8%;
 	}
 	.btn-colorsEdit{
-		background-color:#495057;
+		background-color: #28a745;
 		color:#fff;
+	}
+	.autoClient .autocomplete-result-list{
+		background-color: #1F5673;
+    	color: azure;
+	}
+	.autoClient input{
+		border: none !important;
+		border-radius: 0px !important;
+		border-bottom: 2px solid #1F5673 !important;
+		background-color: transparent !important;
+		color: black !important;
+		font-family: 'Roboto', sans-serif !important;
+		letter-spacing: .09em;
 	}
 	table{
 		border:none !important;
@@ -433,16 +446,39 @@ export default {
 		height:auto;
 		border-radius:5px;
 	}
+	.add{
+		background-color:#1F5673;
+		color: azure;
+		transition: all 0.5s ease-out;
+		font-family: 'Roboto', sans-serif !important;
+		font-weight:600;
+		
+		letter-spacing: 1px;
+		border-radius:5px;
+	}
+	.add:hover{
+		background-color:#ccc;
+		color:#001514;
+	}
+	.inputs {
+		border: none !important;
+		border-radius: 0px !important;
+		border-bottom: 2px solid #1F5673 !important;
+		background-color: transparent !important;
+		color: black !important;
+		font-family: 'Roboto', sans-serif !important;
+		letter-spacing: .09em;
+	}
 	.ListaPrestadorTwo::-webkit-scrollbar {
 		width: 8px;     /* Tamaño del scroll en vertical */
 		height: 8px;    /* Tamaño del scroll en horizontal */
 		display: none;  /* Ocultar scroll */
 	}
 	.first{
-		background: #505970;  /* fallback for old browsers */
+		background:#1F5673; /* fallback for old browsers */
 	}
 	.second{
-		background: #6A7693;  /* fallback for old browsers */
+		background:rgb(38, 91, 119); /* fallback for old browsers */
 	}
 	.small{
 		background-color: #fff;
@@ -451,85 +487,23 @@ export default {
 		border-radius: 5px;
 	}
     .box{
-    	position:fixed;
-		top:90%;
-		right:2%;
-    	transform : translate(-50% ,-50%);
+    	width: 100%;	
   	}
-	.createService:link,
-	.createService:visited{
-		text-decoration: none;
-		text-transform:uppercase;
-		position:relative;
-		top:0;
-		left:0;
-		font-size: 1.6em;
-		padding:20px 40px;
-		border-radius:100px;
-		display:inline-block;
-		transition: all .6s;
+	label{
+		color:black;
 	}
-
 	.btn-white{
-		padding: 15px;
-		border-radius:10px;
-		background-color:#fff;
-		color: #102229;
-		border:2px solid #102229;
-		font-size: 1em;
+		padding: 5px;
+		width: 100%;
+		margin-bottom: 5px;
+		background-color: #28a745;
+		color: #fff;
+		border: none;
+		font-size: 1.3em;
 		outline: none !important;
 	}
 	.btn-white:focus{
 		outline: none !important;
-	}
-
-	.createService:hover{
-		box-shadow:0px 10px 10px rgba(0,0,0,0.2);
-		transform : translateY(-3px);
-	}
-
-	.createService:active{
-		box-shadow:0px 5px 10px rgba(0,0,0,0.2);
-		transform:translateY(-1px);
-	}
-
-	.btn-bottom-animation-1{
-		animation:comeFromBottom 2s ease-out .8s;
-	}
-
-	.createService::after{
-		content:"";
-		text-decoration: none;
-		text-transform:uppercase;
-		position:absolute;
-		width:100%;
-		height:100%;
-		top:0;
-		left:0;
-		border-radius:10px;
-		display:inline-block;
-		z-index:-1;
-		transition: all .5s;
-	}
-
-	.btn-white::after {
-		background:#102229;
-	}
-
-	.btn-animation-1:hover::after {
-		transform: scaleX(1.6) scaleY(1.8);
-		opacity: 0;
-	}
-
-	@keyframes comeFromBottom{
-		0%{
-		opacity:0;
-		transform:translateY(40px);
-		} 
-		100%{
-		opacity:1;
-		transform:translateY(0);
-		}
 	}
     
 </style>

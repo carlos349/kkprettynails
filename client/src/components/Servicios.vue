@@ -70,7 +70,7 @@
 			</div>
 			<div class="col-md-4" style="margin-top:20px;">
 				<div class="box">
-					<button class="createService btn-white btn-animation-1" v-on:click="openModalCreateServices">
+					<button class="btn-white" v-on:click="openModalCreateServices">
 						 Crear servicio
 					</button>
 				</div>
@@ -111,11 +111,11 @@
 		</div>
 		<div class="modal fade" id="myModal2" tabindex="-1"  role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered"  >
-		    <div class="modal-content" v-bind:style="{ 'background-color': '#29323c'}">
-		      <div class="modal-header">
+		    <div class="modal-content p-3" v-bind:style="{ 'background-color': '#ffffff'}">
+		      <div class="modal-header"  v-bind:style="{ 'background-color': '#1F5673'}">
 		        <h5 class="modal-title text-white font-weight-bold" id="exampleModalCenterTitle">Actualizar servicio</h5>
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-		          <span aria-hidden="true" class="text-white">&times;</span>
+		          <span aria-hidden="true" class="text-white" v-bind:style="{ 'font-size': '1.5em'}">&times;</span>
 		        </button>
 		      </div>
 		      <div  class="modal-body">
@@ -135,10 +135,10 @@
 					<div class="form-group row" style="margin-top:-15px;">
 						<input type="text" id="myInputServEdit" v-on:keyup="myFunctionServEdit()" class="form-control buscar inputs" placeholder="Buscar prestadores"/>
 						<div class="ListaProcesar maxHeightEdit">
-							<table class="table table-dark tableBg" id="myTableServEdit">
+							<table class="table table-light table-borderless table-striped" id="myTableServEdit">
 								<tbody>
 									<tr v-for="(manicurista, index) of manicuristas" >
-										<td class="font-weight-bold text-white">
+										<td class="font-weight-bold">
 											{{manicurista.nombre}}
 										</td>
 										<td class="font-weight-bold text-right">
@@ -189,7 +189,7 @@
 								<table class="table table-light table-borderless table-striped" id="myTableServ">
 									<tbody>
 										<tr  v-for="(manicurista, index) of manicuristas" >
-											<td class="text-black">
+											<td>
 												{{manicurista.nombre}}
 											</td>
 											<td class="text-right">
@@ -804,9 +804,7 @@
 		color:red;
 	}
 	.box{
-		
-    	width: 100%;
-    	
+    	width: 100%;	
   	}
 	
 
@@ -824,37 +822,6 @@
 		outline: none !important;
 	}
 
-	
-
-	.createService:active{
-		box-shadow:0px 5px 10px rgba(0,0,0,0.2);
-		transform:translateY(-1px);
-	}
-
-	.btn-bottom-animation-1{
-		animation:comeFromBottom 2s ease-out .8s;
-	}
-
-
-	.btn-white::after {
-		background:#102229;
-	}
-
-	.btn-animation-1:hover::after {
-		transform: scaleX(1.6) scaleY(1.8);
-		opacity: 0;
-	}
-
-	@keyframes comeFromBottom{
-		0%{
-		opacity:0;
-		transform:translateY(40px);
-		} 
-		100%{
-		opacity:1;
-		transform:translateY(0);
-		}
-	}
 	.lupa-modal{
 		position:absolute;
 		right:8%;

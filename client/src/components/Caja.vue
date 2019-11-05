@@ -269,14 +269,14 @@ export default {
 </script>
 <style >
     .first{
-		background-color:#3b4254; /* fallback for old browsers */
+		background:#1F5673; /* fallback for old browsers */
 	}
 	.second{
-		background-color:#505970; /* fallback for old browsers */
+		background:rgb(38, 91, 119); /* fallback for old browsers */
 	}
 	.three{
-		background-color:#616c86;
-    }
+		background:rgb(46, 93, 117);
+  }
     
 
     .metricss{
@@ -302,7 +302,7 @@ export default {
         text-align:center;
         border: none;
         background-size: 300% 100%;
-        background-image: linear-gradient(to right, #29323c, #485563, #404653, #6d7996);
+        background-image: linear-gradient(to right, #1F5673, rgb(78, 120, 141), rgb(38, 90, 117), rgb(66, 104, 124));
         box-shadow: 0 4px 15px 0 rgba(45, 54, 65, 0.75);
         moz-transition: all .4s ease-in-out;
         -o-transition: all .4s ease-in-out;
@@ -311,6 +311,7 @@ export default {
     }
     .BotonesFiltro:hover{
         background-position: 100% 0;
+        color: #fff;
         moz-transition: all .4s ease-in-out;
         -o-transition: all .4s ease-in-out;
         -webkit-transition: all .4s ease-in-out;
