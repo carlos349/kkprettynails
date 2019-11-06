@@ -465,15 +465,18 @@ export default {
 		display: none;  /* Ocultar scroll */
 	}
 	.add{
-		background-color:#102229;
-		color:#fff;
+		background-color:#1F5673;
+		color: azure;
 		transition: all 0.5s ease-out;
-		font-family: 'Raleway', sans-serif;
+		font-family: 'Roboto', sans-serif !important;
 		font-weight:600;
+		
+		letter-spacing: 1px;
+		border-radius:5px;
 	}
 	.add:hover{
 		background-color:#ccc;
-		
+		color:#001514;
 	}
 	.ListaInventario{
 		overflow-x: hidden;

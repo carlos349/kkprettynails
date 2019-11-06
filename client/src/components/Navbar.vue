@@ -7,7 +7,7 @@
 			<div v-on:click="moverFU()" data-toggle="collapse" href="#collapseUser" class="col-md-12 usuarioP">
 				<div class="row">
 					<div class="col-sm-3">
-						<img class="imgHover" :src="require('../assets/cris.png')" alt="">
+						<img class="imgHover" :src="require('../assets/users/'+image)" alt="">
 					</div>
 					<div class="menuText col-sm-9">
 						<span class="infoUser align-bottom">{{nombre}} {{apellido}}</span>
@@ -23,7 +23,7 @@
 			<div class="collapse" id="collapseUser">
 				<ul class="listaMenu">
 					<router-link class="text-white menuText" to="/Usuarios"> <li>Editar perfil</li> </router-link>
-					<router-link class="text-white menuText" to="/Usuarios"> <li>Generar cita propia</li> </router-link>
+					<router-link class="text-white menuText" to="/Usuarios"> <li>{{image}}</li> </router-link>
 					<router-link class="text-white menuText" to="/"><li v-on:click="logout">Cerrar Sesión</li> </router-link>
 				</ul>
 			</div>
@@ -216,6 +216,7 @@ export default {
 			fecha: new Date(),
 			nombre:localStorage.nombre,
 			apellido: localStorage.apellido,
+			image:localStorage.imageUser,
 			authTwo: true
 		}
 	},
@@ -249,7 +250,7 @@ export default {
 		moverF(nam){
 			$(".fOne").toggle()
 			$(".fTwo").toggle()
-			
+			console.log(this.image)
 		},
 		moverFU(nam){
 			$(".fOneU").toggle()
@@ -263,8 +264,7 @@ export default {
 				
 			}
 			}, 500);
-			
-			
+			console.log(localStorage)
 		},
 		mouseLeave(){
 			$('.menuText').hide()		
@@ -285,7 +285,7 @@ export default {
 			this.auth = status
 			this.nombre = localStorage.nombre
 			this.apellido = localStorage.apellido
-			this.image = localStorage.image
+			this.image = localStorage.userImage
 		})
 		const User = localStorage.getItem('logged-in')
 		console.log(User)

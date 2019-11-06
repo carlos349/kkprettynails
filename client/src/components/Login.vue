@@ -71,6 +71,7 @@
 						const decoded = jwtDecode(token)
 						localStorage.setItem('nombre', decoded.first_name)
 						localStorage.setItem('apellido', decoded.last_name)
+						localStorage.setItem('imageUser', decoded.userImage)
 						
 						router.push({name: 'Citas'})
 						if(res.data.admin){

@@ -20,12 +20,16 @@ const UserSchema = new Schema({
 		type:Boolean,
 		required:true
 	},
+	userImage: {
+		type: String,
+	},
 	date: {
 		type: Date,
 		default: Date.now
 	},
-	image: {
-		type: String
+	LastAccess: {
+		type: Date,
+		default: Date.now
 	}
 
 })
