@@ -40,6 +40,9 @@
 									Correo
 								</th>
 								<th>
+									Ultimo acceso
+								</th>
+								<th>
 									Estado
 								</th>	
                 <th>
@@ -58,18 +61,21 @@
 									<td>
 										{{user.email}}
 									</td>
+									<td>
+										{{formatDate(user.LastAccess)}}
+									</td>
 									<td >
-                    <button class="btn btn-success font-weight-bold" v-if="user.admin" v-on:click="editarEstado(user._id, user.admin)">Admin</button>
-                    <button class="btn btn-warning font-weight-bold" v-else v-on:click="editarEstado(user._id, user.admin)">Normal</button>
-                  </td>
-                  <td>
-                    <button  class="btn w-25 btn-inactive" v-if="user.admin" v-on:click="eliminarUsuario(user._id, user.admin)">
-                      <font-awesome-icon icon="trash" />
-                    </button>
-                    <button class="btn w-25 btn-inactive" v-else v-on:click="eliminarUsuario(user._id, user.admin)">
-                      <font-awesome-icon icon="trash"  />
-                    </button>
-                  </td>
+										<button class="btn btn-success font-weight-bold" v-if="user.admin" v-on:click="editarEstado(user._id, user.admin)">Admin</button>
+										<button class="btn btn-warning font-weight-bold" v-else v-on:click="editarEstado(user._id, user.admin)">Normal</button>
+									</td>
+									<td>
+										<button  class="btn w-25 btn-inactive" v-if="user.admin" v-on:click="eliminarUsuario(user._id, user.admin)">
+										<font-awesome-icon icon="trash" />
+										</button>
+										<button class="btn w-25 btn-inactive" v-else v-on:click="eliminarUsuario(user._id, user.admin)">
+										<font-awesome-icon icon="trash"  />
+										</button>
+									</td>
 								</tr>
 							</tbody>
 						</table>
@@ -164,34 +170,38 @@
 					console.log(err)
 				})
 			},
-      eliminarUsuario(id, admin){
-        if(admin){
-          this.$swal({
-						type: 'error',
-						title: 'No puede borrar un administrador',
-						showConfirmButton: false,
-						timer: 1500
+			formatDate(date) {
+               let dateFormat = new Date(date)
+               return dateFormat.getDate()+"-"+(dateFormat.getMonth() + 1)+"-"+dateFormat.getFullYear()+" "+" ("+ dateFormat.getHours()+":"+ dateFormat.getMinutes()+")"
+            },
+			eliminarUsuario(id, admin){
+				if(admin){
+				this.$swal({
+								type: 'error',
+								title: 'No puede borrar un administrador',
+								showConfirmButton: false,
+								timer: 1500
+							})
+				}else{
+				axios.delete('users/' + id)
+					.then(res => {
+						this.$swal({
+									type: 'success',
+									title: res.data.first_name+' '+res.data.last_name+' ha sido Borrado',
+									showConfirmButton: false,
+									timer: 1500
+								})
 					})
-        }else{
-          axios.delete('users/' + id)
-          .then(res => {
-            this.$swal({
-  						type: 'success',
-  						title: res.data.first_name+' '+res.data.last_name+' ha sido Borrado',
-  						showConfirmButton: false,
-  						timer: 1500
-  					})
-          })
-          .catch(err => {
-            this.$swal({
-  						type: 'error',
-  						title: 'Disculpe tenemos problemas técnicos',
-  						showConfirmButton: false,
-  						timer: 1500
-  					})
-          })
-        }
-      }
+					.catch(err => {
+						this.$swal({
+							type: 'error',
+							title: 'Disculpe tenemos problemas técnicos',
+							showConfirmButton: false,
+							timer: 1500
+						})
+					})
+				}
+			}
     }
   }
 </script>

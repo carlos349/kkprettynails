@@ -113,24 +113,32 @@ users.post('/register', (req, res) => {
 })
 
 users.post('/login', (req, res) => {
+	const today = new Date()
 	User.findOne({
 		email: req.body.email
 	})
 	.then(user => {
 		if(user){
 			if(bcrypt.compareSync(req.body.password, user.password)){
-				const payload = {
-					_id: user._id,
-					first_name: user.first_name,
-					last_name: user.last_name,
-					email: user.email,
-					admin: user.admin,
-					userImage: user.userImage
-				}
-				let token = jwt.sign(payload, process.env.SECRET_KEY, {
-					expiresIn: 1440
+				User.findByIdAndUpdate(user._id, {
+					$set: {
+						LastAccess: today
+					}
 				})
-				res.json({token: token, admin: user.admin})
+				.then(access => {
+					const payload = {
+						_id: user._id,
+						first_name: user.first_name,
+						last_name: user.last_name,
+						email: user.email,
+						admin: user.admin,
+						userImage: user.userImage
+					}
+					let token = jwt.sign(payload, process.env.SECRET_KEY, {
+						expiresIn: 1440
+					})
+					res.json({token: token, admin: user.admin})
+				})
 			}else{
 				res.json({error: 'pass incorrecto'})
 			}

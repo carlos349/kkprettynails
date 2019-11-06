@@ -23,7 +23,6 @@
 			<div class="collapse" id="collapseUser">
 				<ul class="listaMenu">
 					<router-link class="text-white menuText" to="/Usuarios"> <li>Editar perfil</li> </router-link>
-					<router-link class="text-white menuText" to="/Usuarios"> <li>{{image}}</li> </router-link>
 					<router-link class="text-white menuText" to="/"><li v-on:click="logout">Cerrar Sesión</li> </router-link>
 				</ul>
 			</div>
@@ -42,8 +41,7 @@
 				</div>
 				<div class="collapse" id="collapseExample">
 					<ul class="listaMenu menuText">
-						<router-link class="text-white align-middle" to="/register"> <li class="align-middle"><font-awesome-icon class="icons" icon="plus" /> <span class="align-top">Registrar usuario</span> </li> </router-link>
-						<router-link class="text-white align-middle" to="/Usuarios"> <li><font-awesome-icon class="icons" icon="user-lock" />Ver usuarios</li> </router-link>
+						<router-link class="text-white align-middle" to="/Usuarios"> <li><font-awesome-icon class="icons" icon="user-lock" />Usuarios</li> </router-link>
 					</ul>
 				</div>
 			</div>
@@ -234,6 +232,11 @@ export default {
 			localStorage.removeItem('apellido')
 			localStorage.removeItem('image')
 			localStorage.removeItem('email')
+			localStorage.removeItem('imageUser')
+			this.nombre = ''
+			this.apellido = ''
+			this.image = ''
+			this.email = ''
 			$(".menuVer").hide()
 		},
 		processOpen(){
@@ -280,7 +283,7 @@ export default {
 	},
 
 	mounted() {
-
+		location.reload
 		EventBus.$on('logged-in', status => {
 			this.auth = status
 			this.nombre = localStorage.nombre

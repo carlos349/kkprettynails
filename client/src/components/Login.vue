@@ -74,6 +74,7 @@
 						localStorage.setItem('imageUser', decoded.userImage)
 						
 						router.push({name: 'Citas'})
+						location.reload()
 						if(res.data.admin){
 							this.emitMethodTwo()
 						}else{
