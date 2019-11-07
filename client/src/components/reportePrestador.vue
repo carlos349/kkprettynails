@@ -54,6 +54,16 @@
 		      </div>
 		      <div class="modal-body letters">
 				<form v-on:submit.prevent="RegisterAdevancement">
+                    <div class="form-group">
+						<label for="name">Fecha del adelanto o bono</label>
+                        <date-pick class="form-control inputss"
+								v-model="dateAdvancement"
+							    :weekdays=Days
+								:months=months
+								:nextMonthCaption="'Siguiente mes'"
+								:prevMonthCaption="'Mes anterior'"
+						></date-pick>
+					</div>
 					<div class="form-group">
 						<label for="name">Razón</label>
 						<input v-model="reason" type="text" class="form-control inputs" placeholder="Razon del adelanto">
@@ -61,10 +71,6 @@
 					<div class="form-group">
 						<label for="name">Total del adelanto o bono</label>
 						<input v-model="totalAdvancement" type="text" class="form-control inputs" placeholder="Escriba el monto">
-					</div>
-                    <div class="form-group">
-						<label for="name">Fecha del adelanto o bono</label>
-						<input v-model="dateAdvancement" type="date" class="form-control inputs">
 					</div>
                     <div class="form-group">
                         <label class="containeer"><h4>¿Está registrando un bono?</h4>
@@ -115,10 +121,13 @@
     import axios from 'axios'
     import LineChart from '../plugins/LineChart.js'
     import router from '../router'
+    import DatePick from 'vue-date-pick';
+	import 'vue-date-pick/dist/vueDatePick.css';
 
     export default {
         components: {
-            LineChart
+            LineChart,
+            DatePick
         },
         data(){
             return{
@@ -147,7 +156,13 @@
                 height:360,
                 reason:'',
                 totalAdvancement:'',
-                dateAdvancement: ''
+                dateAdvancement: '',
+                Days:['Lun', 'Mar', 'Mier', 'Jue', 'Vie', 'Sab', 'Dom'],
+				months:[
+					'Enero', 'Febrero', 'Marzo', 'Abril',
+					'Mayo', 'Junio', 'Julio', 'Agosto',
+					'Septiembre', 'Octubre', 'Noviembre', 'Diciembrer'
+				]
             }
         },
         beforeCreate() {
@@ -370,10 +385,35 @@
 		font-weight:600;
 		letter-spacing: 1px;
 		border-radius:5px;
-	}
+    }
 	.add:hover{
 		background-color:#ccc;
 		color:#001514;
+    }
+    .inputss input{
+		width: 100%;
+		border:none !important;
+		border-radius:0px !important;
+		border-bottom:2px solid #001514 !important;
+		background-color:transparent !important;
+		color:#001514 !important;
+		font-family: 'Roboto', sans-serif !important;
+	}
+	.vdpCell.selected .vdpCellContent{
+		background-color: rgb(31, 86, 115) !important;
+		
+	}
+	.vdpCell:hover .vdpCellContent{
+		background-color: rgb(31, 86, 115) !important;
+	}
+	.vdpCell.today{
+		color:rgb(31, 86, 115) !important;
+	}
+	.vdpArrowNext:after{
+		border-left-color:rgb(31, 86, 115) !important;
+	}
+	.vdpArrowPrev:after{
+		border-right-color:rgb(31, 86, 115) !important;
 	}
     .maxHei{
 		overflow-x: hidden;

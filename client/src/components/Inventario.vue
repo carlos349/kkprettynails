@@ -470,13 +470,15 @@ export default {
 		transition: all 0.5s ease-out;
 		font-family: 'Roboto', sans-serif !important;
 		font-weight:600;
-		
 		letter-spacing: 1px;
 		border-radius:5px;
-	}
+    }
 	.add:hover{
 		background-color:#ccc;
 		color:#001514;
+	}
+	label{
+		color:#001514 !important;
 	}
 	.ListaInventario{
 		overflow-x: hidden;
@@ -490,7 +492,7 @@ export default {
 		color:#fff;
 	}
 	.maxHeightInvent{
-		max-height: 200px;
+		max-height: 150px;
 	}
 	.ListaInventario::-webkit-scrollbar {
 		width: 8px;     /* Tamaño del scroll en vertical */
@@ -621,7 +623,7 @@ export default {
 		position:absolute;
 		color:black;
 		right:8%;
-		top:63.5%;
+		top:67%;
 		font-size:1.4em
 	}
 	

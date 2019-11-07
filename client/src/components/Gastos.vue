@@ -36,8 +36,15 @@
 						</div>
 						<div class="form-group">
 							<label for="name">Fecha</label>
-							<input v-model="date" type="date" class="form-control inputs">
+							<date-pick class="form-control inputss"
+								v-model="date"
+							    :weekdays=Days
+								:months=months
+								:nextMonthCaption="'Siguiente mes'"
+								:prevMonthCaption="'Mes anterior'"
+							  ></date-pick>
 						</div>
+
 						<button class="btn w-100 add">Agregar</button>
 					</form>
 				</div>
@@ -102,6 +109,8 @@
 	import router from '../router'
 	import axios from 'axios'
 	import LineChart from '../plugins/LineChart.js'
+	import DatePick from 'vue-date-pick';
+	import 'vue-date-pick/dist/vueDatePick.css';
 
 	class Expenses{
 		constructor(expenses, figure) {
@@ -112,7 +121,8 @@
 
 	export default {
 		components: {
-			LineChart
+			LineChart,
+			DatePick
 		},
 		data(){
 			return {
@@ -120,7 +130,7 @@
 				expenses: [],
 				reason: '',
 				amount: '',
-				date: '',
+				date:'',
 				options: {
 					responsive: true,
 					maintainAspectRatio: false
@@ -128,6 +138,12 @@
 				loaded: false,
 				chartdata: null,
 				height:360,
+				Days:['Lun', 'Mar', 'Mier', 'Jue', 'Vie', 'Sab', 'Dom'],
+				months:[
+					'Enero', 'Febrero', 'Marzo', 'Abril',
+					'Mayo', 'Junio', 'Julio', 'Agosto',
+					'Septiembre', 'Octubre', 'Noviembre', 'Diciembrer'
+				]
 			}
 		},
 		beforeCreate() {
@@ -256,6 +272,9 @@
 		box-shadow: 0 0.46875rem 2.1875rem rgba(4,9,20,0.03), 0 0.9375rem 1.40625rem rgba(4,9,20,0.03), 0 0.25rem 0.53125rem rgba(4,9,20,0.05), 0 0.125rem 0.1875rem rgba(4,9,20,0.03);
 		border-radius: 5px;
 	}
+	label{
+		color:black
+	}
 	.ListaInventario{
 		overflow-x: hidden;
 		overflow-y:scroll;
@@ -281,8 +300,6 @@
 		color:#fff;
 		box-shadow: 0 0.46875rem 2.1875rem rgba(4,9,20,0.03), 0 0.9375rem 1.40625rem rgba(4,9,20,0.03), 0 0.25rem 0.53125rem rgba(4,9,20,0.05), 0 0.125rem 0.1875rem rgba(4,9,20,0.03);
 		padding: 20px;
-		overflow-x: hidden;
-		overflow-y:scroll;
 		max-height: 80vh;
 		height:auto;
 		border-radius:5px;
@@ -299,16 +316,18 @@
 		display: none;  /* Ocultar scroll */
 	}
 	.add{
-		background-color:#ccc;
-		color: #102229;
+		background-color:#1F5673;
+		color: azure;
 		transition: all 0.5s ease-out;
-		font-family: 'Raleway', sans-serif;
+		font-family: 'Roboto', sans-serif !important;
 		font-weight:600;
-	}
+		letter-spacing: 1px;
+		border-radius:5px;
+    }
 	.add:hover{
-		background-color:#102229;
-		color:#fff;
-	}
+		background-color:#ccc;
+		color:#001514;
+    }
 	.inputs{
 		border:none !important;
 		border-radius:0px !important;
@@ -316,6 +335,31 @@
 		background-color:transparent !important;
 		color:#001514 !important;
 		font-family: 'Roboto', sans-serif !important;
+	}
+	.inputss input{
+		width: 100%;
+		border:none !important;
+		border-radius:0px !important;
+		border-bottom:2px solid #001514 !important;
+		background-color:transparent !important;
+		color:#001514 !important;
+		font-family: 'Roboto', sans-serif !important;
+	}
+	.vdpCell.selected .vdpCellContent{
+		background-color: rgb(31, 86, 115) !important;
+		
+	}
+	.vdpCell:hover .vdpCellContent{
+		background-color: rgb(31, 86, 115) !important;
+	}
+	.vdpCell.today{
+		color:rgb(31, 86, 115) !important;
+	}
+	.vdpArrowNext:after{
+		border-left-color:rgb(31, 86, 115) !important;
+	}
+	.vdpArrowPrev:after{
+		border-right-color:rgb(31, 86, 115) !important;
 	}
 	.formGastos input{
 		width: 40%;

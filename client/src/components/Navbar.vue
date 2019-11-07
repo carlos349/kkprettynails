@@ -1,13 +1,13 @@
 <template>
 <div>
-	<div  v-on:click="marcarNav()" v-bind:style="{ 'background-image': 'linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),url(' + require('../assets/sidebar.jpg') + ')' , 'background-size': 'cover', 'height': '100vh', 'position': 'fixed' }"  class=" pl-2 menuVer navS" v-on:mouseenter="mouseOver()" v-on:mouseleave="mouseLeave()">
+	<div  v-on:click="marcarNav()" v-bind:style="{ 'background-image': 'linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),url(' + require('../assets/sidebarTwo.jpg') + ')' , 'background-size': 'cover', 'height': '100vh', 'position': 'fixed' }"  class=" pl-2 menuVer navS" v-on:mouseenter="mouseOver()" v-on:mouseleave="mouseLeave()">
 		<div style="border-bottom:1.5px solid  rgba(91, 91, 90, .5);" class="p-3  text-center col-md-12"><img src="../assets/logoNew.png" class="logoNonHover"  alt=""></div>
 
 		<div style="border-bottom:1.5px solid  rgba(91, 91, 90, .5);" class="text-white p-2 mx-auto col-md-12">
-			<div v-on:click="moverFU()" data-toggle="collapse" href="#collapseUser" class="col-md-12 usuarioP">
+			<div v-on:click="moverFU()" data-toggle="collapse" href="#collapseUser" class="col-md-12 usuarioP" style="height:70px;">
 				<div class="row">
 					<div class="col-sm-3">
-						<img class="imgHover" :src="require('../assets/users/'+image)" alt="">
+						<img class="imgHover" v-bind:src="require('../assets/users/'+image)" style="width:50px;height:50px;border-radius:40px;">
 					</div>
 					<div class="menuText col-sm-9">
 						<span class="infoUser align-bottom">{{nombre}} {{apellido}}</span>
@@ -16,9 +16,6 @@
 						<font-awesome-icon icon="caret-down" class="fOneU nonHover" style="float:right;font-size:1em;margin:auto;margin-top:8%" /><font-awesome-icon class="fTwoU" style="float:right;display:none;font-size:1em;margin:auto;margin-top:8%" icon="caret-up"  />
 					</div>
 				</div>
-				
-
-					
 			</div>
 			<div class="collapse" id="collapseUser">
 				<ul class="listaMenu">
@@ -41,7 +38,7 @@
 				</div>
 				<div class="collapse" id="collapseExample">
 					<ul class="listaMenu menuText">
-						<router-link class="text-white align-middle" to="/Usuarios"> <li><font-awesome-icon class="icons" icon="user-lock" />Usuarios</li> </router-link>
+						<router-link class="text-white align-middle" to="/Usuarios"> <li><font-awesome-icon class="icons" icon="user-lock" /> Usuarios</li> </router-link>
 					</ul>
 				</div>
 			</div>
@@ -253,7 +250,7 @@ export default {
 		moverF(nam){
 			$(".fOne").toggle()
 			$(".fTwo").toggle()
-			console.log(this.image)
+			
 		},
 		moverFU(nam){
 			$(".fOneU").toggle()
@@ -267,7 +264,7 @@ export default {
 				
 			}
 			}, 500);
-			console.log(localStorage)
+			
 		},
 		mouseLeave(){
 			$('.menuText').hide()		
@@ -283,7 +280,6 @@ export default {
 	},
 
 	mounted() {
-		location.reload
 		EventBus.$on('logged-in', status => {
 			this.auth = status
 			this.nombre = localStorage.nombre
@@ -299,7 +295,9 @@ export default {
 		}else{
 			this.auth = 'no-loggedin'
 		}
-	}
+	},
+
+	
 }
 </script>
 <style media="screen">
