@@ -110,7 +110,7 @@
       </div>
       <div class="collapse" id="collapseTable">
         <div class="">
-					<input type="text" id="myInput" v-on:keyup="myFunction()" class="form-control buscar inputsVentas" placeholder="Filtrar ventas por fecha"/>
+					<input type="text" id="myInputVentas" v-on:keyup="myFunctionVentas()" class="form-control buscar inputsVentas" placeholder="Filtrar ventas por fecha"/>
 				</div>
         <table class="table tableVenta" >
           <thead class="thead-light">
@@ -146,7 +146,7 @@
           </thead>
         </table>
       <div class="Listas">
-        <table style="font-size:.8em" class="table table-striped" id="myTable">
+        <table style="font-size:.8em" class="table table-striped" id="myTableVentas">
           <tbody >
             <tr v-for="(venta, indexOne) of ventas" class="respons fix">
               <td class="  text-center">
@@ -285,11 +285,11 @@ export default {
         this.totalAnterior = this.formatPrice(res.data.totalAnterior)
       })
     },
-    myFunction() {
+    myFunctionVentas() {
       var input, filter, table, tr, td, i, txtValue;
-      input = document.getElementById("myInput");
+      input = document.getElementById("myInputVentas");
       filter = input.value.toUpperCase();
-      table = document.getElementById("myTable");
+      table = document.getElementById("myTableVentas");
       tr = table.getElementsByTagName("tr");
       for (i = 0; i < tr.length; i++) {
         td = tr[i].getElementsByTagName("td")[0];
