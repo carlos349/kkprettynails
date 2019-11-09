@@ -60,9 +60,6 @@ citas.post('/getBlocks', (req,res) => {
     ]
   })
   .then(citas => {
-    console.log(citas)
-    console.log(formatDate)
-    console.log(formatDateTwo)
     let entrada = 0
     let salida =0
 

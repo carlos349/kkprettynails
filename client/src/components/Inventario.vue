@@ -34,7 +34,7 @@
 							<div class="ListaProcesar maxHeightInvent">
 								<table class="table table-dark tableBg" id="myTableInvent">
 									<tbody>
-										<tr v-for="(servicio, index) of servicios" >
+										<tr v-for="(servicio, index) in servicios" v-bind:key="servicio._id" >
 											<td class="font-weight-bold">
 												{{servicio.nombre}}
 											</td>

@@ -19,7 +19,7 @@
 			</div>
 			<div class="collapse" id="collapseUser">
 				<ul class="listaMenu">
-					<router-link class="text-white menuText" to="/Usuarios"> <li>Editar perfil</li> </router-link>
+					<router-link class="text-white menuText" to="/profile"> <li>Editar perfil</li> </router-link>
 					<router-link class="text-white menuText" to="/"><li v-on:click="logout">Cerrar Sesión</li> </router-link>
 				</ul>
 			</div>

@@ -24,7 +24,19 @@ manicurista.get('/justOneById/:id', async (req, res) => {
 })
 
 manicurista.get('/SalesByPrest/:nombre', async (req, res) => {
-  const manicuristas = await Venta.find({'manicurista':req.params.nombre})
+  const dateNow = new Date()
+  const formatDate = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+'-1'
+  const formatDateTwo = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-31"
+
+  const manicuristas = await Venta.find({
+    $and: [
+      {manicurista: req.params.nombre},
+      {
+        fecha: { $gte: formatDate, $lte: formatDateTwo }
+      }
+    ]   
+  })
+  console.log(manicuristas)
   res.json(manicuristas)
 })
 

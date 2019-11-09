@@ -54,6 +54,12 @@
 		      </div>
 		      <div class="modal-body letters">
 				<form v-on:submit.prevent="RegisterAdevancement">
+                    <div class="form-group" style="margin-bottom:-5px;">
+                        <label class="containeer"><h4>¿Está registrando un bono?</h4>
+                            <input class="ifCheck" type="checkbox" >
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
                     <div class="form-group">
 						<label for="name">Fecha del adelanto o bono</label>
                         <date-pick class="form-control inputss"
@@ -68,16 +74,10 @@
 						<label for="name">Razón</label>
 						<input v-model="reason" type="text" class="form-control inputs" placeholder="Razon del adelanto">
 					</div>
-					<div class="form-group">
+					<div class="form-group mb-5">
 						<label for="name">Total del adelanto o bono</label>
 						<input v-model="totalAdvancement" type="text" class="form-control inputs" placeholder="Escriba el monto">
 					</div>
-                    <div class="form-group">
-                        <label class="containeer"><h4>¿Está registrando un bono?</h4>
-                            <input class="ifCheck" type="checkbox" >
-                            <span class="checkmark"></span>
-                        </label>
-                    </div>
                     <div class="maxHei" style="margin-top:-30px;">
                         <table class="table table-light table-borderless table-striped">
                             <thead >
@@ -156,7 +156,7 @@
                 height:360,
                 reason:'',
                 totalAdvancement:'',
-                dateAdvancement: '',
+                dateAdvancement: 'Click para elegr fecha',
                 Days:['Lun', 'Mar', 'Mier', 'Jue', 'Vie', 'Sab', 'Dom'],
 				months:[
 					'Enero', 'Febrero', 'Marzo', 'Abril',
@@ -431,7 +431,7 @@
         display: block;
         position: relative;
         padding-left: 35px;
-        margin-bottom: 12px;
+        
         cursor: pointer;
         font-size: 22px;
         -webkit-user-select: none;
@@ -452,10 +452,7 @@
         /* Create a custom checkbox */
     .containeer {
 		display: inline-block;
-		margin-left: 5%;
 		position: relative;
-		padding-left: 35px;
-		margin-bottom: 20px;
 		cursor: pointer;
 		font-size: 0.8em;
 		-webkit-user-select: none;
