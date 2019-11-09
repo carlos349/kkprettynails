@@ -23,6 +23,9 @@ const InventorySchema = new Schema ({
     servicios:{
       type: Object
     },
+    serviciosId:{
+      type: Object
+    },
     fecha: {
       type: Date,
       default: Date.now

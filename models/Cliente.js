@@ -11,10 +11,20 @@ const clienteSchema = new Schema ({
   participacion: {
     type: Number
   },
+  recomendacion: {
+    type: String
+  },
+  recomendaciones: {
+    type: Number
+  },
+  ultimaFecha: {
+    type: Date, 
+    default: Date.now
+  },
   fecha: {
     type: Date,
 		default: Date.now
   }
 })
 
-module.exports = Cliente = mongoose.model('clientes', clienteSchema)
+module.exports = Clientes = mongoose.model('clientes', clienteSchema)

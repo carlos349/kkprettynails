@@ -30,64 +30,64 @@
           </div>
 				</div>
 			</div>
-      <div class="row BotonesFiltro">
+      <div class="row">
         <div class="col-md-2 mb-2">
-          <button class="btn w-100" type="button" v-on:click="getMonthPerMonthSelected(1)">
+          <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getMonthPerMonthSelected(1)">
             Enero  
           </button> 
         </div>
         <div class="col-md-2 mb-2">
-          <button class="btn w-100" type="button" v-on:click="getMonthPerMonthSelected(2)">
+          <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getMonthPerMonthSelected(2)">
             Febrero  
           </button> 
         </div>
         <div class="col-md-2 mb-2">
-          <button class="btn w-100" type="button" v-on:click="getMonthPerMonthSelected(3)">
+          <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getMonthPerMonthSelected(3)">
             Marzo  
           </button> 
         </div>
         <div class="col-md-2 mb-2">
-          <button class="btn w-100" type="button" v-on:click="getMonthPerMonthSelected(4)">
+          <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getMonthPerMonthSelected(4)">
             Abril  
           </button> 
         </div>
         <div class="col-md-2">
-          <button class="btn w-100" type="button" v-on:click="getMonthPerMonthSelected(5)">
+          <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getMonthPerMonthSelected(5)">
             Mayo  
           </button> 
         </div>
         <div class="col-md-2 mb-2">
-          <button class="btn w-100" type="button" v-on:click="getMonthPerMonthSelected(6)">
+          <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getMonthPerMonthSelected(6)">
             Junio  
           </button> 
         </div>
         <div class="col-md-2 mb-2">
-          <button class="btn w-100" type="button" v-on:click="getMonthPerMonthSelected(7)">
+          <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getMonthPerMonthSelected(7)">
             Julio  
           </button> 
         </div>
         <div class="col-md-2 mb-2">
-          <button class="btn w-100" type="button" v-on:click="getMonthPerMonthSelected(8)">
+          <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getMonthPerMonthSelected(8)">
             Agosto  
           </button> 
         </div>
         <div class="col-md-2 mb-2">
-          <button class="btn w-100" type="button" v-on:click="getMonthPerMonthSelected(9)">
+          <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getMonthPerMonthSelected(9)">
             Septiembre  
           </button> 
         </div>
         <div class="col-md-2 mb-2">
-          <button class="btn w-100" type="button" v-on:click="getMonthPerMonthSelected(10)">
+          <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getMonthPerMonthSelected(10)">
             Octubre  
           </button> 
         </div>
         <div class="col-md-2 mb-2">
-          <button class="btn w-100" type="button" v-on:click="getMonthPerMonthSelected(11)">
+          <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getMonthPerMonthSelected(11)">
             Noviembre  
           </button> 
         </div>
         <div class="col-md-2 mb-2">
-          <button class="btn w-100" type="button" v-on:click="getMonthPerMonthSelected(12)">
+          <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getMonthPerMonthSelected(12)">
             Diciembre  
           </button> </div> 
       </div>
@@ -151,7 +151,7 @@
             <tr v-for="(venta, indexOne) of ventas" class="respons fix">
               <td class="  text-center">
                  <font-awesome-icon style="margin-right:4%" v-if="venta.pago === 'tarjeta'" icon="credit-card" />
-                 <font-awesome-icon style="margin-right:4%;margin-top:5%;" v-else-if="venta.pago === 'efectivo'" icon="dollar-sign" />{{fechas[indexOne]}}
+                 <font-awesome-icon style="margin-right:4%;margin-top:5%;" v-else-if="venta.pago === 'efectivo'" icon="dollar-sign" />{{formatDate(venta.fecha)}}
               </td>
               <td style="width: 75% !important;" class=" text-left">
                 <div  v-for="(servicio,indexTwo) of venta.servicios">
@@ -220,6 +220,7 @@ export default {
     return {
       venta: new Ventas(),
       ventas: [],
+      ventasAnterior: [],
       fecha: new Fechas(),
       fechas: [],
       totalLocal: 0,
@@ -274,54 +275,15 @@ export default {
       $('.afuera').show()
     },
     totales(month){
-      var fechaTotales = new Date() 
-      var formatDate = fechaTotales.getFullYear()+"-"+month+"-10"
-      var date = new Date(formatDate)
-      var mesTotales = 0
-      if (month === 0) {
-        mesTotales = fechaTotales.getMonth()
-      }else{
-        mesTotales = date.getMonth()
-      }
-    
-      setTimeout(() => {
-        for (let i = 0; i < this.ventas.length; i++) {
-          var fechL = new Date(this.ventas[i].fecha)
-          if (mesTotales == fechL.getMonth() ) {
-            this.totalLocal = parseFloat(this.ventas[i].ganancialocal) + parseFloat(this.totalLocal)
-          }      
-          else if (mesTotales - 1 == fechL.getMonth() ){
-            this.localAnterior = parseFloat(this.ventas[i].ganancialocal) + parseFloat(this.localAnterior)
-          }
-        }
-        for (let i = 0; i < this.ventas.length; i++) {
-          var fechN = new Date(this.ventas[i].fecha)
-          if (mesTotales == fechN.getMonth() ) {
-            this.gananciaNeta = parseFloat(this.ventas[i].ganancianeta) + parseFloat(this.gananciaNeta)
-          }      
-          else if (mesTotales - 1 == fechN.getMonth() ){
-            this.netaAnterior = parseFloat(this.ventas[i].ganancianeta) + parseFloat(this.netaAnterior)
-          }
-        }
-        for (let i = 0; i < this.ventas.length; i++) {
-          var fech = new Date(this.ventas[i].fecha)
-          if (mesTotales == fech.getMonth() ) {
-            this.gananciaTotal = parseFloat(this.ventas[i].total) + parseFloat(this.gananciaTotal)
-          }      
-          else if (mesTotales - 1 == fech.getMonth() ){
-            this.totalAnterior = parseFloat(this.ventas[i].total) + parseFloat(this.totalAnterior)
-          }
-        }
-        this.totalLocal = this.formatPrice(this.totalLocal)
-        this.gananciaNeta = this.formatPrice(this.gananciaNeta)
-        this.gananciaTotal = this.formatPrice(this.gananciaTotal)
-        this.localAnterior = this.formatPrice(this.localAnterior)
-        this.netaAnterior = this.formatPrice(this.netaAnterior)
-        this.totalAnterior = this.formatPrice(this.totalAnterior)
-
-        
-      }, 500);
-     
+      axios.get('ventas/totalSales/'+month)
+      .then(res => {
+        this.totalLocal = this.formatPrice(res.data.totalLocal)
+        this.gananciaNeta = this.formatPrice(res.data.gananciaNeta)
+        this.gananciaTotal = this.formatPrice(res.data.gananciaTotal)
+        this.localAnterior = this.formatPrice(res.data.localAnterior)
+        this.netaAnterior = this.formatPrice(res.data.netaAnterior)
+        this.totalAnterior = this.formatPrice(res.data.totalAnterior)
+      })
     },
     myFunction() {
       var input, filter, table, tr, td, i, txtValue;
@@ -371,9 +333,9 @@ export default {
           const userlist = res.data.chart
           this.chartdata = userlist
           this.loaded = true
-
           this.ventas = res.data.sales
           let fechaBien = ''
+          this.fechas = []
           for (let index = 0; index < res.data.sales.length; index++) {
             let fech = new Date(res.data.sales[index].fecha)
             fechaBien = fech.getDate() +"/"+ (fech.getMonth() + 1) +"/"+fech.getFullYear() +" "+" ("+ fech.getHours()+":"+ fech.getMinutes()+")"
@@ -392,6 +354,10 @@ export default {
     formatPrice(value) {
         let val = (value/1).toFixed(2).replace('.', ',')
         return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+    },
+    formatDate(date) {
+        let dateFormat = new Date(date)
+        return dateFormat.getDate()+"-"+(dateFormat.getMonth() + 1)+"-"+dateFormat.getFullYear()
     },
     arreglarServicios(value, index, indexTwo){
       var conteo = 0
@@ -465,40 +431,55 @@ export default {
     cursor:pointer;
   }
   .BotonesDespliegue button{
-    background: #0F2027;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #2C5364, #203A43, #0F2027);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #2C5364, #203A43, #0F2027); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    border:none !important;
+    background-size: 300% 100%;
+    background-image: linear-gradient(to right, #1F5673, rgb(78, 120, 141), rgb(38, 90, 117), rgb(66, 104, 124));
+    box-shadow: 0 4px 15px 0 rgba(45, 54, 65, 0.75);
+    moz-transition: all .4s ease-in-out;
+    -o-transition: all .4s ease-in-out;
+    -webkit-transition: all .4s ease-in-out;
+    transition: all .4s ease-in-out;
     padding: 12px;
     font-size: 1.1em;
     box-shadow: 0 0.46875rem 2.1875rem rgba(4,9,20,0.03), 0 0.9375rem 1.40625rem rgba(4,9,20,0.03), 0 0.25rem 0.53125rem rgba(4,9,20,0.05), 0 0.125rem 0.1875rem rgba(4,9,20,0.03);
     font-family: 'Raleway', sans-serif !important;
     font-weight:600 !important;
-    letter-spacing: .2em
-  }
-  .BotonesFiltro button{
-    background: #0F2027;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #2C5364, #203A43, #0F2027);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #2C5364, #203A43, #0F2027); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    letter-spacing: .2em;
     border:none !important;
-    box-shadow: 0 0.46875rem 2.1875rem rgba(4,9,20,0.03), 0 0.9375rem 1.40625rem rgba(4,9,20,0.03), 0 0.25rem 0.53125rem rgba(4,9,20,0.05), 0 0.125rem 0.1875rem rgba(4,9,20,0.03);
-    font-family: 'Raleway', sans-serif !important;
-    letter-spacing: 0.15em;
-    color:cornsilk;
-    -webkit-transition: background-color 500ms ease-out 1s;
-    -moz-transition: background-color 500ms ease-out 1s;
-    -o-transition: background-color 500ms ease-out 1s;
-    transition: background-color 500ms ease-out 1s;
   }
-  .BotonesFiltro button:hover{
-    color:darkgray;
-    background: #0F2027;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #0F2027, #203A43, #2C5364);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #0F2027, #203A43, #2C5364); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    -webkit-transition: background-color 500ms ease-out 1s;
-    -moz-transition: background-color 500ms ease-out 1s;
-    -o-transition: background-color 500ms ease-out 1s;
-    transition: background-color 500ms ease-out 1s;
+  .BotonesDespliegue button:hover{
+    background-position: 100% 0;
+    moz-transition: all .4s ease-in-out;
+    -o-transition: all .4s ease-in-out;
+    -webkit-transition: all .4s ease-in-out;
+    transition: all .4s ease-in-out;
+  }
+  .BotonesFiltro{
+    width: 200px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    cursor: pointer;
+    height: 55px;
+    text-align:center;
+    border: none;
+    background-size: 300% 100%;
+    background-image: linear-gradient(to right, #1F5673, rgb(78, 120, 141), rgb(38, 90, 117), rgb(66, 104, 124));
+    box-shadow: 0 4px 15px 0 rgba(45, 54, 65, 0.75);
+    moz-transition: all .4s ease-in-out;
+    -o-transition: all .4s ease-in-out;
+    -webkit-transition: all .4s ease-in-out;
+    transition: all .4s ease-in-out;
+  }
+  .BotonesFiltro:hover{
+    background-position: 100% 0;
+    color: #fff;
+    moz-transition: all .4s ease-in-out;
+    -o-transition: all .4s ease-in-out;
+    -webkit-transition: all .4s ease-in-out;
+    transition: all .4s ease-in-out;
+  }
+  .BotonesFiltro:focus {
+    outline: none;
   }
   .table{
     table-layout: fixed;
@@ -523,31 +504,20 @@ export default {
 		display: none;  /* Ocultar scroll */
 	}
   .first{
-		background: #a73737;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #7a2828, #a73737);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #7a2828, #a73737); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  }
+		background:#1F5673; /* fallback for old browsers */
+	}
 	.second{
-		background: #FF512F;  /* fallback for old browsers */
-		background: -webkit-linear-gradient(to left, #F09819, #FF512F);  /* Chrome 10-25, Safari 5.1-6 */
-		background: linear-gradient(to left, #F09819, #FF512F); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
+		background:rgb(38, 91, 119); /* fallback for old browsers */
 	}
 	.three{
-		background: #0F2027;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #2C5364, #203A43, #0F2027);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #2C5364, #203A43, #0F2027); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
-	}
+		background:rgb(46, 93, 117);
+  }
   .four{
-    background: #a73737;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #a73737, #7a2828);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #a73737, #7a2828); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background:rgb(54, 95, 116);
   }
 
   .metricss{
 		height: auto;
-		background-color: #fff;
 		margin:10px;
     padding: auto;
     margin-top: 20px;

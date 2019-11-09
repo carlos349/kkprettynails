@@ -1,12 +1,13 @@
 <template>
-	<div  v-on:click="marcarNav()" v-bind:style="{ 'background-image': 'linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),url(' + require('../assets/sidebar.jpg') + ')' , 'background-size': 'cover', 'height': '100vh', 'position': 'fixed' }"  class=" pl-2 menuVer navS" v-on:mouseenter="mouseOver()" v-on:mouseleave="mouseLeave()">
+<div>
+	<div  v-on:click="marcarNav()" v-bind:style="{ 'background-image': 'linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),url(' + require('../assets/sidebarTwo.jpg') + ')' , 'background-size': 'cover', 'height': '100vh', 'position': 'fixed' }"  class=" pl-2 menuVer navS" v-on:mouseenter="mouseOver()" v-on:mouseleave="mouseLeave()">
 		<div style="border-bottom:1.5px solid  rgba(91, 91, 90, .5);" class="p-3  text-center col-md-12"><img src="../assets/logoNew.png" class="logoNonHover"  alt=""></div>
 
 		<div style="border-bottom:1.5px solid  rgba(91, 91, 90, .5);" class="text-white p-2 mx-auto col-md-12">
-			<div v-on:click="moverFU()" data-toggle="collapse" href="#collapseUser" class="col-md-12 usuarioP">
+			<div v-on:click="moverFU()" data-toggle="collapse" href="#collapseUser" class="col-md-12 usuarioP" style="height:70px;">
 				<div class="row">
 					<div class="col-sm-3">
-						<img class="imgHover" :src="require('../assets/cris.png')" alt="">
+						<img class="imgHover" v-bind:src="require('../assets/users/'+image)" style="width:50px;height:50px;border-radius:40px;">
 					</div>
 					<div class="menuText col-sm-9">
 						<span class="infoUser align-bottom">{{nombre}} {{apellido}}</span>
@@ -15,14 +16,10 @@
 						<font-awesome-icon icon="caret-down" class="fOneU nonHover" style="float:right;font-size:1em;margin:auto;margin-top:8%" /><font-awesome-icon class="fTwoU" style="float:right;display:none;font-size:1em;margin:auto;margin-top:8%" icon="caret-up"  />
 					</div>
 				</div>
-				
-
-					
 			</div>
 			<div class="collapse" id="collapseUser">
 				<ul class="listaMenu">
-					<router-link class="text-white menuText" to="/Usuarios"> <li>Editar perfil</li> </router-link>
-					<router-link class="text-white menuText" to="/Usuarios"> <li>Generar cita propia</li> </router-link>
+					<router-link class="text-white menuText" to="/profile"> <li>Editar perfil</li> </router-link>
 					<router-link class="text-white menuText" to="/"><li v-on:click="logout">Cerrar Sesión</li> </router-link>
 				</ul>
 			</div>
@@ -41,10 +38,21 @@
 				</div>
 				<div class="collapse" id="collapseExample">
 					<ul class="listaMenu menuText">
-						<router-link class="text-white align-middle" to="/register"> <li class="align-middle"><font-awesome-icon class="icons" icon="plus" /> <span class="align-top">Registrar usuario</span> </li> </router-link>
-						<router-link class="text-white align-middle" to="/Usuarios"> <li><font-awesome-icon class="icons" icon="user-lock" />Ver usuarios</li> </router-link>
+						<router-link class="text-white align-middle" to="/Usuarios"> <li><font-awesome-icon class="icons" icon="user-lock" /> Usuarios</li> </router-link>
 					</ul>
 				</div>
+			</div>
+			<div v-if="auth=='loggedin-admin' || auth == 'loggedin'" class="col-sm-12">
+				
+				<span style="cursor:pointer;" v-on:click="processOpen" class="text-white" to="/caja">
+						<div class="listaMenu row p-3">
+							<div class="col-sm-1">
+								<font-awesome-icon class="icone" icon="tags" />
+							</div>
+							<div class=" menuText pl-4 col-sm-10 ">
+								<span class="nonHover">Procesar venta</span> </div>
+						</div>
+				</span>
 			</div>
 			<div id="Ventas" v-on:click="marcarNav('Ventas')" v-if="auth=='loggedin-admin'" class="col-sm-12">
 				
@@ -82,6 +90,18 @@
 						</div>
 				</router-link>
 			</div>
+			<div id="Clientes" v-on:click="marcarNav('Clientes')" v-if="auth=='loggedin-admin'" class="col-sm-12">
+				
+				<router-link  class=" text-white" to="/clientes">
+						<div class="listaMenu row p-3">
+							<div class="col-sm-1">
+								<font-awesome-icon class="icone" icon="address-book" />
+							</div>
+							<div class=" menuText pl-4 col-sm-10 ">
+								<span class="nonHover">Clientes</span> </div>
+						</div>
+				</router-link>
+			</div>
 			<div id="Inventario" v-on:click="marcarNav('Inventario')" v-if="auth=='loggedin-admin'" class="col-sm-12">
 				
 				<router-link  class=" text-white" to="/inventario">
@@ -106,7 +126,7 @@
 						</div>
 				</router-link>
 			</div>
-			<div id="Citas" v-on:click="marcarNav('Citas')" v-if="auth=='loggedin-admin'|| auth == 'loggedin'" class="col-sm-12">
+			<div id="Citas" v-on:click="marcarNav('Citas')" v-if="auth=='loggedin-admin' || auth == 'loggedin'" class="col-sm-12">
 				
 				<router-link  class=" text-white" to="/citas">
 						<div class="listaMenu row p-3">
@@ -142,26 +162,47 @@
 						</div>
 				</router-link>
 			</div>
-
-          <!-- <vue-cal  class="calendarioo vuecal--rounded-theme vuecal--green-theme"
-                   xsmall
-                   hide-view-selector
-                   :time="false"
-                   events-count-on-year-view
-                   default-view="month"
-                   :locale="locale"
-                   :events="eventos"
-                   :disable-views="['week']">
-          </vue-cal> -->
+			
         </div>
+		<div class="modal fade bd-example-modal-xl" id="myModalThree" tabindex="-1"  aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		  <div class="modal-dialog modal-lg " role="document">
+		    <div v-bind:style="{ 'background-color': '#fff'}"  class="modal-content p-3">
+		      <div class="modal-header" v-bind:style="{ 'background-color': '#1F5673'}">
+		        <h5 class="modal-title text-white" id="exampleModalCenterTitle">Procesar venta</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true" class="text-white">&times;</span>
+		        </button>
+		      </div>
+		      <div class="modal-body">
+		        <procesar></procesar>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+
+<!-- <div id="mydiv">
+  <div id="mydivheader">Click here to move</div>
+  <div class="col-sm-12">
+	  <div class="row">
+		  <div class="col-sm-12 p-1">
+			  <input class="calcuPantalla" type="text">
+		  </div>
+	  </div>
+  </div>
+</div> -->
+</div>
 </template>
 
 <script>
+import Procesar from "./Procesar"
 import EventBus from './eventBus'
 import router from '../router'
 import jwtDecode from 'jwt-decode'
 
 export default {
+	components: {
+      'Procesar': Procesar
+    },
 	data() {
 		
 		return {
@@ -170,12 +211,12 @@ export default {
 			fecha: new Date(),
 			nombre:localStorage.nombre,
 			apellido: localStorage.apellido,
+			image:localStorage.imageUser,
 			authTwo: true
 		}
 	},
 	created(){
 		this.marcarNav()
-		console.log(localStorage)
 		this.intervalM()
 		
 	},
@@ -188,7 +229,15 @@ export default {
 			localStorage.removeItem('apellido')
 			localStorage.removeItem('image')
 			localStorage.removeItem('email')
+			localStorage.removeItem('imageUser')
+			this.nombre = ''
+			this.apellido = ''
+			this.image = ''
+			this.email = ''
 			$(".menuVer").hide()
+		},
+		processOpen(){
+			$('#myModalThree').modal('show')
 		},
 		marcarNav(name){
 			setTimeout(() => {
@@ -209,7 +258,6 @@ export default {
 			
 		},
 		mouseOver(){
-			console.log($(".navS").width())
 			setTimeout(() => {
 				if ($(".navS").width() > "200" ) {
 				$('.menuText').show("slow")
@@ -217,12 +265,9 @@ export default {
 			}
 			}, 500);
 			
-			
 		},
 		mouseLeave(){
-			$('.menuText').hide()
-			console.log("leave!")
-			
+			$('.menuText').hide()		
 		},
 		intervalM(){
 			setInterval(() => {
@@ -235,12 +280,11 @@ export default {
 	},
 
 	mounted() {
-
 		EventBus.$on('logged-in', status => {
 			this.auth = status
 			this.nombre = localStorage.nombre
 			this.apellido = localStorage.apellido
-			this.image = localStorage.image
+			this.image = localStorage.userImage
 		})
 		const User = localStorage.getItem('logged-in')
 		console.log(User)
@@ -251,7 +295,9 @@ export default {
 		}else{
 			this.auth = 'no-loggedin'
 		}
-	}
+	},
+
+	
 }
 </script>
 <style media="screen">
@@ -348,4 +394,27 @@ export default {
 	  width: 50px;
 	  transition: all 0.5s ease-out;
   }
+
+  #mydiv {
+  position: absolute;
+  width: 30%;
+  z-index: 9;
+  background-color: #f1f1f1;
+  text-align: center;
+  border: 1px solid #d3d3d3;
+}
+
+#mydivheader {
+  padding: 10px;
+  cursor: move;
+  z-index: 10;
+  background-color: #2196F3;
+  color: #fff;
+}
+.calcuPantalla{
+	background-color: #becd94;
+	width: 80%;
+	padding: 10px;
+}
 </style>
+

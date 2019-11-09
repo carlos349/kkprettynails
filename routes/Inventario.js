@@ -8,17 +8,39 @@ inventory.get('/', async (req, res) => {
     const products = await Inventory.find()
     res.json(products)
 })
+inventory.put('/:id', (req, res) => {
+    const totalAmount = parseFloat(req.body.amount) * parseFloat(req.body.quantity) 
+    Inventory.findByIdAndUpdate(req.params.id, {
+        $set: {
+            producto:req.body.product,
+            marca:req.body.brand,
+            gramos:req.body.grams,
+            cantidad:req.body.quantity,
+            monto:req.body.amount,
+            montoTotal:totalAmount,
+            servicios:req.body.services,
+            serviciosId: req.body.serviceId
+        }
+      })
+      .then(servicio => {
+        res.json({status: 'ok'})
+      })
+      .catch(err => {
+        res.send('error: ' + err)
+      })
+})
 
 inventory.post('/', (req, res) => {
-    
+    const totalAmount = parseFloat(req.body.amount) * parseFloat(req.body.quantity)
     const product = {
         producto: req.body.product,
         marca: req.body.brand,
         gramos: req.body.grams,
         cantidad: req.body.quantity,
         monto: req.body.amount,
-        montoTotal: req.body.totalAmount,
+        montoTotal: totalAmount,
         servicios: req.body.services,
+        serviciosId: req.body.servicesId,
         fecha: new Date()
     }
     

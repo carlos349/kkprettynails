@@ -15,44 +15,17 @@
 					<h1>{{TotalPrestadores}}</h1>
 				</div>
 			</div>
-			<div class="col-md-4">
-				<div class="forms">
-					<h2>Crear Servicio</h2>
-					<form v-on:submit.prevent="registroServicio">
-						<div class="form-group">
-							<label for="name">Nombre del servicio</label>
-							<input v-model="nombreServi" type="text" class="form-control inputs" placeholder="Nombre servicio">
-						</div>
-						<div class="form-group">
-							<label for="name">Tiempo</label>
-							<input v-model="tiempoServi" type="numbre" class="form-control inputs" placeholder="0 min">
-						</div>
-						<div class="form-group">
-							<label for="name">Precio</label>
-							<input v-model="precioServi" type="text" class="form-control inputs" placeholder="Precio">
-						</div>
-						<label for="name">Prestador</label>
-						<div class="form-group row" >
-								<label v-for="(manicurista, index) of manicuristas" class="conCheck col-sm-2">{{manicurista.nombre}}
-								<input :id="index" class="checkFirst" v-on:click="presSelect(manicurista.documento,index)" type="checkbox">
-								<span class="checkmark"></span>
-								</label>
-						</div>
-						<button class="btn w-100 add">Agregar</button>
-					</form>
-				</div>
-			</div>
-			<div class="col-md-8 ">
+			<div class="col-md-12 ">
 				<div class="shadow">
 					
-				<table  class="table table-dark" style="color:#fff !important" >
+				<table  class="table " style="color:#fff !important; background-color: #1F5673" >
 					<thead>
 						<tr>
 							 <th>
 								 Nombre
 							 </th>
 							 <th>
-								 Tiempo
+								 Tiempo Hr
 							 </th>
 							 <th>
 								 Precio
@@ -76,18 +49,18 @@
 									{{servicio.nombre}}
 								</td>
 								<td class="font-weight-bold">
-									{{servicio.tiempo}}
+									{{servicio.tiempo}} H
 								</td>
 								<td class="font-weight-bold">
-									{{servicio.precio}}
+									{{formatPrice(servicio.precio)}}
 								</td>
 								<td class="font-weight-bold">
 									{{servicio.prestadores.length}}
 								</td>
 								<td class="font-weight-bold text-center">
 									<button style="width:40%;" v-on:click="desactivarServicio(servicio._id)" v-if="servicio.active" class=" btn btn-success">Activo</button>
-									<button style="width:40%;" v-on:click="desactivarServicio(servicio._id)" v-if="!servicio.active" class=" btn btn-danger">Inactivo</button>
-									<button style="width:40%;" v-on:click="pasarDatosEdit(servicio.nombre, servicio.tiempo, servicio.precio, servicio.prestadores, servicio._id)" class=" btn btn-warning">Editar</button>
+									<button style="width:40%;" v-on:click="desactivarServicio(servicio._id)" v-if="!servicio.active" class=" btn btn-inactive">Inactivo</button>
+									<button style="width:40%;" v-on:click="pasarDatosEdit(servicio.nombre, servicio.tiempo, servicio.precio, servicio.prestadores, servicio._id)" class="btn add"><font-awesome-icon icon="edit" /></button>
 								</td>
 							</tr>
 						</tbody>
@@ -96,8 +69,13 @@
 				</div>
 			</div>
 			<div class="col-md-4" style="margin-top:20px;">
+				<div class="box">
+					<button class="btn-white" v-on:click="openModalCreateServices">
+						 Crear servicio
+					</button>
+				</div>
 				<div class="shadow">
-					<table  class="table table-dark" style="color:#fff !important" >
+					<table  class="table" style="color:#fff !important; background-color: #1F5673" >
 						<thead>
 							<tr>
 								<th>
@@ -127,47 +105,111 @@
 			</div>
 			<div class="col-md-8 chart">
 				<div class="small">
-					<line-chart v-if="loaded" :chartdata="chartdata" :options="options" :styles="myStyles"/>
+					<line-chart v-bind:style="{ 'color': 'red !important'}" v-if="loaded" :chartdata="chartdata" :options="options" :styles="myStyles"/>
 				</div>
 			</div>
 		</div>
 		<div class="modal fade" id="myModal2" tabindex="-1"  role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered"  >
-		    <div class="modal-content">
-		      <div class="modal-header bg-info">
-		        <h5 class="modal-title text-white font-weight-bold" id="exampleModalCenterTitle">Registro cliente</h5>
+		    <div class="modal-content p-3" v-bind:style="{ 'background-color': '#ffffff'}">
+		      <div class="modal-header"  v-bind:style="{ 'background-color': '#1F5673'}">
+		        <h5 class="modal-title text-white font-weight-bold" id="exampleModalCenterTitle">Actualizar servicio</h5>
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-		          <span aria-hidden="true" class="text-white">&times;</span>
+		          <span aria-hidden="true" class="text-white" v-bind:style="{ 'font-size': '1.5em'}">&times;</span>
 		        </button>
 		      </div>
 		      <div  class="modal-body">
 		        <form v-on:submit.prevent="actualizacionServicios">
-					<div class="form-group">
+					<div class="form-group row">
 						<label for="nombre">Nombre del servicio</label>
-						<input type="text" v-model="nombreServicio" class="form-control" name="nombreServicio" placeholder="Nombre del servicio" >
+						<input type="text" v-model="nombreServicio" class="form-control inputs" name="nombreServicio" placeholder="Nombre del servicio" >
 					</div>
-					<div class="form-group">
+					<div class="form-group row">
 						<label for="nombre">Tiempo</label>
-						<input type="text" v-model="tiempoServicio" class="form-control" name="nombreServicio" placeholder="0 min" >
+						<input v-model="tiempoServicio" v-on:keypress="maxCountEdit" type="number" min="1" max="3" class="form-control inputs" name="nombreServicio" placeholder="0 min" >
 					</div>
-					<div class="form-group">
+					<div class="form-group row">
 						<label for="nombre">Precio del servicio</label>
-						<input type="text" v-model="precioServicio" class="form-control" name="nombreServicio" placeholder="Precio del servicio" >
+						<input type="text" v-model="precioServicio" class="form-control inputs" name="nombreServicio" placeholder="Precio del servicio" >
 					</div>
-					<div class="form-group row" >
-						<label v-for="(manicurista, index) of manicuristas" class="conCheck col-sm-2">{{manicurista.nombre}}
-
-						<input :class="manicurista.documento" class="desMarc" v-on:click="presSelectTwo(manicurista.documento,index)"  type="checkbox">
-						
-						<span class="checkmark"></span>
-						</label>
+					<div class="form-group row" style="margin-top:-15px;">
+						<input type="text" id="myInputServEdit" v-on:keyup="myFunctionServEdit()" class="form-control buscar inputs" placeholder="Buscar prestadores"/>
+						<div class="ListaProcesar maxHeightEdit">
+							<table class="table table-light table-borderless table-striped" id="myTableServEdit">
+								<tbody>
+									<tr v-for="(manicurista, index) of manicuristas" >
+										<td class="font-weight-bold">
+											{{manicurista.nombre}}
+										</td>
+										<td class="font-weight-bold text-right">
+											<label class="conCheck col-sm-2">
+											<input :class="manicurista.documento" class="desMarc" v-on:click="presSelectTwo(manicurista.documento,index)" type="checkbox">
+											<span class="checkmark"></span>
+											</label>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
 					</div>
-					<button class="btn btn-lg btn-info btn-block" type="submit">Actualizar servicio</button>
+					<button class="btn btn-lg add btn-block" type="submit">Actualizar servicio</button>
 		        </form>
 		      </div>
 		    </div>
 		  </div>
 		</div>
+		<div class="modal fade" id="ModalCreateService" tabindex="-1"  role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		  <div class="modal-dialog modal-dialog-centered"  >
+		    <div class="modal-content p-3" v-bind:style="{ 'background-color': '#ffffff'}">
+		      <div class="modal-header" v-bind:style="{ 'background-color': '#1F5673'}">
+		        <h3 class="modal-title font-weight-bold text-white" id="exampleModalCenterTitle">Registro de servicio</h3>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close" >
+		          <span aria-hidden="true" class="text-white" v-bind:style="{ 'font-size': '1.5em'}">&times;</span>
+		        </button>
+		      </div>
+		      <div  class="modal-body">
+		        <form v-on:submit.prevent="registroServicio">
+						<div class="form-group row">
+							<label for="name">Nombre del servicio</label>
+							<input v-model="nombreServi" type="text" class="form-control inputs" placeholder="Nombre servicio">
+						</div>
+						<div class="form-group row">
+							<label for="name">Tiempo</label>
+							<input v-model="tiempoServi" v-on:keypress="maxCount" type="number" min="1" max="3" class="form-control inputs" placeholder="0 Horas">
+						</div>
+						<div class="form-group row">
+							<label for="name">Precio</label>
+							<input v-model="precioServi" type="text" class="form-control inputs" placeholder="Precio">
+						</div>
+						<div class="form-group row" style="margin-top:-15px;">
+							<div class="w-100">
+							<input type="text" id="myInputServ" v-on:keyup="myFunctionServ()" class="form-control buscar inputs mb-1 w-100" placeholder="Buscar prestadores"/>
+							<font-awesome-icon class="lupa-modal" icon="search"/></div>
+							<div class="ListaProcesar maxHeight">
+								<table class="table table-light table-borderless table-striped" id="myTableServ">
+									<tbody>
+										<tr  v-for="(manicurista, index) of manicuristas" >
+											<td>
+												{{manicurista.nombre}}
+											</td>
+											<td class="text-right">
+												<label class="conCheck col-sm-2">
+												<input :class="manicurista._id" class="checkFirst" v-on:click="presSelect(manicurista.documento,manicurista._id)" type="checkbox">
+												<span class="checkmark"></span>
+												</label>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<button class="btn w-100 add">Agregar</button>
+					</form>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		
 	</div>
 </template>
 
@@ -292,11 +334,21 @@
 					})
 				})
 			},
+			openModalCreateServices(){
+				$('#ModalCreateService').modal('show')
+			},
 			registroServicio(){
 				if (this.nombreServi == '' && this.precioServi == '' && this.tiempoServi == '') {
 					this.$swal({
 						type: 'error',
 						title: 'Llene todos los campos',
+						showConfirmButton: false,
+						timer: 1500
+					})
+				}else if(this.tiempoServi > 3){
+					this.$swal({
+						type: 'error',
+						title: 'El tiempo del servicio no puede ser mayor a 3 Horas',
 						showConfirmButton: false,
 						timer: 1500
 					})
@@ -342,22 +394,27 @@
 					}
 				}
 			},
-			presSelect(prestador,index){
+			presSelect(prestador, id){
+				console.log(prestador)
+				console.log($("."+id).prop("checked"))
+
 				if ($(".checkFirst").is(":checked") == false ) {
 					this.prestadoresSeleccionados = []
 				}
-				if ($("#"+index).prop("checked")!=true ) {
+				if ($("."+id).prop("checked")!=true ) {
 					for (let i = 0; i < this.prestadoresSeleccionados.length; i++) {
 						if (this.prestadoresSeleccionados[i] == prestador ) {
 							this.prestadoresSeleccionados.splice(i, 1)
 							break
 						}
 					}
+					console.log('entry here')
 				}
 				else{
 					let select = prestador
 					this.prestadoresSeleccionados.push(prestador)
 				}
+				console.log(this.prestadoresSeleccionados)
 			},
 			presSelectTwo(prestador,index){
 				if ($("."+prestador).prop("checked")!=true ) {
@@ -378,36 +435,66 @@
 			abrirModalRegistro(){
 				$('#myModal').modal('show')
 			},
-			actualizacionServicios(){
-				const id = this.idServicioEditar
-				axios.put('servicios/' + id, {
-					nombreServicio: this.nombreServicio,
-					tiempoServicio: this.tiempoServicio,
-					precioServicio: this.precioServicio,
-					prestadores: this.prestadoresSeleccionadosTwos,
-				})
-				.then(res => {
-					console.log(res)
-					if(res.data.status == 'Servicio actualizado'){
-						this.$swal({
-						  type: 'success',
-						  title: 'Servicio actualizado',
-						  showConfirmButton: false,
-						  timer: 1500
-						})
-						this.getServicios()
-						$('#myModal2').modal('hide')
-					}else{
-						this.$swal({
-						  type: 'error',
-						  title: 'El servicio ya existe',
-						  showConfirmButton: false,
-						  timer: 1500
-						})
-						this.getServicios()
-						$('#myModal2').modal('hide')
+			maxCount(){
+				setTimeout(() => {
+					if (this.tiempoServi > 3) {
+						this.tiempoServi = 3
 					}
-				})
+				}, 500)	
+			},
+			maxCountEdit(){
+				setTimeout(() => {
+					if (this.tiempoServicio > 3) {
+						this.tiempoServicio = 3
+					}
+				}, 500)	
+			},
+			actualizacionServicios(){
+				if (this.nombreServicio == '' && this.tiempoServicio == '' && this.precioServicio == '') {
+					this.$swal({
+						type: 'error',
+						title: 'Llene todos los campos',
+						showConfirmButton: false,
+						timer: 1500
+					})
+				}else if(this.tiempoServicio > 3){
+					this.$swal({
+						type: 'error',
+						title: 'El tiempo del servicio no puede ser mayor a 3 Horas',
+						showConfirmButton: false,
+						timer: 1500
+					})
+				}else{
+					const id = this.idServicioEditar
+					axios.put('servicios/' + id, {
+						nombreServicio: this.nombreServicio,
+						tiempoServicio: this.tiempoServicio,
+						precioServicio: this.precioServicio,
+						prestadores: this.prestadoresSeleccionadosTwos,
+					})
+					.then(res => {
+						console.log(res)
+						if(res.data.status == 'Servicio actualizado'){
+							this.$swal({
+							type: 'success',
+							title: 'Servicio actualizado',
+							showConfirmButton: false,
+							timer: 1500
+							})
+							this.getServicios()
+							$('#myModal2').modal('hide')
+						}else{
+							this.$swal({
+							type: 'error',
+							title: 'El servicio ya existe',
+							showConfirmButton: false,
+							timer: 1500
+							})
+							this.getServicios()
+							$('#myModal2').modal('hide')
+						}
+					})
+				}
 			},
 			pasarDatosEdit(nombre,tiempo, precio, prestadores, id){
 				this.prestadoresSeleccionadosTwos = []
@@ -425,7 +512,6 @@
 					}
 					
 				}
-				console.log(this.prestadoresSeleccionadosTwos)
 				$('#myModal2').modal('show')
 			},
 			getManicuristas(){
@@ -440,7 +526,7 @@
 				axios.get('/servicios/ServicesQuantityPerMonth')
 				.then(res => {
 					for (let index = 0; index < res.data.length; index++) {
-						this.servicesQuantityPerMonths.push(res.data[index].servicio.servicio)
+						this.servicesQuantityPerMonths.push(res.data[index].registro)
 						this.TotalCantidadServicios = parseFloat(this.TotalCantidadServicios) + parseFloat(this.servicesQuantityPerMonths[index].cantidad)
 					}
 				})
@@ -458,8 +544,46 @@
 					console.error(err)
 				})
 			},
-			
-			
+			formatPrice(value) {
+				let val = (value/1).toFixed(2).replace('.', ',')
+				return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+			},
+			myFunctionServEdit() {
+			  var input, filter, table, tr, td, i, txtValue;
+			  input = document.getElementById("myInputServEdit");
+			  filter = input.value.toUpperCase();
+			  table = document.getElementById("myTableServEdit");
+			  tr = table.getElementsByTagName("tr");
+			  for (i = 0; i < tr.length; i++) {
+			    td = tr[i].getElementsByTagName("td")[0];
+			    if (td) {
+			      txtValue = td.textContent || td.innerText;
+			      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+			        tr[i].style.display = "";
+			      } else {
+			        tr[i].style.display = "none";
+			      }
+			    }
+			  }
+			},
+			myFunctionServ() {
+			  var input, filter, table, tr, td, i, txtValue;
+			  input = document.getElementById("myInputServ");
+			  filter = input.value.toUpperCase();
+			  table = document.getElementById("myTableServ");
+			  tr = table.getElementsByTagName("tr");
+			  for (i = 0; i < tr.length; i++) {
+			    td = tr[i].getElementsByTagName("td")[0];
+			    if (td) {
+			      txtValue = td.textContent || td.innerText;
+			      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+			        tr[i].style.display = "";
+			      } else {
+			        tr[i].style.display = "none";
+			      }
+			    }
+			  }
+			}
 		},
 		computed: {
 			myStyles () {
@@ -485,7 +609,12 @@
 	.metrics p{
 		font-size: 1em;
 		margin-top: 10px;
-		
+	}
+	.maxHeight{
+		max-height: 150px;
+	}
+	.maxHeightEdit{
+		max-height: 150px;
 	}
 	.metrics h1{
 		float: right;
@@ -504,10 +633,12 @@
 		background-color:#fff;
 		box-shadow: 0 0.46875rem 2.1875rem rgba(4,9,20,0.03), 0 0.9375rem 1.40625rem rgba(4,9,20,0.03), 0 0.25rem 0.53125rem rgba(4,9,20,0.05), 0 0.125rem 0.1875rem rgba(4,9,20,0.03);
 		padding: 20px;
+		padding-bottom:5px;
 		overflow-x: hidden;
 		overflow-y:scroll;
-		max-height: 470px;
+		max-height: 500px;
 		height:auto;
+		color:#fff;
 		border-radius:5px;
 		border-radius:5px;
 	}
@@ -519,7 +650,7 @@
 	.Lista{
 		overflow-x: hidden;
 		overflow-y:scroll;
-		max-height: 420px;
+		max-height: 440px;
 		height:auto;
 		border-radius:5px;
 	}
@@ -535,6 +666,19 @@
 		height:auto;
 		border-radius:5px;
 	}
+	.btn-colorsEdit{
+		background-color:#495057;
+		color:#fff;
+	}
+	.btn-inactive{
+		background-color: #FC7753;
+		color:#fff;
+	}
+	.btn-active{
+		background-color: #18FF6D;
+		color:#495057;
+		
+	}
 	.ListaTwo::-webkit-scrollbar {
 		width: 8px;     /* Tamaño del scroll en vertical */
 		height: 8px;    /* Tamaño del scroll en horizontal */
@@ -543,14 +687,13 @@
 	.inputs{
 		border:none !important;
 		border-radius:0px !important;
-		border-bottom:2px solid #102229 !important;
+		border-bottom:2px solid #001514 !important;
 		background-color:transparent !important;
-		color:#102229 !important;
-		font-family: 'Raleway', sans-serif;
-		font-weight:600;
+		color:#001514 !important;
+		font-family: 'Roboto', sans-serif !important;
 	}
 	label{
-		color:#102229
+		color:#001514;
 	}
 	.selectMani{
 		background-color:#355461 !important;
@@ -559,23 +702,25 @@
 		border-bottom:2px solid #102229 !important;
 	}
 	.add{
-		background-color:#102229;
-		color:#fff;
+		background-color:#1F5673;
+		color: azure;
 		transition: all 0.5s ease-out;
-		font-family: 'Raleway', sans-serif;
+		font-family: 'Roboto', sans-serif !important;
 		font-weight:600;
+		
+		letter-spacing: 1px;
+		border-radius:5px;
 	}
 	.add:hover{
 		background-color:#ccc;
-		
+		color:#001514;
 	}
-
 	.conCheck {
 		display: inline-block;
 		margin-left: 5%;
 		position: relative;
 		padding-left: 35px;
-		margin-bottom: 12px;
+		margin-bottom: 20px;
 		cursor: pointer;
 		font-size: 0.8em;
 		-webkit-user-select: none;
@@ -600,12 +745,12 @@
 		left: 0;
 		height: 25px;
 		width: 25px;
-		background-color: #eee;
+		background-color: #1F5673;
 	}
 
 	/* On mouse-over, add a grey background color */
 	.conCheck:hover input ~ .checkmark {
-		background-color: #ccc;
+		background-color: #1F5673;
 	}
 
 	/* When the checkbox is checked, add a blue background */
@@ -638,23 +783,14 @@
 		transform: rotate(45deg);
 	}
 	.first{
-		background: #a73737;  /* fallback for old browsers */
-		background: -webkit-linear-gradient(to right, #7a2828, #a73737);  /* Chrome 10-25, Safari 5.1-6 */
-		background: linear-gradient(to right, #7a2828, #a73737); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
-
+		background:#1F5673; /* fallback for old browsers */
 	}
 	.second{
-		background: #FF512F;  /* fallback for old browsers */
-		background: -webkit-linear-gradient(to left, #F09819, #FF512F);  /* Chrome 10-25, Safari 5.1-6 */
-		background: linear-gradient(to left, #F09819, #FF512F); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
+		background:rgb(38, 91, 119); /* fallback for old browsers */
 	}
 	.three{
-		background: #3CA55C;  /* fallback for old browsers */
-		background: -webkit-linear-gradient(to left, #B5AC49, #3CA55C);  /* Chrome 10-25, Safari 5.1-6 */
-		background: linear-gradient(to left, #B5AC49, #3CA55C); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-	}
+		background:rgb(46, 93, 117);
+  	}
 	.forms h2{
 		font-family: 'Raleway', sans-serif;
 	}
@@ -663,5 +799,33 @@
 		margin-top: 20px;
 		box-shadow: 0 0.46875rem 2.1875rem rgba(4,9,20,0.03), 0 0.9375rem 1.40625rem rgba(4,9,20,0.03), 0 0.25rem 0.53125rem rgba(4,9,20,0.05), 0 0.125rem 0.1875rem rgba(4,9,20,0.03);
 		border-radius: 5px;
+	}
+	canvas{
+		color:red;
+	}
+	.box{
+    	width: 100%;	
+  	}
+	
+
+	.btn-white{
+		padding: 5px;
+		width: 100%;
+		margin-bottom: 5px;
+		background-color: #28a745;
+		color: #fff;
+		border: none;
+		font-size: 1.3em;
+		outline: none !important;
+	}
+	.btn-white:focus{
+		outline: none !important;
+	}
+
+	.lupa-modal{
+		position:absolute;
+		right:8%;
+		top:51%;
+		font-size:1.4em
 	}
 </style>

@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from '@/components/Home'
+import Procesar from '@/components/Procesar'
 import Login from '@/components/Login'
 import Register from '@/components/Register'
 import Profile from '@/components/Profile'
@@ -13,7 +13,9 @@ import Users from '@/components/Users'
 import Metricas from '@/components/Metricas'
 import Citas from '@/components/Citas'
 import reporteCierre from '@/components/reporteCierre'
+import reportePrestador from '@/components/reportePrestador'
 import Caja from '@/components/Caja'
+import Clientes from '@/components/Clientes'
 
 Vue.use(Router)
 
@@ -35,9 +37,9 @@ export default new Router({
       component: Citas
     },
     {
-      path: '/venta',
-      name: 'Home',
-      component: Home
+      path: '/procesar',
+      name: 'procesar',
+      component: Procesar
     },
     {
       path: '/Usuarios',
@@ -65,6 +67,11 @@ export default new Router({
       component: Gastos
     },
     {
+      path: '/clientes',
+      name: 'Clientes',
+      component: Clientes
+    },
+    {
       path: '/servicios',
       name: 'Servicios',
       component: Servicios
@@ -88,6 +95,11 @@ export default new Router({
       path: '/caja',
       name: 'Caja',
       component: Caja
+    },
+    {
+      path: '/reporteprestador',
+      name: 'reporteprestador',
+      component: reportePrestador
     },
   ]
 })

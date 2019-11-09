@@ -32,6 +32,7 @@ app.use('/metrics', require('./routes/Metrics.js'))
 app.use('/citas', require('./routes/Citas.js'))
 app.use('/expenses', require('./routes/Expenses.js'))
 app.use('/inventario', require('./routes/Inventario.js'))
+app.use('/clients', require('./routes/Clients.js'))
 
 //Static files
 

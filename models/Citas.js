@@ -8,10 +8,16 @@ const citasSchema = new Schema ({
   end: {
     type: String
   },
-  title: {
+  date: {
+    type:Date
+  },
+  services: {
+    type: Object
+  },
+  client: {
     type: String
   },
-  content: {
+  employe: {
     type: String
   }
 })
