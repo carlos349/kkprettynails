@@ -25,10 +25,10 @@ inventory.post('/', (req, res) => {
     Inventory.findOne({
         producto: req.body.product
     })
-    .then(product => {
-        if (!product) {
+    .then(done => {
+        if (!done) {
             Inventory.create(product)
-            .then(done => {
+            .then(ready => {
                 res.json({status: 'ok'})
             })
             .catch(err => {
