@@ -8,6 +8,9 @@ const citasSchema = new Schema ({
   end: {
     type: String
   },
+  timeline: {
+    type:Object
+  },
   date: {
     type:Date
   },

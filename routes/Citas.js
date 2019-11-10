@@ -23,6 +23,7 @@ citas.get('/:employe', async (req, res) => {
 citas.post('/getBlocks', (req,res) => {
   const employe = req.body.employe
   const date = req.body.date
+  const timeleft = req.body.timeleft
   const dateNow = new Date(date)
   dateNow.setDate(dateNow.getDate() + 1)
   formatDate = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()
@@ -30,67 +31,57 @@ citas.post('/getBlocks', (req,res) => {
   dateNow.setDate(dateNow.getDate() + 1)
   const formatDateTwo = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()
   const arrayBlock = []
-  const hoursPred = [
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true
-]
   Citas.find({
     $and:[
       {date: {$gte: formatDate, $lte: formatDateTwo}},
       {employe:employe}
     ]
-  })
+  }).sort({start:-1})
   .then(citas => {
     let entrada = 0
     let salida =0
-
-    for (let index = 0; index < citas.length; index++) {
-      if (citas[index].start[0] == 8 || citas[index].start[0] == 9) {
-        entrada = citas[index].start[0]
+    let timelineBlock = []
+    let timelineLast = []
+    let duracion = timeleft / 15
+    for (let c = 0; c < citas.length; c++) {
+      if (c == 0) {
+        timelineBlock.push([citas[c].end])
       }
-      else{
-        entrada = citas[index].start[0] + citas[index].start[1]
-      }
-      if (citas[index].end[0] == 9 ) {
-        salida = citas[index].end[0]
-      }
-      else{
-        salida = citas[index].end[0] + citas[index].end[1]
-      }
-      for (let c = 8; c < 21; c++) {
-        if (entrada == c) { 
-          
-          for (let t = parseFloat(entrada); t <= parseFloat(salida) - 1; t++) {
-            hoursPred[t] = false
-            
-          }
-        }
-        
+      else {
+        timelineBlock.push([citas[c].end])
+        timelineBlock[c-1].push(citas[c].start)
       }
       
     }
 
-    res.json(hoursPred)
+   
 
+    for (let index = 0; index < timelineBlock.length; index++) {
+      var separ = timelineBlock[index][0].split([':'])
+      
+      var compare = separ[0] + ":" + separ[1]
+      var bloq = []
+      bloq.push(timelineBlock[index][0])
+      for (let index = 0; index < duracion;index++ ) {
+        if (separ[1] < 45 || separ[1] == 00 ) {
+          separ[1] = parseFloat(separ[1] + 15)
+          bloq.push(separ[0]+ ":" + separ[1])
+          compare = separ[0]+ ":" + separ[1]
+          
+        }
+        else{
+          separ[0]++
+          separ[1] = "00"
+          bloq.push(separ[0]+ ":" + separ[1])
+          compare = separ[0]+ ":" + separ[1]
+        }
+      }
+      timelineLast.push(bloq)
+     console.log(timelineLast)
+    }
+
+    console.log(timelineLast)
+    res.send(timelineBlock)
   })
   .catch(err => {
     res.send(err)

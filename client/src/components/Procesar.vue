@@ -276,25 +276,26 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
   	},
  	created(){
 		this.getManicuristas();
-		this.arrayMani();
-		this.arrayUsers();
+		
+
 	},
 	methods: {
 			arrayMani(){
-				setTimeout(() => {
+				
 					for (let index = 0; index < this.manicuristas.length; index++) {
 						this.arregloManicuristas.push(this.manicuristas[index].nombre)
 					}
-				}, 2000);
+				
 			},
 			arrayUsers(){
-				setTimeout(() => {
+				
 					for (let index = 0; index < this.clients.length; index++) {
 						this.arregloClients.push(this.clients[index].nombre+'-'+this.clients[index].identidad)
 					}
-				}, 2000);
+				
 				console.log(this.arregloClients)
 			},
+			
 			searchClient(input){
 				if (input.length < 1) { return [] }
 					return this.arregloClients.filter(manicurista => {
@@ -322,11 +323,13 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 				axios.get('manicuristas')
 				.then(res => {
 					this.manicuristas = res.data
+					this.arrayMani()
 				}),
 				axios.get('users/clientes')
 				.then(res => {
 					this.clients = res.data
 					console.log(res.data)
+					this.arrayUsers()
 				})
 				axios.get('servicios')
 				.then(res => {
