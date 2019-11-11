@@ -23,26 +23,21 @@ citas.get('/:employe', async (req, res) => {
 citas.post('/getBlocks', (req,res) => {
   const employe = req.body.employe
   const date = req.body.date
-  const timeleft = req.body.timeleft
   const dateNow = new Date(date)
   dateNow.setDate(dateNow.getDate() + 1)
   formatDate = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()
 
   dateNow.setDate(dateNow.getDate() + 1)
   const formatDateTwo = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()
-  const arrayBlock = []
   Citas.find({
     $and:[
       {date: {$gte: formatDate, $lte: formatDateTwo}},
       {employe:employe}
     ]
-  }).sort({start:-1})
+  }).sort({sort:1})
   .then(citas => {
-    let entrada = 0
-    let salida =0
     let timelineBlock = []
     let timelineLast = []
-    let duracion = timeleft / 15
     for (let c = 0; c < citas.length; c++) {
       if (c == 0) {
         timelineBlock.push([citas[c].end])
@@ -51,37 +46,52 @@ citas.post('/getBlocks', (req,res) => {
         timelineBlock.push([citas[c].end])
         timelineBlock[c-1].push(citas[c].start)
       }
-      
     }
 
-   
-
     for (let index = 0; index < timelineBlock.length; index++) {
-      var separ = timelineBlock[index][0].split([':'])
-      
-      var compare = separ[0] + ":" + separ[1]
+      var separ
+      var separTwo
+      var TotalMinutes 
+      var SumHours
+      var SumMinutes
+      if (timelineBlock[index].length == 2) {
+        separ = timelineBlock[index][0].split(':')
+        separTwo = timelineBlock[index][1].split(':')
+        SumHours  = (parseFloat(separTwo[0]) - parseFloat(separ[0])) * 60
+        SumMinutes = parseFloat(separTwo[1]) - parseFloat(separ[1])
+        TotalMinutes = SumHours + SumMinutes
+      }else{
+        separ = timelineBlock[index][0].split(':')
+        SumHours = ((21 - parseFloat(separ[0])) * 60)  
+        SumMinutes = 0 - parseFloat(separ[1])
+        TotalMinutes = SumHours + SumMinutes
+      }
+      console.log(TotalMinutes)  
       var bloq = []
-      bloq.push(timelineBlock[index][0])
-      for (let index = 0; index < duracion;index++ ) {
-        if (separ[1] < 45 || separ[1] == 00 ) {
-          separ[1] = parseFloat(separ[1] + 15)
+      for (let index = 0; index <= TotalMinutes / 15; index++) {
+        if (index == 0) {
           bloq.push(separ[0]+ ":" + separ[1])
-          compare = separ[0]+ ":" + separ[1]
-          
-        }
-        else{
-          separ[0]++
-          separ[1] = "00"
-          bloq.push(separ[0]+ ":" + separ[1])
-          compare = separ[0]+ ":" + separ[1]
+        }else{
+          if (separ[1] < 45 || separ[1] == 00 ) {
+            separ[1] = parseFloat(separ[1]) + 15
+            bloq.push(separ[0]+ ":" + separ[1])
+            compare = separ[0]+ ":" + separ[1]
+            
+          }
+          else{
+            separ[0]++
+            separ[1] = "00"
+            bloq.push(separ[0]+ ":" + separ[1])
+            compare = separ[0]+ ":" + separ[1]
+          }
         }
       }
       timelineLast.push(bloq)
-     console.log(timelineLast)
+    //  console.log(timelineLast)
     }
 
-    console.log(timelineLast)
-    res.send(timelineBlock)
+    // console.log(timelineLast)
+    res.json(timelineBlock)
   })
   .catch(err => {
     res.send(err)

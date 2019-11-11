@@ -14,9 +14,8 @@
             <select id="manicuristas" v-model="empByCita" v-on:change="getCitasByEmploye()"  class="generar" name="manicuristas">
               <option selected="true
               " >{{this.empByCita}}</option>
-              <option
-               style="color:black">Todos</option>
-              <option style="color:black"  v-for="manicurista of manicuristas">
+              <option>Todos</option>
+              <option  v-for="manicurista in manicuristas" v-bind:key="manicurista._id">
                   {{manicurista.nombre}}
                 </option>
             </select>
@@ -269,7 +268,6 @@
       this.getManicuristas()
       this.getClients()
       this.getServicios()
-      this.arrayClient()
     },
     methods: {
       clickedButton: function() {
@@ -277,14 +275,12 @@
       },
       arrayClient(){
 				setTimeout(() => {
-          console.log(this.clients)
 					for (let index = 0; index < this.clients.length; index++) {
 						this.arregloClient.push(this.clients[index].nombre)
 					}
 				}, 4000);
 			},
       search(input) {
-				console.log(this.arregloClient)
 				if (input.length < 1) { return [] }
 				return this.arregloClient.filter(client => {
 					return client.toLowerCase()
@@ -313,20 +309,43 @@
           date: this.fecha
         })
         .then(res => {
-          for (let index = 8; index < 21; index++) {
-            let duracionG = parseFloat(index) + parseFloat(this.duracion)
-            if (res.data[index]) {
-              for (let c = index ; c < duracionG; c++) {
-                if (res.data[c] == false) {
-                  for (let t = index ; t < duracionG; t++) {
-                    res.data[t] = false
-                    
-                  }
-                }
-              }
-            }    
+          for (let index = 0; index < res.data.length; index++) {
+            var separ
+            var separTwo
+            var TotalMinutes 
+            var SumHours
+            var SumMinutes
+            
+            if (res.data[index].length == 2) {
+              separ = res.data[index][0].split(':')
+              separTwo = res.data[index][1].split(':')
+              SumHours  = ((parseFloat(separTwo[0]) - parseFloat(separ[0])) * 60)
+              SumMinutes = parseFloat(separTwo[1]) - parseFloat(separ[1])
+              TotalMinutes = SumHours + SumMinutes
+            }else{
+              separ = res.data[index][0].split(':')
+              SumHours = ((21 - parseFloat(separ[0])) * 60)  
+              SumMinutes = 0 - parseFloat(separ[1])
+              TotalMinutes = SumHours + SumMinutes
+            }
+
+            console.log(TotalMinutes)
           }
-          this.bloquesHora = res.data
+          
+          // for (let index = 8; index < 21; index++) {
+          //   let duracionG = parseFloat(index) + parseFloat(this.duracion)
+          //   if (res.data[index]) {
+          //     for (let c = index ; c < duracionG; c++) {
+          //       if (res.data[c] == false) {
+          //         for (let t = index ; t < duracionG; t++) {
+          //           res.data[t] = false
+                    
+          //         }
+          //       }
+          //     }
+          //   }    
+          // }
+          // this.bloquesHora = res.data
           console.log(res.data)
         })
         .catch(err => {
@@ -350,6 +369,7 @@
         axios.get('citas/getClients')
         .then(res => {
           this.clients = res.data
+          this.arrayClient();
         })
       },
 
@@ -837,10 +857,6 @@
     outline:none;
   }
 
-  #manicuristas option{
-    font-family: 'Raleway', sans-serif;
-  }
-
   .armarCita{
     font-weight: 300 !important;
   }
@@ -868,6 +884,10 @@
     padding-left: 8px;
     padding-right: 8px;
     border-radius: 50%;
+  }
+  option{
+    color:azure;  
+    padding: 10px;
   }
   .botonW{
     background-color: rgba(0,0,0,.12);

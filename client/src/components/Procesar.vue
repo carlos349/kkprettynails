@@ -293,7 +293,7 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 						this.arregloClients.push(this.clients[index].nombre+'-'+this.clients[index].identidad)
 					}
 				
-				console.log(this.arregloClients)
+			
 			},
 			
 			searchClient(input){
@@ -328,7 +328,6 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 				axios.get('users/clientes')
 				.then(res => {
 					this.clients = res.data
-					console.log(res.data)
 					this.arrayUsers()
 				})
 				axios.get('servicios')
