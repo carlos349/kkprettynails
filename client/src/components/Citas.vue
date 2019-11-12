@@ -249,7 +249,6 @@
         bloquesHora : [],
         salida:'',
         salidaMuestra: ''
-
       }
     },
     beforeCreate() {
@@ -309,6 +308,7 @@
           date: this.fecha
         })
         .then(res => {
+          console.log(res.data)
           for (let index = 0; index < res.data.length; index++) {
             var separ
             var separTwo
@@ -328,7 +328,27 @@
               SumMinutes = 0 - parseFloat(separ[1])
               TotalMinutes = SumHours + SumMinutes
             }
-
+            const totalFor = parseInt(TotalMinutes / this.duracion)
+            var input, output
+            var minutes = parseInt(separ[1])
+            var hours = parseInt(separ[0])
+            for (let indexTwo = 0; indexTwo < totalFor; indexTwo++) {
+                for (let indexThree = 0; indexThree < this.duracion / 15; indexThree++) {
+                    minutes = parseInt(minutes) + 15
+                    if (minutes == 60) {
+                      hours++
+                      minutes = "00"
+                    }
+                }
+                if (indexTwo == 0) {
+                  input = res.data[index][0]
+                }else{
+                  input = output
+                }
+                output = hours+":"+minutes
+                this.bloquesHora.push(input+"/"+output)
+            }
+            console.log(this.bloquesHora)
             console.log(TotalMinutes)
           }
           
