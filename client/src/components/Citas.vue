@@ -44,11 +44,11 @@
 
     <div class="modal fade genCita bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-xl">
-      <div  class="modal-content armarCita p-3">
-        <div style="box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);background-color:rgba(0, 0, 0, 0.5)" class="container p-3">
+      <div  class="modal-content armarCita p-3" style="background-color:#1f5673">
+        <div  class="container p-4" style="background-color:white">
           <div class="row">
             <div style="font-size:1.5em;color:#011627;" class="col-md-12 text-center p-3">Arma tu cita</div>
-            <div style="background-color:rgba(0, 0, 0, 0.4);color:azure;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14)" class="col-md-12 font-weight-bold px-3">
+            <div style="background-color:rgba(31, 86, 115, 0.707);color:azure;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14)" class="col-md-12 font-weight-bold px-3">
               <div style="margin:auto" class="row text-center">
                 <div class="wOne p-3 mx-auto col-md-3 marc">Servicio</div>
                 <div class="wTwo p-3 mx-auto col-md-3">Manicurista</div>
@@ -56,15 +56,15 @@
               </div>
             </div>
             <div class="col-md-12 p-3 processOne">
-              <div class="col-md-12 text-center p-2" style="font-size:1.2em;color:#9e9e9e">Selecciona los servicios a utlizar</div>
+              <div class="col-md-12 text-center p-2" style="font-size:1.2em;color:#1f5673">Selecciona los servicios a utlizar</div>
               <div style="height:40vh;overflow:hidden;overflow-x: hidden;
-		overflow-y:scroll;" class="scroll row p-1" >
+		overflow-y:scroll;background-color: rgba(31, 86, 115, 0.707);border-radius:5px;" class="scroll row p-3" >
                 <div class="col-md-6" v-for="(servicio,index) of servicios">
                   <div class="p-2 servPretty" v-on:click="marcarServicio(servicio.prestadores,servicio.nombre,servicio.tiempo,index)">
                     <div class="row">
                       <div class="serviInfo col-md-2"><font-awesome-icon icon="user-check" class="mr-2"/>{{servicio.prestadores.length}}</div>
                       <div class="serviInfo col-md-7">{{servicio.nombre}}</div>
-                      <div class="col-md-3">{{servicio.tiempo}}H <span :id="index" class="serviInfoPrestadores ml-2">0</span> </div> 
+                      <div class="col-md-3">{{servicio.tiempo}}H <span :id="'p'+index" class="serviInfoPrestadores ml-2">0</span> </div> 
                     </div>
                   </div>
                 </div>   
@@ -73,12 +73,12 @@
             <div class="col-md-12 p-3 processTwo">
               <div class="col-md-12 text-center p-2" style="font-size:1.2em;color:#9e9e9e">Selecciona una manicurista</div>
               <div style="height:40vh;overflow:hidden;overflow-x: hidden;
-		          overflow-y:scroll;" class="scroll row p-1" >
+		          overflow-y:scroll;background-color: rgba(31, 86, 115, 0.707);border-radius:5px" class="scroll row p-1" >
                 <div class="col-md-4" v-for="(manicurista,index) of manicuristaCita">
                   <div v-for="(mani,index) of manicuristas" class="p-3 col-md-12" v-if="mani.documento === manicurista ">
                     
                       <div style="cursor:pointer;" v-on:click="selectManic(mani.nombre,index)" class="fotoMani col-md-12 text-center"><img :id="'mani'+index" class="imgMani" src="../assets/silueta-mujer.jpg" alt=""></div>
-                      <div  class="col-md-12 text-center"> {{mani.nombre}}</div>
+                      <div  class="col-md-12 text-center text-white"> {{mani.nombre}}</div>
                     
                   </div>
                 </div>   
@@ -101,7 +101,17 @@
                       @submit="handleSubmit"
                       class="auto clientB">
                     </autocomplete></div>
-                    <div class="col-sm-7"><input v-on:change="insertDate()" v-model="fecha" class="hora" type="date" name="" id="Dat"></div>
+                    <div class="col-sm-7">
+                      <!-- <date-pick class="form-control inputss"
+                        v-model="fecha"
+                        :weekdays=Days
+                        :months=months
+                        v-on:change="insertDate()"
+                        :nextMonthCaption="'Siguiente mes'"
+                        :prevMonthCaption="'Mes anterior'"
+							        ></date-pick> -->
+                      <input  v-model="fecha" class="hora" v-on:change="insertDate()" type="date" name="" id="Dat">
+                      </div>
                     </div>  
                   </div>
                   <div class="col-md-4">
@@ -119,11 +129,25 @@
                   <div class="col-sm-12">
                     <div class="horas row">
                       <div class="col-sm-12 text-center"><h2>Horarios disponibles</h2></div>
-                      <div v-for="(bloques, index) of bloquesHora" v-if="bloques" :id="index" class="col-sm-1 mx-auto botonHora" v-on:click="sumHour(index)">{{index}}:00</div>
-                      <br>
-                      <div class="col-sem-12 text-center mx-auto p-3"><h3 class="text-center">{{this.salidaMuestra}}</h3></div>
-                      
-                     
+                      <div class="timeline">
+                        <div v-for="(bloqueHora ,index) of bloquesHora">
+                          <div v-if="index%2 == 0" class="lineCont left" v-on:click="selectTime(index,bloqueHora.Horario)">
+                          <div :id="'t'+index" class="content">
+                            <h4 style="color:black">{{bloqueHora.Horario}}</h4>
+                          
+                          </div>
+                        </div>
+                        <div  v-else class="lineCont right" v-on:click="selectTime(index,bloqueHora.Horario)" >
+                          <div :id="'t'+index" class="content">
+                            <h4 style="color:black">{{bloqueHora.Horario}}</h4>
+                           
+                          </div>
+                        </div>
+                        </div>
+                        
+                        
+                        
+                      </div>
                     </div>
                   </div> 
                 </div>
@@ -187,7 +211,8 @@
   import VueCal from 'vue-cal'
   import 'vue-cal/dist/vuecal.css'
   import Autocomplete from '@trevoreyre/autocomplete-vue'
-
+  import DatePick from 'vue-date-pick';
+	import 'vue-date-pick/dist/vueDatePick.css';
   class Event {
     constructor (start, end, title, content) {
       this.start = start
@@ -215,7 +240,8 @@
 
   export default  {
     components: {
-      VueCal
+      VueCal,
+      DatePick
     },
     data () {
       return {
@@ -235,7 +261,7 @@
         min: '',
         entrada: 'Seleccione',
         salida:'Seleccione',
-        fecha: '',
+        fecha: 'Click para seleccionar fecha',
         clients: [],
         nombreCliente: '',
         selectedEvent: {},
@@ -248,7 +274,14 @@
         empByCita : 'Manicurista',
         bloquesHora : [],
         salida:'',
-        salidaMuestra: ''
+        salidaMuestra: '',
+        Days:['Lun', 'Mar', 'Mier', 'Jue', 'Vie', 'Sab', 'Dom'],
+				months:[
+					'Enero', 'Febrero', 'Marzo', 'Abril',
+					'Mayo', 'Junio', 'Julio', 'Agosto',
+					'Septiembre', 'Octubre', 'Noviembre', 'Diciembrer'
+        ],
+        sort: ''
       }
     },
     beforeCreate() {
@@ -346,7 +379,7 @@
                   input = output
                 }
                 output = hours+":"+minutes
-                this.bloquesHora.push(input+"/"+output)
+                this.bloquesHora.push({Horario:input+"/"+output})
             }
             console.log(this.bloquesHora)
             console.log(TotalMinutes)
@@ -506,7 +539,7 @@
           console.log(this.servicioCita)
         }
         else{
-          var counter = $("#"+index).text()
+          var counter = $("#p"+index).text()
           var inspector = true
           var inspector2 = false
           console.log(counter)
@@ -514,7 +547,7 @@
             console.log(nombre + "("+ counter +")" + "-" + this.servicioCita.length )
             if (this.servicioCita[index] == nombre || this.servicioCita[index] == nombre + "("+ counter +")" ) {
               this.servicioCita.splice(index,1)
-              this.servicioCita.push(nombre+ "(" + (parseFloat(counter) + parseFloat(1)) + ")")
+              this.servicioCita.push(nombre+ "(" + (parseFloat(counter) +1) + ")")
               console.log(this.servicioCita)
               inspector = false
               break  
@@ -542,7 +575,7 @@
         $("#redo").show()
         $(".Sig").addClass("marcar")
         $(".Sig").prop("disabled", false)
-        $("#"+index).text(parseFloat($("#"+index).text())+1)
+        $("#p"+index).text(parseFloat($("#p"+index).text())+1)
       },
       redo(){
         $("#redo").hide()
@@ -604,19 +637,9 @@
           $(".Sig").text("Siguiente")
         }
       },
-      sumHour(hora){
-        this.hora = hora
-        this.salida = parseFloat(hora) + parseFloat(this.duracion)
-        this.salidaMuestra = "Hora de salida:" + (parseFloat(hora) + parseFloat(this.duracion)) + ":00"
-        $(".Sig").prop("disabled", false)
-        $(".Sig").addClass("marcar")
-        $(".botonHora").removeClass("botonHoraMarc")
-        $("#"+hora).addClass("botonHoraMarc")
-        console.log(this.salida)
-      },
+      
       registroCita(){
-        const horarioEntrada = this.hora + ":00"
-        const horarioSalida = this.salida + ":00"
+        
         const mani = this.manicuristaFinal
 
         axios.post('citas', {
@@ -688,6 +711,21 @@
         $(".Sig").addClass("marcar")
         $(".imgMani").removeClass("maniMarcado")
         $("#mani"+index).addClass("maniMarcado")
+        
+      },
+
+      selectTime(index,hora){
+        var horaSp = hora.split("/")
+        this.hora = horaSp[0]
+        this.salida = horaSp[1]
+        var sortSp = this.hora.split(":") 
+        this.sort = sortSp[0]+sortSp[1]
+
+        console.log(this.hora + this.salida + "---" + this.sort)
+        $(".content").removeClass("contentMarc")
+        $("#t"+index).addClass("contentMarc")
+        $(".Sig").addClass("marcar")
+        $(".Sig").prop("disabled", false)
         
       },
       
@@ -960,7 +998,7 @@
   }
 
   .hora{
-    background-color: rgba(0,0,0,.5);
+    background-color: rgba(31, 86, 115, 0.707);
     box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);
     padding: 15px;
     border-radius: 5px;
@@ -972,9 +1010,15 @@
     text-align: center
   }
   .horas{
-    background-color: rgba(0,0,0,.5);
+    background-color: rgba(31, 86, 115, 0.707);
     padding: 10px;
     color: white;
+    border-radius: 5px;
+    height: auto; 
+    max-height: 30vh;
+    overflow: hidden scroll; 
+     
+    border-radius: 5px;
   }
   .boxDates{
     position:fixed;
@@ -1120,4 +1164,174 @@
     text-align: center;
     cursor: pointer;
   }
+
+  /* timeline */
+    .timeline {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* The actual timeline (the vertical ruler) */
+.timeline::after {
+  content: '';
+  position: absolute;
+  width: 6px;
+  background-color: white;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  margin-left: -3px;
+}
+
+/* Container around content */
+.lineCont {
+  padding: 10px 40px;
+  position: relative;
+  background-color: inherit;
+  width: 100%;
+}
+
+/* The circles on the timeline */
+.lineCont::after {
+  content: '';
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  right: -17px;
+  background-color: white;
+  border: 4px solid #1F5673;
+  top: 15px;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+/* Place the container to the left */
+.left {
+  left: -52%;
+}
+
+/* Place the container to the right */
+.right {
+  left: 52%;
+}
+
+/* Add arrows to the left container (pointing right) */
+.left::before {
+  content: " ";
+  height: 0;
+  position: absolute;
+  top: 22px;
+  width: 0;
+  z-index: 1;
+  right: 30px;
+  border: medium solid white;
+  border-width: 10px 0 10px 10px;
+  border-color: transparent transparent transparent white;
+}
+
+/* Add arrows to the right container (pointing left) */
+.right::before {
+  content: " ";
+  height: 0;
+  position: absolute;
+  top: 22px;
+  width: 0;
+  z-index: 1;
+  left: 30px;
+  border: medium solid white;
+  border-width: 10px 10px 10px 0;
+  border-color: transparent white transparent transparent;
+}
+
+/* Fix the circle for containers on the right side */
+.right::after {
+  left: -16px;
+}
+
+/* The actual content */
+.content {
+  cursor: pointer;
+  padding: 5px 20px;
+  background-color: white;
+  border: solid 4px white;
+  position: relative;
+  border-radius: 6px;
+}
+
+.contentMarc {
+  cursor: pointer;
+  padding: 5px 20px;
+  color: white;
+  background-color: white;
+  border: solid 4px #1f5673;
+  position: relative;
+  border-radius: 6px;
+}
+
+.content:hover {
+  border: solid 4px #1F5673;
+}
+
+/* Media queries - Responsive timeline on screens less than 600px wide */
+@media screen and (max-width: 600px) {
+  /* Place the timelime to the left */
+  .timeline::after {
+  left: 31px;
+  }
+  
+  /* Full-width containers */
+  .lineCont {
+  width: 100%;
+  padding-left: 70px;
+  padding-right: 25px;
+  }
+  
+  /* Make sure that all arrows are pointing leftwards */
+  .lineCont::before {
+  left: 60px;
+  border: medium solid white;
+  border-width: 10px 10px 10px 0;
+  border-color: transparent white transparent transparent;
+  }
+
+  /* Make sure all circles are at the same spot */
+  .left::after, .right::after {
+  left: 15px;
+  }
+  
+  /* Make all right containers behave like the left ones */
+  .right {
+  left: 0%;
+  }
+}
+
+.inputss input{
+		width: 100%;
+    
+		border:none !important;
+		border-radius:0px !important;
+		border-bottom:2px solid #001514 !important;
+		background-color:transparent !important;
+		color:#001514 !important;
+		font-family: 'Roboto', sans-serif !important;
+	}
+
+  .vdpCell.selected .vdpCellContent{
+		background-color: rgb(31, 86, 115) !important;
+		
+	}
+	.vdpCell:hover .vdpCellContent{
+		background-color: rgb(31, 86, 115) !important;
+	}
+	.vdpCell.today{
+		color:rgb(31, 86, 115) !important;
+	}
+	.vdpArrowNext:after{
+		border-left-color:rgb(31, 86, 115) !important;
+	}
+	.vdpArrowPrev:after{
+		border-right-color:rgb(31, 86, 115) !important;
+	}
+  /* end timeline  */
 </style>
