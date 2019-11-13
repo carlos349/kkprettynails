@@ -37,60 +37,33 @@ citas.post('/getBlocks', (req,res) => {
   }).sort({sort:1})
   .then(citas => {
     let timelineBlock = []
-    let timelineLast = []
-    for (let c = 0; c < citas.length; c++) {
-      if (c == 0) {
-        timelineBlock.push([citas[c].end])
-      }
-      else {
-        timelineBlock.push([citas[c].end])
-        timelineBlock[c-1].push(citas[c].start)
-      }
-    }
-
-    for (let index = 0; index < timelineBlock.length; index++) {
-      var separ
-      var separTwo
-      var TotalMinutes 
-      var SumHours
-      var SumMinutes
-      if (timelineBlock[index].length == 2) {
-        separ = timelineBlock[index][0].split(':')
-        separTwo = timelineBlock[index][1].split(':')
-        SumHours  = (parseFloat(separTwo[0]) - parseFloat(separ[0])) * 60
-        SumMinutes = parseFloat(separTwo[1]) - parseFloat(separ[1])
-        TotalMinutes = SumHours + SumMinutes
-      }else{
-        separ = timelineBlock[index][0].split(':')
-        SumHours = ((21 - parseFloat(separ[0])) * 60)  
-        SumMinutes = 0 - parseFloat(separ[1])
-        TotalMinutes = SumHours + SumMinutes
-      }
-      console.log(TotalMinutes)  
-      var bloq = []
-      for (let index = 0; index <= TotalMinutes / 15; index++) {
-        if (index == 0) {
-          bloq.push(separ[0]+ ":" + separ[1])
-        }else{
-          if (separ[1] < 45 || separ[1] == 00 ) {
-            separ[1] = parseFloat(separ[1]) + 15
-            bloq.push(separ[0]+ ":" + separ[1])
-            compare = separ[0]+ ":" + separ[1]
-            
+    if (citas.length == 0) {
+      timelineBlock.push(["8:00","21:00"])
+    }else{
+      if (citas[0].start == "8:00") {
+        for (let c = 0; c < citas.length; c++) {
+          if (c == 0) {
+            timelineBlock.push([citas[c].end])
           }
-          else{
-            separ[0]++
-            separ[1] = "00"
-            bloq.push(separ[0]+ ":" + separ[1])
-            compare = separ[0]+ ":" + separ[1]
+          else {
+            timelineBlock.push([citas[c].end])
+            timelineBlock[c-1].push(citas[c].start)
+          }
+        }
+      }else{
+        for (let c = 0; c <= citas.length; c++) {
+          if (c == 0) {
+            timelineBlock.push(["8:00"])
+          }
+          else {
+              timelineBlock.push([citas[c-1].end])
+              timelineBlock[c-1].push(citas[c-1].start)
           }
         }
       }
-      timelineLast.push(bloq)
-    //  console.log(timelineLast)
+
     }
 
-    // console.log(timelineLast)
     res.json(timelineBlock)
   })
   .catch(err => {
@@ -131,16 +104,12 @@ citas.post('/', (req, res) => {
   const dataCitas = {
     start: req.body.entrada,
     end: req.body.salida,
+    sort:req.body.sort,
     date: Datee,
     services: req.body.servicios,
     client: req.body.cliente,
     employe: req.body.manicuristas
   }
-
-  formatDate = DateSelect.getFullYear() +"-"+(DateSelect.getMonth() + 1)+"-"+DateSelect.getDate()
-
-  DateSelect.setDate(DateSelect.getDate() + 1)
-  const formatDateTwo = DateSelect.getFullYear() +"-"+(DateSelect.getMonth() + 1)+"-"+DateSelect.getDate()
     
   Citas.create(dataCitas)
   .then(citas => {

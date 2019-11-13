@@ -310,7 +310,7 @@
 					for (let index = 0; index < this.clients.length; index++) {
 						this.arregloClient.push(this.clients[index].nombre)
 					}
-				}, 4000);
+				}, 2000);
 			},
       search(input) {
 				if (input.length < 1) { return [] }
@@ -326,7 +326,7 @@
 				console.log(this.clientsSelect)
       },
       insertDate(){
-        console.log(this.fecha)
+        this.bloquesHora = []
         if ($("#Dat").val() == '') {
           $(".horas").prop("disabled", true)
           $(".Sig").removeClass("marcar")
@@ -382,24 +382,9 @@
                 this.bloquesHora.push({Horario:input+"/"+output})
             }
             console.log(this.bloquesHora)
-            console.log(TotalMinutes)
+            
           }
-          
-          // for (let index = 8; index < 21; index++) {
-          //   let duracionG = parseFloat(index) + parseFloat(this.duracion)
-          //   if (res.data[index]) {
-          //     for (let c = index ; c < duracionG; c++) {
-          //       if (res.data[c] == false) {
-          //         for (let t = index ; t < duracionG; t++) {
-          //           res.data[t] = false
-                    
-          //         }
-          //       }
-          //     }
-          //   }    
-          // }
-          // this.bloquesHora = res.data
-          console.log(res.data)
+        
         })
         .catch(err => {
           console.log(err)
@@ -536,19 +521,16 @@
           for (let index = 0; index < prestadores.length; index++) {
             this.manicuristaCita.push(prestadores[index])
           }
-          console.log(this.servicioCita)
         }
         else{
           var counter = $("#p"+index).text()
           var inspector = true
           var inspector2 = false
-          console.log(counter)
+          
           for (let index = 0; index < this.servicioCita.length; index++) {
-            console.log(nombre + "("+ counter +")" + "-" + this.servicioCita.length )
             if (this.servicioCita[index] == nombre || this.servicioCita[index] == nombre + "("+ counter +")" ) {
               this.servicioCita.splice(index,1)
               this.servicioCita.push(nombre+ "(" + (parseFloat(counter) +1) + ")")
-              console.log(this.servicioCita)
               inspector = false
               break  
             }
@@ -643,8 +625,9 @@
         const mani = this.manicuristaFinal
 
         axios.post('citas', {
-          entrada: horarioEntrada,
-          salida: horarioSalida,
+          entrada: this.hora,
+          salida: this.salida,
+          sort: this.sort,
           fecha: this.fecha,
           cliente: this.clientsSelect,
           servicios: this.servicioCita,
@@ -675,6 +658,7 @@
             $(".imgMani").removeClass("maniMarcado")
             this.min = ''
             this.hora = ''
+            this.sort = ''
             this.fecha = ''
             this.salida = ''
             this.salidaMuestra = ''
