@@ -704,7 +704,7 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 		color:azure !important;
 	}
 	.autocomplete-result-list{
-		background-color: #102229;
+		background-color: #1F5673;
 		color:azure;
 	}
 	.autocomplete-result-list li{

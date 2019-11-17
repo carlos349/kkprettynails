@@ -94,23 +94,32 @@
                   </div>
                   <div class="col-md-12">
                     <div class="row">
-                       <div class="col-sm-5"><autocomplete	
-                      :search="search"
-                      placeholder="Buscar cliente"
-                      aria-label="Buscar cliente"
-                      @submit="handleSubmit"
-                      class="auto clientB">
-                    </autocomplete></div>
+                      <div class="col-sm-5">
+                        <autocomplete	
+                          :search="search"
+                          placeholder="Buscar cliente"
+                          aria-label="Buscar cliente"
+                          @submit="handleSubmit"
+                          class="auto clientB">
+                        </autocomplete>
+                      </div>
                     <div class="col-sm-7">
-                      <!-- <date-pick class="form-control inputss"
+                      <div class="row">
+                        <div class="col-3 pr-1">
+                          <button class="btn btn-date" v-on:click="insertDate()">
+                            Elegir fecha
+                          </button>
+                        </div>
+                        <date-pick class="form-control inputssDate col-9"
                         v-model="fecha"
                         :weekdays=Days
                         :months=months
-                        v-on:change="insertDate()"
                         :nextMonthCaption="'Siguiente mes'"
                         :prevMonthCaption="'Mes anterior'"
-							        ></date-pick> -->
-                      <input  v-model="fecha" class="hora" v-on:change="insertDate()" type="date" name="" id="Dat">
+							        ></date-pick>
+                      </div>
+                      
+                      <!-- <input  v-model="fecha" class="hora" v-on:change="insertDate()" type="date" name="" id="Dat"> -->
                       </div>
                     </div>  
                   </div>
@@ -336,59 +345,72 @@
           $(".horas").prop("disabled", false)
          
         }
-        axios.post('citas/getBlocks', {
-          employe: this.manicuristaFinal,
-          date: this.fecha
+        this.$swal({
+          title: '¿Va a querer un diseño?',
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Si',
+          cancelButtonText: 'No',
+          showCloseButton: true,
+          showLoaderOnConfirm: true
         })
-        .then(res => {
-          console.log(res.data)
-          for (let index = 0; index < res.data.length; index++) {
-            var separ
-            var separTwo
-            var TotalMinutes 
-            var SumHours
-            var SumMinutes
-            
-            if (res.data[index].length == 2) {
-              separ = res.data[index][0].split(':')
-              separTwo = res.data[index][1].split(':')
-              SumHours  = ((parseFloat(separTwo[0]) - parseFloat(separ[0])) * 60)
-              SumMinutes = parseFloat(separTwo[1]) - parseFloat(separ[1])
-              TotalMinutes = SumHours + SumMinutes
-            }else{
-              separ = res.data[index][0].split(':')
-              SumHours = ((21 - parseFloat(separ[0])) * 60)  
-              SumMinutes = 0 - parseFloat(separ[1])
-              TotalMinutes = SumHours + SumMinutes
-            }
-            const totalFor = parseInt(TotalMinutes / this.duracion)
-            var input, output
-            var minutes = parseInt(separ[1])
-            var hours = parseInt(separ[0])
-            for (let indexTwo = 0; indexTwo < totalFor; indexTwo++) {
-                for (let indexThree = 0; indexThree < this.duracion / 15; indexThree++) {
-                    minutes = parseInt(minutes) + 15
-                    if (minutes == 60) {
-                      hours++
-                      minutes = "00"
-                    }
-                }
-                if (indexTwo == 0) {
-                  input = res.data[index][0]
-                }else{
-                  input = output
-                }
-                output = hours+":"+minutes
-                this.bloquesHora.push({Horario:input+"/"+output})
-            }
-            console.log(this.bloquesHora)
-            
+        .then(result => {
+          if (result.value) {
+            this.duracion = this.duracion + 15
           }
-        
-        })
-        .catch(err => {
-          console.log(err)
-        })
+          axios.post('citas/getBlocks', {
+            employe: this.manicuristaFinal,
+            date: this.fecha
+          })
+          .then(res => {
+            console.log(res.data)
+            for (let index = 0; index < res.data.length; index++) {
+              var separ
+              var separTwo
+              var TotalMinutes 
+              var SumHours
+              var SumMinutes
+              
+              if (res.data[index].length == 2) {
+                separ = res.data[index][0].split(':')
+                separTwo = res.data[index][1].split(':')
+                SumHours  = ((parseFloat(separTwo[0]) - parseFloat(separ[0])) * 60)
+                SumMinutes = parseFloat(separTwo[1]) - parseFloat(separ[1])
+                TotalMinutes = SumHours + SumMinutes
+              }else{
+                separ = res.data[index][0].split(':')
+                SumHours = ((21 - parseFloat(separ[0])) * 60)  
+                SumMinutes = 0 - parseFloat(separ[1])
+                TotalMinutes = SumHours + SumMinutes
+              }
+              const totalFor = parseInt(TotalMinutes / this.duracion)
+              var input, output
+              var minutes = parseInt(separ[1])
+              var hours = parseInt(separ[0])
+              for (let indexTwo = 0; indexTwo < totalFor; indexTwo++) {
+                    for (let indexThree = 0; indexThree < this.duracion / 15; indexThree++) {
+                        minutes = parseInt(minutes) + 15
+                        if (minutes == 60) {
+                          hours++
+                          minutes = "00"
+                        }
+                    }
+                    if (indexTwo == 0) {
+                      input = res.data[index][0]
+                    }else{
+                      input = output
+                    }
+                    output = hours+":"+minutes
+                    this.bloquesHora.push({Horario:input+"/"+output})
+                }
+                console.log(this.bloquesHora)
+              }
+            })
+            .catch(err => {
+              console.log(err)
+            })
+          })
+
 
       },
 
@@ -566,6 +588,8 @@
         $(".serviInfoPrestadores").text(0)
         $(".Sig").removeClass("marcar")
         $(".Sig").prop("disabled", true)
+        this.duracion = 0
+        console.log(this.duracion)
       },
       nextOne(){
         if($(".processTwo").css("display") == "block"){
@@ -1085,16 +1109,19 @@
     }
   }
   
-  .autocomplete-input{
-    color: black !important;
+  .clientB .autocomplete-input{
+    color: #fff !important;
+    background-color: #1F5673 !important;
+
   }
   .clientB{
-    background-color:#fff;
+    background-color:#1F5673;
     box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);
     padding: 15px;
     border-radius: 5px;
     border: none;
     color: azure;
+    height: 85px;
     width: 100%;
     font-size: 2em;
     outline: none !important;
@@ -1103,7 +1130,7 @@
   }
 
   .autocomplete-result-list{
-    color: #000;
+    color: #1f5673;
   }
   .letters{
     font-family: 'Roboto', sans-serif;
@@ -1289,10 +1316,16 @@
   left: 0%;
   }
 }
-
-.inputss input{
+.vdpClearInput:before{
+  margin-top: -5px !important;
+}
+.inputssDate{
+  height: 85px;
+  padding-top: 35px;
+}
+.inputssDate input{
 		width: 100%;
-    
+    padding-bottom: 10px;
 		border:none !important;
 		border-radius:0px !important;
 		border-bottom:2px solid #001514 !important;
@@ -1318,4 +1351,14 @@
 		border-right-color:rgb(31, 86, 115) !important;
 	}
   /* end timeline  */
+
+  .btn-date{
+    background-color: #1f5673;
+    color: #fff;
+    padding: 10px;
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: 1.5px;
+    height: 85px;
+  }
 </style>
