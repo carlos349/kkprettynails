@@ -115,8 +115,8 @@
 		</div>
 		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered" role="document">
-		    <div class="modal-content" v-bind:style="{ 'background-color': '#29323c'}">
-		      <div class="modal-header ">
+		    <div class="modal-content">
+		      <div class="modal-header " v-bind:style="{ 'background-color': '#1F5673'}">
 		        <h5 class="modal-title font-weight-bold text-white" id="exampleModalCenterTitle">Registro cliente</h5>
 		        
 		      </div>
@@ -137,7 +137,7 @@
                             placeholder="Buscar cliente"
                             aria-label="Buscar cliente"
                             @submit="handleSubmitClient"
-                            class="auto">
+                            class="autoProcess">
                         </autocomplete>
                     </div>
 					<button class="btn w-100 add">Agregar cliente</button>
@@ -149,8 +149,8 @@
 		</div>
 		<div class="modal fade" id="myModalAddServiceFast" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered" role="document">
-		    <div class="modal-content" v-bind:style="{ 'background-color': '#29323c'}">
-		      <div class="modal-header ">
+		    <div class="modal-content p-2">
+		      <div class="modal-header "  v-bind:style="{ 'background-color': '#1F5673'}">
 		        <h5 class="modal-title text-white font-weight-bold" id="exampleModalCenterTitle">Registrar servicio</h5>
 		        
 		      </div>
@@ -161,8 +161,16 @@
 							<input v-model="nombreServi" type="text" class="form-control inputs" placeholder="Nombre servicio">
 						</div>
 						<div class="form-group">
-							<label for="name">Tiempo</label>
-							<input v-model="tiempoServi" v-on:keypress="maxCount" type="number" min="1" max="3" class="form-control inputs" placeholder="0 Horas">
+							<label for="nombre">Tiempo</label>
+							<select class="form-control" v-model="tiempoServi">
+								<option style="color:black;" selected value="Seleccione el tiempo">Seleccione el tiempo</option>
+								<option style="color:black;" value="15">15 Minutos</option>
+								<option style="color:black;" value="30">30 Minutos</option>
+								<option style="color:black;" value="45">45 Minutos</option>
+								<option style="color:black;" value="60">60 Minutos</option>
+								<option style="color:black;" value="90">90 Minutos</option>
+								<option style="color:black;" value="120">120 Minutos</option>
+							</select>
 						</div>
 						<div class="form-group">
 							<label for="name">Precio</label>
@@ -171,10 +179,10 @@
 						<div class="form-group row" style="margin-top:-15px;">
 							<input type="text" id="myInputServFast" v-on:keyup="myFunctionServFast()" class="form-control buscar inputs" placeholder="Seleccione prestadores"/>
 							<div class="ListaProcesarServ maxHeight">
-								<table class="table table-dark tableBg" id="myTableServFast">
+								<table class="table tableBg" id="myTableServFast">
 									<tbody>
 										<tr v-for="(manicurista, index) of manicuristas" >
-											<td class="font-weight-bold text-white">
+											<td class="font-weight-bold">
 												{{manicurista.nombre}}
 											</td>
 											<td class="font-weight-bold text-right">
@@ -257,7 +265,7 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 			pagoTipo:'',
 			totalSinFormato:'0',
 			nombreServi:'',
-			tiempoServi:'',
+			tiempoServi:'Seleccione el tiempo',
 			precioServi:'',
 			clients: [],
 			arregloClients: []
@@ -327,6 +335,7 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 				}),
 				axios.get('users/clientes')
 				.then(res => {
+					this.arregloClients = []
 					this.clients = res.data
 					this.arrayUsers()
 				})
@@ -385,6 +394,7 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 							showConfirmButton: false,
 							timer: 1500
 						})
+						this.getManicuristas()
 						$('#myModal').modal('hide')
 					}else{
 						this.$swal({
@@ -754,7 +764,21 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 		display: none;  /* Ocultar scroll */
 	}
 	label{
+		color: black;
+	}
+	.add{
+		background-color: #1F5673;
 		color: azure;
+		-webkit-transition: all 0.5s ease-out;
+		transition: all 0.5s ease-out;
+		font-family: 'Roboto', sans-serif !important;
+		font-weight: 600;
+		letter-spacing: 1px;
+		border-radius: 5px;
+	}
+	.add:hover{
+		background-color: #ccc;
+		color:black;
 	}
 	.addProc{
 		background-color:#28a745;
@@ -816,6 +840,9 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 	}
 	.autocomplete{
 		width: 100% !important;
+	}
+	.autoProcess {
+		width: 100%;
 	}
 	.autocomplete-input{
 		background-color: transparent !important;

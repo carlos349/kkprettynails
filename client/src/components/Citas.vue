@@ -30,7 +30,7 @@
              class="calendario"
              :events="events"
              :time-from="8 * 60"
-             :time-to="20 * 60"
+             :time-to="21 * 60"
              default-view="month"
              :disable-views="['years', 'year']"
              events-count-on-month-view
@@ -64,7 +64,7 @@
                     <div class="row">
                       <div class="serviInfo col-md-2"><font-awesome-icon icon="user-check" class="mr-2"/>{{servicio.prestadores.length}}</div>
                       <div class="serviInfo col-md-7">{{servicio.nombre}}</div>
-                      <div class="col-md-3">{{servicio.tiempo}}H <span :id="'p'+index" class="serviInfoPrestadores ml-2">0</span> </div> 
+                      <div class="col-md-3">{{servicio.tiempo}}min. <span :id="'p'+index" class="serviInfoPrestadores" style="float:right;">0</span> </div> 
                     </div>
                   </div>
                 </div>   
@@ -94,30 +94,38 @@
                   </div>
                   <div class="col-md-12">
                     <div class="row">
-                      <div class="col-sm-5">
-                        <autocomplete	
-                          :search="search"
-                          placeholder="Buscar cliente"
-                          aria-label="Buscar cliente"
-                          @submit="handleSubmit"
-                          class="auto clientB">
-                        </autocomplete>
-                      </div>
-                    <div class="col-sm-7">
-                      <div class="row">
-                        <div class="col-3 pr-1">
-                          <button class="btn btn-date" v-on:click="insertDate()">
-                            Elegir fecha
-                          </button>
+                      <div class="col-sm-6">
+                        <div class="row">
+                          <div class="col-3 pr-1">
+                            <button class="btn btn-date" v-on:click="modalCliente()">
+                              Registrar cliente
+                            </button>
+                          </div>
+                          <autocomplete	
+                            :search="search"
+                            placeholder="Buscar cliente"
+                            aria-label="Buscar cliente"
+                            @submit="handleSubmit"
+                            class="auto clientB col-7">
+                          </autocomplete>
                         </div>
-                        <date-pick class="form-control inputssDate col-9"
-                        v-model="fecha"
-                        :weekdays=Days
-                        :months=months
-                        :nextMonthCaption="'Siguiente mes'"
-                        :prevMonthCaption="'Mes anterior'"
-							        ></date-pick>
+                        
                       </div>
+                      <div class="col-sm-6">
+                        <div class="row">
+                          <div class="col-3 pr-1">
+                            <button class="btn btn-date" v-on:click="insertDate()">
+                              Elegir fecha
+                            </button>
+                          </div>
+                          <date-pick class="form-control inputssDate col-9"
+                            v-model="fecha"
+                            :weekdays=Days
+                            :months=months
+                            :nextMonthCaption="'Siguiente mes'"
+                            :prevMonthCaption="'Mes anterior'"
+                          ></date-pick>
+                        </div>
                       
                       <!-- <input  v-model="fecha" class="hora" v-on:change="insertDate()" type="date" name="" id="Dat"> -->
                       </div>
@@ -200,6 +208,39 @@
               
             </ul><br>
             <button type="button" class="btn font-weight-bold btn-style" v-on:click="borrarCita(selectedEvent.id)">Borrar cita</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+    <div class="modal fade" id="myModalRegisterClient" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		  <div class="modal-dialog modal-dialog-centered" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header " v-bind:style="{ 'background-color': '#1F5673'}">
+		        <h5 class="modal-title font-weight-bold text-white" id="exampleModalCenterTitle">Registro cliente</h5>
+		        
+		      </div>
+		      <div class="modal-body">
+				  <form v-on:submit.prevent="ingresoCliente">
+					<div class="form-group">
+						<label for="name">Nombre del cliente</label>
+						<input v-model="nombreClienteRegister" type="text" class="form-control inputs" placeholder="Nombre del prestador">
+					</div>
+					<div class="form-group">
+						<label for="identidad">Instagram o Correo del cliente</label>
+						<input v-model="instagramCliente" type="text" class="form-control inputs" placeholder="registre instagram o correo">
+					</div>
+          <div class="form-group">
+              <label for="recomendacion">Registre recomendador</label>
+              <autocomplete	
+                  :search="search"
+                  placeholder="Buscar recomendador"
+                  aria-label="Buscar recomendador"
+                  @submit="handleSubmitClient"
+                  class="autoProcess">
+              </autocomplete>
+          </div>
+					<button class="btn w-100 add">Agregar cliente</button>
+				</form>
 		      </div>
 		    </div>
 		  </div>
@@ -290,7 +331,10 @@
 					'Mayo', 'Junio', 'Julio', 'Agosto',
 					'Septiembre', 'Octubre', 'Noviembre', 'Diciembrer'
         ],
-        sort: ''
+        sort: '',
+        nombreClienteRegister: '',
+        instagramCliente: '',
+        nombreCliente: ''
       }
     },
     beforeCreate() {
@@ -334,6 +378,10 @@
         $("#Dat").prop("disabled", false)
 				console.log(this.clientsSelect)
       },
+      handleSubmitClient(result){
+        this.nombreCliente = result
+			
+      },
       insertDate(){
         this.bloquesHora = []
         if ($("#Dat").val() == '') {
@@ -358,6 +406,7 @@
           if (result.value) {
             this.duracion = this.duracion + 15
           }
+          console.log(this.duracion)
           axios.post('citas/getBlocks', {
             employe: this.manicuristaFinal,
             date: this.fecha
@@ -428,17 +477,47 @@
       getClients(){
         axios.get('citas/getClients')
         .then(res => {
+          this.arregloClient = []
           this.clients = res.data
           this.arrayClient();
         })
       },
-
+      ingresoCliente() {
+				axios.post('clients', {
+					nombre:this.nombreClienteRegister,
+					identidad:this.instagramCliente,
+					recomendador:this.nombreCliente
+				})
+				.then(res => {
+					if (res.data.status == 'Registrado') {
+						this.$swal({
+							type: 'success',
+							title: 'Cliente registrado',
+							showConfirmButton: false,
+							timer: 1500
+            })
+            this.nombreClienteRegister = ''
+            this.instagramCliente = ''
+            this.nombreCliente = ''
+            $('#myModalRegisterClient').modal('hide')
+            this.getClients()
+					}else{
+						this.$swal({
+							type: 'error',
+							title: 'El cliente ya existe',
+							showConfirmButton: false,
+							timer: 1500
+						})
+					}
+				})
+			},
       onEventClick(event, e){
         this.selectedEvent = event
         $('#myModalCitasDescripcion').modal('show')
         e.stopPropagation()
       },
       getCitas () {
+        this.events = []
         axios.get('citas')
         .then(res => {
           for (let index = 0; index < res.data.length; index++) {
@@ -683,7 +762,7 @@
             this.min = ''
             this.hora = ''
             this.sort = ''
-            this.fecha = ''
+            this.fecha = 'Click para seleccionar fecha'
             this.salida = ''
             this.salidaMuestra = ''
             this.duracion = 0
@@ -705,6 +784,10 @@
             console.log(res.data)
           }
         })
+      },
+      modalCliente(){
+        $('#myModalRegisterClient').modal('show')
+        
       },
       Menu() {
         $('#mySidenav').toggle('slow')
