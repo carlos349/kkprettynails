@@ -25,7 +25,7 @@
 								 Nombre
 							 </th>
 							 <th>
-								 Tiempo Hr
+								 Tiempo
 							 </th>
 							 <th>
 								 Precio
@@ -49,7 +49,7 @@
 									{{servicio.nombre}}
 								</td>
 								<td class="font-weight-bold">
-									{{servicio.tiempo}} H
+									{{servicio.tiempo}} Minutos
 								</td>
 								<td class="font-weight-bold">
 									{{formatPrice(servicio.precio)}}
@@ -126,7 +126,15 @@
 					</div>
 					<div class="form-group row">
 						<label for="nombre">Tiempo</label>
-						<input v-model="tiempoServicio" v-on:keypress="maxCountEdit" type="number" min="1" max="3" class="form-control inputs" name="nombreServicio" placeholder="0 min" >
+						<select class="form-control" v-model="tiempoServicio">
+							<option style="color:black;" value="Seleccione el tiempo" selected>Seleccione el tiempo</option>
+							<option style="color:black;" value="15">15 Minutos</option>
+							<option style="color:black;" value="30">30 Minutos</option>
+							<option style="color:black;" value="45">45 Minutos</option>
+							<option style="color:black;" value="60">60 Minutos</option>
+							<option style="color:black;" value="90">90 Minutos</option>
+							<option style="color:black;" value="120">120 Minutos</option>
+						</select>
 					</div>
 					<div class="form-group row">
 						<label for="nombre">Precio del servicio</label>
@@ -174,8 +182,16 @@
 							<input v-model="nombreServi" type="text" class="form-control inputs" placeholder="Nombre servicio">
 						</div>
 						<div class="form-group row">
-							<label for="name">Tiempo</label>
-							<input v-model="tiempoServi" v-on:keypress="maxCount" type="number" min="1" max="3" class="form-control inputs" placeholder="0 Horas">
+							<label for="nombre">Tiempo</label>
+							<select class="form-control" v-model="tiempoServi">
+								<option style="color:black;" selected value="Seleccione el tiempo">Seleccione el tiempo</option>
+								<option style="color:black;" value="15">15 Minutos</option>
+								<option style="color:black;" value="30">30 Minutos</option>
+								<option style="color:black;" value="45">45 Minutos</option>
+								<option style="color:black;" value="60">60 Minutos</option>
+								<option style="color:black;" value="90">90 Minutos</option>
+								<option style="color:black;" value="120">120 Minutos</option>
+							</select>
 						</div>
 						<div class="form-group row">
 							<label for="name">Precio</label>
@@ -276,7 +292,7 @@
 				prestadoresSeleccionados:[],
 				prestadoresSeleccionadosTwos:[],
 				nombreServi:'',
-				tiempoServi:'',
+				tiempoServi:'Seleccione el tiempo',
 				precioServi:'',
 				servicesQuantityPerMonth: new ServicesQuantityPerMonths(),
 				servicesQuantityPerMonths: [],
@@ -345,13 +361,6 @@
 						showConfirmButton: false,
 						timer: 1500
 					})
-				}else if(this.tiempoServi > 3){
-					this.$swal({
-						type: 'error',
-						title: 'El tiempo del servicio no puede ser mayor a 3 Horas',
-						showConfirmButton: false,
-						timer: 1500
-					})
 				}else{
 					if (this.prestadoresSeleccionados.length == 0) {
 						this.$swal({
@@ -379,7 +388,7 @@
 								this.getServicios();
 								this.nombreServi = ''
 								this.precioServi = ''
-								this.tiempoServi = ''
+								this.tiempoServi = 'Seleccione el tiempo'
 								this.prestadoresSeleccionados = []
 								$('.checkFirst').prop('checked', false)
 							}else{
@@ -454,13 +463,6 @@
 					this.$swal({
 						type: 'error',
 						title: 'Llene todos los campos',
-						showConfirmButton: false,
-						timer: 1500
-					})
-				}else if(this.tiempoServicio > 3){
-					this.$swal({
-						type: 'error',
-						title: 'El tiempo del servicio no puede ser mayor a 3 Horas',
 						showConfirmButton: false,
 						timer: 1500
 					})

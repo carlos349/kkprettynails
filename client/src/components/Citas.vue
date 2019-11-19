@@ -30,7 +30,7 @@
              class="calendario"
              :events="events"
              :time-from="8 * 60"
-             :time-to="20 * 60"
+             :time-to="21 * 60"
              default-view="month"
              :disable-views="['years', 'year']"
              events-count-on-month-view
@@ -64,7 +64,7 @@
                     <div class="row">
                       <div class="serviInfo col-md-2"><font-awesome-icon icon="user-check" class="mr-2"/>{{servicio.prestadores.length}}</div>
                       <div class="serviInfo col-md-7">{{servicio.nombre}}</div>
-                      <div class="col-md-3">{{servicio.tiempo}}H <span :id="'p'+index" class="serviInfoPrestadores ml-2">0</span> </div> 
+                      <div class="col-md-3">{{servicio.tiempo}}min. <span :id="'p'+index" class="serviInfoPrestadores" style="float:right;">0</span> </div> 
                     </div>
                   </div>
                 </div>   
@@ -94,23 +94,40 @@
                   </div>
                   <div class="col-md-12">
                     <div class="row">
-                       <div class="col-sm-5"><autocomplete	
-                      :search="search"
-                      placeholder="Buscar cliente"
-                      aria-label="Buscar cliente"
-                      @submit="handleSubmit"
-                      class="auto clientB">
-                    </autocomplete></div>
-                    <div class="col-sm-7">
-                      <!-- <date-pick class="form-control inputss"
-                        v-model="fecha"
-                        :weekdays=Days
-                        :months=months
-                        v-on:change="insertDate()"
-                        :nextMonthCaption="'Siguiente mes'"
-                        :prevMonthCaption="'Mes anterior'"
-							        ></date-pick> -->
-                      <input  v-model="fecha" class="hora" v-on:change="insertDate()" type="date" name="" id="Dat">
+                      <div class="col-sm-6">
+                        <div class="row">
+                          <div class="col-3 pr-1">
+                            <button class="btn btn-date" v-on:click="modalCliente()">
+                              Registrar cliente
+                            </button>
+                          </div>
+                          <autocomplete	
+                            :search="search"
+                            placeholder="Buscar cliente"
+                            aria-label="Buscar cliente"
+                            @submit="handleSubmit"
+                            class="auto clientB col-7">
+                          </autocomplete>
+                        </div>
+                        
+                      </div>
+                      <div class="col-sm-6">
+                        <div class="row">
+                          <div class="col-3 pr-1">
+                            <button class="btn btn-date" v-on:click="insertDate()">
+                              Elegir fecha
+                            </button>
+                          </div>
+                          <date-pick class="form-control inputssDate col-9"
+                            v-model="fecha"
+                            :weekdays=Days
+                            :months=months
+                            :nextMonthCaption="'Siguiente mes'"
+                            :prevMonthCaption="'Mes anterior'"
+                          ></date-pick>
+                        </div>
+                      
+                      <!-- <input  v-model="fecha" class="hora" v-on:change="insertDate()" type="date" name="" id="Dat"> -->
                       </div>
                     </div>  
                   </div>
@@ -191,6 +208,39 @@
               
             </ul><br>
             <button type="button" class="btn font-weight-bold btn-style" v-on:click="borrarCita(selectedEvent.id)">Borrar cita</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+    <div class="modal fade" id="myModalRegisterClient" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		  <div class="modal-dialog modal-dialog-centered" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header " v-bind:style="{ 'background-color': '#1F5673'}">
+		        <h5 class="modal-title font-weight-bold text-white" id="exampleModalCenterTitle">Registro cliente</h5>
+		        
+		      </div>
+		      <div class="modal-body">
+				  <form v-on:submit.prevent="ingresoCliente">
+					<div class="form-group">
+						<label for="name">Nombre del cliente</label>
+						<input v-model="nombreClienteRegister" type="text" class="form-control inputs" placeholder="Nombre del prestador">
+					</div>
+					<div class="form-group">
+						<label for="identidad">Instagram o Correo del cliente</label>
+						<input v-model="instagramCliente" type="text" class="form-control inputs" placeholder="registre instagram o correo">
+					</div>
+          <div class="form-group">
+              <label for="recomendacion">Registre recomendador</label>
+              <autocomplete	
+                  :search="search"
+                  placeholder="Buscar recomendador"
+                  aria-label="Buscar recomendador"
+                  @submit="handleSubmitClient"
+                  class="autoProcess">
+              </autocomplete>
+          </div>
+					<button class="btn w-100 add">Agregar cliente</button>
+				</form>
 		      </div>
 		    </div>
 		  </div>
@@ -281,7 +331,10 @@
 					'Mayo', 'Junio', 'Julio', 'Agosto',
 					'Septiembre', 'Octubre', 'Noviembre', 'Diciembrer'
         ],
-        sort: ''
+        sort: '',
+        nombreClienteRegister: '',
+        instagramCliente: '',
+        nombreCliente: ''
       }
     },
     beforeCreate() {
@@ -310,7 +363,7 @@
 					for (let index = 0; index < this.clients.length; index++) {
 						this.arregloClient.push(this.clients[index].nombre)
 					}
-				}, 4000);
+				}, 2000);
 			},
       search(input) {
 				if (input.length < 1) { return [] }
@@ -325,8 +378,12 @@
         $("#Dat").prop("disabled", false)
 				console.log(this.clientsSelect)
       },
+      handleSubmitClient(result){
+        this.nombreCliente = result
+			
+      },
       insertDate(){
-        console.log(this.fecha)
+        this.bloquesHora = []
         if ($("#Dat").val() == '') {
           $(".horas").prop("disabled", true)
           $(".Sig").removeClass("marcar")
@@ -336,74 +393,73 @@
           $(".horas").prop("disabled", false)
          
         }
-        axios.post('citas/getBlocks', {
-          employe: this.manicuristaFinal,
-          date: this.fecha
+        this.$swal({
+          title: '¿Va a querer un diseño?',
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Si',
+          cancelButtonText: 'No',
+          showCloseButton: true,
+          showLoaderOnConfirm: true
         })
-        .then(res => {
-          console.log(res.data)
-          for (let index = 0; index < res.data.length; index++) {
-            var separ
-            var separTwo
-            var TotalMinutes 
-            var SumHours
-            var SumMinutes
-            
-            if (res.data[index].length == 2) {
-              separ = res.data[index][0].split(':')
-              separTwo = res.data[index][1].split(':')
-              SumHours  = ((parseFloat(separTwo[0]) - parseFloat(separ[0])) * 60)
-              SumMinutes = parseFloat(separTwo[1]) - parseFloat(separ[1])
-              TotalMinutes = SumHours + SumMinutes
-            }else{
-              separ = res.data[index][0].split(':')
-              SumHours = ((21 - parseFloat(separ[0])) * 60)  
-              SumMinutes = 0 - parseFloat(separ[1])
-              TotalMinutes = SumHours + SumMinutes
-            }
-            const totalFor = parseInt(TotalMinutes / this.duracion)
-            var input, output
-            var minutes = parseInt(separ[1])
-            var hours = parseInt(separ[0])
-            for (let indexTwo = 0; indexTwo < totalFor; indexTwo++) {
-                for (let indexThree = 0; indexThree < this.duracion / 15; indexThree++) {
-                    minutes = parseInt(minutes) + 15
-                    if (minutes == 60) {
-                      hours++
-                      minutes = "00"
-                    }
-                }
-                if (indexTwo == 0) {
-                  input = res.data[index][0]
-                }else{
-                  input = output
-                }
-                output = hours+":"+minutes
-                this.bloquesHora.push({Horario:input+"/"+output})
-            }
-            console.log(this.bloquesHora)
-            console.log(TotalMinutes)
+        .then(result => {
+          if (result.value) {
+            this.duracion = this.duracion + 15
           }
-          
-          // for (let index = 8; index < 21; index++) {
-          //   let duracionG = parseFloat(index) + parseFloat(this.duracion)
-          //   if (res.data[index]) {
-          //     for (let c = index ; c < duracionG; c++) {
-          //       if (res.data[c] == false) {
-          //         for (let t = index ; t < duracionG; t++) {
-          //           res.data[t] = false
-                    
-          //         }
-          //       }
-          //     }
-          //   }    
-          // }
-          // this.bloquesHora = res.data
-          console.log(res.data)
-        })
-        .catch(err => {
-          console.log(err)
-        })
+          console.log(this.duracion)
+          axios.post('citas/getBlocks', {
+            employe: this.manicuristaFinal,
+            date: this.fecha
+          })
+          .then(res => {
+            console.log(res.data)
+            for (let index = 0; index < res.data.length; index++) {
+              var separ
+              var separTwo
+              var TotalMinutes 
+              var SumHours
+              var SumMinutes
+              
+              if (res.data[index].length == 2) {
+                separ = res.data[index][0].split(':')
+                separTwo = res.data[index][1].split(':')
+                SumHours  = ((parseFloat(separTwo[0]) - parseFloat(separ[0])) * 60)
+                SumMinutes = parseFloat(separTwo[1]) - parseFloat(separ[1])
+                TotalMinutes = SumHours + SumMinutes
+              }else{
+                separ = res.data[index][0].split(':')
+                SumHours = ((21 - parseFloat(separ[0])) * 60)  
+                SumMinutes = 0 - parseFloat(separ[1])
+                TotalMinutes = SumHours + SumMinutes
+              }
+              const totalFor = parseInt(TotalMinutes / this.duracion)
+              var input, output
+              var minutes = parseInt(separ[1])
+              var hours = parseInt(separ[0])
+              for (let indexTwo = 0; indexTwo < totalFor; indexTwo++) {
+                    for (let indexThree = 0; indexThree < this.duracion / 15; indexThree++) {
+                        minutes = parseInt(minutes) + 15
+                        if (minutes == 60) {
+                          hours++
+                          minutes = "00"
+                        }
+                    }
+                    if (indexTwo == 0) {
+                      input = res.data[index][0]
+                    }else{
+                      input = output
+                    }
+                    output = hours+":"+minutes
+                    this.bloquesHora.push({Horario:input+"/"+output})
+                }
+                console.log(this.bloquesHora)
+              }
+            })
+            .catch(err => {
+              console.log(err)
+            })
+          })
+
 
       },
 
@@ -421,17 +477,47 @@
       getClients(){
         axios.get('citas/getClients')
         .then(res => {
+          this.arregloClient = []
           this.clients = res.data
           this.arrayClient();
         })
       },
-
+      ingresoCliente() {
+				axios.post('clients', {
+					nombre:this.nombreClienteRegister,
+					identidad:this.instagramCliente,
+					recomendador:this.nombreCliente
+				})
+				.then(res => {
+					if (res.data.status == 'Registrado') {
+						this.$swal({
+							type: 'success',
+							title: 'Cliente registrado',
+							showConfirmButton: false,
+							timer: 1500
+            })
+            this.nombreClienteRegister = ''
+            this.instagramCliente = ''
+            this.nombreCliente = ''
+            $('#myModalRegisterClient').modal('hide')
+            this.getClients()
+					}else{
+						this.$swal({
+							type: 'error',
+							title: 'El cliente ya existe',
+							showConfirmButton: false,
+							timer: 1500
+						})
+					}
+				})
+			},
       onEventClick(event, e){
         this.selectedEvent = event
         $('#myModalCitasDescripcion').modal('show')
         e.stopPropagation()
       },
       getCitas () {
+        this.events = []
         axios.get('citas')
         .then(res => {
           for (let index = 0; index < res.data.length; index++) {
@@ -536,19 +622,16 @@
           for (let index = 0; index < prestadores.length; index++) {
             this.manicuristaCita.push(prestadores[index])
           }
-          console.log(this.servicioCita)
         }
         else{
           var counter = $("#p"+index).text()
           var inspector = true
           var inspector2 = false
-          console.log(counter)
+          
           for (let index = 0; index < this.servicioCita.length; index++) {
-            console.log(nombre + "("+ counter +")" + "-" + this.servicioCita.length )
             if (this.servicioCita[index] == nombre || this.servicioCita[index] == nombre + "("+ counter +")" ) {
               this.servicioCita.splice(index,1)
               this.servicioCita.push(nombre+ "(" + (parseFloat(counter) +1) + ")")
-              console.log(this.servicioCita)
               inspector = false
               break  
             }
@@ -584,6 +667,8 @@
         $(".serviInfoPrestadores").text(0)
         $(".Sig").removeClass("marcar")
         $(".Sig").prop("disabled", true)
+        this.duracion = 0
+        console.log(this.duracion)
       },
       nextOne(){
         if($(".processTwo").css("display") == "block"){
@@ -643,8 +728,9 @@
         const mani = this.manicuristaFinal
 
         axios.post('citas', {
-          entrada: horarioEntrada,
-          salida: horarioSalida,
+          entrada: this.hora,
+          salida: this.salida,
+          sort: this.sort,
           fecha: this.fecha,
           cliente: this.clientsSelect,
           servicios: this.servicioCita,
@@ -675,7 +761,8 @@
             $(".imgMani").removeClass("maniMarcado")
             this.min = ''
             this.hora = ''
-            this.fecha = ''
+            this.sort = ''
+            this.fecha = 'Click para seleccionar fecha'
             this.salida = ''
             this.salidaMuestra = ''
             this.duracion = 0
@@ -697,6 +784,10 @@
             console.log(res.data)
           }
         })
+      },
+      modalCliente(){
+        $('#myModalRegisterClient').modal('show')
+        
       },
       Menu() {
         $('#mySidenav').toggle('slow')
@@ -1101,16 +1192,19 @@
     }
   }
   
-  .autocomplete-input{
-    color: black !important;
+  .clientB .autocomplete-input{
+    color: #fff !important;
+    background-color: #1F5673 !important;
+
   }
   .clientB{
-    background-color:#fff;
+    background-color:#1F5673;
     box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);
     padding: 15px;
     border-radius: 5px;
     border: none;
     color: azure;
+    height: 85px;
     width: 100%;
     font-size: 2em;
     outline: none !important;
@@ -1119,7 +1213,7 @@
   }
 
   .autocomplete-result-list{
-    color: #000;
+    color: #1f5673;
   }
   .letters{
     font-family: 'Roboto', sans-serif;
@@ -1305,10 +1399,16 @@
   left: 0%;
   }
 }
-
-.inputss input{
+.vdpClearInput:before{
+  margin-top: -5px !important;
+}
+.inputssDate{
+  height: 85px;
+  padding-top: 35px;
+}
+.inputssDate input{
 		width: 100%;
-    
+    padding-bottom: 10px;
 		border:none !important;
 		border-radius:0px !important;
 		border-bottom:2px solid #001514 !important;
@@ -1334,4 +1434,14 @@
 		border-right-color:rgb(31, 86, 115) !important;
 	}
   /* end timeline  */
+
+  .btn-date{
+    background-color: #1f5673;
+    color: #fff;
+    padding: 10px;
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: 1.5px;
+    height: 85px;
+  }
 </style>
