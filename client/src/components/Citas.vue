@@ -101,13 +101,13 @@
                               Registrar cliente
                             </button>
                           </div>
-                          <autocomplete	
-                            :search="search"
-                            placeholder="Buscar cliente"
-                            aria-label="Buscar cliente"
-                            @submit="handleSubmit"
-                            class="auto clientB col-7">
-                          </autocomplete>
+                          <vue-bootstrap-typeahead 
+                            v-model="clientsSelect"
+                            :data="arregloClient"
+                            placeholder="Buscar clientes"
+                            class=" clientB botonClient col-9"
+                          />
+                          
                         </div>
                         
                       </div>
@@ -231,13 +231,11 @@
 					</div>
           <div class="form-group">
               <label for="recomendacion">Registre recomendador</label>
-              <autocomplete	
-                  :search="search"
-                  placeholder="Buscar recomendador"
-                  aria-label="Buscar recomendador"
-                  @submit="handleSubmitClient"
-                  class="autoProcess">
-              </autocomplete>
+              <vue-bootstrap-typeahead 
+                v-model="nombreCliente"
+                :data="arregloClient"
+                placeholder="Buscar clientes"
+              />
           </div>
 					<button class="btn w-100 add">Agregar cliente</button>
 				</form>
@@ -260,7 +258,7 @@
   import axios from 'axios'
   import VueCal from 'vue-cal'
   import 'vue-cal/dist/vuecal.css'
-  import Autocomplete from '@trevoreyre/autocomplete-vue'
+  import VueBootstrapTypeahead from 'vue-bootstrap-typeahead'
   import DatePick from 'vue-date-pick';
 	import 'vue-date-pick/dist/vueDatePick.css';
   class Event {
@@ -291,7 +289,8 @@
   export default  {
     components: {
       VueCal,
-      DatePick
+      DatePick,
+      VueBootstrapTypeahead
     },
     data () {
       return {
@@ -324,6 +323,7 @@
         empByCita : 'Manicurista',
         bloquesHora : [],
         salida:'',
+        query:'',
         salidaMuestra: '',
         Days:['Lun', 'Mar', 'Mier', 'Jue', 'Vie', 'Sab', 'Dom'],
 				months:[
@@ -334,7 +334,8 @@
         sort: '',
         nombreClienteRegister: '',
         instagramCliente: '',
-        nombreCliente: ''
+        nombreCliente: '',
+        searchValue:''
       }
     },
     beforeCreate() {
@@ -365,19 +366,7 @@
 					}
 				}, 2000);
 			},
-      search(input) {
-				if (input.length < 1) { return [] }
-				return this.arregloClient.filter(client => {
-					return client.toLowerCase()
-					.startsWith(input.toLowerCase())
-				})
-				
-      },
-      handleSubmit(result) {
-        this.clientsSelect = result
-        $("#Dat").prop("disabled", false)
-				console.log(this.clientsSelect)
-      },
+      
       handleSubmitClient(result){
         this.nombreCliente = result
 			
@@ -659,6 +648,7 @@
         $(".Sig").addClass("marcar")
         $(".Sig").prop("disabled", false)
         $("#p"+index).text(parseFloat($("#p"+index).text())+1)
+        
       },
       redo(){
         $("#redo").hide()
@@ -754,6 +744,10 @@
             $(".processOne").show()
             $(".wOne").addClass("marc")
             $(".wThree").removeClass("marc")
+            $('.botonClient div input').val('')
+            $('.inputssDate input').val('Click para seleccionar fecha')
+            
+            this.clientsSelect = ''
             this.servicioCita = []
             this.manicuristaCita = []
             this.manicuristaFinal = ''
@@ -1205,7 +1199,7 @@
     border: none;
     color: azure;
     height: 85px;
-    width: 100%;
+    width: 120%;
     font-size: 2em;
     outline: none !important;
     text-align: center
@@ -1443,5 +1437,12 @@
     font-size: 18px;
     letter-spacing: 1.5px;
     height: 85px;
+  }
+  .botonClient div input{
+    width: 100%;
+    background-color: transparent !important;
+    color: #fff !important;
+    border: none !important;
+    height: 65px;
   }
 </style>
