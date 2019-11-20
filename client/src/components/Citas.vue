@@ -255,6 +255,7 @@
 
 </template>
 <script type="text/javascript">
+//prueba para github connect slack
   import axios from 'axios'
   import VueCal from 'vue-cal'
   import 'vue-cal/dist/vuecal.css'
