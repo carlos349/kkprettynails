@@ -23,6 +23,7 @@
     "eventbus": "0.0.3",
     "jwt-decode": "^2.2.0",
     "vue": "^2.5.2",
+    "vue-bootstrap-typeahead": "^0.2.6",
     "vue-cal": "^1.63.0",
     "vue-chartjs": "^3.4.2",
     "vue-date-pick": "^1.2.1",
