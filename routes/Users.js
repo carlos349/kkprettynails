@@ -132,7 +132,8 @@ users.post('/login', (req, res) => {
 						last_name: user.last_name,
 						email: user.email,
 						admin: user.admin,
-						userImage: user.userImage
+						userImage: user.userImage,
+						LastAccess: user.LastAccess
 					}
 					let token = jwt.sign(payload, process.env.SECRET_KEY, {
 						expiresIn: 1440
@@ -149,6 +150,81 @@ users.post('/login', (req, res) => {
 	.catch(err => {
 		res.send('error: ' + err)
 	})
+})
+
+users.get('/data/:id', async (req, res, next) => {
+	const data = await User.findById(req.params.id, {password: 0})
+	if (!data) {
+		res.status(404).send('User not found')
+	}
+	res.send(data)
+})
+
+users.put('/editData/:id', async (req, res, next) => {
+	const type = req.body.type
+	const id = req.params.id
+	const data = req.body.data
+	if (type == 'first') {
+		const editFirst = await User.findByIdAndUpdate(id, {
+			$set: {
+				first_name: data
+			}
+		})
+		if (!editFirst) {
+			res.json({status: 'bad'})
+		}
+		res.json({status: 'ok'})
+	}else if (type == 'last') {
+		const editFirst = await User.findByIdAndUpdate(id, {
+			$set: {
+				last_name: data
+			}
+		})
+		if (!editFirst) {
+			res.json({status: 'bad'})
+		}
+		res.json({status: 'ok'})
+	}else if (type == 'email') {
+		const editFirst = await User.findByIdAndUpdate(id, {
+			$set: {
+				email: data
+			}
+		})
+		if (!editFirst) {
+			res.json({status: 'bad'})
+		}
+		res.json({status: 'ok'})
+	}
+})
+
+users.put('/changePass/:id', async (req, res, next) => {
+	const id = req.params.id
+	const newPass = req.body.newPass
+	const lastPass = req.body.lastPass
+	
+	const compare = await User.findById(id)
+	if (!compare) {
+		res.status(404).send('User not found')
+	}else{
+		if (bcrypt.compareSync(lastPass, compare.password)) {
+			
+			const hash = await bcrypt.hash(newPass, 10)
+			if (!hash) {
+				res.status(404).send('Error en encriptado')
+			}
+			const change = await User.findByIdAndUpdate(id, {
+				$set: {
+					password:hash
+				}
+			})
+			if (!change) {
+				res.status(404).send('User not found')
+			}
+			res.json({status:'ok'})
+		}else{
+			res.json({status:'incorrect pass'})
+		}
+	}
 })
 
 module.exports = users
