@@ -16,8 +16,9 @@
 			
 			</div>
 			<div class="col-sm-3">
-				<img class="infoBasic" style="width: 80%;" src="../assets/silueta-mujer.jpg" alt="">
-				<button class="btn m-1 w-75 ml-2 add">Editar foto de perfil</button>
+				<img class="infoBasic" style="width: 80%;height:30vh;" v-bind:src="require('../assets/users/'+image)" alt="">
+				<input type="file" id="file" ref="file" v-on:change="handleFileUpload" class="btn m-1 w-75 ml-2 add pb-1" style="cursor:pointer;">
+				<button class="btn m-1 w-75 ml-2 add" v-on:click="editImage">Editar foto de perfil</button>
 			</div>
 			<div v-bind:style="{ 'background-color': '#fff'}" class="col-md-6 infoBasic p-3">
 				<h2 style="color:#1f5673" class="text-center" >Información Básica</h2>
@@ -71,7 +72,7 @@
 					<div class="col-sm-12 mx-auto"></div>
 				</div>
 			</div>
-			<div class="modal fade" id="ModalEditPass" tabindex="-1"  role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		<div class="modal fade" id="ModalEditPass" tabindex="-1"  role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered"  >
 		    <div class="modal-content p-3" v-bind:style="{ 'background-color': '#ffffff'}">
 		      <div class="modal-header" v-bind:style="{ 'background-color': '#1F5673'}">
@@ -108,7 +109,7 @@
 		data() {
 			const token = localStorage.userToken
 			const decoded = jwtDecode(token)
-			
+			console.log(decoded)
 			return {
 				first_name: '',
 				last_name: '',
@@ -120,7 +121,9 @@
 				changeLast: true,
 				changeEmail: true,
 				lastPass: '',
-				newPass:''
+				newPass:'',
+				image: '',
+				file: ''
 			}
 		},
 		beforeCreate() {
@@ -145,7 +148,30 @@
 				this.email = data.data.email
 				this.admin = data.data.admin
 				this.access = data.data.LastAccess
-
+				this.image = data.data.userImage
+			},
+			async editImage() {
+				let formData = new FormData();
+        		formData.append('image', this.file)
+				const image = await axios.post('users/registerImage/'+this.id, formData, {
+					headers: {
+						'Content-Type': 'multipart/form-data'
+					}
+				})
+				this.$swal({
+					type: 'success',
+					title: 'imagen editada',
+					showConfirmButton: false,
+					timer: 1000
+				})
+				this.getData()
+				 
+				
+				
+			},
+			handleFileUpload(){
+				this.file = this.$refs.file.files[0];
+				console.log(this.file)
 			},
 			change(type){
 				if (type == 'first') {

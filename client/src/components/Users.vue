@@ -138,9 +138,6 @@
       register() {
         let formData = new FormData();
         formData.append('image', this.file)
-        const data = {
-          
-        }
         axios.post('users/register',
           {
             first_name: this.first_name,
@@ -161,7 +158,7 @@
             }
             })
             .then(resTwo => {
-              console.log(res.Two)
+              console.log(resTwo)
             })
             .catch(err => {
               console.log(err)
