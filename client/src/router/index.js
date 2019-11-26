@@ -16,6 +16,7 @@ import reporteCierre from '@/components/reporteCierre'
 import reportePrestador from '@/components/reportePrestador'
 import Caja from '@/components/Caja'
 import Clientes from '@/components/Clientes'
+import reporteVenta from '@/components/reporteVenta'
 
 Vue.use(Router)
 
@@ -90,6 +91,11 @@ export default new Router({
       path: '/reportecierre',
       name: 'reportecierre',
       component: reporteCierre
+    },
+    {
+      path: '/reporteventa',
+      name: 'reporteventa',
+      component: reporteVenta
     },
     {
       path: '/caja',
