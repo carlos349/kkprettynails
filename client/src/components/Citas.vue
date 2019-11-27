@@ -51,8 +51,8 @@
             <div style="background-color:rgba(31, 86, 115, 0.707);color:azure;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14)" class="col-md-12 font-weight-bold px-3">
               <div style="margin:auto" class="row text-center">
                 <div class="wOne p-3 mx-auto col-md-3 marc">Servicio</div>
-                <div class="wTwo p-3 mx-auto col-md-3">Manicurista</div>
-                <div class="wThree p-3 mx-auto col-md-3">Información</div>
+                <div class="wTwo p-3 mx-auto col-md-3">Informacion</div>
+                <div class="wThree p-3 mx-auto col-md-3">Disponibilidad</div>
               </div>
             </div>
             <div class="col-md-12 p-3 processOne">
@@ -70,10 +70,101 @@
                 </div>   
               </div>
             </div>
-            <div class="col-md-12 p-3 processTwo">
-              <div class="col-md-12 text-center p-2" style="font-size:1.2em;color:#9e9e9e">Selecciona una manicurista</div>
+            <div class="col-md-12 p-3 processThree">
+              <div class="col-md-12 text-center p-2" style="font-size:1.2em;color:#9e9e9e">Seleccione un bloque disponible</div>
+              
+              <div style="height:50vh;overflow:hidden;overflow-x: hidden;
+		          overflow-y:scroll;background-color: rgba(31, 86, 115, 0.707);border-radius:5px" class="scroll row horas" >
+              
+                    
+                      <div class="col-sm-12 text-center"><h2>Bloques disponibles</h2></div>
+                      <div class="timeline col-sm-6">
+                        
+                          <!-- <div  class="lineCont left" >
+                          <div  class="content">
+                            <div class="row">
+
+                              <div class="col-sm-4 p-1">
+                                <img :id="'mani'+index" class="imgMani" src="../assets/silueta-mujer.jpg" alt="">
+                                </div>
+                              
+                              <div class="col-sm-8 p-3 text-right">
+                                <div class="col-sm-12"><h6>Katriel Capacho</h6></div>
+                                <div class="col-sm-12"><h6>8:30 / 9:00</h6></div>
+                                
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="lineCont right">
+                          <div  class="content">
+                            <div class="row">
+                              
+                              <div class="col-sm-8 p-3 text-left">
+                                <div class="col-sm-12"><h6>Katriel Capacho</h6></div>
+                                <div class="col-sm-12"><h6>8:30 / 9:00</h6></div>
+                                
+                              </div>
+                              
+                              <div class="col-sm-4 p-1">
+                                <img :id="'mani'+index" class="imgMani float-right" src="../assets/silueta-mujer.jpg" alt="">
+                                </div>
+                            </div>
+                           
+                          </div>
+                        </div> -->
+                        
+                        <div v-for="(bloqueHora ,index) of bloquesHora">
+                          <div v-if="index%2 == 0" class="lineCont left" v-on:click="selectTime(index,bloqueHora.Horario)">
+                          <div :id="'t'+index" class="content">
+                            <div class="row">
+
+                              <div class="col-sm-4 p-1">
+                                <img :id="'mani'+index" class="imgMani" src="../assets/silueta-mujer.jpg" alt="">
+                                </div>
+                              
+                              <div class="col-sm-8 p-3 text-right">
+                                <div class="col-sm-12"><h6>{{manicuristaFinal}}</h6></div>
+                                <div class="col-sm-12"><h4>{{bloqueHora.Horario}}</h4></div>            
+                              </div>
+                            </div>
+                            <h4 style="color:black"></h4>                          
+                          </div>
+                        </div>
+                        <div  v-else class="lineCont right" v-on:click="selectTime(index,bloqueHora.Horario)" >
+                          <div :id="'t'+index" class="content">
+                            <div class="row">
+                              <div class="col-sm-8 p-3 text-left">
+                                <div class="col-sm-12"><h6>{{manicuristaFinal}}</h6></div>
+                                <div class="col-sm-12"><h4>{{bloqueHora.Horario}}</h4></div>
+                              </div>
+                              <div class="col-sm-4 p-1">
+                                <img :id="'mani'+index" class="imgMani float-right" src="../assets/silueta-mujer.jpg" alt="">
+                                </div>
+                            </div>                          
+                          </div>
+                        </div>
+                        </div>        
+                      </div>
+                    
+                  
+                <!-- <div class="col-md-4" v-for="(manicurista,index) of manicuristaCita">
+                  <div v-for="(mani,index) of manicuristas" class="p-3 col-md-12" v-if="mani.documento === manicurista ">
+                    
+                      <div style="cursor:pointer;" v-on:click="selectManic(mani.nombre,index)" class="fotoMani col-md-12 text-center"><img :id="'mani'+index" class="imgMani" src="../assets/silueta-mujer.jpg" alt=""></div>
+                      <div  class="col-md-12 text-center text-white"> {{mani.nombre}}</div>
+                    
+                  </div>
+                </div>    -->
+              </div>
+            </div>
+            <div class="col-md-12 p-3 processPerso">
+              <div class="col-md-12 text-center p-2" style="font-size:1.2em;color:#9e9e9e">Elija un personal</div>
               <div style="height:40vh;overflow:hidden;overflow-x: hidden;
-		          overflow-y:scroll;background-color: rgba(31, 86, 115, 0.707);border-radius:5px" class="scroll row p-1" >
+		          overflow-y:scroll;background-color: rgba(31, 86, 115, 0.707);border-radius:5px" class="scroll row horas" >
+              
+                    
+                      <div class="col-sm-12 text-center"><h2>Personal disponible</h2></div>
                 <div class="col-md-4" v-for="(manicurista,index) of manicuristaCita">
                   <div v-for="(mani,index) of manicuristas" class="p-3 col-md-12" v-if="mani.documento === manicurista ">
                     
@@ -84,8 +175,8 @@
                 </div>   
               </div>
             </div>
-            <div class="col-md-12 p-3 processThree">
-              <div class="col-md-12 text-center p-2" style="font-size:1.2em;color:#9e9e9e">Seleccion un cliente, fecha y hora</div>
+            <div class="col-md-12 p-3 processTwo">
+              <div class="col-md-12 text-center p-2" style="font-size:1.2em;color:#9e9e9e">Seleccion un cliente y fecha</div>
               <div class="container">
                 <div class="mx-auto">
                 <div style="height:40vh" class="row">
@@ -96,9 +187,9 @@
                     <div class="row">
                       <div class="col-sm-6">
                         <div class="row">
-                          <div class="col-3 pr-1">
-                            <button class="btn btn-date" v-on:click="modalCliente()">
-                              Registrar cliente
+                          <div class="col-3">
+                            <button class="btn btn-date p-1" v-on:click="modalCliente()">
+                             <font-awesome-icon style="font-size:2em" icon="user-plus"/>
                             </button>
                           </div>
                           <vue-bootstrap-typeahead 
@@ -111,62 +202,20 @@
                         </div>
                         
                       </div>
-                      <div class="col-sm-6">
+                      <div  class="col-sm-6">
                         <div class="row">
-                          <div class="col-3 pr-1">
-                            <button class="btn btn-date" v-on:click="insertDate()">
-                              Elegir fecha
-                            </button>
-                          </div>
-                          <date-pick class="form-control inputssDate col-9"
-                            v-model="fecha"
-                            :weekdays=Days
-                            :months=months
-                            :nextMonthCaption="'Siguiente mes'"
-                            :prevMonthCaption="'Mes anterior'"
-                          ></date-pick>
+                          <datetime  class="theme-blue col-sm-11 p-3"  v-model="fecha">
+                           
+                          </datetime>
+                          <div class="col-sm-1 p-3"> <font-awesome-icon style="color:#1f5673;font-size:2em" icon="calendar-alt"/></div>
+                         
                         </div>
-                      
-                      <!-- <input  v-model="fecha" class="hora" v-on:change="insertDate()" type="date" name="" id="Dat"> -->
                       </div>
                     </div>  
                   </div>
                   <div class="col-md-4">
-                    
-                    <!-- <div class="row">
-                      <div class="col-md-5 mx-auto text-right">
-                      <input v-model="hora" disabled="true" maxlength="2" placeholder="Hora" class="hora horas" ref="horas" v-on:keyup="verificarHora('horas')"  type="number" min="0" max="24">
-                      </div>
-                      <div style="font-size:3em" class="col-md-1 mx-auto text-center text-white">:</div>
-                      <div class="col-md-5 mx-auto text-left">
-                        <input minlength="1" ref="min" disabled="true" v-model="min" maxlength="2" placeholder="Min" class="hora horas" v-on:keyup="verificarHora('min')" type="number" min="0" max="60">
-                      </div>
-                    </div>  -->
                   </div>
-                  <div class="col-sm-12">
-                    <div class="horas row">
-                      <div class="col-sm-12 text-center"><h2>Horarios disponibles</h2></div>
-                      <div class="timeline">
-                        <div v-for="(bloqueHora ,index) of bloquesHora">
-                          <div v-if="index%2 == 0" class="lineCont left" v-on:click="selectTime(index,bloqueHora.Horario)">
-                          <div :id="'t'+index" class="content">
-                            <h4 style="color:black">{{bloqueHora.Horario}}</h4>
-                          
-                          </div>
-                        </div>
-                        <div  v-else class="lineCont right" v-on:click="selectTime(index,bloqueHora.Horario)" >
-                          <div :id="'t'+index" class="content">
-                            <h4 style="color:black">{{bloqueHora.Horario}}</h4>
-                           
-                          </div>
-                        </div>
-                        </div>
-                        
-                        
-                        
-                      </div>
-                    </div>
-                  </div> 
+                  
                 </div>
                 </div>
               </div>
@@ -174,7 +223,11 @@
             <div class="col-md-12">
               <div class="row">
                 <div class="col-md-4 "> <button v-on:click="prevOne()" disabled class="botonW Ant">Anterior</button></div>
-                <div class="col-md-4 text-center"> <button id="redo" class="botonW " v-on:click="redo()"><font-awesome-icon style="color:#fff" icon="redo"/></button></div>
+                <div class="col-md-4 text-center"> 
+                  <button id="redo" class="botonW " v-on:click="redo()"><font-awesome-icon style="color:#fff" icon="redo"/>
+                  </button>
+
+                  </div>
                 <div class="col-md-4 text-right"><button v-on:click="nextOne()" disabled class="botonW Sig">Siguiente</button></div>
               </div>
             </div>
@@ -249,6 +302,7 @@
       </button>
     </div>
     
+    
 
     
   </div>
@@ -260,6 +314,8 @@
   import VueCal from 'vue-cal'
   import 'vue-cal/dist/vuecal.css'
   import VueBootstrapTypeahead from 'vue-bootstrap-typeahead'
+  import { Datetime } from 'vue-datetime'
+  import 'vue-datetime/dist/vue-datetime.css'
   import DatePick from 'vue-date-pick';
 	import 'vue-date-pick/dist/vueDatePick.css';
   class Event {
@@ -291,13 +347,15 @@
     components: {
       VueCal,
       DatePick,
-      VueBootstrapTypeahead
+      VueBootstrapTypeahead,
+      Datetime
     },
     data () {
       return {
         image: "'../assets/fondo.jpg'",
         locale: 'es',
         start:'',
+        design:'',
         startHora:'',
         evento: new Event(),
         events: [],
@@ -318,6 +376,8 @@
         servicioCita: [],
         manicuristaCita: [],
         manicuristaFinal:'',
+        maniAzar: [],
+        aleatorio: '',
         clientsSelect: '',
         arregloClient: [],
         duracion: 0,
@@ -355,6 +415,7 @@
       this.getManicuristas()
       this.getClients()
       this.getServicios()
+      
     },
     methods: {
       clickedButton: function() {
@@ -383,19 +444,7 @@
           $(".horas").prop("disabled", false)
          
         }
-        this.$swal({
-          title: '¿Va a querer un diseño?',
-          type: 'warning',
-          showCancelButton: true,
-          confirmButtonText: 'Si',
-          cancelButtonText: 'No',
-          showCloseButton: true,
-          showLoaderOnConfirm: true
-        })
-        .then(result => {
-          if (result.value) {
-            this.duracion = this.duracion + 15
-          }
+        
           console.log(this.duracion)
           axios.post('citas/getBlocks', {
             employe: this.manicuristaFinal,
@@ -448,10 +497,11 @@
             .catch(err => {
               console.log(err)
             })
-          })
+          
 
 
       },
+
 
       verificarHora(este){
         if (this.hora.length >= 1 && this.min.length >=1 && this.hora.length < 3 && this.min.length < 3) {
@@ -662,30 +712,129 @@
         console.log(this.duracion)
       },
       nextOne(){
+        
         if($(".processTwo").css("display") == "block"){
-          $(".Sig").removeClass("marcar")
-          $(".Sig").prop("disabled", true)
-          $(".Sig").text("Crear")
-          $(".wTwo").removeClass("marc")
-          $(".wThree").addClass("marc")
-          $(".processTwo").hide()
-          $(".processThree").show()
+          this.selectMonth()
+          if (this.selectMonth()) {
+            this.$swal({
+          title: '¿Necesita elegir un personal en especifico?',
+          type: 'info',
+          showCancelButton: true,
+          confirmButtonText: 'Si',
+          cancelButtonText: 'No',
+          showCloseButton: true,
+          showLoaderOnConfirm: true
+        })
+        .then(result => {
+          if (result.value) {
+            
+            $(".Sig").removeClass("marcar")
+            $(".Sig").prop("disabled", true)
+            $(".wTwo").removeClass("marc")
+            $(".wThree").addClass("marc")
+            $(".processTwo").hide()
+            $(".processPerso").show()
+          }
+          else{
+            var maniAzar = [];
+            for (let i = 0; i < this.manicuristaCita.length; i++) {
+              for (let c = 0; c < this.manicuristas.length; c++) {
+                if (this.manicuristas[c].documento == this.manicuristaCita[i]) {
+                  this.maniAzar.push(this.manicuristas[c].nombre)
+                }
+                
+              }
+              
+              
+            }
+            this.aleatorio = Math.round(Math.random()*this.maniAzar.length - 1);
+            this.manicuristaFinal = this.maniAzar[this.aleatorio]
+            this.insertDate()
+            $(".Sig").removeClass("marcar")
+            $(".Sig").prop("disabled", true)
+            $(".Sig").text("Crear")
+            $(".wTwo").removeClass("marc")
+            $(".wThree").addClass("marc")
+            $(".processTwo").hide()
+            $(".processThree").show()
+          }
+        })
+          }
+           
+          
+        }
+
+        else if ($(".processPerso").css("display") == "block") {
+            this.insertDate()
+            $(".Sig").removeClass("marcar")
+            $(".Sig").prop("disabled", true)
+            $(".Sig").text("Crear")
+            $(".wTwo").removeClass("marc")
+            $(".wThree").addClass("marc")
+            $(".processPerso").hide()
+            $(".processThree").show()
         }
         else if ($(".processThree").css("display") == "block") {
-          this.registroCita()
+          
+          this.$swal({
+          title: '¿Los datos son correctos?',
+          type: 'warning',
+          html: `<h6>Servicio(s): ${this.servicioCita}</h6> <h6>Diseño: ${this.design}</h6> <h6>Cliente: ${this.clientsSelect}</h6> <h6>Fecha: ${$(".vdatetime-input").val()}</h6> <h6>Personal: ${this.manicuristaFinal}</h6><h6>Entrada: ${this.hora}</h6> <h6>Salida: ${this.salida}</h6>`,
+          showCancelButton: true,
+          confirmButtonText: 'Si',
+          cancelButtonText: 'No',
+          showCloseButton: true,
+          showLoaderOnConfirm: true
+        })
+        .then(result => {
+          if (result.value) {
+            this.registroCita()
+            
+          }
+          else{
+            console.log("no hola")
+          }
+        })
+          
           
         }
         else{
-          
-          $(".Sig").prop("disabled", true)
-          $(".Sig").removeClass("marcar")
-          $("#redo").hide()
-          $(".processOne").hide()
-          $(".processTwo").show()
-          $(".Ant").addClass("marcar")
-          $(".Ant").prop("disabled", false)
-          $(".wOne").removeClass("marc")
-          $(".wTwo").addClass("marc")
+          $(".vdatetime-input").val("Click para seleccionar fecha")
+          this.$swal({
+          title: '¿Va a querer un diseño?',
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Si',
+          cancelButtonText: 'No',
+          showCloseButton: true,
+          showLoaderOnConfirm: true
+        })
+        .then(result => {
+          if (result.value) {
+            this.duracion = this.duracion + 15
+            this.design = 'Si'
+            $(".vdatetime-input").val("Click para seleccionar fecha")
+            $("#redo").hide()
+            $(".processOne").hide()
+            $(".processTwo").show()
+            $(".Ant").addClass("marcar")
+            $(".Ant").prop("disabled", false)
+            $(".wOne").removeClass("marc")
+            $(".wTwo").addClass("marc")
+          }
+          else{
+            this.design = 'No'
+            $(".vdatetime-input").val("Click para seleccionar fecha")
+            $("#redo").hide()
+            $(".processOne").hide()
+            $(".processTwo").show()
+            $(".Ant").addClass("marcar")
+            $(".Ant").prop("disabled", false)
+            $(".wOne").removeClass("marc")
+            $(".wTwo").addClass("marc")
+          }
+        })
+          $(".vdatetime-input").val("Click para seleccionar fecha")
 
         }
         
@@ -709,8 +858,19 @@
           $(".processThree").hide()
           $(".wTwo").addClass("marc")
           $(".wThree").removeClass("marc")
-          $(".Sig").prop("disabled", true)
+          $(".Sig").prop("disabled", false)
+          $(".Sig").addClass("marcar")
           $(".Sig").text("Siguiente")
+        }
+        else if($(".processPerso").css("display") == "block"){
+          this.manicuristaFinal = ''
+          $(".imgMani").removeClass("maniMarcado")
+          $(".processTwo").show()
+          $(".processPerso").hide()
+          $(".wTwo").addClass("marc")
+          $(".wThree").removeClass("marc")
+          $(".Sig").prop("disabled", false)
+          $(".Sig").addClass("marcar")
         }
       },
       
@@ -792,11 +952,46 @@
       },
       selectManic(nombre, index){
         this.manicuristaFinal = nombre
-        console.log(this.manicuristaFinal)
+        
         $(".Sig").prop("disabled", false)
         $(".Sig").addClass("marcar")
         $(".imgMani").removeClass("maniMarcado")
         $("#mani"+index).addClass("maniMarcado")
+        
+      },
+      selectMonth(){
+        if ($(".clientB").children().children().val() == '' && $(".vdatetime-input").val() == '' || $(".vdatetime-input").val() == 'Click para seleccionar fecha' ) {
+          this.$swal({
+						  type: 'error',
+						  title: 'Debes seleccionar un cliente y una fecha',
+						  showConfirmButton: false,
+						  timer: 2000
+            })
+            return false
+        }
+        else if ($(".vdatetime-input").val() == '' || $(".vdatetime-input").val() == 'Click para seleccionar fecha' ) {
+          this.$swal({
+						  type: 'error',
+						  title: 'Debes seleccionar una fecha',
+						  showConfirmButton: false,
+						  timer: 2000
+            })
+            return false
+        }
+        else if ($(".clientB").children().children().val() == '') {
+          this.$swal({
+						  type: 'error',
+						  title: 'Debes seleccionar un cliente',
+						  showConfirmButton: false,
+						  timer: 2000
+            })
+            return false
+        }
+
+        
+        else{
+          return true
+        }
         
       },
 
@@ -1054,6 +1249,9 @@
   .processThree{
     display: none;
   }
+  .processPerso{
+    display: none;
+  }
 
   .scroll::-webkit-scrollbar {
 		width: 8px;     /* Tamaño del scroll en vertical */
@@ -1101,7 +1299,7 @@
     color: white;
     border-radius: 5px;
     height: auto; 
-    max-height: 30vh;
+    max-height: 50vh;
     overflow: hidden scroll; 
      
     border-radius: 5px;
@@ -1188,16 +1386,14 @@
   }
   
   .clientB .autocomplete-input{
-    color: #fff !important;
-    background-color: #1F5673 !important;
+    color: black !important;
+    border-bottom: 2px solid #1f5673 !important;
 
   }
   .clientB{
-    background-color:#1F5673;
-    box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);
+    
     padding: 15px;
-    border-radius: 5px;
-    border: none;
+
     color: azure;
     height: 85px;
     width: 120%;
@@ -1266,7 +1462,7 @@
   content: '';
   position: absolute;
   width: 6px;
-  background-color: white;
+  background-color: rgba(255, 255, 255, 0.6);
   top: 0;
   bottom: 0;
   left: 50%;
@@ -1288,7 +1484,7 @@
   width: 25px;
   height: 25px;
   right: -17px;
-  background-color: white;
+  background-color: rgb(255, 255, 255);
   border: 4px solid #1F5673;
   top: 15px;
   border-radius: 50%;
@@ -1297,12 +1493,12 @@
 
 /* Place the container to the left */
 .left {
-  left: -52%;
+  left: -51%;
 }
 
 /* Place the container to the right */
 .right {
-  left: 52%;
+  left: 51%;
 }
 
 /* Add arrows to the left container (pointing right) */
@@ -1314,9 +1510,9 @@
   width: 0;
   z-index: 1;
   right: 30px;
-  border: medium solid white;
+  border: medium solid rgba(255, 255, 255, 0.6);
   border-width: 10px 0 10px 10px;
-  border-color: transparent transparent transparent white;
+  border-color: transparent transparent transparent rgba(255, 255, 255, 0.6);
 }
 
 /* Add arrows to the right container (pointing left) */
@@ -1328,9 +1524,9 @@
   width: 0;
   z-index: 1;
   left: 30px;
-  border: medium solid white;
+  border: medium solid rgba(255, 255, 255, 0.6);
   border-width: 10px 10px 10px 0;
-  border-color: transparent white transparent transparent;
+  border-color: transparent rgba(255, 255, 255, 0.6) transparent transparent;
 }
 
 /* Fix the circle for containers on the right side */
@@ -1342,8 +1538,8 @@
 .content {
   cursor: pointer;
   padding: 5px 20px;
-  background-color: white;
-  border: solid 4px white;
+  background-color: #1f5673;
+  border:2px solid rgba(255, 255, 255, 0.6);
   position: relative;
   border-radius: 6px;
 }
@@ -1351,15 +1547,15 @@
 .contentMarc {
   cursor: pointer;
   padding: 5px 20px;
-  color: white;
+  color: #1f5673;
   background-color: white;
-  border: solid 4px #1f5673;
+  border: solid 2px #1f5673;
   position: relative;
   border-radius: 6px;
 }
 
 .content:hover {
-  border: solid 4px #1F5673;
+  border: solid 2px #1F5673;
 }
 
 /* Media queries - Responsive timeline on screens less than 600px wide */
@@ -1379,9 +1575,9 @@
   /* Make sure that all arrows are pointing leftwards */
   .lineCont::before {
   left: 60px;
-  border: medium solid white;
+  border: medium solid rgba(255, 255, 255, 0.6);
   border-width: 10px 10px 10px 0;
-  border-color: transparent white transparent transparent;
+  border-color: transparent rgba(255, 255, 255, 0.6) transparent transparent;
   }
 
   /* Make sure all circles are at the same spot */
@@ -1431,19 +1627,52 @@
   /* end timeline  */
 
   .btn-date{
+    border: 2px solid #1f5673;
+    width: 100%;
+    color: #1f5673;
+    padding: 10px;
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: 1.5px;
+    height: 85px;
+    transition: all 1s ease-out;
+  }
+
+  .btn-date:hover{
+    transition: all 1s ease-out;
+    border: 2px solid #1f5673;
     background-color: #1f5673;
-    color: #fff;
+    width: 100%;
+    color: #fff !important;
     padding: 10px;
     font-weight: 700;
     font-size: 18px;
     letter-spacing: 1.5px;
     height: 85px;
   }
+
   .botonClient div input{
     width: 100%;
     background-color: transparent !important;
-    color: #fff !important;
-    border: none !important;
-    height: 65px;
+    color: #1f5673 !important;
+    border: none;
+    border-bottom: 2px solid #1f5673;
+    border-radius: 0;
+    height: 48px;
   }
+
+  .theme-blue .vdatetime-popup__header,
+.theme-blue .vdatetime-calendar__month__day--selected > span > span,
+.theme-blue .vdatetime-calendar__month__day--selected:hover > span > span {
+  background: #1f5673;
+  
+}
+
+.vdatetime-input{
+  
+  width: 100%;
+  border: none;
+  border-bottom: 2px solid #1f5673;
+  padding: 10px;
+}
 </style>
