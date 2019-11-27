@@ -204,8 +204,8 @@
                       </div>
                       <div  class="col-sm-6">
                         <div class="row">
-                          <datetime  class="theme-blue col-sm-11 p-3"  v-model="fecha">
-                           
+                          <datetime placeholder="Click para seleccionar fecha"  class="theme-blue col-sm-11 p-3"  v-model="fecha" :phrases="{ok: 'Elegir', cancel: 'Salir'}" :format="{ year: 'numeric', month: 'long', day: 'numeric'}" auto>
+                            
                           </datetime>
                           <div class="col-sm-1 p-3"> <font-awesome-icon style="color:#1f5673;font-size:2em" icon="calendar-alt"/></div>
                          
@@ -369,7 +369,6 @@
         min: '',
         entrada: 'Seleccione',
         salida:'Seleccione',
-        fecha: 'Click para seleccionar fecha',
         clients: [],
         nombreCliente: '',
         selectedEvent: {},
@@ -714,6 +713,7 @@
       nextOne(){
         
         if($(".processTwo").css("display") == "block"){
+          console.log(this.fecha)
           this.selectMonth()
           if (this.selectMonth()) {
             this.$swal({
@@ -799,7 +799,7 @@
           
         }
         else{
-          $(".vdatetime-input").val("Click para seleccionar fecha")
+         
           this.$swal({
           title: '¿Va a querer un diseño?',
           type: 'warning',
@@ -813,7 +813,7 @@
           if (result.value) {
             this.duracion = this.duracion + 15
             this.design = 'Si'
-            $(".vdatetime-input").val("Click para seleccionar fecha")
+            
             $("#redo").hide()
             $(".processOne").hide()
             $(".processTwo").show()
@@ -824,7 +824,7 @@
           }
           else{
             this.design = 'No'
-            $(".vdatetime-input").val("Click para seleccionar fecha")
+            
             $("#redo").hide()
             $(".processOne").hide()
             $(".processTwo").show()
@@ -834,7 +834,7 @@
             $(".wTwo").addClass("marc")
           }
         })
-          $(".vdatetime-input").val("Click para seleccionar fecha")
+          
 
         }
         
@@ -960,7 +960,7 @@
         
       },
       selectMonth(){
-        if ($(".clientB").children().children().val() == '' && $(".vdatetime-input").val() == '' || $(".vdatetime-input").val() == 'Click para seleccionar fecha' ) {
+        if ($(".clientB").children().children().val() == '' && $(".vdatetime-input").val() == '' ) {
           this.$swal({
 						  type: 'error',
 						  title: 'Debes seleccionar un cliente y una fecha',
@@ -969,7 +969,7 @@
             })
             return false
         }
-        else if ($(".vdatetime-input").val() == '' || $(".vdatetime-input").val() == 'Click para seleccionar fecha' ) {
+        else if ($(".vdatetime-input").val() == '' ) {
           this.$swal({
 						  type: 'error',
 						  title: 'Debes seleccionar una fecha',
