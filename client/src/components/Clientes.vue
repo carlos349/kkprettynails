@@ -125,11 +125,11 @@
 		        <form v-on:submit.prevent="registroCliente">
 					<div class="form-group">
 						<label for="name">Nombre del cliente</label>
-						<input v-model="nombreCliente" type="text" class="form-control inputs" placeholder="Nombre del prestador">
+						<input v-model="nombreCliente" type="text" class="form-control inputs" placeholder="Nombre del prestador" requerid>
 					</div>
 					<div class="form-group">
 						<label for="identidad">Instagram o Correo del cliente</label>
-						<input v-model="identidadCliente" type="text" class="form-control inputs" placeholder="registre instagram o correo">
+						<input v-model="identidadCliente" type="text" class="form-control inputs" placeholder="registre instagram o correo" requerid>
 					</div>
                     <div class="form-group">
                         <label for="recomendacion">Registre recomendador</label>
@@ -297,25 +297,52 @@ export default {
 			$('#ModalEditClient').modal('show')
 		},
 		EditarCliente(){
-			axios.put('clients/'+this.clienteIdEdit, {
-				nombreClienteEditar: this.nombreClienteEditar,
-				identidadClienteEditar: this.identidadClienteEditar
-			})
-			.then(res => {
-				console.log(res)
-				if (res.data.status == 'Servicio actualizado') {
-					this.$swal({
-                        type: 'success',
-                        title: 'Cliente registrado',
-                        showConfirmButton: false,
-                        timer: 1500
-					})
-					this.getClients();
-					this.arrayUsers();
-					this.ServicesQuantityChartFunc();
-                    $('#ModalEditClient').modal('hide')
-				}
-			})
+			const name = this.nombreClienteEditar.split(' ')
+			var firstName, lastName, fullName
+			if (name[1]) {
+				firstName = this.MaysPrimera(name[0])
+				lastName = this.MaysPrimera(name[1])
+				fullName = firstName+' '+lastName
+			}else{
+				fullName = this.MaysPrimera(name[0])
+			}
+
+			if (this.nombreClienteEditar != '' &&  this.identidadClienteEditar != '') {
+				axios.put('clients/'+this.clienteIdEdit, {
+					nombreClienteEditar: fullName,
+					identidadClienteEditar: this.identidadClienteEditar
+				})
+				.then(res => {
+					console.log(res)
+					if (res.data.status == 'Servicio actualizado') {
+						this.$swal({
+							type: 'success',
+							title: 'Cliente actualizado',
+							showConfirmButton: false,
+							timer: 1500
+						})
+						this.getClients();
+						this.arrayUsers();
+						this.ServicesQuantityChartFunc();
+						$('#ModalEditClient').modal('hide')
+					}else{
+						this.$swal({
+							type: 'error',
+							title: 'Cliente ya registrado',
+							showConfirmButton: false,
+							timer: 1500
+						})
+					}
+				})
+			}else{
+				this.$swal({
+					type: 'error',
+					title: 'Llene los datos',
+					showConfirmButton: false,
+					timer: 1500
+				})
+			}
+			
 		},
 		ServicesQuantityChartFunc(){
 			this.loaded = false
@@ -330,38 +357,60 @@ export default {
 				console.error(err)
 			})
 		},
+		MaysPrimera(string){
+			return string.charAt(0).toUpperCase() + string.slice(1);
+		},
         registroCliente(){
-            axios.post('clients', {
-                nombre:this.nombreCliente,
-                identidad:this.identidadCliente,
-                recomendador:this.recomendador
-            })
-            .then(res => {
-                if (res.data.status == 'Registrado') {
-                    this.$swal({
-                        type: 'success',
-                        title: 'Cliente registrado',
-                        showConfirmButton: false,
-                        timer: 1500
-					})
-					this.arregloClients = []
-                    this.getClients();
-					this.arrayUsers();
-					this.ServicesQuantityChartFunc();
-					this.nombreCliente = ''
-					this.identidadCliente = ''
-					this.recomendador = ''
-					$('.autocomplete-input').val('')
-                    $('#ModalCreateClient').modal('hide')
-                }else{
-                    this.$swal({
-                        type: 'error',
-                        title: 'El cliente ya existe',
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
-                }
-            })
+			const name = this.nombreCliente.split(' ')
+			var firstName, lastName, fullName
+			if (name[1]) {
+				firstName = this.MaysPrimera(name[0])
+				lastName = this.MaysPrimera(name[1])
+				fullName = firstName+' '+lastName
+			}else{
+				fullName = this.MaysPrimera(name[0])
+			}
+			
+			if (this.nombreCliente != '' && this.identidadCliente != '') {
+				axios.post('clients', {
+					nombre:fullName,
+					identidad:this.identidadCliente,
+					recomendador:this.recomendador
+				})
+				.then(res => {
+					if (res.data.status == 'Registrado') {
+						this.$swal({
+							type: 'success',
+							title: 'Cliente registrado',
+							showConfirmButton: false,
+							timer: 1500
+						})
+						this.arregloClients = []
+						this.getClients();
+						this.arrayUsers();
+						this.ServicesQuantityChartFunc();
+						this.nombreCliente = ''
+						this.identidadCliente = ''
+						this.recomendador = ''
+						$('.autocomplete-input').val('')
+						$('#ModalCreateClient').modal('hide')
+					}else{
+						this.$swal({
+							type: 'error',
+							title: 'El cliente ya existe',
+							showConfirmButton: false,
+							timer: 1500
+						})
+					}
+				})
+			}else{
+				this.$swal({
+					type: 'error',
+					title: 'Llene los campos requeridos',
+					showConfirmButton: false,
+					timer: 1500
+				})
+			}
         },
         openModalCreateClient(){
             $('#ModalCreateClient').modal('show')

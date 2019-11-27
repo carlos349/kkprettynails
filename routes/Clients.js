@@ -66,20 +66,49 @@ clients.post('/', (req, res) => {
     })
 })
 
-clients.put('/:id', (req, res) => {
+clients.put('/:id', async (req, res, next) => {
+    try {
+        const findClient = await Cliente.findOne({
+            identidad:req.body.identidadClienteEditar
+        })
+        if (!findClient) {
+            try {
+                const updateClient = await Cliente.findByIdAndUpdate(req.params.id, {
+                    $set: {
+                      nombre:req.body.nombreClienteEditar,
+                      identidad:req.body.identidadClienteEditar
+                    }
+                })
+                if (updateClient) {
+                    res.json({status: 'Servicio actualizado'})
+                }
+            } catch {
+                res.send('error: ' + err)
+            }
+            
+        }else{
+            if (findClient._id == req.params.id) {
+                try {
+                    const updateClient = await Cliente.findByIdAndUpdate(req.params.id, {
+                        $set: {
+                          nombre:req.body.nombreClienteEditar,
+                          identidad:req.body.identidadClienteEditar
+                        }
+                    })
+                    if (updateClient) {
+                        res.json({status: 'Servicio actualizado'})
+                    }
+                } catch {
+                    res.send('error: ' + err)
+                }
+            }else{
+                res.json({status: 'exist'})
+            }
+        }
+    } catch {
+        res.send('error: ' + err)
+    }
     
-    Cliente.findByIdAndUpdate(req.params.id, {
-      $set: {
-        nombre:req.body.nombreClienteEditar,
-        identidad:req.body.identidadClienteEditar
-      }
-    })
-    .then(servicio => {
-      res.json({status: 'Servicio actualizado'})
-    })
-    .catch(err => {
-      res.send('error: ' + err)
-    })
 })
 
 clients.get('/getTopTenBestClients', (req, res) => {

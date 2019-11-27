@@ -46,7 +46,7 @@
 				<div class="ListaProcesar">
 					<table class="table  tableBg" id="myTable">
 						<tbody>
-							<tr v-for="(servicio, index) of servicios" >
+							<tr v-for="(servicio, index) in servicios" v-bind:key="servicio._id">
 								<td v-if="servicio.active" class="font-weight-bold">
 									<button v-if="!inspector" type="button" class="w-75 btn procesar text-left" v-on:click="conteoServicio(servicio._id,servicio.nombre, servicio.precio)" disabled>
 									  {{servicio.nombre}} <span class="badge badge-light conteoServ mt-1 float-right" v-bind:id="servicio._id">0</span>
@@ -115,7 +115,9 @@
 		</div>
 		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered" role="document">
-		    <div class="modal-content">
+		    <div class="modal-content p-2" style="-webkit-box-shadow: 0px 0px 22px 5px rgba(31,86,115,1);
+-moz-box-shadow: 0px 0px 22px 5px rgba(31,86,115,1);
+box-shadow: 0px 0px 22px 5px rgba(31,86,115,1);">
 		      <div class="modal-header " v-bind:style="{ 'background-color': '#1F5673'}">
 		        <h5 class="modal-title font-weight-bold text-white" id="exampleModalCenterTitle">Registro cliente</h5>
 		        
@@ -149,8 +151,10 @@
 		</div>
 		<div class="modal fade" id="myModalAddServiceFast" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered" role="document">
-		    <div class="modal-content p-2">
-		      <div class="modal-header "  v-bind:style="{ 'background-color': '#1F5673'}">
+		    <div class="modal-content p-2" style="-webkit-box-shadow: 0px 0px 22px 5px rgba(31,86,115,1);
+-moz-box-shadow: 0px 0px 22px 5px rgba(31,86,115,1);
+box-shadow: 0px 0px 22px 5px rgba(31,86,115,1);">
+		      <div class="modal-header"  v-bind:style="{ 'background-color': '#1F5673'}">
 		        <h5 class="modal-title text-white font-weight-bold" id="exampleModalCenterTitle">Registrar servicio</h5>
 		        
 		      </div>

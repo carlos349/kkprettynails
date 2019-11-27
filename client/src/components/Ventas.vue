@@ -142,6 +142,7 @@
               <th class="text-center">
                 Total 
               </th>
+              
             </tr>
           </thead>
         </table>
@@ -164,7 +165,6 @@
               <td class="  text-left">
                 <input hidden :value="venta.manicurista" type="text">
                 <div v-on:click="editarTabla()">{{venta.manicurista}}</div>
-                
               </td>
               <td style="width: 30% !important;" class="  text-center">
                 {{venta.descuento}}%
@@ -178,9 +178,11 @@
               <td class="  text-right">
                 {{formatPrice(venta.ganancianeta)}}
               </td>
-              <td class="  text-right">
+              <td class="text-center">
                 {{formatPrice(venta.total)}}
+                <font-awesome-icon v-on:click="reporteVenta(venta._id)" style="float:right; font-size:20px;cursor:pointer;" icon="copy" />
               </td>
+              
             </tr>
           </tbody>
         </table>
@@ -350,6 +352,10 @@ export default {
           this.totales(month);
         }
       })
+    },
+    reporteVenta(id) {
+        localStorage.setItem('reporteVenta', id)
+        router.push({name:'reporteventa'})
     },
     formatPrice(value) {
         let val = (value/1).toFixed(2).replace('.', ',')

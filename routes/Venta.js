@@ -110,6 +110,11 @@ ventas.get('/getClosing/:id', (req, res) => {
   
 })
 
+ventas.get('/getSale/:id', async (req, res, next) => {
+  const sale = await Venta.findById(req.params.id)
+  res.json(sale)
+})
+
 ventas.get('/prueba', (req, res) => {
   const dateNow = new Date()
   const formatDate = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()
