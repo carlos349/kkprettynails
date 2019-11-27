@@ -166,7 +166,7 @@
                 <input hidden :value="venta.manicurista" type="text">
                 <div v-on:click="editarTabla()">{{venta.manicurista}}</div>
               </td>
-              <td style="width: 30% !important;" class="  text-center">
+              <td style="width: 30% !important;" class="text-center">
                 {{venta.descuento}}%
               </td>
               <td class="  text-right">
@@ -187,6 +187,59 @@
           </tbody>
         </table>
       </div>
+      </div>
+      <div class="modal fade" id="modalDetalleSale" tabindex="-1"  role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered "  >
+          <div class="modal-content p-3" style="background-color:#fff;">
+            <div class="modal-header" v-bind:style="{ 'background-color': '#1F5673'}">
+              <h3 class="modal-title font-weight-bold text-white" id="exampleModalCenterTitle">Detalle de la venta</h3>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close" >
+                <span aria-hidden="true" class="text-white" v-bind:style="{ 'font-size': '1.5em'}">&times;</span>
+              </button>
+            </div>
+            <div  class="modal-body row">
+              <div class="form-group col-md-6">
+                <label for="name">Fecha</label>
+                <h4>{{formatDate(arreglo.fecha)}}</h4>
+              </div>
+              <div class="form-group col-md-6">
+                <label for="name">Nombre del cliente</label>
+                <h4>{{arreglo.cliente}}</h4>
+              </div>
+              <div class="form-group col-md-6">
+                <label for="name">Nombre del prestador</label>
+                <h4>{{arreglo.manicurista}}</h4>
+              </div>
+              <div class="form-group col-md-6">
+                <label for="name">Método de pago</label>
+                <h4>{{arreglo.pago}}</h4>
+              </div>
+              <ul class="list-group mb-2 " style="width:100%;">
+                <li class="list-group-item"  style="background-color: transparent !important">Servicios:
+                  <span v-for="(service, index) of arreglo.servicios" style="margin-bottom:-5px;float:right;"> 
+                    <span v-if="index == 0"> / {{service.servicio}}</span>
+                    <span v-else>{{service.servicio}}</span>
+                  </span> 
+                </li>
+                <li class="list-group-item" style="background-color: transparent !important"><h5>Comisión: <span style="float:right;"> {{ formatPrice(arreglo.comision) }}</span></h5></li>
+                <li class="list-group-item" style="background-color: transparent !important"><h5>Crédito: <span style="float:right;"> {{ formatPrice(arreglo.credito) }} </span></h5></li>
+                <li class="list-group-item" style="background-color: transparent !important"><h5>Reinversión: <span style="float:right;"> {{ formatPrice(arreglo.reinversion) }} </span></h5></li>
+                <li class="list-group-item" style="background-color: transparent !important"><h5>Ganancia del local:<span style="float:right;"> {{ formatPrice(arreglo.ganancialocal) }}</span></h5></li>
+                <li class="list-group-item" style="background-color: transparent !important"><h5>Ganancia neta:<span style="float:right;"> {{ formatPrice(arreglo.ganancianeta) }} </span></h5></li>
+                <li class="list-group-item" style="background-color: transparent !important"><h5>Descuento: <span style="float:right;"> {{arreglo.descuento }}% </span></h5></li>
+                <li class="list-group-item" style="background-color: transparent !important"><h5>Total:<span style="float:right;"> {{ formatPrice(arreglo.total) }}</span></h5></li>
+              </ul>
+              <button class="btn w-100 add">Editar</button>
+              <!-- <form v-on:submit.prevent="modalDetalleSale">
+                <div class="form-group row">
+                  <label for="name">Nombre del servicio</label>
+                  <input v-model="nombreDetalleCliente" type="text" class="form-control inputs" placeholder="Nombre servicio">
+                </div>
+                <button class="btn w-100 add">Agregar</button>
+              </form> -->
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 </template>
@@ -239,7 +292,8 @@ export default {
       },
       loaded: false,
 			chartdata: null,
-			height:360,
+      height:360,
+      arreglo: []
     }
   },
   beforeCreate() {
@@ -353,17 +407,29 @@ export default {
         }
       })
     },
-    reporteVenta(id) {
-        localStorage.setItem('reporteVenta', id)
-        router.push({name:'reporteventa'})
+    async reporteVenta(id) {
+        try {
+            const sale = await axios.get('ventas/getSale/'+id)
+            this.arreglo = sale.data
+            console.log(this.arreglo)
+            
+            $('#modalDetalleSale').modal('show')
+        } catch(err) {
+              this.$swal({
+                type: 'error',
+                title: 'error técnico',
+                showConfirmButton: false,
+                timer: 1500
+            })
+        }
     },
     formatPrice(value) {
         let val = (value/1).toFixed(2).replace('.', ',')
         return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
     },
     formatDate(date) {
-        let dateFormat = new Date(date)
-        return dateFormat.getDate()+"-"+(dateFormat.getMonth() + 1)+"-"+dateFormat.getFullYear()
+				let dateFormat = new Date(date)
+				return dateFormat.getDate()+"-"+(dateFormat.getMonth() + 1)+"-"+dateFormat.getFullYear()+" "+" ("+ dateFormat.getHours()+":"+ dateFormat.getMinutes()+")"
     },
     arreglarServicios(value, index, indexTwo){
       var conteo = 0
