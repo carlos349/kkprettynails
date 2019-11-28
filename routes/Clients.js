@@ -28,6 +28,8 @@ clients.post('/', (req, res) => {
     const ClienteData = {
         nombre: req.body.nombre,
         identidad: req.body.identidad,
+        correoCliente:req.body.correoCliente,
+        instagramCliente: req.body.instagramCliente,
         participacion: 0,
         recomendacion: finalRecommender,
         recomendaciones:0,
@@ -76,7 +78,9 @@ clients.put('/:id', async (req, res, next) => {
                 const updateClient = await Cliente.findByIdAndUpdate(req.params.id, {
                     $set: {
                       nombre:req.body.nombreClienteEditar,
-                      identidad:req.body.identidadClienteEditar
+                      identidad:req.body.identidadClienteEditar,
+                      correoCliente: req.body.correoClienteEditar,
+                      instagramCliente: req.body.instagramClienteEditar
                     }
                 })
                 if (updateClient) {

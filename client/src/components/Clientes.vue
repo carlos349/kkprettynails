@@ -48,7 +48,7 @@
 										{{client.nombre}}
 									</td>
 									<td class="font-weight-bold" style="width:30%;">
-										{{client.identidad}}
+										{{client.identidad}} <br> {{client.instagramCliente}} <br> {{client.correoCliente}}
 									</td>
 									<td class="font-weight-bold">
 										{{client.recomendacion}}
@@ -63,7 +63,7 @@
 										{{formatDate(client.fecha)}}
 									</td>
 							   		<td class="font-weight-bold text-center">
-										<button style="width:30%;" v-on:click="pasarDatosEdit(client.nombre, client.identidad, client._id)" class=" btn btn-colorsEdit"><font-awesome-icon icon="edit" /></button>
+										<button style="width:30%;" v-on:click="pasarDatosEdit(client.nombre, client.identidad, client.correoCliente, client.instagramCliente, client._id)" class=" btn btn-colorsEdit"><font-awesome-icon icon="edit" /></button>
 									</td>
 								</tr>
 							</tbody>
@@ -124,12 +124,20 @@
 		      <div  class="modal-body">
 		        <form v-on:submit.prevent="registroCliente">
 					<div class="form-group">
-						<label for="name">Nombre del cliente</label>
+						<label for="name">Nombre del cliente <span style="color:red;">*</span></label>
 						<input v-model="nombreCliente" type="text" class="form-control inputs" placeholder="Nombre del prestador" requerid>
 					</div>
 					<div class="form-group">
-						<label for="identidad">Instagram o Correo del cliente</label>
-						<input v-model="identidadCliente" type="text" class="form-control inputs" placeholder="registre instagram o correo" requerid>
+						<label for="identidad">Teléfono del cliente <span style="color:red;">*</span></label>
+						<input v-model="identidadCliente" type="text" class="form-control inputs" placeholder="Registre numero telefónico" requerid>
+					</div>
+					<div class="form-group">
+						<label for="identidad">Correo del cliente <span style="color:blue;">+</span></label>
+						<input v-model="correoCliente" type="text" class="form-control inputs" placeholder="Registre correo" >
+					</div>
+					<div class="form-group">
+						<label for="identidad">Instagram del cliente <span style="color:blue;">+</span></label>
+						<input v-model="instagramCliente" type="text" class="form-control inputs" placeholder="Registre instagram" >
 					</div>
                     <div class="form-group">
                         <label for="recomendacion">Registre recomendador</label>
@@ -159,12 +167,20 @@
 		      <div  class="modal-body">
 		        <form v-on:submit.prevent="EditarCliente">
 					<div class="form-group">
-						<label for="name">Nombre del cliente</label>
+						<label for="name">Nombre del cliente <span style="color:red;">*</span></label>
 						<input v-model="nombreClienteEditar" type="text" class="form-control inputs" placeholder="Nombre del prestador">
 					</div>
 					<div class="form-group">
-						<label for="identidad">Instagram o Correo del cliente</label>
-						<input v-model="identidadClienteEditar" type="text" class="form-control inputs" placeholder="registre instagram o correo">
+						<label for="identidad">Teléfono del cliente <span style="color:red;">*</span></label>
+						<input v-model="identidadClienteEditar" type="text" class="form-control inputs" placeholder="Registre numero telefónico">
+					</div>
+					<div class="form-group">
+						<label for="identidad">Correo del cliente <span style="color:blue;">+</span></label>
+						<input v-model="correoClienteEditar" type="text" class="form-control inputs" placeholder="Registre correo">
+					</div>
+					<div class="form-group">
+						<label for="identidad">Instagram del cliente <span style="color:blue;">+</span></label>
+						<input v-model="instagramClienteEditar" type="text" class="form-control inputs" placeholder="Registre instagram">
 					</div>
                     <!-- <div class="form-group">
                         <label for="recomendacion">Registre recomendador</label>
@@ -215,6 +231,10 @@ export default {
 				responsive: true,
 				maintainAspectRatio: false
 			},
+			correoCliente:'',
+			instagramCliente:'',
+			correoClienteEditar: '',
+			instagramClienteEditar: ''
         }
     },
     beforeCreate() {
@@ -290,9 +310,11 @@ export default {
 		// handleSubmitClientOnClientEdit(){
         //     this.recomendadorEdit = result
 		// },
-		pasarDatosEdit(nombre, identidad, _id){
+		pasarDatosEdit(nombre, identidad,correoCliente, instagramCliente, _id){
 			this.nombreClienteEditar = nombre
 			this.identidadClienteEditar = identidad
+			this.instagramClienteEditar = instagramCliente
+			this.correoClienteEditar = correoCliente
 			this.clienteIdEdit = _id
 			$('#ModalEditClient').modal('show')
 		},
@@ -310,7 +332,9 @@ export default {
 			if (this.nombreClienteEditar != '' &&  this.identidadClienteEditar != '') {
 				axios.put('clients/'+this.clienteIdEdit, {
 					nombreClienteEditar: fullName,
-					identidadClienteEditar: this.identidadClienteEditar
+					identidadClienteEditar: this.identidadClienteEditar,
+					correoClienteEditar: this.correoClienteEditar,
+					instagramClienteEditar: this.instagramClienteEditar
 				})
 				.then(res => {
 					console.log(res)
@@ -375,7 +399,9 @@ export default {
 				axios.post('clients', {
 					nombre:fullName,
 					identidad:this.identidadCliente,
-					recomendador:this.recomendador
+					recomendador:this.recomendador,
+					correoCliente:this.correoCliente,
+					instagramCliente:this.instagramCliente
 				})
 				.then(res => {
 					if (res.data.status == 'Registrado') {
@@ -392,6 +418,8 @@ export default {
 						this.nombreCliente = ''
 						this.identidadCliente = ''
 						this.recomendador = ''
+						this.correoCliente = ''
+						this.instagramCliente = ''
 						$('.autocomplete-input').val('')
 						$('#ModalCreateClient').modal('hide')
 					}else{

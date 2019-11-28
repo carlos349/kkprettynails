@@ -8,6 +8,12 @@ const clienteSchema = new Schema ({
   identidad: {
     type: String
   },
+  correoCliente: {
+    type: String
+  },
+  instagramCliente: {
+    type: String
+  },
   participacion: {
     type: Number
   },
