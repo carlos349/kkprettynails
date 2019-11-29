@@ -216,9 +216,9 @@
               </div>
               <ul class="list-group mb-2 " style="width:100%;">
                 <li class="list-group-item"  style="background-color: transparent !important">Servicios:
-                  <span v-for="(service, index) of arreglo.servicios" style="margin-bottom:-5px;float:right;"> 
-                    <span v-if="index == 0"> / {{service.servicio}}</span>
-                    <span v-else>{{service.servicio}}</span>
+                  <span v-for="(service, index) of arreglo.servicios" style="margin-bottom:-5px"> 
+                    <span v-if="index == 0"> {{service.servicio}}</span>
+                    <span v-else> / {{service.servicio}}</span>
                   </span> 
                 </li>
                 <li class="list-group-item" style="background-color: transparent !important"><h5>Comisión: <span style="float:right;"> {{ formatPrice(arreglo.comision) }}</span></h5></li>
