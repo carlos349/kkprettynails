@@ -1,5 +1,7 @@
 <template>
     <div class="container-fluid">
+		
+
         <div class="row">
             <div class="col-md-12 row sectionMetricsPrestador">
 				<div class="col-md-5 metrics first">
@@ -13,7 +15,11 @@
 			</div>
             <div class="col-md-12">
 				<div class="shadow">	
-					<table  class="table" style="color:#fff !important; background-color: #1F5673" >
+					<v-client-table class="text-center"  :data="clients" :columns="columns" :options="optionsT">
+						<button slot="edit"  slot-scope="props" style="width:30%;" v-on:click="pasarDatosEdit(props.row.nombre, props.row.identidad, props.row.correoCliente, props.row.instagramCliente, props.row._id)" class=" btn btn-colorsEdit"><font-awesome-icon icon="edit" /></button>
+						<!-- <a slot="edit" slot-scope="props" class="fa fa-edit" :href="pasarDatosEdit(props.row.nombre, props.row.identidad, props.row.correoCliente, props.row.instagramCliente, props.row._id)">Hola </a> -->
+					</v-client-table>
+					<!-- <table  class="table" style="color:#fff !important; background-color: #1F5673" >
 						<thead>
 							<tr>
 								<th>
@@ -63,12 +69,12 @@
 										{{formatDate(client.fecha)}}
 									</td>
 							   		<td class="font-weight-bold text-center">
-										<button style="width:30%;" v-on:click="pasarDatosEdit(client.nombre, client.identidad, client.correoCliente, client.instagramCliente, client._id)" class=" btn btn-colorsEdit"><font-awesome-icon icon="edit" /></button>
+										<button style="width:30%;" v-on:click="pasarDatosEdit(client.nombre, client.identidad, client.correoCliente, client.instagramCliente, client._id)" class=" btn btn-colorsEdit"><font-awesome-icon icon="sort" /></button>
 									</td>
 								</tr>
 							</tbody>
 						</table>
-					</div>
+					</div> -->
 				</div>
 			</div>
 			<div class="col-md-4" style="margin-top:20px;">
@@ -213,6 +219,21 @@ export default {
 	},
     data(){
         return {
+			columns:['nombre' , 'identidad' , 'recomendacion' , 'recomendaciones' , 'ultimaFecha' , 'fecha' , 'edit'],
+			optionsT: {
+				headings: {
+					nombre: 'Nombre ',
+					identidad: 'Ig / E-mail / Tlf',
+					recomendacion: 'Recomendación ',
+					recomendaciones: 'Recomendaciones ',
+					ultimaFecha: 'Última atención ',
+					fecha: 'Fecha '
+					},
+				sortIcon: {base:'fa' , up:'fa-sort-up', down:'fa-sort-down', is:'fa-sort'},
+				
+				sortable: ['nombre', 'identidad' , 'recomendacion' , 'recomendaciones' , 'ultimaFecha' , 'fecha'],
+				filterable: false
+			},
 			clients: [],
 			clientTwos:[],
             top: '',
@@ -271,7 +292,18 @@ export default {
             axios.get('clients')
             .then(res => {
 				console.log(res.data)
-                this.clients = res.data
+				this.clients = res.data
+				for (let i = 0; i < this.clients.length; i++) {
+					if (this.clients[i].correoCliente) {
+						this.clients[i].identidad = this.clients[i].identidad + '\n' + this.clients[i].correoCliente 
+					}
+					if (this.clients[i].instagramCliente) {
+						this.clients[i].identidad = this.clients[i].identidad + '\n' + this.clients[i].instagramCliente
+					}
+					this.clients[i].fecha = this.formatDate(this.clients[i].fecha)
+					this.clients[i].ultimaFecha = this.formatDate(this.clients[i].ultimaFecha)
+					
+				}
             })
 		},
 		getClientsTwo(){
@@ -459,6 +491,7 @@ export default {
 }
 </script>
 <style>
+
     .metrics{
 		height: auto;
 		background-color: #fff;
@@ -581,6 +614,60 @@ export default {
 	}
 	.btn-white:focus{
 		outline: none !important;
+	}
+
+	.VuePagination {
+  text-align: center;
+}
+
+.vue-title {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.vue-pagination-ad {
+  text-align: center;
+}
+
+.glyphicon.glyphicon-eye-open {
+  width: 16px;
+  display: block;
+  margin: 0 auto;
+}
+
+th:nth-child(3) {
+  text-align: center;
+}
+
+.VueTables__child-row-toggler {
+  width: 16px;
+  height: 16px;
+  line-height: 16px;
+  display: block;
+  margin: auto;
+  text-align: center;
+}
+
+.VueTables__child-row-toggler--closed::before {
+  content: "+";
+}
+
+.VueTables__child-row-toggler--open::before {
+  content: "-";
+}
+
+[v-cloak] {
+  display:none;
+}
+
+thead {
+		background-color: #1f5673;
+		color: #fff;
+		text-align: center
+	}
+
+	.VuePagination{
+		display: none
 	}
     
 </style>
