@@ -29,7 +29,7 @@
              :locale="locale"
              class="calendario"
              :events="events"
-             :time-from="8 * 60"
+             :time-from="10 * 60"
              :time-to="21 * 60"
              default-view="month"
              :disable-views="['years', 'year']"
