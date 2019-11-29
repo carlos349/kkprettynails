@@ -1676,7 +1676,11 @@
   padding: 10px;
 }
 
-.vuecal__flex .vuecal__title{
+.vuecal__flex .vuecal__title {
+  color: #fff
+}
+
+.angle{
   color: #fff
 }
 </style>
