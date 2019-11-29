@@ -131,9 +131,13 @@
 							<option style="color:black;" value="15">15 Minutos</option>
 							<option style="color:black;" value="30">30 Minutos</option>
 							<option style="color:black;" value="45">45 Minutos</option>
-							<option style="color:black;" value="60">60 Minutos</option>
-							<option style="color:black;" value="90">90 Minutos</option>
-							<option style="color:black;" value="120">120 Minutos</option>
+							<option style="color:black;" value="60">60 Minutos (1 Hr)</option>
+							<option style="color:black;" value="90">90 Minutos (1:30 Hr)</option>
+							<option style="color:black;" value="120">120 Minutos (2 Hr)</option>
+							<option style="color:black;" value="150">150 Minutos (2:30 Hr)</option>
+							<option style="color:black;" value="180">180 Minutos (3 Hr)</option>
+							<option style="color:black;" value="210">210 Minutos (3:30 Hr)</option>
+							<option style="color:black;" value="240">240 Minutos (4 Hr)</option>
 						</select>
 					</div>
 					<div class="form-group row">
@@ -188,9 +192,13 @@
 								<option style="color:black;" value="15">15 Minutos</option>
 								<option style="color:black;" value="30">30 Minutos</option>
 								<option style="color:black;" value="45">45 Minutos</option>
-								<option style="color:black;" value="60">60 Minutos</option>
-								<option style="color:black;" value="90">90 Minutos</option>
-								<option style="color:black;" value="120">120 Minutos</option>
+								<option style="color:black;" value="60">60 Minutos (1 Hr)</option>
+								<option style="color:black;" value="90">90 Minutos (1:30 Hr)</option>
+								<option style="color:black;" value="120">120 Minutos (2 Hr)</option>
+								<option style="color:black;" value="150">150 Minutos (2:30 Hr)</option>
+								<option style="color:black;" value="180">180 Minutos (3 Hr)</option>
+								<option style="color:black;" value="210">210 Minutos (3:30 Hr)</option>
+								<option style="color:black;" value="240">240 Minutos (4 Hr)</option>
 							</select>
 						</div>
 						<div class="form-group row">
