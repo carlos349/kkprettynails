@@ -51,7 +51,7 @@
             <div style="background-color:rgba(31, 86, 115, 0.707);color:azure;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14)" class="col-md-12 font-weight-bold px-3">
               <div style="margin:auto" class="row text-center">
                 <div class="wOne p-3 mx-auto col-md-3 marc">Servicio</div>
-                <div class="wTwo p-3 mx-auto col-md-3">Informacion</div>
+                <div class="wTwo p-3 mx-auto col-md-3">Información</div>
                 <div class="wThree p-3 mx-auto col-md-3">Disponibilidad</div>
               </div>
             </div>
@@ -71,13 +71,13 @@
               </div>
             </div>
             <div class="col-md-12 p-3 processThree">
-              <div class="col-md-12 text-center p-2" style="font-size:1.2em;color:#9e9e9e">Seleccione un bloque disponible</div>
+              <div class="col-md-12 text-center p-2" style="font-size:1.2em;color:#9e9e9e">Seleccione un horario disponible</div>
               
               <div style="height:50vh;overflow:hidden;overflow-x: hidden;
 		          overflow-y:scroll;background-color: rgba(31, 86, 115, 0.707);border-radius:5px" class="scroll row horas" >
               
                     
-                      <div class="col-sm-12 text-center"><h2>Bloques disponibles</h2></div>
+                      <div class="col-sm-12 text-center"><h2>Horas Disponibles</h2></div>
                       <div class="timeline col-sm-6">
                         
                           <!-- <div  class="lineCont left" >
@@ -777,8 +777,8 @@
         else if ($(".processThree").css("display") == "block") {
           
           this.$swal({
-          title: '¿Los datos son correctos?',
-          type: 'warning',
+          title: 'Confirma tu cita',
+          type: 'success',
           html: `<h6>Servicio(s): ${this.servicioCita}</h6> <h6>Diseño: ${this.design}</h6> <h6>Cliente: ${this.clientsSelect}</h6> <h6>Fecha: ${$(".vdatetime-input").val()}</h6> <h6>Personal: ${this.manicuristaFinal}</h6><h6>Entrada: ${this.hora}</h6> <h6>Salida: ${this.salida}</h6>`,
           showCancelButton: true,
           confirmButtonText: 'Si',
@@ -1674,5 +1674,13 @@
   border: none;
   border-bottom: 2px solid #1f5673;
   padding: 10px;
+}
+
+.vuecal__flex .vuecal__title {
+  color: #fff
+}
+
+.angle{
+  color: #fff
 }
 </style>
