@@ -38,9 +38,9 @@ citas.post('/getBlocks', (req,res) => {
   .then(citas => {
     let timelineBlock = []
     if (citas.length == 0) {
-      timelineBlock.push(["8:00","21:00"])
+      timelineBlock.push(["10:00","21:00"])
     }else{
-      if (citas[0].start == "8:00") {
+      if (citas[0].start == "10:00") {
         for (let c = 0; c < citas.length; c++) {
           if (c == 0) {
             timelineBlock.push([citas[c].end])
@@ -53,7 +53,7 @@ citas.post('/getBlocks', (req,res) => {
       }else{
         for (let c = 0; c <= citas.length; c++) {
           if (c == 0) {
-            timelineBlock.push(["8:00"])
+            timelineBlock.push(["10:00"])
           }
           else {
               timelineBlock.push([citas[c-1].end])
