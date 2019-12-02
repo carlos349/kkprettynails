@@ -46,7 +46,8 @@ manicurista.post('/', (req, res) => {
     documento: req.body.documentoManicurista,
     porcentaje: req.body.porcentajeManicurista,
     comision: 0,
-    advancement:0
+    advancement:0,
+    class: ''
   }
 
   Manicurista.findOne({
@@ -54,13 +55,21 @@ manicurista.post('/', (req, res) => {
   })
   .then(manicurista => {
     if (!manicurista) {
-      Manicurista.create(dataManicurista)
-      .then(manicurista => {
-        res.json({status: "Manicurista ingresada"})
+      Manicurista.find().sort({class: -1})
+      .then(records => {
+        let position = records[0].class.split('s')
+        dataManicurista.class = 'class'+ (parseFloat(position[2]) + 1) 
+        Manicurista.create(dataManicurista)
+        .then(manicurista => {
+          res.json({status: "Manicurista ingresada"})
+        })
+        .catch(err => {
+          res.send("error: "+ err)
+        })
       })
       .catch(err => {
         res.send("error: "+ err)
-      })
+      }) 
     }
     else{
       res.json({status: "Manicurista ya existe"})

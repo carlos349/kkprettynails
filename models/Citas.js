@@ -22,6 +22,9 @@ const citasSchema = new Schema ({
   },
   employe: {
     type: String
+  },
+  class: {
+    type: String
   }
 })
 

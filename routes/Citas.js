@@ -108,7 +108,8 @@ citas.post('/', (req, res) => {
     date: Datee,
     services: req.body.servicios,
     client: req.body.cliente,
-    employe: req.body.manicuristas
+    employe: req.body.manicuristas,
+    class: req.body.class
   }
     
   Citas.create(dataCitas)

@@ -16,6 +16,9 @@ const manicuristaSchema = new Schema({
   },
   advancement: {
     type:Number
+  },
+  class: {
+    type:String
   }
 })
 

@@ -559,6 +559,7 @@
         this.events = []
         axios.get('citas')
         .then(res => {
+          console.log(res.data)
           for (let index = 0; index < res.data.length; index++) {
             let dateNow = new Date(res.data[index].date)
             let formatDate = ''
@@ -586,6 +587,7 @@
               end: formatDateTwo,
               title: res.data[index].services[0]+" - "+res.data[index].employe,
               content: res.data[index].client,
+              class:res.data[index].class,
               cliente: res.data[index].client,
               services: res.data[index].services,
               empleada: res.data[index].employe,
@@ -631,6 +633,7 @@
               end: formatDateTwo,
               title: res.data[index].services[0]+" - "+res.data[index].employe,
               content: res.data[index].client,
+              class: res.data[index].class,
               cliente: res.data[index].client,
               services: res.data[index].services,
               empleada: res.data[index].employe,
@@ -1106,7 +1109,7 @@
   .vuecal__title-bar {background-color: #1F5673;}
 
   .vuecal__time-column .vuecal__time-cell{color:white;height:1vh;}
-  .vuecal__event{color:#fff;font-weight:bold;background-color: #1F5673;cursor:pointer;}
+  .vuecal__event{color:#fff;font-weight:bold;cursor:pointer;}
   .vuecal__event:hover{
     opacity: .8;
   }
@@ -1683,4 +1686,130 @@
 .angle{
   color: #fff
 }
+.class1 {
+  background:#3a508c;
+  border: 1px solid #3a508c;
+  color: #fff;
+}
+.class2 {
+  background:#4490c3;
+  border: 1px solid #4490c3;
+  color: #fff;
+}
+.class3 {
+  background:#40b396;
+  border: 1px solid #40b396;
+  color: #fff;
+}
+.class4 {
+  background:#0a0094;
+  border: 1px solid #0a0094;
+  color: #fff;
+}
+.class5 {
+  background:#264e00;
+  border: 1px solid #264e00;
+  color: #fff;
+}
+.class6 {
+  background:#803509;
+  border: 1px solid #803509;
+  color: #fff;
+}
+.class7 {
+  background:#860022;
+  border: 1px solid #860022;
+  color: #fff;
+}
+.class8 {
+  background:#1a264e;
+  border: 1px solid #1a264e;
+  color: #fff;
+}
+.class9 {
+  background:#142247;
+  border: 1px solid #142247;
+  color: #fff;
+}
+.class10 {
+  background:#314c5e;
+  border: 1px solid #314c5e;
+  color: #fff;
+}
+.class11 {
+  background:#758016;
+  border: 1px solid #758016;
+  color: #fff;
+}
+.class12 {
+  background:#090731;
+  border: 1px solid #090731;
+  color: #fff;
+}
+.class13 {
+  background:#830172;
+  border: 1px solid #830172;
+  color: #fff;
+}
+.class14 {
+  background:#411b05;
+  border: 1px solid #411b05;
+  color: #fff;
+}
+.class15 {
+  background:#e24f74;
+  border: 1px solid #e24f74;
+  color: black;
+}
+.class16 {
+  background:#1a040b;
+  border: 1px solid #1a040b;
+  color: #fff;
+}
+.class17 {
+  background:#151a2a;
+  border: 1px solid #151a2a;
+  color: #fff;
+}
+.class18 {
+  background:#4186b4;
+  border: 1px solid #4186b4;
+  color: #fff;
+}
+.class19 {
+  background:#318671;
+  border: 1px solid #318671;
+  color: #fff;
+}
+.class20 {
+  background:#070066;
+  border: 1px solid #070066;
+  color: #fff;
+}
+.class21 {
+  background:#005851;
+  border: 1px solid #005851;
+  color: #fff;
+}
+.class22 {
+  background:#552002;
+  border: 1px solid #552002;
+  color: #fff;
+}
+.class23 {
+  background:#410413;
+  border: 1px solid #410413;
+  color: #fff;
+}
+.class24 {
+  background:#014e34;
+  border: 1px solid #014e34;
+  color: #fff;
+}
+.class25 {
+  background:#29375f;
+  border: 1px solid #263662;
+  color: #fff;
+}
+
 </style>
