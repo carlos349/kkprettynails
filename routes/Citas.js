@@ -100,7 +100,7 @@ citas.post('/getDateByMani', (req, res) => {
 
 citas.post('/', (req, res) => {
   const DateSelect = new Date(req.body.fecha)
-  DateSelect.setDate(DateSelect.getDate() + 1)
+  
   const formatDate = DateSelect.getFullYear() +"-"+(DateSelect.getMonth() + 1)+"-"+DateSelect.getDate()
 
   const Datee = new Date(formatDate + " 10:00")

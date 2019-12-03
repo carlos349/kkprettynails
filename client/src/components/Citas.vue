@@ -168,7 +168,7 @@
                 <div class="col-md-4" v-for="(manicurista,index) of manicuristaCita">
                   <div v-for="(mani,index) of manicuristas" class="p-3 col-md-12" v-if="mani.documento === manicurista ">
                     
-                      <div style="cursor:pointer;" v-on:click="selectManic(mani.nombre,index)" class="fotoMani col-md-12 text-center"><img :id="'mani'+index" class="imgMani" src="../assets/silueta-mujer.jpg" alt=""></div>
+                      <div style="cursor:pointer;" v-on:click="selectManic(mani.nombre,mani.class,index)" class="fotoMani col-md-12 text-center"><img :id="'mani'+index" class="imgMani" src="../assets/silueta-mujer.jpg" alt=""></div>
                       <div  class="col-md-12 text-center text-white"> {{mani.nombre}}</div>
                     
                   </div>
@@ -360,7 +360,9 @@
         evento: new Event(),
         events: [],
         manicurista: new Manicurista(),
-  			manicuristas: [],
+        manicuristas: [],
+        classM: [],
+        classFinal:'',
         servicio: new Servicio(),
  			 	servicios: [],
         mani: 'Seleccione',
@@ -716,9 +718,10 @@
       nextOne(){
         
         if($(".processTwo").css("display") == "block"){
-          console.log(this.fecha)
+          console.log(this.manicuristaCita.length)
           this.selectMonth()
           if (this.selectMonth()) {
+
             this.$swal({
           title: '¿Necesita elegir un personal en especifico?',
           type: 'info',
@@ -744,6 +747,7 @@
               for (let c = 0; c < this.manicuristas.length; c++) {
                 if (this.manicuristas[c].documento == this.manicuristaCita[i]) {
                   this.maniAzar.push(this.manicuristas[c].nombre)
+                  this.classM.push(this.manicuristas[c].class)
                 }
                 
               }
@@ -752,6 +756,7 @@
             }
             this.aleatorio = Math.round(Math.random()*this.maniAzar.length - 1);
             this.manicuristaFinal = this.maniAzar[this.aleatorio]
+            this.classFinal = this.classM[this.aleatorio]
             this.insertDate()
             $(".Sig").removeClass("marcar")
             $(".Sig").prop("disabled", true)
@@ -888,6 +893,7 @@
           fecha: this.fecha,
           cliente: this.clientsSelect,
           servicios: this.servicioCita,
+          class: this.classFinal,
           manicuristas: mani
         })
         .then(res => {
@@ -918,6 +924,7 @@
             this.events = []
             $(".imgMani").removeClass("maniMarcado")
             this.min = ''
+            this.class = ''
             this.hora = ''
             this.sort = ''
             this.fecha = 'Click para seleccionar fecha'
@@ -953,9 +960,9 @@
         $('#ope').toggleClass("ope")
         $('#clo').toggleClass("clo")
       },
-      selectManic(nombre, index){
+      selectManic(nombre,clase, index){
         this.manicuristaFinal = nombre
-        
+        this.classFinal = clase
         $(".Sig").prop("disabled", false)
         $(".Sig").addClass("marcar")
         $(".imgMani").removeClass("maniMarcado")
