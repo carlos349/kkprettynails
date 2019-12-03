@@ -221,6 +221,12 @@ export default {
         return {
 			columns:['nombre' , 'identidad' , 'recomendacion' , 'recomendaciones' , 'ultimaFecha' , 'fecha' , 'edit'],
 			optionsT: {
+				filterByColumn: true,
+				texts: {
+					filter: "Filtrar:",
+					filterBy: 'Filtrar por {column}',
+					count:' '
+				},
 				headings: {
 					nombre: 'Nombre ',
 					identidad: 'Ig / E-mail / Tlf',
@@ -228,11 +234,10 @@ export default {
 					recomendaciones: 'Recomendaciones ',
 					ultimaFecha: 'Última atención ',
 					fecha: 'Fecha '
-					},
+				},
 				sortIcon: {base:'fa' , up:'fa-sort-up', down:'fa-sort-down', is:'fa-sort'},
-				
 				sortable: ['nombre', 'identidad' , 'recomendacion' , 'recomendaciones' , 'ultimaFecha' , 'fecha'],
-				filterable: false
+				filterable: ['nombre', 'identidad' , 'recomendacion' , 'recomendaciones' , 'ultimaFecha' , 'fecha']
 			},
 			clients: [],
 			clientTwos:[],
@@ -537,12 +542,21 @@ export default {
 		table-layout: fixed;
 		color:#102229 !important
 	}
-	.ListaPrestador{
+	.VueTables__limit-field label{
+		display:none;
+	}
+	.VueTables--client .row .col-md-12{
+		padding: -10px;
+	}
+	#VueTables__limit_oRnPI{
+		position:absolute;
+		top:-150%;
+		left:95%;
+		display:block !important;
+	}
+	.table-responsive{
 		overflow-x: hidden;
-		overflow-y:scroll;
-		max-height: 300px;
-		height:auto;
-		border-radius:5px;
+		max-height: 600px;
 	}
 	.ListaPrestador::-webkit-scrollbar {
 		width: 8px;     /* Tamaño del scroll en vertical */
