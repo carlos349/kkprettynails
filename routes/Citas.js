@@ -24,11 +24,14 @@ citas.post('/getBlocks', (req,res) => {
   const employe = req.body.employe
   const date = req.body.date
   const dateNow = new Date(date)
-  dateNow.setDate(dateNow.getDate() + 1)
-  formatDate = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()
+  
+  const formatDate = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()
 
   dateNow.setDate(dateNow.getDate() + 1)
   const formatDateTwo = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()
+
+  console.log(formatDate)
+  console.log(formatDateTwo)
   Citas.find({
     $and:[
       {date: {$gte: formatDate, $lte: formatDateTwo}},
@@ -100,7 +103,7 @@ citas.post('/getDateByMani', (req, res) => {
 
 citas.post('/', (req, res) => {
   const DateSelect = new Date(req.body.fecha)
-  DateSelect.setDate(DateSelect.getDate() + 1)
+  
   const formatDate = DateSelect.getFullYear() +"-"+(DateSelect.getMonth() + 1)+"-"+DateSelect.getDate()
 
   const Datee = new Date(formatDate + " 10:00")
