@@ -235,6 +235,10 @@ export default {
 					ultimaFecha: 'Última atención ',
 					fecha: 'Fecha '
 				},
+				pagination: { chunk:10 },
+				pagination: { dropdown:true },
+				pagination: { nav: 'fixed' },
+				pagination: { edge: true },
 				sortIcon: {base:'fa' , up:'fa-sort-up', down:'fa-sort-down', is:'fa-sort'},
 				sortable: ['nombre', 'identidad' , 'recomendacion' , 'recomendaciones' , 'ultimaFecha' , 'fecha'],
 				filterable: ['nombre', 'identidad' , 'recomendacion' , 'recomendaciones' , 'ultimaFecha' , 'fecha']
@@ -348,8 +352,9 @@ export default {
         //     this.recomendadorEdit = result
 		// },
 		pasarDatosEdit(nombre, identidad,correoCliente, instagramCliente, _id){
+			const split = identidad.split('\n')
 			this.nombreClienteEditar = nombre
-			this.identidadClienteEditar = identidad
+			this.identidadClienteEditar = split[0]
 			this.instagramClienteEditar = instagramCliente
 			this.correoClienteEditar = correoCliente
 			this.clienteIdEdit = _id
@@ -527,6 +532,9 @@ export default {
 		background-color: #1F5673;
     	color: azure;
 	}
+	.VuePagination{
+		display:block !important;
+	}
 	.autoClient input{
 		border: none !important;
 		border-radius: 0px !important;
@@ -542,22 +550,17 @@ export default {
 		table-layout: fixed;
 		color:#102229 !important
 	}
+	.VueTables--client .row{
+		display:none
+	}
 	.VueTables__limit-field label{
 		display:none;
 	}
 	.VueTables--client .row .col-md-12{
 		padding: -10px;
 	}
-	#VueTables__limit_oRnPI{
-		position:absolute;
-		top:-150%;
-		left:95%;
-		display:block !important;
-	}
-	.table-responsive{
-		overflow-x: hidden;
-		max-height: 600px;
-	}
+	
+	
 	.ListaPrestador::-webkit-scrollbar {
 		width: 8px;     /* Tamaño del scroll en vertical */
 		height: 8px;    /* Tamaño del scroll en horizontal */
@@ -631,27 +634,27 @@ export default {
 	}
 
 	.VuePagination {
-  text-align: center;
-}
+		text-align: center;
+	}
 
-.vue-title {
-  text-align: center;
-  margin-bottom: 10px;
-}
+	.vue-title {
+		text-align: center;
+		margin-bottom: 10px;
+	}
 
-.vue-pagination-ad {
-  text-align: center;
-}
+	.vue-pagination-ad {
+		text-align: center;
+	}
 
-.glyphicon.glyphicon-eye-open {
-  width: 16px;
-  display: block;
-  margin: 0 auto;
-}
+	.glyphicon.glyphicon-eye-open {
+		width: 16px;
+		display: block;
+		margin: 0 auto;
+	}
 
-th:nth-child(3) {
-  text-align: center;
-}
+	th:nth-child(3) {
+	text-align: center;
+	}
 
 .VueTables__child-row-toggler {
   width: 16px;
@@ -680,8 +683,4 @@ thead {
 		text-align: center
 	}
 
-	.VuePagination{
-		display: none
-	}
-    
 </style>
