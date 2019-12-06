@@ -13,7 +13,14 @@
 			</div>
 			<div class="col-md-12">
 				<div class="shadow">	
-					<table  class="table table-dark" style="color:#fff !important; background-color: #1F5673" >
+					<v-client-table class="text-center" :data="manicuristas" :columns="columns" :options="optionsT">
+						<p slot="rest"  slot-scope="props">{{props.row.comision - props.row.advancement}}</p>
+						<button slot="edit"  slot-scope="props" style="width:100%;" v-on:click="pasarDatosEdit(props.row.nombre,props.row.documento,props.row.porcentaje, props.row._id)" class=" btn btn-colorsEdit"><font-awesome-icon icon="edit" /></button>
+						<button slot="delete" style="width:100%;"  slot-scope="props" v-on:click="deletePrestador(props.row._id)" class=" btn btn-colorsTrash"><font-awesome-icon icon="trash" /></button>
+						<button slot="report" style="width:100%;"  slot-scope="props" v-on:click="sacarReporte(props.row._id)" class=" btn btn-colorsPrint"><font-awesome-icon icon="copy" /></button>
+						<!-- <a slot="edit" slot-scope="props" class="fa fa-edit" :href="pasarDatosEdit(props.row.nombre, props.row.identidad, props.row.correoCliente, props.row.instagramCliente, props.row._id)">Hola </a> -->
+					</v-client-table>
+					<!-- <table  class="table table-dark" style="color:#fff !important; background-color: #1F5673" >
 						<thead>
 							<tr>
 								<th>
@@ -69,8 +76,8 @@
 									</td>
 								</tr>
 							</tbody>
-						</table>
-					</div>
+						</table> -->
+					<!-- </div> -->
 				</div>
 			</div>
 			<div class="col-md-4" style="margin-top:20px;">
@@ -203,6 +210,33 @@ export default {
 	},
 	data(){
 		return {
+			columns:['nombre' , 'documento' , 'porcentaje' , 'comision' , 'advancement', 'rest', 'edit', 'delete', 'report'],
+			optionsT: {
+				filterByColumn: true,
+				texts: {
+					filter: "Filtrar:",
+					filterBy: 'Filtrar por {column}',
+					count:' '
+				},
+				headings: {
+					nombre: 'Nombre',
+					documento: 'Identidad',
+					porcentaje: 'Porcentaje',
+					comision: 'Comisión',
+					advancement: 'Avances',
+					rest: 'Total',
+					edit: 'Editar',
+					delete: 'Borrar',
+					report: 'Reporte'
+				},
+				pagination: { chunk:10 },
+				pagination: { dropdown:true },
+				pagination: { nav: 'fixed' },
+				pagination: { edge: true },
+				sortIcon: {base:'fa' , up:'fa-sort-up', down:'fa-sort-down', is:'fa-sort'},
+				sortable: ['nombre', 'documento'],
+				filterable: ['nombre', 'documento']
+			},
 			manicurista: new Manicurista(),
 			manicuristas: [],
 			venta: new Venta(),
@@ -247,6 +281,7 @@ export default {
 			axios.get('manicuristas')
 			.then(res => {
 				this.manicuristas = res.data
+				console.log(this.manicuristas)
 			})
 		},
 		deletePrestador(id){
@@ -379,16 +414,7 @@ export default {
 }
 </script>
 <style media="screen">
-	.metrics{
-		height: auto;
-		background-color: #fff;
-		margin:20px;
-		color:#fff;
-		padding: 10px;
-		padding-right: 15px;
-		box-shadow: 0 0.46875rem 2.1875rem rgba(4,9,20,0.03), 0 0.9375rem 1.40625rem rgba(4,9,20,0.03), 0 0.25rem 0.53125rem rgba(4,9,20,0.05), 0 0.125rem 0.1875rem rgba(4,9,20,0.03);
-		border-radius:5px;
-	}
+	
 	.metrics p{
 		font-size: 1em;
 		margin-top: 10px;
@@ -533,5 +559,57 @@ export default {
 	.btn-white:focus{
 		outline: none !important;
 	}
+	.VueTables--client .row{
+		display:none
+	}
+	.VuePagination {
+		text-align: center;
+		display:block !important;
+	}
 
+	.vue-title {
+		text-align: center;
+		margin-bottom: 10px;
+	}
+
+	.vue-pagination-ad {
+		text-align: center;
+	}
+
+	.glyphicon.glyphicon-eye-open {
+		width: 16px;
+		display: block;
+		margin: 0 auto;
+	}
+
+	th:nth-child(3) {
+	text-align: center;
+	}
+
+.VueTables__child-row-toggler {
+  width: 16px;
+  height: 16px;
+  line-height: 16px;
+  display: block;
+  margin: auto;
+  text-align: center;
+}
+
+.VueTables__child-row-toggler--closed::before {
+  content: "+";
+}
+
+.VueTables__child-row-toggler--open::before {
+  content: "-";
+}
+
+[v-cloak] {
+  display:none;
+}
+
+thead {
+		background-color: #1f5673;
+		color: #fff;
+		text-align: center
+	}
 </style>
