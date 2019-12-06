@@ -17,55 +17,63 @@
 			</div>
 			<div class="col-md-12 ">
 				<div class="shadow">
-					
-				<table  class="table " style="color:#fff !important; background-color: #1F5673" >
-					<thead>
-						<tr>
-							 <th>
-								 Nombre
-							 </th>
-							 <th>
-								 Tiempo
-							 </th>
-							 <th>
-								 Precio
-							 </th>
-							 <th>
-								 Prestadores
-							 </th>
-							 <th class="text-center">
-								 Funciones
-							 </th>
-							 
-						 </tr>
-					</thead>
-				</table>
-				
-				<div class="Lista tbl-content">
-					<table class="table table-light table-borderless table-striped">
-						<tbody>
-							<tr v-for="servicio of servicios">
-								<td class="font-weight-bold">
-									{{servicio.nombre}}
-								</td>
-								<td class="font-weight-bold">
-									{{servicio.tiempo}} Minutos
-								</td>
-								<td class="font-weight-bold">
-									{{formatPrice(servicio.precio)}}
-								</td>
-								<td class="font-weight-bold">
-									{{servicio.prestadores.length}}
-								</td>
-								<td class="font-weight-bold text-center">
-									<button style="width:40%;" v-on:click="desactivarServicio(servicio._id)" v-if="servicio.active" class=" btn btn-success">Activo</button>
-									<button style="width:40%;" v-on:click="desactivarServicio(servicio._id)" v-if="!servicio.active" class=" btn btn-inactive">Inactivo</button>
-									<button style="width:40%;" v-on:click="pasarDatosEdit(servicio.nombre, servicio.tiempo, servicio.precio, servicio.prestadores, servicio._id)" class="btn add"><font-awesome-icon icon="edit" /></button>
-								</td>
+					<v-client-table class="text-center"  :data="servicios" :columns="columns" :options="optionsT">
+						<p slot="prestadoress"  slot-scope="props">{{props.row.prestadores.length}}</p>
+						<div slot="activee"  slot-scope="props">
+							<button style="width:40%;" v-on:click="desactivarServicio(props.row._id)" v-if="props.row.active" class=" btn btn-success">Activo</button>
+							<button style="width:40%;" v-on:click="desactivarServicio(props.row._id)" v-if="!props.row.active" class=" btn btn-inactive">Inactivo</button>
+						</div>
+						<button slot="edit"  slot-scope="props" style="width:30%;" v-on:click="pasarDatosEdit(props.row.nombre, props.row.tiempo, props.row.precio, props.row.prestadores, props.row._id)" class="btn add"><font-awesome-icon icon="edit" /></button>
+						<!-- <a slot="edit" slot-scope="props" class="fa fa-edit" :href="pasarDatosEdit(props.row.nombre, props.row.identidad, props.row.correoCliente, props.row.instagramCliente, props.row._id)">Hola </a> -->
+					</v-client-table>
+					<!-- <table  class="table " style="color:#fff !important; background-color: #1F5673" >
+						<thead>
+							<tr>
+								<th>
+									Nombre
+								</th>
+								<th>
+									Tiempo
+								</th>
+								<th>
+									Precio
+								</th>
+								<th>
+									Prestadores
+								</th>
+								<th class="text-center">
+									Funciones
+								</th>
+								
 							</tr>
-						</tbody>
+						</thead>
 					</table>
-				</div>
+				
+					<div class="Lista tbl-content">
+						<table class="table table-light table-borderless table-striped">
+							<tbody>
+								<tr v-for="servicio of servicios">
+									<td class="font-weight-bold">
+										{{servicio.nombre}}
+									</td>
+									<td class="font-weight-bold">
+										{{servicio.tiempo}} Minutos
+									</td>
+									<td class="font-weight-bold">
+										{{formatPrice(servicio.precio)}}
+									</td>
+									<td class="font-weight-bold">
+										{{servicio.prestadores.length}}
+									</td>
+									<td class="font-weight-bold text-center">
+										<button style="width:40%;" v-on:click="desactivarServicio(servicio._id)" v-if="servicio.active" class=" btn btn-success">Activo</button>
+										<button style="width:40%;" v-on:click="desactivarServicio(servicio._id)" v-if="!servicio.active" class=" btn btn-inactive">Inactivo</button>
+										<button style="width:40%;" v-on:click="pasarDatosEdit(servicio.nombre, servicio.tiempo, servicio.precio, servicio.prestadores, servicio._id)" class="btn add"><font-awesome-icon icon="edit" /></button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div> -->
 				</div>
 			</div>
 			<div class="col-md-4" style="margin-top:20px;">
@@ -285,6 +293,30 @@
 		},
 		data() {
 			return {
+				columns:['nombre' , 'precio' , 'tiempo' , 'prestadoress' , 'activee' , 'edit'],
+				optionsT: {
+					filterByColumn: true,
+					texts: {
+						filter: "Filtrar:",
+						filterBy: 'Filtrar por {column}',
+						count:' '
+					},
+					headings: {
+						nombre: 'Nombre ',
+						precio: 'Costo ',
+						tiempo: 'Tiempo ',
+						prestadoress: 'Prestadores ',
+						activee: 'Activación ',
+						edit: 'Editar '
+					},
+					pagination: { chunk:10 },
+					pagination: { dropdown:true },
+					pagination: { nav: 'fixed' },
+					pagination: { edge: true },
+					sortIcon: {base:'fa' , up:'fa-sort-up', down:'fa-sort-down', is:'fa-sort'},
+					sortable: ['nombre', 'precio' , 'tiempo'],
+					filterable: ['nombre', 'precio']
+				},
 				manicurista: new Manicurista(),
 				manicuristas: [],
 				servicio: new Servicio(),
@@ -837,5 +869,63 @@
 		right:8%;
 		top:51%;
 		font-size:1.4em
+	}
+	
+
+	.vue-title {
+		text-align: center;
+		margin-bottom: 10px;
+	}
+
+	
+
+	.glyphicon.glyphicon-eye-open {
+		width: 16px;
+		display: block;
+		margin: 0 auto;
+	}
+
+	th:nth-child(3) {
+	text-align: center;
+	}
+
+	.VueTables__child-row-toggler {
+	width: 16px;
+	height: 16px;
+	line-height: 16px;
+	display: block;
+	margin: auto;
+	text-align: center;
+	}
+
+	.VueTables__child-row-toggler--closed::before {
+	content: "+";
+	}
+
+	.VueTables__child-row-toggler--open::before {
+	content: "-";
+	}
+
+	[v-cloak] {
+	display:none;
+	}
+
+	thead {
+		background-color: #1f5673;
+		color: #fff;
+		text-align: center
+	}
+	.VueTables--client .row{
+		display:none
+	}
+	.VueTables__limit-field label{
+		display:none;
+	}
+	.VueTables--client .row .col-md-12{
+		padding: -10px;
+	}
+	.VuePagination {
+		text-align: center;
+		display:block !important;
 	}
 </style>
