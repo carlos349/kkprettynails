@@ -77,7 +77,7 @@
 		          overflow-y:scroll;background-color: rgba(31, 86, 115, 0.707);border-radius:5px" class="scroll row horas" >
               
                     
-                      <div class="col-sm-12 text-center"><h2>Horas Disponibles</h2></div>
+                      <div class="col-sm-12 text-center"><h2>Horas Disponibles + {{this.aleatorio}}</h2></div>
                       <div class="timeline col-sm-6">
                         
                           <!-- <div  class="lineCont left" >
@@ -161,10 +161,16 @@
             <div class="col-md-12 p-3 processPerso">
               <div class="col-md-12 text-center p-2" style="font-size:1.2em;color:#9e9e9e">Elija un personal</div>
               <div style="height:40vh;overflow:hidden;overflow-x: hidden;
-		          overflow-y:scroll;background-color: rgba(31, 86, 115, 0.707);border-radius:5px" class="scroll row horas" >
-              
+		          overflow-y:scroll;background-color: rgba(31, 86, 115, 0.707);border-radius:5px" class="scroll row horas" >      
+                <div class="col-sm-12 text-center"><h2>Personal disponible</h2></div>
+                <div class="col-md-4">
+                  <div class="p-3 col-md-12">
                     
-                      <div class="col-sm-12 text-center"><h2>Personal disponible</h2></div>
+                      <div style="cursor:pointer;" v-on:click="selectAzar()" class="fotoMani col-md-12 text-center"><img class="imgMani" src="../assets/silueta-mujer.jpg" alt=""></div>
+                      <div  class="col-md-12 text-center text-white">Elegir automáticamente</div>
+                    
+                  </div>
+                </div> 
                 <div class="col-md-4" v-for="(manicurista,index) of manicuristaCita">
                   <div v-for="(mani,index) of manicuristas" class="p-3 col-md-12" v-if="mani.documento === manicurista ">
                     
@@ -176,7 +182,7 @@
               </div>
             </div>
             <div class="col-md-12 p-3 processTwo">
-              <div class="col-md-12 text-center p-2" style="font-size:1.2em;color:#9e9e9e">Seleccion un cliente y fecha</div>
+              <div class="col-md-12 text-center p-2" style="font-size:1.2em;color:#9e9e9e">Selecciona un cliente, fecha y hora de entrada</div>
               <div class="container">
                 <div class="mx-auto">
                 <div style="height:40vh" class="row">
@@ -204,7 +210,7 @@
                       </div>
                       <div  class="col-sm-6">
                         <div class="row">
-                          <datetime placeholder="Click para seleccionar fecha"  class="theme-blue col-sm-11 p-3"  v-model="fecha" :phrases="{ok: 'Elegir', cancel: 'Salir'}" :format="{ year: 'numeric', month: 'long', day: 'numeric'}" auto>
+                          <datetime placeholder="Click para seleccionar fecha y hora de entrada" v-on:click.once="disablear" type="datetime" input-class="dale"  class="theme-blue col-sm-11 p-3"  v-model="fecha" :phrases="{ok: 'Elegir', cancel: 'Salir'}" :min-datetime="minimo" :minute-step="15" :max-datetime="maximo" :format="{ year: 'numeric', month: 'long', day: 'numeric'}" auto>
                             
                           </datetime>
                           <div class="col-sm-1 p-3"> <font-awesome-icon style="color:#1f5673;font-size:2em" icon="calendar-alt"/></div>
@@ -355,6 +361,8 @@
         image: "'../assets/fondo.jpg'",
         locale: 'es',
         start:'',
+        minimo:'',
+        maximo:'',
         design:'',
         startHora:'',
         evento: new Event(),
@@ -416,9 +424,31 @@
       this.getManicuristas()
       this.getClients()
       this.getServicios()
+      this.fechaMinima()
+      $(document).ready(function(){
+        $(".vdatetime").click(function(){
+        
+        for (let i = 0; i < 24; i++) {
+          if (i == 10 || i == 11 || i == 12 || i == 13 || i == 14 || i == 15 || i == 16 || i == 17 || i == 18 || i == 19 || i == 20 || i == 21) {
+            
+          }
+          else{
+            
+            $(".vdatetime-time-picker__item:eq("+i+")").addClass("vdatetime-time-picker__item vdatetime-time-picker__item--disabled")
+          }
+          
+          
+        }
+      });
+      });
       
     },
     methods: {
+
+      disablear: function(){
+        console.log("Hola vale!")
+      },
+      
       clickedButton: function() {
         console.log(this.$refs.hora.value.length)
       },
@@ -434,22 +464,20 @@
         this.nombreCliente = result
 			
       },
-      insertDate(){
-        this.bloquesHora = []
-        if ($("#Dat").val() == '') {
-          $(".horas").prop("disabled", true)
-          $(".Sig").removeClass("marcar")
-          $(".Sig").prop("disabled", true)
-        }
-        else{
-          $(".horas").prop("disabled", false)
-         
-        }
+      fechaMinima(){
+        var hoy = new Date()
+        this.minimo = hoy.getFullYear() + "-" + parseFloat(hoy.getMonth()+1) + "-0" + hoy.getDate() + "T10:00:00"
         
+      },
+      insertDate(){
+        
+        console.log(new Date(this.fecha).getHours() + ":"+ new Date(this.fecha).getMinutes())
+        var fechaBloq = this.fecha
+        this.bloquesHora = []
           console.log(this.duracion)
           axios.post('citas/getBlocks', {
             employe: this.manicuristaFinal,
-            date: this.fecha
+            date: fechaBloq
           })
           .then(res => {
             console.log(res.data)
@@ -493,6 +521,7 @@
                     this.bloquesHora.push({Horario:input+"/"+output})
                 }
                 console.log(this.bloquesHora)
+                console.log(this.fecha)
               }
             })
             .catch(err => {
@@ -501,18 +530,6 @@
           
 
 
-      },
-
-
-      verificarHora(este){
-        if (this.hora.length >= 1 && this.min.length >=1 && this.hora.length < 3 && this.min.length < 3) {
-          $(".Sig").addClass("marcar")
-          $(".Sig").prop("disabled", false)
-        }
-        else{
-          $(".Sig").removeClass("marcar")
-          $(".Sig").prop("disabled", true)
-        }
       },
       
       getClients(){
@@ -715,58 +732,61 @@
         this.duracion = 0
         console.log(this.duracion)
       },
-      nextOne(){
-        
-        if($(".processTwo").css("display") == "block"){
-          console.log(this.manicuristaCita.length)
-          this.selectMonth()
-          if (this.selectMonth()) {
 
-            this.$swal({
-          title: '¿Necesita elegir un personal en especifico?',
-          type: 'info',
-          showCancelButton: true,
-          confirmButtonText: 'Si',
-          cancelButtonText: 'No',
-          showCloseButton: true,
-          showLoaderOnConfirm: true
-        })
-        .then(result => {
-          if (result.value) {
-            
-            $(".Sig").removeClass("marcar")
-            $(".Sig").prop("disabled", true)
-            $(".wTwo").removeClass("marc")
-            $(".wThree").addClass("marc")
-            $(".processTwo").hide()
-            $(".processPerso").show()
-          }
-          else{
-            var maniAzar = [];
-            for (let i = 0; i < this.manicuristaCita.length; i++) {
-              for (let c = 0; c < this.manicuristas.length; c++) {
-                if (this.manicuristas[c].documento == this.manicuristaCita[i]) {
-                  this.maniAzar.push(this.manicuristas[c].nombre)
-                  this.classM.push(this.manicuristas[c].class)
-                }
-                
-              }
-              
-              
+      selectAzar(){
+
+            this.aleatorio = Math.round(Math.random()*this.maniAzar.length);
+            if (this.aleatorio == -1) {
+              this.aleatorio = 0
             }
-            this.aleatorio = Math.round(Math.random()*this.maniAzar.length - 1);
-            this.manicuristaFinal = this.maniAzar[this.aleatorio]
-            this.classFinal = this.classM[this.aleatorio]
+            this.manicuristaFinal = this.maniAzar[parseInt(this.aleatorio)]
+            this.classFinal = this.classM[parseInt(this.aleatorio)]
+            console.log(this.manicuristaFinal)
             this.insertDate()
             $(".Sig").removeClass("marcar")
             $(".Sig").prop("disabled", true)
             $(".Sig").text("Crear")
             $(".wTwo").removeClass("marc")
             $(".wThree").addClass("marc")
+            $(".processPerso").hide()
+            $(".processThree").show()
+      },
+
+      nextOne(){
+        
+        if($(".processTwo").css("display") == "block"){
+          console.log(this.manicuristaCita.length)
+          this.selectMonth()
+          if (this.selectMonth()) {
+            for (let i = 0; i < this.manicuristaCita.length; i++) {
+              for (let c = 0; c < this.manicuristas.length; c++) {
+                if (this.manicuristas[c].documento == this.manicuristaCita[i]) {
+                  this.maniAzar.push(this.manicuristas[c].nombre)
+                  this.classM.push(this.manicuristas[c].class)
+                }               
+              }
+            }
+            if (this.manicuristaCita.length == 1) {
+              this.manicuristaFinal = this.maniAzar[0]
+            this.classFinal = this.classM[0]
+              this.insertDate()
+              $(".Sig").removeClass("marcar")
+            $(".Sig").prop("disabled", true)
+            $(".Sig").text("Crear")
+            $(".wTwo").removeClass("marc")
+            $(".wThree").addClass("marc")
             $(".processTwo").hide()
             $(".processThree").show()
-          }
-        })
+            }
+            else{
+              $(".Sig").removeClass("marcar")
+            $(".Sig").prop("disabled", true)
+            $(".wTwo").removeClass("marc")
+            $(".wThree").addClass("marc")
+            $(".processTwo").hide()
+            $(".processPerso").show()
+            }
+            
           }
            
           
@@ -807,9 +827,10 @@
           
         }
         else{
+          
          
           this.$swal({
-          title: '¿Va a querer un diseño?',
+          title: '¿Desea usted realizarse un diseño?',
           type: 'warning',
           showCancelButton: true,
           confirmButtonText: 'Si',
