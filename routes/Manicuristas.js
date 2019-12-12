@@ -55,21 +55,36 @@ manicurista.post('/', (req, res) => {
   })
   .then(manicurista => {
     if (!manicurista) {
-      Manicurista.find().sort({class: -1})
-      .then(records => {
-        let position = records[0].class.split('s')
-        dataManicurista.class = 'class'+ (parseFloat(position[2]) + 1) 
-        Manicurista.create(dataManicurista)
-        .then(manicurista => {
-          res.json({status: "Manicurista ingresada"})
-        })
-        .catch(err => {
-          res.send("error: "+ err)
-        })
+      Manicurista.find()
+      .then(mani => {
+        if (mani.length > 0) {
+          Manicurista.find().sort({class: -1})
+          .then(records => {
+            let position = records[0].class.split('s')
+            dataManicurista.class = 'class'+ (parseFloat(position[2]) + 1) 
+            Manicurista.create(dataManicurista)
+            .then(manicurista => {
+              res.json({status: "Manicurista ingresada"})
+            })
+            .catch(err => {
+              res.send("error: "+ err)
+            })
+          })
+          .catch(err => {
+            res.send("error: "+ err)
+          }) 
+        }else{
+          dataManicurista.class = 'class1'
+          Manicurista.create(dataManicurista)
+          .then(manicurista => {
+            res.json({status: "Manicurista ingresada"})
+          })
+          .catch(err => {
+            res.send("error: "+ err)
+          })
+        }
       })
-      .catch(err => {
-        res.send("error: "+ err)
-      }) 
+      
     }
     else{
       res.json({status: "Manicurista ya existe"})
