@@ -61,9 +61,17 @@
 			
 			<div class="col-md-8">
 				<div class="shadow">	
-					 <!-- <table  class="table table-dark" style="color:#fff !important" >  -->
-
-					<table  class="table" style="color:#fff !important" v-bind:style="{ 'background-color': '#1f5673'}" >
+					<v-client-table class="text-center"  :data="arrayProducts" :columns="columns" :options="optionsT">
+						<p slot="gramoss"  slot-scope="props"> {{props.row.gramos}}Gr.</p>
+						<p slot="montoo"  slot-scope="props"> {{formatPrice(props.row.monto)}}</p>
+						<p slot="montoTotall"  slot-scope="props"> {{formatPrice(props.row.montoTotal)}}</p>
+						<p slot="servicioss"  slot-scope="props"> {{props.row.servicios.length}}</p>
+						<button slot="edit"  slot-scope="props" style="width:50%;" v-on:click="pasarDatosEdit(props.row.monto, props.row.cantidad, props.row.gramos, props.row.marca, props.row.producto, props.row.servicios, props.row.serviciosId, props.row._id)" class="btn btn-success"><font-awesome-icon icon="edit" /></button>
+						<!-- <button slot="edit"  slot-scope="props" style="width:30%;" v-on:click="pasarDatosEdit(props.row.nombre, props.row.tiempo, props.row.precio, props.row.prestadores, props.row._id)" class="btn add"><font-awesome-icon icon="edit" /></button> -->
+						<!-- <a slot="edit" slot-scope="props" class="fa fa-edit" :href="pasarDatosEdit(props.row.nombre, props.row.identidad, props.row.correoCliente, props.row.instagramCliente, props.row._id)">Hola </a> -->
+					</v-client-table>
+					<!-- <table  class="table table-dark" style="color:#fff !important" >  -->
+					<!-- <table  class="table" style="color:#fff !important" v-bind:style="{ 'background-color': '#1f5673'}" >
 
 						<thead>
 							<tr>
@@ -140,7 +148,7 @@
 							</tbody>
 						</table>
 					</div>
-				</div>
+				</div> -->
 			</div>
 		</div>
 		<div class="modal fade" id="myModal2" tabindex="-1"  role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -210,6 +218,33 @@
 export default {
 	data(){
 		return {
+			columns:['producto', 'fecha'  , 'marca' , 'gramoss' , 'cantidad' , 'montoo' , 'montoTotall', 'servicioss', 'edit'],
+			optionsT: {
+				filterByColumn: true,
+				texts: {
+					filter: "Filtrar:",
+					filterBy: 'Filtrar por {column}',
+					count:' '
+				},
+				headings: {
+					producto: 'Producto ',
+					fecha: 'Fecha',
+					marca: 'Marca ',
+					gramoss: 'Gramos ',
+					cantidad: 'Cantidad ',
+					montoo: 'Monto ',
+					montoTotall: 'Monto Total ',
+					servicioss: 'Servicios',
+					edit: 'Editar'
+				},
+				pagination: { chunk:10 },
+				pagination: { dropdown:true },
+				pagination: { nav: 'fixed' },
+				pagination: { edge: true },
+				sortIcon: {base:'fa' , up:'fa-sort-up', down:'fa-sort-down', is:'fa-sort'},
+				sortable: ['producto', 'fecha' , 'tiempo'],
+				filterable: ['producto', 'fecha']
+			},
 			expenseDate:'',
 			expenseAmount:'',
 			product: '',
@@ -306,14 +341,16 @@ export default {
 			axios.get('inventario')
 			.then(res => {
 				this.arrayProducts = res.data 
-				let fechaBien = ''
-				for (let index = 0; index < res.data.length; index++) {
-					let fech = new Date(res.data[index].fecha)
-					fechaBien = fech.getDate() +"/"+ (fech.getMonth() + 1) +"/"+fech.getFullYear() +" "+" ("+ fech.getHours()+":"+ fech.getMinutes()+")"
-					this.fechas.push(fechaBien)
+				console.log(this.arrayProducts)
+				for (let i = 0; i < this.arrayProducts.length; i++) {
+					this.arrayProducts[i].fecha = this.formatDate(this.arrayProducts[i].fecha)
 				}
 			})
 		},
+		formatDate(date) {
+				let dateFormat = new Date(date)
+				return dateFormat.getDate() +"/"+ (dateFormat.getMonth() + 1) +"/"+dateFormat.getFullYear() +" "+" ("+ dateFormat.getHours()+":"+ dateFormat.getMinutes()
+			},
 		addProduct(){
 			axios.post('inventario', {
 				product: this.product,
@@ -710,5 +747,60 @@ export default {
 		font-size:1.4em
 	}
 	
+.vue-title {
+		text-align: center;
+		margin-bottom: 10px;
+	}
 
+	
+
+	.glyphicon.glyphicon-eye-open {
+		width: 16px;
+		display: block;
+		margin: 0 auto;
+	}
+
+	th:nth-child(3) {
+	text-align: center;
+	}
+
+	.VueTables__child-row-toggler {
+	width: 16px;
+	height: 16px;
+	line-height: 16px;
+	display: block;
+	margin: auto;
+	text-align: center;
+	}
+
+	.VueTables__child-row-toggler--closed::before {
+	content: "+";
+	}
+
+	.VueTables__child-row-toggler--open::before {
+	content: "-";
+	}
+
+	[v-cloak] {
+	display:none;
+	}
+
+	thead {
+		background-color: #1f5673;
+		color: #fff;
+		text-align: center
+	}
+	.VueTables--client .row{
+		display:none
+	}
+	.VueTables__limit-field label{
+		display:none;
+	}
+	.VueTables--client .row .col-md-12{
+		padding: -10px;
+	}
+	.VuePagination {
+		text-align: center;
+		display:block !important;
+	}
 </style> 

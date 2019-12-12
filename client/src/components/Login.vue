@@ -33,15 +33,26 @@
 				password: ''
 			}
 		},
-		create(){
+		created(){
+			this.logout()
 			localStorage.setItem('logged-in', 'no-logged')
 		},
-		beforeCreate() {
-		if (localStorage.getItem('userToken')) {
-				router.push({name: 'Citas'})
-			}
-		},
 		methods: {
+			logout() {
+				
+				localStorage.removeItem('userToken')
+				localStorage.setItem('logged-in', 'no-loggedin')
+				localStorage.removeItem('nombre')
+				localStorage.removeItem('apellido')
+				localStorage.removeItem('image')
+				localStorage.removeItem('email')
+				localStorage.removeItem('imageUser')
+				this.nombre = ''
+				this.apellido = ''
+				this.image = ''
+				this.email = ''
+				$(".menuVer").hide()
+			},
 			login() {
 				axios.post('users/login', {
 					email: this.email,

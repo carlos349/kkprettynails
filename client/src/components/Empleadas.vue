@@ -415,6 +415,17 @@ export default {
 </script>
 <style media="screen">
 	
+	.metrics{
+		height: auto;
+		background-color: #fff;
+		margin:20px;
+		color:#fff;
+		padding: 10px;
+		padding-right: 15px;
+		box-shadow: 0 0.46875rem 2.1875rem rgba(4,9,20,0.03), 0 0.9375rem 1.40625rem rgba(4,9,20,0.03), 0 0.25rem 0.53125rem rgba(4,9,20,0.05), 0 0.125rem 0.1875rem rgba(4,9,20,0.03);
+		border-radius:5px;
+	}
+	
 	.metrics p{
 		font-size: 1em;
 		margin-top: 10px;

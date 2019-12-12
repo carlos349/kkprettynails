@@ -55,8 +55,23 @@
 				</div>
 			</div>
 			<div class="col-12">
-				<div class="shadow">	
-					<table  class="table" v-bind:style="{ 'background-color': '#1f5673'}" style="color:#fff !important" >
+				<div class="shadow">
+					<v-client-table class="text-center"  :data="expenses" :columns="columns" :options="optionsT">
+						<p slot="datee"  slot-scope="props">{{formatDate(props.row.date)}}</p>
+						<div slot="typee"  slot-scope="props">
+							<p v-if="props.row.type == 'Advancement'">
+										Avance
+							</p>
+							<p v-else-if="props.row.type == 'expense'">
+								Gasto
+							</p>
+							<p v-else>
+								Bono
+							</p>
+						</div>
+						<p slot="mountt"  slot-scope="props">{{formatPrice(props.row.figure)}}</p>
+					</v-client-table>	
+					<!-- <table  class="table" v-bind:style="{ 'background-color': '#1f5673'}" style="color:#fff !important" >
 						<thead>
 							<tr>
 								<th>
@@ -99,7 +114,7 @@
 								</tr>
 							</tbody>
 						</table>
-					</div>
+					</div> -->
 				</div>
 			</div>
 		</div>
@@ -126,6 +141,28 @@
 		},
 		data(){
 			return {
+				columns:['expense' , 'date' , 'typee' , 'mountt' ],
+				optionsT: {
+					filterByColumn: true,
+					texts: {
+						filter: "Filtrar:",
+						filterBy: 'Filtrar por {column}',
+						count:' '
+					},
+					headings: {
+						expense: 'Razón del gasto ',
+						date: 'Fecha ',
+						typee: 'Tipo ',
+						mountt: 'Monto '
+					},
+					pagination: { chunk:10 },
+					pagination: { dropdown:true },
+					pagination: { nav: 'fixed' },
+					pagination: { edge: true },
+					sortIcon: {base:'fa' , up:'fa-sort-up', down:'fa-sort-down', is:'fa-sort'},
+					sortable: ['expense', 'date'],
+					filterable: ['expense', 'date']
+				},
 				expense: new Expenses(),
 				expenses: [],
 				reason: '',
@@ -215,6 +252,9 @@
 				.then(res => {
 					this.expenses = res.data
 					console.log(this.expenses)
+					for (let i = 0; i < this.expenses.length; i++) {
+						this.expenses[i].date = this.formatDate(this.expenses[i].date)
+					}
 				})
 			},
 			CompareSalesAndExpenses(){
@@ -364,5 +404,61 @@
 	}
 	.formGastos form{
 		margin-left: 10%;
+	}
+	.vue-title {
+		text-align: center;
+		margin-bottom: 10px;
+	}
+
+	
+
+	.glyphicon.glyphicon-eye-open {
+		width: 16px;
+		display: block;
+		margin: 0 auto;
+	}
+
+	th:nth-child(3) {
+	text-align: center;
+	}
+
+	.VueTables__child-row-toggler {
+	width: 16px;
+	height: 16px;
+	line-height: 16px;
+	display: block;
+	margin: auto;
+	text-align: center;
+	}
+
+	.VueTables__child-row-toggler--closed::before {
+	content: "+";
+	}
+
+	.VueTables__child-row-toggler--open::before {
+	content: "-";
+	}
+
+	[v-cloak] {
+	display:none;
+	}
+
+	thead {
+		background-color: #1f5673;
+		color: #fff;
+		text-align: center
+	}
+	.VueTables--client .row{
+		display:none
+	}
+	.VueTables__limit-field label{
+		display:none;
+	}
+	.VueTables--client .row .col-md-12{
+		padding: -10px;
+	}
+	.VuePagination {
+		text-align: center;
+		display:block !important;
 	}
 </style>
