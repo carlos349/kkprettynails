@@ -29,10 +29,9 @@ users.post('/registerImage/:id', upload.single("image"), (req, res, next) => {
 			userImage: images
 		}
 	})
-	.then(update => {
-		console.log(update)
+	.then(changeImage => {
+		res.json({status:'ok'})
 	})
-	
 })
 
 users.get('/', async (req, res) => {

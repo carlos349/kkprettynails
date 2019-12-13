@@ -19,6 +19,7 @@
 				<div class="shadow">
 					<v-client-table class="text-center"  :data="servicios" :columns="columns" :options="optionsT">
 						<p slot="prestadoress"  slot-scope="props">{{props.row.prestadores.length}}</p>
+						<p slot="precio"  slot-scope="props">{{formatPrice(props.row.precio)}}</p>
 						<div slot="activee"  slot-scope="props">
 							<button style="width:40%;" v-on:click="desactivarServicio(props.row._id)" v-if="props.row.active" class=" btn btn-success">Activo</button>
 							<button style="width:40%;" v-on:click="desactivarServicio(props.row._id)" v-if="!props.row.active" class=" btn btn-inactive">Inactivo</button>
@@ -163,7 +164,7 @@
 										</td>
 										<td class="font-weight-bold text-right">
 											<label class="conCheck col-sm-2">
-											<input :class="manicurista.documento" class="desMarc" v-on:click="presSelectTwo(manicurista.documento,index)" type="checkbox">
+											<input :id="manicurista._id" class="desMarc" v-on:click="presSelectTwo(manicurista._id,index)" type="checkbox">
 											<span class="checkmark"></span>
 											</label>
 										</td>
@@ -372,7 +373,9 @@
 				.then(res => {
 					this.servicios = res.data
 					this.TotalServicios = res.data.length
+					// console.log(this.servicios)
 				})
+				
 				this.nombreServicio = ' '
 				this.precioServicio = ' '
 			},
@@ -452,7 +455,7 @@
 				}
 				if ($("."+id).prop("checked")!=true ) {
 					for (let i = 0; i < this.prestadoresSeleccionados.length; i++) {
-						if (this.prestadoresSeleccionados[i] == prestador ) {
+						if (this.prestadoresSeleccionados[i] == id ) {
 							this.prestadoresSeleccionados.splice(i, 1)
 							break
 						}
@@ -461,12 +464,12 @@
 				}
 				else{
 					let select = prestador
-					this.prestadoresSeleccionados.push(prestador)
+					this.prestadoresSeleccionados.push(id)
 				}
 				console.log(this.prestadoresSeleccionados)
 			},
 			presSelectTwo(prestador,index){
-				if ($("."+prestador).prop("checked")!=true ) {
+				if ($("#"+prestador).prop("checked")!=true ) {
 					for (let i = 0; i < this.prestadoresSeleccionadosTwos.length; i++) {
 						if (this.prestadoresSeleccionadosTwos[i] == prestador ) {
 							this.prestadoresSeleccionadosTwos.splice(i, 1)
@@ -539,6 +542,7 @@
 				}
 			},
 			pasarDatosEdit(nombre,tiempo, precio, prestadores, id){
+				console.log(prestadores)
 				this.prestadoresSeleccionadosTwos = []
 				$(".desMarc").prop("checked", false)
 				this.nombreServicio = nombre
@@ -547,12 +551,10 @@
 				this.prestadoresEdit = prestadores
 				this.idServicioEditar = id
 				for (let i = 0; i < this.prestadoresEdit.length; i++) {
-					if ($("."+this.prestadoresEdit[i])) {
-
-						$("."+this.prestadoresEdit[i]).prop("checked", "true")
+					if ($("#"+this.prestadoresEdit[i])) {
+						$("#"+this.prestadoresEdit[i]).prop("checked", "true")
 						this.prestadoresSeleccionadosTwos.push(this.prestadoresEdit[i])
 					}
-					
 				}
 				$('#myModal2').modal('show')
 			},

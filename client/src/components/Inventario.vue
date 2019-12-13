@@ -45,7 +45,7 @@
 											</td>
 											<td class="font-weight-bold text-right">
 												<label class="conCheck col-sm-2">
-												<input :class="servicio._id" class="checkFirst" v-on:click="presSelect(servicio.nombre, servicio._id, index)" type="checkbox">
+												<input :class="servicio.nombre" class="checkFirst" v-on:click="presSelect(servicio.nombre, servicio._id, index)" type="checkbox">
 												<span class="checkmark"></span>
 												</label>
 											</td>
@@ -193,7 +193,7 @@
 										</td>
 										<td class="font-weight-bold text-right">
 											<label class="conCheck col-sm-2">
-											<input :class="servicio.documento" class="desMarc" v-on:click="presSelectTwo(servicio.nombre,servicio._id, index)" type="checkbox">
+											<input :class="servicio._id" class="desMarc" v-on:click="presSelectTwo(servicio.nombre,servicio._id, index)" type="checkbox">
 											<span class="checkmark"></span>
 											</label>
 										</td>
@@ -295,18 +295,6 @@ export default {
 
 			this.nombreServicio = ' '
 			this.precioServicio = ' '
-		},
-		presSelect(prestador,index){
-			if ($(".checkFirst").is(":checked") == false ) {
-				this.prestadoresSeleccionados = []
-			}
-			if ($("#"+index).prop("checked")!=true ) {
-				for (let i = 0; i < this.prestadoresSeleccionados.length; i++) {
-					if (this.prestadoresSeleccionados[i] == prestador ) {
-						this.prestadoresSeleccionados.splice(i, 1)
-					}
-				}
-			}					
 		},
 		updateProducts(){
 			axios.put('/inventario/'+this.idProductEditar, {
@@ -420,6 +408,7 @@ export default {
 		},
 		pasarDatosEdit(monto,cantidad,gramos,marca,producto,services,servicesId, id){
 			this.serviceSelectTwo = []
+			this.serviceIdSelectTwo = []
 			$(".desMarc").prop("checked", false)
 			this.editProduct = producto
 			this.editBrand = marca
@@ -443,12 +432,13 @@ export default {
 		},
 
 		presSelect(service, id, index){
-			console.log($("."+id).prop("checked"))
+			console.log($("."+service).prop("checked"))
 			if ($(".checkFirst").is(":checked") == false ) {
 				this.serviceSelect = []
 				this.serviceIdSelect = []
 			}
-			if ($("."+id).prop("checked")!=true ) {
+			if ($("."+service).prop("checked") != true) {
+				console.log('ahora aqui')
 				for (let i = 0; i < this.serviceSelect.length; i++) {
 					if (this.serviceSelect[i] == service && this.serviceIdSelect[i] == id) {
 						this.serviceSelect.splice(i, 1)
@@ -458,21 +448,15 @@ export default {
 				}
 			}
 			else{
-
-				let select = prestador
-				this.prestadoresSeleccionados.push(prestador)
-			}
-			console.log(this.prestadoresSeleccionados)
-		
-
-				let select = service
+				console.log('entreaqui')
 				this.serviceSelect.push(service)
 				this.serviceIdSelect.push(id)
-			
+			}
+
 			console.log(this.serviceSelect)
 		},
 		presSelectTwo(service, id, index){
-			if ($("."+id).prop("checked")!=true ) {
+			if ($("."+id).prop("checked") != true ) {
 				for (let i = 0; i < this.serviceSelectTwo.length; i++) {
 					if (this.serviceSelectTwo[i] == service && this.serviceIdSelectTwo[i] == id) {
 						this.serviceSelectTwo.splice(i, 1)
@@ -482,11 +466,11 @@ export default {
 				}
 			}
 			else{
-				let select = service
-				const prestadorSelect = {"prestador": select}
+				
 				this.serviceSelectTwo.push(service)
 				this.serviceIdSelectTwo.push(id)
 			}
+			console.log(this.serviceSelectTwo)
 		},
 		formatPrice(value) {
 			let val = (value/1).toFixed(2).replace('.', ',')

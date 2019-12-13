@@ -8,19 +8,19 @@
 							<label for="name">Nombre del usuario</label>
 							<input type="text" v-model="first_name" class="form-control inputs" placeholder="Nombre del usuario">
 						</div>
-            <div class="form-group">
+            			<div class="form-group">
 							<label for="name">Apellido del usuario</label>
 							<input type="text" v-model="last_name" class="form-control inputs" placeholder="Apellido del usuario">
 						</div>
-            <div class="form-group">
+           			 	<div class="form-group">
 							<label for="name">Correo del usuario</label>
 							<input type="file" id="file" ref="file" v-on:change="handleFileUpload()" class="form-control inputs" placeholder="Correo del usuario">
 						</div>
-            <div class="form-group">
+            			<div class="form-group">
 							<label for="name">Correo del usuario</label>
 							<input type="email" v-model="email" class="form-control inputs" placeholder="Correo del usuario">
 						</div>
-            <div class="form-group">
+            			<div class="form-group">
 							<label for="name">Contraseña</label>
 							<input type="password" v-model="password" class="form-control inputs" placeholder="Contraseña">
 						</div>
@@ -95,8 +95,8 @@
       return {
         users: [],
         first_name: '',
-				last_name: '',
-				email: '',
+		last_name: '',
+		email: '',
         password: '',
         file: ''
       }
@@ -136,33 +136,49 @@
         console.log(this.file)
       },
       register() {
-        let formData = new FormData();
-        formData.append('image', this.file)
-        axios.post('users/register',
-          {
-            first_name: this.first_name,
-            last_name: this.last_name,
-            email: this.email,
-            password: this.password,
-          }).then(res => {
-            this.$swal({
-              type: 'success',
-              title: 'Usuario registrado como admin',
-              showConfirmButton: false,
-              timer: 1500
-            })
-          
-            axios.post('users/registerImage/'+res.data.status, formData,{
-            headers: {
-              'Content-Type': 'multipart/form-data'
-            }
-            })
-            .then(resTwo => {
-              console.log(resTwo)
-            })
-            .catch(err => {
-              console.log(err)
-            })
+
+
+			let formData = new FormData();
+			formData.append('image', this.file)
+
+
+			axios.post('users/register',
+			{
+				first_name: this.first_name,
+				last_name: this.last_name,
+				email: this.email,
+				password: this.password,
+			}).then(res => {
+					this.$swal({
+						type: 'success',
+						title: 'Usuario registrado como admin',
+						showConfirmButton: false,
+						timer: 1500
+					})
+					this.users =  []
+					this.first_name =  '',
+					this.last_name =  '',
+					this.email =  '',
+					this.password =  '',
+					this.file =  ''
+					this.getUsers()
+
+					axios.post('users/registerImage/'+res.data.status, formData,{headers: {'Content-Type': 'multipart/form-data'}})
+					.then(res => {
+						if (res.data.status == 'ok') {
+							this.$swal({
+								type: 'success',
+								title: 'Usuario registrado como admin',
+								showConfirmButton: false,
+								timer: 1500
+							})
+						}
+					})
+					.catch(err => {
+						console.log(err)
+					})
+
+					
 				}).catch(err => {
 					console.log(err)
 				})
@@ -173,21 +189,23 @@
             },
 			eliminarUsuario(id, admin){
 				if(admin){
-				this.$swal({
-								type: 'error',
-								title: 'No puede borrar un administrador',
-								showConfirmButton: false,
-								timer: 1500
-							})
+					this.$swal({
+						type: 'error',
+						title: 'No puede borrar un administrador',
+						showConfirmButton: false,
+						timer: 1500
+					})
 				}else{
-				axios.delete('users/' + id)
+					axios.delete('users/' + id)
 					.then(res => {
 						this.$swal({
-									type: 'success',
-									title: res.data.first_name+' '+res.data.last_name+' ha sido Borrado',
-									showConfirmButton: false,
-									timer: 1500
-								})
+							type: 'success',
+							title: res.data.first_name+' '+res.data.last_name+' ha sido Borrado',
+							showConfirmButton: false,
+							timer: 1500
+						})
+						
+						this.getUsers()
 					})
 					.catch(err => {
 						this.$swal({
