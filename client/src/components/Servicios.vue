@@ -394,7 +394,7 @@
 				$('#ModalCreateService').modal('show')
 			},
 			registroServicio(){
-				if (this.nombreServi == '' && this.precioServi == '' && this.tiempoServi == '') {
+				if (this.nombreServi == '' || this.precioServi == '' || this.tiempoServi == '') {
 					this.$swal({
 						type: 'error',
 						title: 'Llene todos los campos',
@@ -499,7 +499,7 @@
 				}, 500)	
 			},
 			actualizacionServicios(){
-				if (this.nombreServicio == '' && this.tiempoServicio == '' && this.precioServicio == '') {
+				if (this.nombreServicio == '' || this.tiempoServicio == '' || this.precioServicio == '') {
 					this.$swal({
 						type: 'error',
 						title: 'Llene todos los campos',

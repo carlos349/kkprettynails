@@ -69,30 +69,26 @@
 						</tbody>
 					</table>
 				</div>
-				<div class="input-group input-group-lg mb-2 shadowTop">
-				  <div class="input-group-prepend w-25 text-center">
-				    <span class="spanInputs w-100 font-weight-bold  text-white input-group-text text-center" id="inputGroup-sizing-lg">Sub-Total</span>
-				  </div>
-				  <input readonly type="text" class="form-control manicuristaFocus inputs" v-model="precio" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+				<div class="row pt-3 shadowTop">
+					<div class="col-sm-8">
+						<div class="input-group input-group-lg mb-2 ">
+							<div class="input-group-prepend w-25 text-center">
+								<span class="spanInputs w-100 font-weight-bold  text-white input-group-text text-center" id="inputGroup-sizing-lg">Sub-Total</span>
+							</div>
+							<input readonly type="text" class="form-control manicuristaFocus inputs" v-model="precio" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+						</div>
+					</div>
+					<div class="col-sm-4">
+						<div class="input-group input-group-lg mb-2 ">
+							<div class="input-group-prepend">
+								<span class="input-group-text bg-light font-weight-bold text-white spanInputs" id="inputGroup-sizing-lg">Descuento</span>
+								
+							</div>
+							<input type="text" placeholder="%" v-model="descuento" v-on:change="descuentoFunc" class="form-control manicuristaFocu inputs" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+						</div>
+					</div>
 				</div>
-				<div class="input-group input-group-lg mb-2 ">
-				  <div class="input-group-prepend">
-					<span class="input-group-text bg-light font-weight-bold text-white spanInputs" id="inputGroup-sizing-lg">Descuento</span>
-					<span class="input-group-text bg-light font-weight-bold text-white spanInputs" id="inputGroup-sizing-lg ">%</span>
-					  </div>
-				  <input type="text" placeholder="0" v-model="descuento" v-on:change="descuentoFunc" class="form-control manicuristaFocu inputs" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
-				</div>
-				<div class="input-group input-group-lg mb-2 ">
-				  <div class="input-group-prepend w-25 text-center">
-				    <span class="spanInputs w-100 font-weight-bold text-white input-group-text text-center" id="inputGroup-sizing-lg">Medio de pago</span>
-				  </div>
-					<select class="form-control selectPago" v-model="pagoTipo" v-on:change="elegirManicurista()">
-						<option value="">Seleccione</option>
-						<option value="tarjeta" >Tarjeta</option>
-						<option value="efectivo">Efectivo</option>
-					</select>
-				</div>
-				<div class="w-100 input-group input-group-lg mb-2">
+				<div class="w-75 mx-auto input-group input-group-lg mb-2">
 					<div class="input-group-prepend">
 						<span class="input-group-text bg-light font-weight-bold text-white spanInputs" id="inputGroup-sizing-lg">Total</span>
 					<span class="input-group-text bg-light font-weight-bold text-white spanInputs" id="inputGroup-sizing-lg ">$</span>
@@ -104,6 +100,64 @@
 					</div>
 					
 				</div>
+				
+				
+					<span class="spanInputs w-100 font-weight-bold text-center text-white input-group-text text-center" ><h5 class="text-center w-100">Medios de pago</h5> </span>
+					<div class="input-group-prepend w-25 text-center">
+						
+					</div>
+					<div class="row pt-2 ">
+						<div class="col-sm-6">
+						<div class="input-group input-group-lg mb-2 ">
+							<div class="input-group-prepend w-50 text-center">
+								<span class="spanInputs w-100  text-white input-group-text" id="inputGroup-sizing-lg">Efectivo</span>
+							</div>
+							<input readonly type="text" class="form-control manicuristaFocus inputs" v-model="pagoEfectivo" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="input-group input-group-lg mb-2 ">
+							<div class="input-group-prepend w-50 text-center">
+								<span class="spanInputs w-100 text-white input-group-text" id="inputGroup-sizing-lg"><img class="w-100"  src="../assets/redC.png" alt=""></span>
+							</div>
+							<input readonly type="text" class="form-control manicuristaFocus inputs" v-model="pagoRedC" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="input-group input-group-lg mb-2 ">
+							<div class="input-group-prepend w-50 text-center">
+								<span class="spanInputs w-100  text-white input-group-text" id="inputGroup-sizing-lg">Transferecia</span>
+							</div>
+							<input readonly type="text" class="form-control manicuristaFocus inputs" v-model="pagoTransf" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="input-group input-group-lg mb-2 ">
+							<div class="input-group-prepend w-50">
+								<span class="input-group-text bg-light w-100  text-white spanInputs" id="inputGroup-sizing-lg">Otros</span>
+								
+							</div>
+							<input type="text" v-model="pagoOtros"  class="form-control manicuristaFocu inputs" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+						</div>
+					</div>
+						<!-- <label v-on:click="elegirManicurista()" class="contRadio mx-auto">Efectivo
+							<input type="radio" id="efectivo" checked="checked" name="radio"  v-model="pagoTipo">
+							<span class="checkRadio mt-1"></span>
+						</label>
+						<label v-on:click="elegirManicurista()" class="contRadio mx-auto">Tarjeta
+							<input type="radio" id="tarjeta" name="radio"  v-model="pagoTipo">
+							<span class="checkRadio mt-1"></span>
+						</label> -->
+					</div>
+					
+					
+					<!-- <select class="form-control selectPago" v-model="pagoTipo" v-on:change="elegirManicurista()">
+						<option value="">Seleccione</option>
+						<option value="tarjeta" >Tarjeta</option>
+						<option value="efectivo">Efectivo</option>
+					</select> -->
+				
+				
 				<button v-if="!inspector" type="button" class="font-weight-bold mb-3 btn procesar w-100" v-on:click="procesar" disabled>Procesar
 				</button>
 				
@@ -250,6 +304,10 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 				'Accept': 'application/json',
 				'Content-type': 'application/json'
 			},
+			pagoEfectivo: '0',
+			pagoOtros: '0',
+			pagoRedC: '0',
+			pagoTransf: '0',
 			nombreCliente: '',
 			nombreClienteRegister:'',
 			instagramCliente: '',
@@ -678,9 +736,9 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 		border-bottom: 2px solid #1F5673 !important;
 		border-radius: 0px !important;
 		background-color:transparent !important;
-		font-size: 0.9em !important;
+		font-size: 0.8em !important;
 		font-family: 'Raleway', sans-serif;
-		font-weight:600;
+		font-weight:400;
 		color:black !important
 	}
 	@media (max-width: 1000px) {
@@ -923,4 +981,67 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 		-ms-transform: rotate(45deg);
 		transform: rotate(45deg);
 	}
+
+	.contRadio {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default radio button */
+.contRadio input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Create a custom radio button */
+.checkRadio {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #eee;
+  border-radius: 50%;
+}
+
+/* On mouse-over, add a grey background color */
+.contRadio:hover input ~ .checkRadio {
+  background-color: #ccc;
+}
+
+/* When the radio button is checked, add a blue background */
+.contRadio input:checked ~ .checkRadio {
+  background-color: #2196F3;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkRadio:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.contRadio input:checked ~ .checkRadio:after {
+  display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.contRadio .checkRadio:after {
+ 	top: 9px;
+	left: 9px;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: white;
+}
 </style>
