@@ -198,7 +198,7 @@
                             class="auto">
                         </autocomplete>
                     </div> -->
-					<button class="btn w-100 add">Agregar cliente</button>
+					<button class="btn w-100 add">Editar cliente</button>
 				</form>
 		      </div>
 		    </div>

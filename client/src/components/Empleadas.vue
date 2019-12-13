@@ -289,7 +289,18 @@ export default {
 			})
 		},
 		deletePrestador(id){
-			axios.delete('manicuristas/' + id)
+			this.$swal({
+          title: '¿Seguro que desea eliminar?',
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Si',
+          cancelButtonText: 'No',
+          showCloseButton: true,
+          showLoaderOnConfirm: true
+        })
+        .then(result => {
+          if (result.value) {
+            axios.delete('manicuristas/' + id)
 			.then(res => {
 				if(res.data.status = 'Prestador borrado'){
 					this.$swal({
@@ -309,13 +320,44 @@ export default {
 					timer: 1500
 				})
 			})
+          }
+          else{
+            
+          }
+        })
+			
 		},
 		sacarReporte(id) {
             localStorage.setItem('reportePrestador', id)
             router.push({name:'reporteprestador'})
         },
 		registroPrestador(){
-			axios.post('manicuristas', {
+			if (this.nombrePrestador == '') {
+				this.$swal({
+						type: 'error',
+						title: 'Debe escribir el nombre del prestador',
+						showConfirmButton: false,
+						timer: 1500
+					})
+			}
+			else if (this.documento == '') {
+				this.$swal({
+						type: 'error',
+						title: 'Debe escribir el documento del prestador',
+						showConfirmButton: false,
+						timer: 1500
+					})
+			}
+			else if (this.porcentaje == '') {
+				this.$swal({
+						type: 'error',
+						title: 'Debe escribir el porcentaje del prestador',
+						showConfirmButton: false,
+						timer: 1500
+					})
+			}
+			else {
+				axios.post('manicuristas', {
 				nombreManicurista: this.nombrePrestador,
 				documentoManicurista: this.documento,
 				porcentajeManicurista: this.porcentaje
@@ -342,12 +384,39 @@ export default {
 					})
 				}
 			})
+			}
+			
 		},
 		openModalCreateEmploye(){
 			$('#ModalCreateEmploye').modal('show')
 		},
 		actualizarPrestador(){
-			axios.put('manicuristas/' + this.idPrestadorEdit, {
+			if (this.nombrePrestadorEdit == '') {
+				this.$swal({
+						type: 'error',
+						title: 'Debe escribir el nombre del prestador',
+						showConfirmButton: false,
+						timer: 1500
+					})
+			}
+			else if (this.documentoPrestadorEdit == '') {
+				this.$swal({
+						type: 'error',
+						title: 'Debe escribir el documento del prestador',
+						showConfirmButton: false,
+						timer: 1500
+					})
+			}
+			else if (this.porcentajePrestadorEdit == '') {
+				this.$swal({
+						type: 'error',
+						title: 'Debe escribir el porcentaje del prestador',
+						showConfirmButton: false,
+						timer: 1500
+					})
+			}
+			else{
+				axios.put('manicuristas/' + this.idPrestadorEdit, {
 				nombre: this.nombrePrestadorEdit,
 				documento: this.documentoPrestadorEdit,
 				porcentaje: this.porcentajePrestadorEdit
@@ -371,6 +440,8 @@ export default {
 					})
 				}
 			})
+			}
+			
 		},
 		pasarDatosEdit(nombre, documento, porcentaje, id){
 			this.nombrePrestadorEdit = nombre
