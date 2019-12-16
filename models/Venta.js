@@ -11,25 +11,25 @@ const VentaSchema = new Schema({
 	servicios: {
 		type: Array
 	},
-	pago: {
-		type: String
-	},
 	descuento: {
-		type: Number
-	},
-	comision: {
-		type: Number
-	},
-	ganancianeta: {
 		type: Number
 	},
 	ganancialocal: {
 		type: Number
 	},
-	reinversion: {
+	comision: {
 		type: Number
 	},
-	credito: {
+	pagoEfectivo: {
+		type: Number
+	},
+	pagoOtros: {
+		type: Number
+	},
+	pagoRedC: {
+		type: Number
+	},
+	pagoTransf: {
 		type: Number
 	},
 	total: {

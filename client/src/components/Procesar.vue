@@ -63,7 +63,7 @@
 
 								</td>
 								<td v-if="servicio.active" class=" font-weight-bold  text-center">
-									{{servicio.precio}}
+									{{formatPrice(servicio.precio)}}
 								</td>
 							</tr>
 						</tbody>
@@ -112,7 +112,7 @@
 							<div class="input-group-prepend w-50 text-center">
 								<span class="spanInputs w-100  text-white input-group-text" id="inputGroup-sizing-lg">Efectivo</span>
 							</div>
-							<input readonly type="text" class="form-control manicuristaFocus inputs" v-model="pagoEfectivo" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+							<input type="text" class="form-control manicuristaFocus inputs" v-model="pagoEfectivo" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="0">
 						</div>
 					</div>
 					<div class="col-sm-6">
@@ -120,7 +120,7 @@
 							<div class="input-group-prepend w-50 text-center">
 								<span class="spanInputs w-100 text-white input-group-text" id="inputGroup-sizing-lg"><img class="w-100"  src="../assets/redC.png" alt=""></span>
 							</div>
-							<input readonly type="text" class="form-control manicuristaFocus inputs" v-model="pagoRedC" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+							<input type="text" class="form-control manicuristaFocus inputs" v-model="pagoRedC" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="0">
 						</div>
 					</div>
 					<div class="col-sm-6">
@@ -128,7 +128,7 @@
 							<div class="input-group-prepend w-50 text-center">
 								<span class="spanInputs w-100  text-white input-group-text" id="inputGroup-sizing-lg">Transferecia</span>
 							</div>
-							<input readonly type="text" class="form-control manicuristaFocus inputs" v-model="pagoTransf" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+							<input type="text" class="form-control manicuristaFocus inputs" v-model="pagoTransf" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="0">
 						</div>
 					</div>
 					<div class="col-sm-6">
@@ -137,7 +137,7 @@
 								<span class="input-group-text bg-light w-100  text-white spanInputs" id="inputGroup-sizing-lg">Otros</span>
 								
 							</div>
-							<input type="text" v-model="pagoOtros"  class="form-control manicuristaFocu inputs" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+							<input type="text" v-model="pagoOtros"  class="form-control manicuristaFocu inputs" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="0">
 						</div>
 					</div>
 						<!-- <label v-on:click="elegirManicurista()" class="contRadio mx-auto">Efectivo
@@ -304,10 +304,10 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 				'Accept': 'application/json',
 				'Content-type': 'application/json'
 			},
-			pagoEfectivo: '0',
-			pagoOtros: '0',
-			pagoRedC: '0',
-			pagoTransf: '0',
+			pagoEfectivo: '',
+			pagoOtros: '',
+			pagoRedC: '',
+			pagoTransf: '',
 			nombreCliente: '',
 			nombreClienteRegister:'',
 			instagramCliente: '',
@@ -351,19 +351,14 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 	},
 	methods: {
 			arrayMani(){
-				
 					for (let index = 0; index < this.manicuristas.length; index++) {
 						this.arregloManicuristas.push(this.manicuristas[index].nombre)
 					}
-				
 			},
-			arrayUsers(){
-				
+			arrayUsers(){	
 					for (let index = 0; index < this.clients.length; index++) {
 						this.arregloClients.push(this.clients[index].nombre+'-'+this.clients[index].identidad)
 					}
-				
-			
 			},
 			
 			searchClient(input){
@@ -476,13 +471,8 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 					this.nombreManicurista = this.maniSelect
 				})
 				.catch(err => {
-					this.$swal({
-						type: 'error',
-						title: 'experimentamos problemas :(',
-						showConfirmButton: false,
-						timer: 1500
+						console.log(err)
 					})
-				})
 			},
 			borrarServicio(servicio,index,esto,precio){
 				for (var i = 0; i < this.serviciosSelecionados.length; i++) {
@@ -568,38 +558,76 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 				})
 			},
 			procesar() {
-				if (this.nombreCliente != '' && this.maniSelect != '' && this.pagoTipo != '') {
-					axios.post('ventas/procesar', {
-						cliente: this.nombreCliente,
-						manicurista: this.maniSelect,
-						servicios: this.serviciosSelecionados,
-						comision: this.comision,
-						mediopago:this.pagoTipo,
-						descuento:this.descuento,
-						fecha:this.fechaVenta,
-						total: this.totalSinFormato,
-						documentoManicurista: this.documentoManicurista
-					})
-					.then(res => {
-						if (res.data.status == "Venta registrada") {
-							setTimeout(function(){
-								location.reload()
-							},400)
+				if (this.pagoEfectivo == '') {
+					this.pagoEfectivo = 0
+				}
+				if (this.pagoOtros == '') {
+					this.pagoOtros = 0
+				}
+				if (this.pagoRedC == '') {
+					this.pagoRedC = 0
+				}
+				if (this.pagoTransf == '') {
+					this.pagoTransf = 0
+				}
+				const totalFormadePago = parseFloat(this.pagoEfectivo) + parseFloat(this.pagoOtros) + parseFloat(this.pagoRedC) + parseFloat(this.pagoTransf)
+				
+				if (this.nombreCliente != '' && this.maniSelect != '') {
+					if (this.totalSinFormato == totalFormadePago ) {
+						axios.post('ventas/procesar', {
+							cliente: this.nombreCliente,
+							manicurista: this.maniSelect,
+							servicios: this.serviciosSelecionados,
+							comision: this.comision,
+							pagoEfectivo:this.pagoEfectivo,
+							pagoOtros:this.pagoOtros,
+							pagoRedC:this.pagoRedC,
+							pagoTransf:this.pagoTransf,
+							descuento:this.descuento,
+							fecha:this.fechaVenta,
+							total: this.totalSinFormato,
+							documentoManicurista: this.documentoManicurista
+						})
+						.then(res => {
+							if (res.data.status == "Venta registrada") {
+								setTimeout(function(){
+									location.reload()
+								},400)
+								this.$swal({
+									type: 'success',
+									title: 'Venta procesada',
+									showConfirmButton: false,
+									timer: 1500
+								})
+							}
+						}).catch(err => {
 							this.$swal({
-								type: 'success',
-								title: 'Venta procesada',
+								type: 'error',
+								title: 'experimentamos problemas :(',
 								showConfirmButton: false,
 								timer: 1500
 							})
-						}
-					}).catch(err => {
+						})
+					}else{
 						this.$swal({
 							type: 'error',
-							title: 'experimentamos problemas :(',
+							title: 'Total no coincide, con los montos en medios de pago',
 							showConfirmButton: false,
-							timer: 1500
+							timer: 2000
 						})
-					})
+						if (this.pagoEfectivo == 0) {
+							this.pagoEfectivo = ''
+						}
+						if (this.pagoOtros == 0) {
+							this.pagoOtros = ''
+						}
+						if (this.pagoRedC == 0) {
+							this.pagoRedC = ''
+						}
+						if (this.pagoTransf == 0) {
+							this.pagoTransf = ''
+						}
+					}	
 				}else{
 					this.$swal({
 						type: 'error',
@@ -876,13 +904,13 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 	.lupa{
 		position:absolute;
 		right:8%;
-		top:18.5%;
+		top:17%;
 		font-size:1.4em
 	}
 	.icon-add{
 		position:absolute;
 		right:3%;
-		top:17.5%;
+		top:16%;
 		font-size:2.3em;
 		cursor: pointer;
 		color: #102230

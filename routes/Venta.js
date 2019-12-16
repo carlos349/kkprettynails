@@ -855,23 +855,22 @@ ventas.post('/procesar', (req, res) => {
   }
   const total = req.body.total
   const comision = '0.' + req.body.comision
+  const comisionLocal = '0.' + (100 - req.body.comision)
   const comisionFinal = parseFloat(total) * parseFloat(comision)
   const comisionDosdecimales = comisionFinal.toFixed(2)
-  const ganancia = parseFloat(total) * 0.10
-  const gananciaLocal = parseFloat(total) * 0.30
-  const reinversion = parseFloat(total) * 0.15
-  const credito = parseFloat(total) * 0.05
+  const gananciaLocal = parseFloat(total) * parseFloat(comisionLocal)
+  console.log(gananciaLocal) 
   const venta = {
     cliente: req.body.cliente,
     manicurista: req.body.manicurista,
     servicios: req.body.servicios,
     comision: comisionFinal,
-    pago:req.body.mediopago,
+    pagoEfectivo:req.body.pagoEfectivo,
+    pagoOtros:req.body.pagoOtros,
+    pagoRedC:req.body.pagoRedC,
+    pagoTransf:req.body.pagoTransf,
     descuento:req.body.descuento,
-    ganancianeta: ganancia,
     ganancialocal: gananciaLocal,
-    reinversion: reinversion,
-    credito: credito,
     total: total,
     fecha: today
   }

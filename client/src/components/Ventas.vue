@@ -386,6 +386,7 @@ export default {
           })
           this.loaded = true
         }else{
+          console.log(res.data)
           const userlist = res.data.chart
           this.chartdata = userlist
           this.loaded = true
