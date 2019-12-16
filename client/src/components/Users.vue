@@ -165,6 +165,7 @@
 
 					axios.post('users/registerImage/'+res.data.status, formData,{headers: {'Content-Type': 'multipart/form-data'}})
 					.then(res => {
+						console.log(res)
 						if (res.data.status == 'ok') {
 							this.$swal({
 								type: 'success',
