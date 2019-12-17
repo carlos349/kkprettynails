@@ -471,8 +471,8 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 					this.nombreManicurista = this.maniSelect
 				})
 				.catch(err => {
-						console.log(err)
-					})
+					console.log(err)
+				})
 			},
 			borrarServicio(servicio,index,esto,precio){
 				for (var i = 0; i < this.serviciosSelecionados.length; i++) {
@@ -546,15 +546,10 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 						timer: 1500
 					})
 				})
-
+				console.log(this.maniSelect)
 				axios.put('ventas/updateProviderMonth/' + this.maniSelect)
 				.catch(err => {
-					this.$swal({
-						type: 'error',
-						title: 'experimentamos problemas :(',
-						showConfirmButton: false,
-						timer: 1500
-					})
+					console.log(err)
 				})
 			},
 			procesar() {

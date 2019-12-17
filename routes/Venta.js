@@ -115,20 +115,24 @@ ventas.get('/getSale/:id', async (req, res, next) => {
   res.json(sale)
 })
 
-ventas.get('/prueba', (req, res) => {
-  const dateNow = new Date()
-  const formatDate = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()
-
-  dateNow.setDate(dateNow.getDate() + 1)
-  const formatDateTwo = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()
-  const dateTomorrow = new Date(formatDateTwo)
+ventas.get('/findSalesByDate/:dates', async (req, res) => {
+  const dates = req.params.dates
+  const splitDates = dates.split(':')
+  const desde = splitDates[0]
+  const hasta = splitDates[1]
   
-  Cierres.find({
-    fecha: { $gte: formatDate, $lte: formatDateTwo }
-  })
-  .then(resp => {
-    res.json({status: resp.length})
-  })
+  try {
+    const Sales = await Venta.find({fecha: { $gte: desde, $lte: hasta }})
+    console.log(Sales.length)
+    if (Sales.length == 0) {
+      res.json({status: 'no Sales'})
+    }else{
+      res.json({status: Sales})
+    }
+  } catch(err) {
+    res.send(err)
+  }
+ 
 })
 
 ventas.get('/closingPerMonth/:month', (req, res) => {
@@ -235,12 +239,12 @@ ventas.get('/totalSales/:month', (req, res) => {
     }
   }
   
-  let totalLocal = 0
-  let gananciaNeta = 0
-  let gananciaTotal = 0
-  let localAnterior = 0
-  let netaAnterior = 0
-  let totalAnterior = 0
+  var totalLocal = 0
+  var gananciaNeta = 0
+  var gananciaTotal = 0
+  var localAnterior = 0
+  var netaAnterior = 0
+  var totalAnterior = 0
 
   if (month == 0) {
     Venta.find()
@@ -249,14 +253,14 @@ ventas.get('/totalSales/:month', (req, res) => {
         var fechL = new Date(resp[index].fecha)
         if (getMonth == fechL.getMonth()) {
           totalLocal = totalLocal + resp[index].ganancialocal 
-          gananciaNeta = gananciaNeta + resp[index].ganancianeta
           gananciaTotal = gananciaTotal + resp[index].total
         }else if (getMonthPrev == fechL.getMonth()) {
           localAnterior = localAnterior + resp[index].ganancialocal
-          netaAnterior = netaAnterior + resp[index].ganancianeta
           totalAnterior = totalAnterior + resp[index].total
         }
       }
+      gananciaNeta = totalLocal * 0.10 
+      netaAnterior = localAnterior * 0.10
       res.json({totalLocal: totalLocal, gananciaNeta: gananciaNeta, gananciaTotal: gananciaTotal, localAnterior: localAnterior, netaAnterior: netaAnterior, totalAnterior: totalAnterior })
     })
   }else{
