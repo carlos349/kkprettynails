@@ -326,12 +326,7 @@
 		height:auto;
 		border-radius:5px;
 	}
-	table{
-		border:none !important;
-		margin-bottom:0 !important;
-		table-layout: fixed;
-		color:#102229 !important;
-	}
+	
 	.formsExpense::-webkit-scrollbar {
 		width: 8px;     /* Tamaño del scroll en vertical */
 		height: 8px;    /* Tamaño del scroll en horizontal */

@@ -14,7 +14,11 @@
 			<div class="col-md-12">
 				<div class="shadow">	
 					<v-client-table class="text-center" :data="manicuristas" :columns="columns" :options="optionsT">
-						<p slot="rest"  slot-scope="props">{{props.row.comision - props.row.advancement}}</p>
+						
+						<p slot="porcentaje"  slot-scope="props">{{props.row.porcentaje }}%</p>
+						<p slot="comision"  slot-scope="props">{{formatPrice(props.row.comision)}}</p>
+						<p slot="advancement"  slot-scope="props">{{formatPrice(props.row.advancement)}}</p>
+						<p slot="rest"  slot-scope="props">{{formatPrice(props.row.comision - props.row.advancement)}}</p>
 						<button slot="edit"  slot-scope="props" style="width:100%;" v-on:click="pasarDatosEdit(props.row.nombre,props.row.documento,props.row.porcentaje, props.row._id)" class=" btn btn-colorsEdit"><font-awesome-icon icon="edit" /></button>
 						<button slot="delete" style="width:100%;"  slot-scope="props" v-on:click="deletePrestador(props.row._id)" class=" btn btn-colorsTrash"><font-awesome-icon icon="trash" /></button>
 						<button slot="report" style="width:100%;"  slot-scope="props" v-on:click="sacarReporte(props.row._id)" class=" btn btn-colorsPrint"><font-awesome-icon icon="copy" /></button>
@@ -167,7 +171,7 @@
 					</div>
 					<div class="form-group">
 						<label for="name">Documento de identificación</label>
-						<input v-model="documento" type="numbre" class="form-control inputs" placeholder="Identificación">
+						<input v-model="documento" type="text" class="form-control inputs" placeholder="Identificación" v-on:change="changeRut()">
 					</div>
 					<div class="form-group">
 						<label for="name">Porcentaje de ganancia</label>
@@ -281,7 +285,7 @@ export default {
 			axios.get('manicuristas')
 			.then(res => {
 				this.manicuristas = res.data
-				console.log(this.manicuristas)
+				
 			})
 		},
 		deletePrestador(id){
@@ -472,7 +476,14 @@ export default {
 		formatPrice(value) {
             let val = (value/1).toFixed(2).replace('.', ',')
             return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
-        }
+		},
+		formatRut(value) {
+            let val = (value/1).toFixed(2).replace('.', '-')
+            return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+		},
+		changeRut(){
+			this.documento = this.formatRut(this.documento)
+		}
 	},
 	computed: {
 		myStyles () {
@@ -509,12 +520,7 @@ export default {
 	.sectionMetricsPrestador{
 		margin-left: 8%;
 	}
-	table{
-		border:none !important;
-		margin-bottom:0 !important;
-		table-layout: fixed;
-		color:#102229 !important
-	}
+	
 	.first{
 		background:#1F5673; /* fallback for old browsers */
 	}

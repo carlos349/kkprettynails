@@ -31,7 +31,24 @@
 				</div>
 			</div>
       <div class="row">
-        <div class="col-md-2 mb-2">
+        <div class="col-md-5">
+          <div class="pt-3 pb-3" style="padding-left:10%;">
+            <datetime placeholder="Desde" class="theme-blue"  v-model="fechaDesde" :phrases="{ok: 'Elegir', cancel: 'Salir'}" :format="{ year: 'numeric', month: 'long', day: 'numeric'}" auto></datetime>
+          </div>
+        </div>
+        <div class="col-md-5">
+          <div class="pt-3 pb-3">
+            <datetime placeholder="Hasta" class="theme-blue"  v-model="fechaHasta" :phrases="{ok: 'Elegir', cancel: 'Salir'}" :format="{ year: 'numeric', month: 'long', day: 'numeric'}" auto></datetime>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="pt-4 pb-3">
+            <button class="btn findSales w-75" v-on:click="findSalesByDate">
+              Buscar
+            </button>
+          </div>
+        </div>
+        <!-- <div class="col-md-2 mb-2">
           <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getMonthPerMonthSelected(1)">
             Enero  
           </button> 
@@ -89,9 +106,10 @@
         <div class="col-md-2 mb-2">
           <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getMonthPerMonthSelected(12)">
             Diciembre  
-          </button> </div> 
+          </button> 
+        </div>  -->
       </div>
-      <div class="row BotonesDespliegue">
+      <!-- <div class="row BotonesDespliegue">
         <div class="col-md-6">
           <button class="btn btn-primary  w-100" type="button" data-toggle="collapse" data-target="#collapseTable" aria-expanded="false" aria-controls="collapseTable">
           Desplegar tabla de ventas
@@ -107,12 +125,26 @@
         <div class="small">
 					<line-chart v-if="loaded" :chartdata="chartdata" :options="options" :styles="myStyles"/>
 				</div>
-      </div>
-      <div class="collapse" id="collapseTable">
-        <div class="">
-					<input type="text" id="myInputVentas" v-on:keyup="myFunctionVentas()" class="form-control buscar inputsVentas" placeholder="Filtrar ventas por fecha"/>
+      </div> -->
+      
+        <div class="row">
+					<div class="col-md-12">
+            <div class="shadow">	
+              <v-client-table class="text-center"  :data="ventas" :columns="columns" :options="optionsT">
+
+                <button slot="print"  slot-scope="props" style="width:100%;" v-on:click="reporteVenta(props.row._id)" class=" btn btn-colorsPrint"><font-awesome-icon icon="copy" /></button>
+                
+                <p slot="descuentoo" slot-scope="props">{{props.row.descuento}}%</p>
+                <p slot="comisionn" slot-scope="props">{{formatPrice(props.row.comision)}}</p>
+                <p slot="locall" slot-scope="props">{{formatPrice(props.row.ganancialocal)}}</p>
+                <p slot="totall" slot-scope="props">{{formatPrice(props.row.total)}}</p>
+                <!-- <a slot="edit" slot-scope="props" class="fa fa-edit" :href="pasarDatosEdit(props.row.nombre, props.row.identidad, props.row.correoCliente, props.row.instagramCliente, props.row._id)">Hola </a> -->
+              </v-client-table>
+            </div>
+          </div>
 				</div>
-        <table class="table tableVenta" >
+
+        <!-- <table class="table tableVenta" >
           <thead class="thead-light">
             <tr class="respons">
               <th class="text-center">
@@ -186,8 +218,8 @@
             </tr>
           </tbody>
         </table>
-      </div>
-      </div>
+      </div> -->
+
       <div class="modal fade" id="modalDetalleSale" tabindex="-1"  role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered "  >
           <div class="modal-content p-3" style="background-color:#fff;">
@@ -211,8 +243,11 @@
                 <h4>{{arreglo.manicurista}}</h4>
               </div>
               <div class="form-group col-md-6">
-                <label for="name">Método de pago</label>
-                <h4>{{arreglo.pago}}</h4>
+                <label for="name">Métodos de pago</label>
+                <label v-if="arreglo.pagoEfectivo > 0">Efectivo: {{formatPrice(arreglo.pagoEfectivo)}}</label>
+                <label v-if="arreglo.pagoRedC > 0">RedCompra: {{formatPrice(arreglo.pagoRedC)}}</label>
+                <label v-if="arreglo.pagoTransf > 0">Transferencia: {{formatPrice(arreglo.pagoTransf)}}</label>
+                <label v-if="arreglo.pagoOtros > 0">Otros: {{formatPrice(arreglo.pagoOtros)}}</label>
               </div>
               <ul class="list-group mb-2 " style="width:100%;">
                 <li class="list-group-item"  style="background-color: transparent !important">Servicios:
@@ -222,10 +257,7 @@
                   </span> 
                 </li>
                 <li class="list-group-item" style="background-color: transparent !important"><h5>Comisión: <span style="float:right;"> {{ formatPrice(arreglo.comision) }}</span></h5></li>
-                <li class="list-group-item" style="background-color: transparent !important"><h5>Crédito: <span style="float:right;"> {{ formatPrice(arreglo.credito) }} </span></h5></li>
-                <li class="list-group-item" style="background-color: transparent !important"><h5>Reinversión: <span style="float:right;"> {{ formatPrice(arreglo.reinversion) }} </span></h5></li>
                 <li class="list-group-item" style="background-color: transparent !important"><h5>Ganancia del local:<span style="float:right;"> {{ formatPrice(arreglo.ganancialocal) }}</span></h5></li>
-                <li class="list-group-item" style="background-color: transparent !important"><h5>Ganancia neta:<span style="float:right;"> {{ formatPrice(arreglo.ganancianeta) }} </span></h5></li>
                 <li class="list-group-item" style="background-color: transparent !important"><h5>Descuento: <span style="float:right;"> {{arreglo.descuento }}% </span></h5></li>
                 <li class="list-group-item" style="background-color: transparent !important"><h5>Total:<span style="float:right;"> {{ formatPrice(arreglo.total) }}</span></h5></li>
               </ul>
@@ -248,7 +280,8 @@
 import axios from 'axios'
 import LineChart from '../plugins/LineChart.js'
 import router from '../router'
-
+import { Datetime } from 'vue-datetime'
+import 'vue-datetime/dist/vue-datetime.css'
 class Ventas{
 	constructor(servicios, cliente, manicuristas, comision, local, ganancia, total) {
 		this.servicios = servicios;
@@ -269,10 +302,38 @@ class Fechas{
 
 export default {
   components: {
-		LineChart
+    LineChart,
+    Datetime
 	},
   data(){
     return {
+      columns:['fecha' , 'servicios' , 'cliente' , 'manicurista' , 'descuentoo' , 'comisionn' , 'locall', 'totall', 'print'],
+			optionsT: {
+				filterByColumn: true,
+				texts: {
+					filter: "Filtrar:",
+					filterBy: 'Filtrar por {column}',
+					count:' '
+				},
+				headings: {
+					fecha: 'Fecha ',
+					servicioss: 'Servicios ',
+					cliente: 'Cliente ',
+					manicurista: 'Prestador ',
+					descuentoo: 'Descuento ',
+          comisionn: 'Comision ',
+          locall: 'Local ',
+          totall: 'Total',
+          print: 'Reporte'
+				},
+				pagination: { chunk:10 },
+				pagination: { dropdown:true },
+				pagination: { nav: 'fixed' },
+				pagination: { edge: true },
+				sortIcon: {base:'fa' , up:'fa-sort-up', down:'fa-sort-down', is:'fa-sort'},
+				sortable: ['fecha'],
+				filterable: ['fecha']
+			},
       venta: new Ventas(),
       ventas: [],
       ventasAnterior: [],
@@ -293,7 +354,9 @@ export default {
       loaded: false,
 			chartdata: null,
       height:360,
-      arreglo: []
+      arreglo: [],
+      fechaDesde: '',
+      fechaHasta: ''
     }
   },
   beforeCreate() {
@@ -318,12 +381,56 @@ export default {
       .then(res => {
         this.ventas = res.data
         let fechaBien = ''
-        for (let index = 0; index < res.data.length; index++) {
-          let fech = new Date(res.data[index].fecha)
+        for (let index = 0; index < this.ventas.length; index++) {
+          let fech = new Date(this.ventas[index].fecha)
           fechaBien = fech.getDate() +"/"+ (fech.getMonth() + 1) +"/"+fech.getFullYear() +" "+" ("+ fech.getHours()+":"+ fech.getMinutes()+")"
-          this.fechas.push(fechaBien)
+          this.ventas[index].fecha = fechaBien
+          let servicio = ''
+          for (let indexTwo = 0; indexTwo < this.ventas[index].servicios.length; indexTwo++) {
+            servicio = servicio +'\n'+ this.ventas[index].servicios[indexTwo].servicio
+            
+          }
+          this.ventas[index].servicios = servicio
         }
       })
+    },
+    async findSalesByDate(){
+      const dateDesde = new Date(this.fechaDesde)
+      const dateHasta = new Date(this.fechaHasta)
+      const formatDesde = dateDesde.getFullYear() +"-"+(dateDesde.getMonth() + 1)+"-"+dateDesde.getDate()
+      const formatHasta = dateHasta.getFullYear() +"-"+(dateHasta.getMonth() + 1)+"-"+dateHasta.getDate()
+      const Dates = formatDesde+':'+formatHasta
+      
+      try {
+        const sales = await axios.get('ventas/findSalesByDate/'+Dates)
+        if (sales.data.status == 'no Sales') {
+          this.$swal({
+            type: 'error',
+            title: 'No hay ventas entres las fechas seleccionadas',
+            showConfirmButton: false,
+            timer: 1500
+          })
+        }else{
+          this.ventas = res.data.status
+          let fechaBien = ''
+          for (let index = 0; index < this.ventas.length; index++) {
+            let fech = new Date(this.ventas[index].fecha)
+            fechaBien = fech.getDate() +"/"+ (fech.getMonth() + 1) +"/"+fech.getFullYear() +" "+" ("+ fech.getHours()+":"+ fech.getMinutes()+")"
+            this.ventas[index].fecha = fechaBien
+            let servicio = ''
+            for (let indexTwo = 0; indexTwo < this.ventas[index].servicios.length; indexTwo++) {
+              servicio = servicio +'\n'+ this.ventas[index].servicios[indexTwo].servicio
+              
+            }
+            this.ventas[index].servicios = servicio
+          }
+        }
+      }
+      catch(err){
+        console.log(err)
+      }
+      
+
     },
     sacarReporte() {
       $('.afuera').hide()
@@ -386,6 +493,7 @@ export default {
           })
           this.loaded = true
         }else{
+          console.log(res.data)
           const userlist = res.data.chart
           this.chartdata = userlist
           this.loaded = true
@@ -412,7 +520,6 @@ export default {
             const sale = await axios.get('ventas/getSale/'+id)
             this.arreglo = sale.data
             console.log(this.arreglo)
-            
             $('#modalDetalleSale').modal('show')
         } catch(err) {
               this.$swal({
@@ -635,5 +742,87 @@ export default {
 		font-family: 'Raleway', sans-serif;
 		font-weight:600;
 	}
-  
+  .vdatetime-input{
+    width:80%;
+    padding: 20px;
+    background-color: transparent;
+    border:none;
+    border-bottom: solid 3px #1F5673;
+    font-size: 2em;
+  }
+  .findSales{
+    background-color: transparent;
+    color: black;
+    -webkit-transition: all 0.5s ease-out;
+    transition: all 0.5s ease-out;
+    font-family: 'Roboto', sans-serif !important;
+    font-weight: 600;
+    font-size: 1.5em;
+    letter-spacing: 1px;
+    border-radius: 5px;
+    padding: 20px;
+    
+    border-bottom: solid 3px #1F5673;
+  }
+  .findSales:hover{
+		background-color: #1F5673;
+		color:#fff;
+	}
+  .btn-colorsPrint{
+		background-color:#495057;
+		color:#fff;
+	}
+  .VueTables--client .row{
+		display:none
+	}
+	.VuePagination {
+		text-align: center;
+		display:block !important;
+	}
+
+	.vue-title {
+		text-align: center;
+		margin-bottom: 10px;
+	}
+
+	.vue-pagination-ad {
+		text-align: center;
+	}
+
+	.glyphicon.glyphicon-eye-open {
+		width: 16px;
+		display: block;
+		margin: 0 auto;
+	}
+
+	th:nth-child(3) {
+	text-align: center;
+	}
+
+.VueTables__child-row-toggler {
+  width: 16px;
+  height: 16px;
+  line-height: 16px;
+  display: block;
+  margin: auto;
+  text-align: center;
+}
+
+.VueTables__child-row-toggler--closed::before {
+  content: "+";
+}
+
+.VueTables__child-row-toggler--open::before {
+  content: "-";
+}
+
+[v-cloak] {
+  display:none;
+}
+
+thead {
+		background-color: #1f5673;
+		color: #fff;
+		text-align: center
+	}
 </style>

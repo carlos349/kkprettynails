@@ -82,82 +82,95 @@
                 </button> 
             </div> 
         </div>
-        <div class="">
-            <input type="text" id="myInput" v-on:keyup="myFunction()" class="form-control buscar inputsVentas" placeholder="Filtrar cierres por dia"/>
-        </div>
-        <table class="table tableVenta" >
-          <thead class="thead-light">
-            <tr class="respons">
-              <th class="text-center">
-                Fecha
-              </th>
-              <th class="text-center">
-                Apertura Efectivo
-              </th>
-              <th class="text-center">
-                Apertura Banco
-              </th>
-              <th class="text-center">
-                Total Apertura
-              </th>
-              <th class="text-center">
-                Cierre Efectivo
-              </th>
-              <th class="text-center">
-                Cierre Banco
-              </th>
-              <th class="text-center">
-                Total Cierre
-              </th>
-              <th class="text-center">
-                Total
-              </th>
-              <th class="text-center">
-                Gastos
-              </th>
-              <th class="text-center">
-                Reportes
-              </th>
-            </tr>
-          </thead>
-        </table>
-      <div class="Listas">
-        <table style="font-size:.8em" class="table table-striped" id="myTable">
-          <tbody >
-            <tr v-for="(cierre, indexOne) of cierres" class="respons fix">
-              <td class="text-left">
-                {{formatDate(cierre.fecha)}}
-              </td>
-              <td class="text-right">
-                {{formatPrice(cierre.aperturaEfectivo)}}
-              </td>
-              <td  class="text-right">
-                {{formatPrice(cierre.aperturaBanco)}}
-              </td>
-              <td class="text-right">
-                {{formatPrice(cierre.totalApertura)}}
-              </td>
-              <td class="text-right">
-                {{formatPrice(cierre.cierreEfectivo)}}
-              </td>
-              <td class="text-right">
-                {{formatPrice(cierre.cierreBanco)}}
-              </td>
-              <td class="text-right">
-                {{formatPrice(cierre.totalCierre - cierre.gastos)}}
-              </td>
-              <td class="text-right">
-                {{formatPrice(cierre.total)}}
-              </td>
-              <td class="text-right">
-                {{formatPrice(cierre.gastos)}}
-              </td>
-              <td class="text-right">
-                <font-awesome-icon icon="copy" class="report" v-on:click="sacarReporte(cierre._id)"/>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="row">
+            <div class="shadow">
+                <v-client-table class="text-center"  :data="cierres" :columns="columns" :options="optionsT">
+                    <p slot="aperturaEfectivoo"  slot-scope="props">{{formatPrice(props.row.aperturaEfectivo)}}</p>
+                    <p slot="aperturaBancoo"  slot-scope="props">{{formatPrice(props.row.aperturaBanco)}}</p>
+                    <p slot="totalAperturaa"  slot-scope="props">{{formatPrice(props.row.totalApertura)}}</p>
+                    <p slot="cierreEfectivoo"  slot-scope="props">{{formatPrice(props.row.cierreEfectivo)}}</p>
+                    <p slot="cierreBancoo"  slot-scope="props">{{formatPrice(props.row.cierreBanco)}}</p>
+                    <p slot="totalCierree"  slot-scope="props">{{formatPrice(props.row.totalCierre - props.row.gastos)}}</p>
+                    <p slot="totall"  slot-scope="props">{{formatPrice(props.row.total)}}</p>
+                    <p slot="gastoss"  slot-scope="props">{{formatPrice(props.row.gastos)}}</p>
+                    <button slot="edit"  slot-scope="props" style="width:30%;" v-on:click="sacarReporte(props.row._id)" class="btn btn-warning"><font-awesome-icon icon="copy" /></button>
+                    <!-- <a slot="edit" slot-scope="props" class="fa fa-edit" :href="pasarDatosEdit(props.row.nombre, props.row.identidad, props.row.correoCliente, props.row.instagramCliente, props.row._id)">Hola </a> -->
+                </v-client-table>
+            </div>
+            <!-- <table class="table tableVenta" >
+            <thead class="thead-light">
+                <tr class="respons">
+                <th class="text-center">
+                    Fecha
+                </th>
+                <th class="text-center">
+                    Apertura Efectivo
+                </th>
+                <th class="text-center">
+                    Apertura Banco
+                </th>
+                <th class="text-center">
+                    Total Apertura
+                </th>
+                <th class="text-center">
+                    Cierre Efectivo
+                </th>
+                <th class="text-center">
+                    Cierre Banco
+                </th>
+                <th class="text-center">
+                    Total Cierre
+                </th>
+                <th class="text-center">
+                    Total
+                </th>
+                <th class="text-center">
+                    Gastos
+                </th>
+                <th class="text-center">
+                    Reportes
+                </th>
+                </tr>
+            </thead>
+            </table>
+        <div class="Listas">
+            <table style="font-size:.8em" class="table table-striped" id="myTable">
+            <tbody >
+                <tr v-for="(cierre, indexOne) of cierres" class="respons fix">
+                <td class="text-left">
+                    {{formatDate(cierre.fecha)}}
+                </td>
+                <td class="text-right">
+                    {{formatPrice(cierre.aperturaEfectivo)}}
+                </td>
+                <td  class="text-right">
+                    {{formatPrice(cierre.aperturaBanco)}}
+                </td>
+                <td class="text-right">
+                    {{formatPrice(cierre.totalApertura)}}
+                </td>
+                <td class="text-right">
+                    {{formatPrice(cierre.cierreEfectivo)}}
+                </td>
+                <td class="text-right">
+                    {{formatPrice(cierre.cierreBanco)}}
+                </td>
+                <td class="text-right">
+                    {{formatPrice(cierre.totalCierre - cierre.gastos)}}
+                </td>
+                <td class="text-right">
+                    {{formatPrice(cierre.total)}}
+                </td>
+                <td class="text-right">
+                    {{formatPrice(cierre.gastos)}}
+                </td>
+                <td class="text-right">
+                    <font-awesome-icon icon="copy" class="report" v-on:click="sacarReporte(cierre._id)"/>
+                </td>
+                </tr>
+            </tbody>
+            </table>
+        </div> -->
       </div>
     </div>
 </template>
@@ -168,6 +181,34 @@ import EventBus from './eventBus'
 export default {
     data(){
         return {
+            columns:['fecha' , 'aperturaEfectivoo' , 'aperturaBancoo' , 'totalAperturaa' , 'cierreEfectivoo' , 'cierreBancoo', 'totalCierree', 'totall', 'gastoss', 'edit'],
+            optionsT: {
+                filterByColumn: true,
+                texts: {
+                    filter: "Filtrar:",
+                    filterBy: 'Filtrar por {column}',
+                    count:' '
+                },
+                headings: {
+                    fecha: 'Fecha ',
+                    aperturaEfectivoo: 'Apertura Efectivo ',
+                    aperturaBancoo: 'Apertura Banco ',
+                    totalAperturaa: 'Total Apertura ',
+                    cierreEfectivoo: '	Cierre Efectivo ',
+                    cierreBancoo: 'Cierre Banco ',
+                    totalCierree: 'Total Cierre ',
+                    totall: 'Total ',
+                    gastoss: 'Gastos ',
+                    edit: 'Reportes '
+                },
+                pagination: { chunk:10 },
+                pagination: { dropdown:true },
+                pagination: { nav: 'fixed' },
+                pagination: { edge: true },
+                sortIcon: {base:'fa' , up:'fa-sort-up', down:'fa-sort-down', is:'fa-sort'},
+                sortable: ['fecha'],
+                filterable: ['fecha']
+            },
             cierres:[],
             fechas: [],
             efectivo: 0,
@@ -205,6 +246,9 @@ export default {
                         this.total = res.data[index].totalApertura
                     }
                 }
+                for (let i = 0; i < this.cierres.length; i++) {
+					this.cierres[i].fecha = this.formatDate(this.cierres[i].fecha)
+				}
             })
         },
         formatDate(date) {
@@ -226,13 +270,13 @@ export default {
                     let fechaBien = ''
                     for (let index = 0; index < res.data.length; index++) {
                         let fech = new Date(res.data[index].fecha)
-                        fechaBien = fech.getDate() +"/"+ (fech.getMonth() + 1) +"/"+fech.getFullYear()
-                        this.fechas.push(fechaBien)
+                        let dateNow = new Date()
                         if (fech.getMonth() === dateNow.getMonth() && fech.getDate() === dateNow.getDate()) {
                             this.efectivo = res.data[index].aperturaEfectivo
                             this.banco = res.data[index].aperturaBanco
                             this.total = res.data[index].totalApertura
                         }
+                        this.cierres[index].fecha = this.formatDate(this.cierres[index].fecha)
                     }
                 }
             })
@@ -350,5 +394,61 @@ export default {
 		color:#000 !important;
 		font-family: 'Raleway', sans-serif;
 		font-weight:600;
+	}
+    .vue-title {
+		text-align: center;
+		margin-bottom: 10px;
+	}
+
+	
+
+	.glyphicon.glyphicon-eye-open {
+		width: 16px;
+		display: block;
+		margin: 0 auto;
+	}
+
+	th:nth-child(3) {
+	text-align: center;
+	}
+
+	.VueTables__child-row-toggler {
+	width: 16px;
+	height: 16px;
+	line-height: 16px;
+	display: block;
+	margin: auto;
+	text-align: center;
+	}
+
+	.VueTables__child-row-toggler--closed::before {
+	content: "+";
+	}
+
+	.VueTables__child-row-toggler--open::before {
+	content: "-";
+	}
+
+	[v-cloak] {
+	display:none;
+	}
+
+	thead {
+		background-color: #1f5673;
+		color: #fff;
+		text-align: center
+	}
+	.VueTables--client .row{
+		display:none
+	}
+	.VueTables__limit-field label{
+		display:none;
+	}
+	.VueTables--client .row .col-md-12{
+		padding: -10px;
+	}
+	.VuePagination {
+		text-align: center;
+		display:block !important;
 	}
 </style>
