@@ -39,6 +39,7 @@ citas.post('/getBlocks', (req,res) => {
     ]
   }).sort({sort:1})
   .then(citas => {
+    console.log(citas)
     let timelineBlock = []
     if (citas.length == 0) {
       timelineBlock.push(["10:00","21:00"])
@@ -66,8 +67,8 @@ citas.post('/getBlocks', (req,res) => {
       }
 
     }
-
-    res.json(timelineBlock)
+    console.log(timelineBlock)
+    res.json({bloques:timelineBlock,ocupados:citas})
   })
   .catch(err => {
     res.send(err)
