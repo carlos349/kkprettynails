@@ -23,6 +23,7 @@ citas.get('/:employe', async (req, res) => {
 citas.post('/getBlocks', (req,res) => {
   const employe = req.body.employe
   const date = req.body.date
+  const duracion= req.body.time
   const dateNow = new Date(date)
   
   const formatDate = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()
@@ -37,14 +38,9 @@ citas.post('/getBlocks', (req,res) => {
     ]
   }).sort({sort:1})
   .then(citas => {
-<<<<<<< HEAD
-    console.log(citas)
-    let timelineBlock = []
-=======
     
     var timelineBlock = []
     var bloques = []
->>>>>>> 6aa9d1e1df8227d4ae92ef8117d677c140e89933
     if (citas.length == 0) {
       timelineBlock.push(["10:00","21:00",true])
     }else{
@@ -128,14 +124,26 @@ citas.post('/getBlocks', (req,res) => {
         } 
       } 
     }
-<<<<<<< HEAD
-    console.log(timelineBlock)
-    res.json({bloques:timelineBlock,ocupados:citas})
-=======
+    
+    for (var w = 0; w < bloques.length; w++) { 
+      if (bloques[w].validator == true) {
+        if (duracion / 15 < bloques.length - w +1  ) {
+          for (var e = 0; e < duracion / 15; e++) {  
+              if (bloques[w+e].validator == false ) {
+              bloques[w].validator = 'nDisponible' 
+            }   
+          }
+        }
+        else{
+              bloques[w].validator = 'nDisponible'
+              
+            }  
+      }  
+      
+    }
     
 
     res.json(bloques)
->>>>>>> 6aa9d1e1df8227d4ae92ef8117d677c140e89933
   })
   .catch(err => {
     res.send(err)

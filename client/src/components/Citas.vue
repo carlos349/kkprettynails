@@ -78,186 +78,72 @@
               
                     
                       <div class="col-sm-12 text-center"><h2>Horas Disponibles</h2></div>
-                      <div class="col-sm-12  horaDisp">
-                        <div class="row">
-                          <div class="col-sm-4 horaPred  text-center">
-                            <div class="col-sm-12 ">10:00</div>
-                          </div>
-                          <div class="col-sm-8 ">
-                            <!-- <div  class="col-sm-12 horaOcupada">Ocupado</div>   -->
-                            <div  class="col-sm-12">Disponible</div>
-                            <!-- <div  class="col-sm-12 horaCero">No seleccionable</div> -->
-                          </div>
-                        </div>
-                        
-                      </div>
-                      <div class="col-sm-12  horaOcupada">
-                        <div class="row">
-                          <div class="col-sm-4  horaPred  text-center">
-                            <div class="col-sm-12 ">10:15</div>
-                          </div>
-                          <div class="col-sm-8 ">
-                            <div  class="col-sm-12">Ocupado</div>  
-                            <!-- <div  class="col-sm-12">Disponible</div> -->
-                            <!-- <div  class="col-sm-12 horaCero">No seleccionable</div> -->
-                          </div>
-                        </div>
-                        
-                      </div>
-                      <div class="col-sm-12  horaOcupada">
-                        <div class="row">
-                          <div class="col-sm-4 horaPred  text-center">
-                            <div class="col-sm-12 ">10:15</div>
-                          </div>
-                          <div class="col-sm-8 ">
-                            <div  class="col-sm-12">Ocupado</div>  
-                            <!-- <div  class="col-sm-12">Disponible</div> -->
-                            <!-- <div  class="col-sm-12 horaCero">No seleccionable</div> -->
-                          </div>
-                        </div>
-                        
-                      </div>
-                      <div class="col-sm-12  horaOcupada">
-                        <div class="row">
-                          <div class="col-sm-4 horaPred  text-center">
-                            <div class="col-sm-12 ">10:15</div>
-                          </div>
-                          <div class="col-sm-8 ">
-                            <div  class="col-sm-12">Ocupado</div>  
-                            <!-- <div  class="col-sm-12">Disponible</div> -->
-                            <!-- <div  class="col-sm-12 horaCero">No seleccionable</div> -->
-                          </div>
-                        </div>
-                        
-                      </div>
-                      <div class="col-sm-12  horaOcupada">
-                        <div class="row">
-                          <div class="col-sm-4 horaPred  text-center">
-                            <div class="col-sm-12 ">10:15</div>
-                          </div>
-                          <div class="col-sm-8 ">
-                            <div  class="col-sm-12">Ocupado</div>  
-                            <!-- <div  class="col-sm-12">Disponible</div> -->
-                            <!-- <div  class="col-sm-12 horaCero">No seleccionable</div> -->
-                          </div>
-                        </div>
-                        
-                      </div>
-                      <div class="col-sm-12  horaOcupada">
-                        <div class="row">
-                          <div class="col-sm-4 horaPred  text-center">
-                            <div class="col-sm-12 ">10:15</div>
-                          </div>
-                          <div class="col-sm-8 ">
-                            <div  class="col-sm-12">Ocupado</div>  
-                            <!-- <div  class="col-sm-12">Disponible</div> -->
-                            <!-- <div  class="col-sm-12 horaCero">No seleccionable</div> -->
-                          </div>
-                        </div>
-                        
-                      </div>
-                      <div class="col-sm-12  horaOcupada">
-                        <div class="row">
-                          <div class="col-sm-4 horaPred  text-center">
-                            <div class="col-sm-12 ">10:15</div>
-                          </div>
-                          <div class="col-sm-8 ">
-                            <div  class="col-sm-12">Ocupado</div>  
-                            <!-- <div  class="col-sm-12">Disponible</div> -->
-                            <!-- <div  class="col-sm-12 horaCero">No seleccionable</div> -->
-                          </div>
-                        </div>
-                        
-                      </div>
-                      <div class="col-sm-12  horaOcupada">
-                        <div class="row">
-                          <div class="col-sm-4 horaPred  text-center">
-                            <div class="col-sm-12 ">10:15</div>
-                          </div>
-                          <div class="col-sm-8 ">
-                            <div  class="col-sm-12">Ocupado</div>  
-                            <!-- <div  class="col-sm-12">Disponible</div> -->
-                            <!-- <div  class="col-sm-12 horaCero">No seleccionable</div> -->
-                          </div>
-                        </div>
-                        
-                      </div>
-                      <div class="col-sm-12  horaOcupada">
-                        <div class="row">
-                          <div class="col-sm-4 horaPred  text-center">
-                            <div class="col-sm-12 ">10:15</div>
-                          </div>
-                          <div class="col-sm-8 ">
-                            <div  class="col-sm-12">Ocupado</div>  
-                            <!-- <div  class="col-sm-12">Disponible</div> -->
-                            <!-- <div  class="col-sm-12 horaCero">No seleccionable</div> -->
-                          </div>
-                        </div>
-                        
-                      </div>
-                      <div class="col-sm-12  horaOcupada">
-                        <div class="row">
-                          <div class="col-sm-4 horaPred  text-center">
-                            <div class="col-sm-12 ">10:15</div>
-                          </div>
-                          <div class="col-sm-8 ">
-                            <div  class="col-sm-12">Ocupado</div>  
-                            <!-- <div  class="col-sm-12">Disponible</div> -->
-                            <!-- <div  class="col-sm-12 horaCero">No seleccionable</div> -->
-                          </div>
-                        </div>
-                        
-                      </div>
-                      <div class="col-sm-12  horaOcupada">
-                        <div class="row">
-                          <div class="col-sm-4 horaPred  text-center">
-                            <div class="col-sm-12 ">10:15</div>
-                          </div>
-                          <div class="col-sm-8 ">
-                            <div  class="col-sm-12">Ocupado</div>  
-                            <!-- <div  class="col-sm-12">Disponible</div> -->
-                            <!-- <div  class="col-sm-12 horaCero">No seleccionable</div> -->
-                          </div>
-                        </div>
-                        
-                      </div>
-                      <div class="col-sm-12  horaOcupada">
-                        <div class="row">
-                          <div class="col-sm-4 horaPred  text-center">
-                            <div class="col-sm-12 ">10:15</div>
-                          </div>
-                          <div class="col-sm-8 ">
-                            <div  class="col-sm-12">Ocupado</div>  
-                            <!-- <div  class="col-sm-12">Disponible</div> -->
-                            <!-- <div  class="col-sm-12 horaCero">No seleccionable</div> -->
-                          </div>
-                        </div>
-                        
-                      </div>
-                      <div class="col-sm-12  horaOcupada">
-                        <div class="row">
-                          <div class="col-sm-4 horaPred  text-center">
-                            <div class="col-sm-12 ">10:15</div>
-                          </div>
-                          <div class="col-sm-8 ">
-                            <div  class="col-sm-12">Ocupado</div>  
-                            <!-- <div  class="col-sm-12">Disponible</div> -->
-                            <!-- <div  class="col-sm-12 horaCero">No seleccionable</div> -->
-                          </div>
-                        </div>
-                        
-                      </div>
-                      <div class="col-sm-12  horaCero">
-                        <div class="row">
-                          <div class="col-sm-4 horaPred  text-center">
-                            <div class="col-sm-12 ">10:30</div>
-                          </div>
-                          <div class="col-sm-8 ">
+                      <div class="col-sm-12">
+                        <div v-for="(bloque , index) of bloquesHora">
+                          <div v-if="bloque.validator == true" v-on:click="selectBloq(bloque.Horario, index)" class="col-sm-12  horaDisp">
+                            <div class="row">
+                              <div class="col-sm-4 horaPred  text-center">
+                                <div class="col-sm-12 ">{{bloque.Horario}}</div>
+                              </div>
+                              <div class="col-sm-8 ">
+                                
+                                <div  class="col-sm-12">Disponible</div>
+                                
+                              </div>
+                            </div>
                             
-                            <div  class="col-sm-12 ">No seleccionable</div>
+                          </div>
+                          
+                          <div v-else-if="bloque.validator == false" class="col-sm-12  horaOcupada">
+                            <div class="row">
+                              <div class="col-sm-4 horaPred  text-center">
+                                <div class="col-sm-12 ">{{bloque.Horario}}</div>
+                              </div>
+                              <div class="col-sm-8 ">
+                                <div  class="col-sm-12">Ocupado</div>  
+                               
+                              </div>
+                            </div>
+                            
+                          </div>
+                          <div v-else-if="bloque.validator == 'select'" class="col-sm-12  horaSelect">
+                            <div class="row">
+                              <div class="col-sm-4 horaPred  text-center">
+                                <div class="col-sm-12 ">{{bloque.Horario}}</div>
+                              </div>
+                              <div class="col-sm-8 ">
+                                <div  class="col-sm-12">Seleccionado</div>  
+                               
+                              </div>
+                            </div>
+                            
+                          </div>
+                          <div v-else class="col-sm-12  horaCero">
+                            <div class="row">
+                              <div class="col-sm-4 horaPred  text-center">
+                                <div class="col-sm-12 ">{{bloque.Horario}}</div>
+                              </div>
+                              <div class="col-sm-8 ">
+                                
+                                <div  class="col-sm-12 ">No seleccionable</div>
+                              </div>
+                            </div>
+                            
                           </div>
                         </div>
                         
+                        <div  class="col-sm-12  horaCero">
+                          <div class="row">
+                            <div class="col-sm-4 horaPred  text-center">
+                              <div class="col-sm-12 ">21:00</div>
+                            </div>
+                            <div class="col-sm-8 ">
+                              
+                              <div  class="col-sm-12 ">No seleccionable</div>
+                            </div>
+                          </div>
+                          
+                        </div>
                       </div>
                      
                       
@@ -531,6 +417,7 @@
         duracion: 0,
         empByCita : 'Manicurista',
         bloquesHora : [],
+        culito : [],
         salida:'',
         query:'',
         salidaMuestra: '',
@@ -616,58 +503,18 @@
           console.log(this.duracion)
           axios.post('citas/getBlocks', {
             employe: this.manicuristaFinal,
-            date: fechaBloq
+            date: fechaBloq,
+            time: this.duracion
           })
           .then(res => {
-            console.log("Este" + res.data.ocupados.length)
-            for (let index = 0; index < res.data.bloques.length; index++) {
-              var separ
-              var separTwo
-              var TotalMinutes 
-              var SumHours
-              var SumMinutes
-              
-              if (res.data.bloques[index].length == 2) {
-                separ = res.data.bloques[index][0].split(':')
-                separTwo = res.data.bloques[index][1].split(':')
-                SumHours  = ((parseFloat(separTwo[0]) - parseFloat(separ[0])) * 60)
-                SumMinutes = parseFloat(separTwo[1]) - parseFloat(separ[1])
-                TotalMinutes = SumHours + SumMinutes
-              }else{
-                separ = res.data.bloques[index][0].split(':')
-                SumHours = ((21 - parseFloat(separ[0])) * 60)  
-                SumMinutes = 0 - parseFloat(separ[1])
-                TotalMinutes = SumHours + SumMinutes
-              }
-              const totalFor = parseInt(TotalMinutes / this.duracion)
-              var input, output
-              var minutes = parseInt(separ[1])
-              var hours = parseInt(separ[0])
-              for (let indexTwo = 0; indexTwo < totalFor; indexTwo++) {
-                    for (let indexThree = 0; indexThree < this.duracion / 15; indexThree++) {
-                        this.bloquesHora.push({Horario:hours+":"+minutes})
-                        minutes = parseInt(minutes) + 15
-                        if (minutes == 60) {
-                          hours++
-                          minutes = "00"
-                        }
-                        
-                    }
-                    if (indexTwo == 0) {
-                      input = res.data.bloques[index][0]
-                    }else{
-                      input = output
-                    }
-                    output = hours+":"+minutes
-                    // this.bloquesHora.push({Horario:input+"/"+output + "ind:"+ parseFloat(this.duracion / 15)})
-                }
-                console.log(this.bloquesHora )
-                console.log(this.fecha)
-              }
+            this.bloquesHora = res.data
+            this.culito = res.data
+            
             })
             .catch(err => {
               console.log(err)
             })
+
           
 
 
@@ -1114,6 +961,34 @@
       },
       modalCliente(){
         $('#myModalRegisterClient').modal('show')
+        
+      },
+      selectBloq(hora, i){
+        this.hora =this.bloquesHora[i].Horario
+        var sortSp = this.hora.split(":") 
+        this.sort = sortSp[0]+sortSp[1]
+
+        $(".Sig").addClass("marcar")
+        $(".Sig").prop("disabled", false)
+        axios.post('citas/getBlocks', {
+            employe: this.manicuristaFinal,
+            date: this.fecha,
+            time: this.duracion
+          })
+          .then(res => {
+            
+            for (let index = 0 ; index <= this.duracion /15; index++) {
+          
+              res.data[i].validator = 'select'
+              this.salida = res.data[i].Horario
+              i++
+              
+            }
+            this.bloquesHora = res.data
+            })
+            .catch(err => {
+              console.log(err)
+            })
         
       },
       Menu() {
@@ -2009,7 +1884,7 @@
   text-align: center;
   background-color:#1F5673;
   border-radius: 5px;
-  color: #AEFF44;
+  color: azure;
   font-size: 1.5em;
   cursor: pointer;
 }
@@ -2022,13 +1897,23 @@
   color: black;
   font-size: 1.5em;
 }
-.horaCero{
+ .horaCero{
   border-bottom: 1px solid rgba(0, 0, 0, 0.281);
   height: 4vh;
   text-align: center;
   background-color:rgba(248, 245, 245, 0.144);
   border-radius: 5px;
-  color: rgba(248, 245, 245, 0.411);
+  color: rgba(248, 245, 245, 0.521);
+  font-size: 1.5em;
+} 
+
+.horaSelect{
+  
+  height: 4vh;
+  text-align: center;
+  background-color:#2db67c;
+  border-radius: 0px 5px 0px 0px  ;
+  color: white;
   font-size: 1.5em;
 }
 
