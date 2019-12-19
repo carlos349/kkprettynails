@@ -21,10 +21,10 @@
 						<p slot="prestadoress"  slot-scope="props">{{props.row.prestadores.length}}</p>
 						<p slot="precio"  slot-scope="props">{{formatPrice(props.row.precio)}}</p>
 						<div slot="activee"  slot-scope="props">
-							<button style="width:40%;" v-on:click="desactivarServicio(props.row._id)" v-if="props.row.active" class=" btn btn-success">Activo</button>
-							<button style="width:40%;" v-on:click="desactivarServicio(props.row._id)" v-if="!props.row.active" class=" btn btn-inactive">Inactivo</button>
+							<button v-on:click="desactivarServicio(props.row._id)" v-if="props.row.active" class=" btn btn-success w-100">Activo</button>
+							<button v-on:click="desactivarServicio(props.row._id)" v-if="!props.row.active" class=" btn btn-inactive w-100">Inactivo</button>
 						</div>
-						<button slot="edit"  slot-scope="props" style="width:30%;" v-on:click="pasarDatosEdit(props.row.nombre, props.row.tiempo, props.row.precio, props.row.prestadores, props.row._id)" class="btn add"><font-awesome-icon icon="edit" /></button>
+						<button slot="edit"  slot-scope="props"  v-on:click="pasarDatosEdit(props.row.nombre, props.row.tiempo, props.row.precio, props.row.prestadores, props.row._id)" class="btn add w-100"><font-awesome-icon icon="edit" /></button>
 						<!-- <a slot="edit" slot-scope="props" class="fa fa-edit" :href="pasarDatosEdit(props.row.nombre, props.row.identidad, props.row.correoCliente, props.row.instagramCliente, props.row._id)">Hola </a> -->
 					</v-client-table>
 					<!-- <table  class="table " style="color:#fff !important; background-color: #1F5673" >
@@ -667,12 +667,7 @@
 	.sectionMetrics{
 		margin-left: 8%;
 	}
-	table{
-		border:none !important;
-		margin-bottom:0 !important;
-		table-layout: fixed;
-		color:#102229 !important
-	}
+	
 	.forms{
 		background-color:#fff;
 		box-shadow: 0 0.46875rem 2.1875rem rgba(4,9,20,0.03), 0 0.9375rem 1.40625rem rgba(4,9,20,0.03), 0 0.25rem 0.53125rem rgba(4,9,20,0.05), 0 0.125rem 0.1875rem rgba(4,9,20,0.03);

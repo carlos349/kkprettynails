@@ -40,7 +40,7 @@
 								<table class="table table-dark tableBg" id="myTableInvent">
 									<tbody>
 										<tr v-for="(servicio, index) in servicios" v-bind:key="servicio._id" >
-											<td class="font-weight-bold">
+											<td class="font-weight-bold" style="color:black;">
 												{{servicio.nombre}}
 											</td>
 											<td class="font-weight-bold text-right">
@@ -66,7 +66,7 @@
 						<p slot="montoo"  slot-scope="props"> {{formatPrice(props.row.monto)}}</p>
 						<p slot="montoTotall"  slot-scope="props"> {{formatPrice(props.row.montoTotal)}}</p>
 						<p slot="servicioss"  slot-scope="props"> {{props.row.servicios.length}}</p>
-						<button slot="edit"  slot-scope="props" style="width:50%;" v-on:click="pasarDatosEdit(props.row.monto, props.row.cantidad, props.row.gramos, props.row.marca, props.row.producto, props.row.servicios, props.row.serviciosId, props.row._id)" class="btn btn-success"><font-awesome-icon icon="edit" /></button>
+						<button slot="edit"  slot-scope="props" v-on:click="pasarDatosEdit(props.row.monto, props.row.cantidad, props.row.gramos, props.row.marca, props.row.producto, props.row.servicios, props.row.serviciosId, props.row._id)" class="btn btn-success w-100"><font-awesome-icon icon="edit" /></button>
 						<!-- <button slot="edit"  slot-scope="props" style="width:30%;" v-on:click="pasarDatosEdit(props.row.nombre, props.row.tiempo, props.row.precio, props.row.prestadores, props.row._id)" class="btn add"><font-awesome-icon icon="edit" /></button> -->
 						<!-- <a slot="edit" slot-scope="props" class="fa fa-edit" :href="pasarDatosEdit(props.row.nombre, props.row.identidad, props.row.correoCliente, props.row.instagramCliente, props.row._id)">Hola </a> -->
 					</v-client-table>
@@ -518,12 +518,7 @@ export default {
 <style>
 	.forms{
 		background-color:#fff;}
-	table{
-		border:none !important;
-		margin-bottom:0 !important;
-		table-layout: fixed;
-		color:#102229 !important;
-	}
+	
 	.forms{
 		color:#fff;
 

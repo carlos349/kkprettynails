@@ -520,12 +520,7 @@ export default {
 	.sectionMetricsPrestador{
 		margin-left: 8%;
 	}
-	table{
-		border:none !important;
-		margin-bottom:0 !important;
-		table-layout: fixed;
-		color:#102229 !important
-	}
+	
 	.first{
 		background:#1F5673; /* fallback for old browsers */
 	}

@@ -29,9 +29,7 @@ citas.post('/getBlocks', (req,res) => {
 
   dateNow.setDate(dateNow.getDate() + 1)
   const formatDateTwo = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()
-
-  console.log(formatDate)
-  console.log(formatDateTwo)
+  
   Citas.find({
     $and:[
       {date: {$gte: formatDate, $lte: formatDateTwo}},
@@ -39,40 +37,101 @@ citas.post('/getBlocks', (req,res) => {
     ]
   }).sort({sort:1})
   .then(citas => {
-    let timelineBlock = []
+    
+    var timelineBlock = []
+    var bloques = []
     if (citas.length == 0) {
-      timelineBlock.push(["10:00","21:00"])
+      timelineBlock.push(["10:00","21:00",true])
     }else{
       if (citas[0].start == "10:00") {
         for (let c = 0; c < citas.length; c++) {
           if (c == 0) {
+            timelineBlock.push([citas[c].start, citas[c].end, false])
             timelineBlock.push([citas[c].end])
           }
           else {
+            timelineBlock[c].push(citas[c].start, true)
+            timelineBlock.push([citas[c].start, citas[c].end, false])
             timelineBlock.push([citas[c].end])
-            timelineBlock[c-1].push(citas[c].start)
           }
         }
       }else{
-        for (let c = 0; c <= citas.length; c++) {
+        var count = 1
+        for (let c = 0; c < citas.length; c++) {
           if (c == 0) {
-            timelineBlock.push(["10:00"])
-          }
-          else {
-              timelineBlock.push([citas[c-1].end])
-              timelineBlock[c-1].push(citas[c-1].start)
+            timelineBlock.push(["10:00", citas[c].start, true])
+            timelineBlock.push([citas[c].start, citas[c].end, false])
+            timelineBlock.push([citas[c].end])
+          }else {
+              timelineBlock[c+count].push(citas[c].start, true)
+              timelineBlock.push([citas[c].start, citas[c].end, false])
+              timelineBlock.push([citas[c].end])
+              count++
           }
         }
       }
-
     }
 
-    res.json(timelineBlock)
+    for (let index = 0; index < timelineBlock.length; index++) {
+      var separ
+      var separTwo
+      var TotalMinutes 
+      var SumHours
+      var SumMinutes
+      var last = false
+      if (timelineBlock[index].length == 3) {
+        separ = timelineBlock[index][0].split(':')
+        separTwo = timelineBlock[index][1].split(':')
+        SumHours  = ((parseFloat(separTwo[0]) - parseFloat(separ[0])) * 60)
+        SumMinutes = parseFloat(separTwo[1]) - parseFloat(separ[1])
+        TotalMinutes = SumHours + SumMinutes
+      }else{
+        separ = timelineBlock[index][0].split(':')
+        SumHours = ((21 - parseFloat(separ[0])) * 60)  
+        SumMinutes = 0 - parseFloat(separ[1])
+        TotalMinutes = SumHours + SumMinutes
+        last = true
+      }
+      const totalFor = parseInt(TotalMinutes / 15)
+      var input, output
+      var minutes = parseInt(separ[1])
+      var hours = parseInt(separ[0])
+      
+      for (let indexTwo = 0; indexTwo < totalFor; indexTwo++) {
+        if (last) {
+          if (minutes == 0) {
+            minutes = "00"
+          }
+          output = hours+":"+minutes
+          bloques.push({Horario:output , validator: true})
+          minutes = parseInt(minutes) + 15
+          if (minutes == 60) {
+            hours++
+            minutes = "00"
+          }
+        }else{
+          if (minutes == 0) {
+            minutes = "00"
+          }
+          output = hours+":"+minutes
+          bloques.push({Horario:output , validator: timelineBlock[index][2]})
+          minutes = parseInt(minutes) + 15
+          if (minutes == 60) {
+            hours++
+            minutes = "00"
+          }
+        } 
+      } 
+    }
+    
+
+    res.json(bloques)
   })
   .catch(err => {
     res.send(err)
   })
 })
+
 
 citas.get('/prueba', (req, res) => {
   let a = new Date('2019-09-17 10:00')

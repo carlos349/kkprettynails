@@ -29,8 +29,21 @@
 				</div>
 		</div>
     <div class="col-md-8">
-				<div class="shadow">	
-					<table  class="table" style="color:#fff !important" v-bind:style="{ 'background-color': '#1f5673'}" >
+				<div class="shadow">
+					<v-client-table class="text-center" :data="users" :columns="columns" :options="optionsT">
+						
+						<p slot="nombres"  slot-scope="props">{{props.row.first_name }} {{props.row.last_name }}</p>
+						<p slot="last"  slot-scope="props">{{formatDate(props.row.LastAccess)}}</p>
+						<div slot="edit" slot-scope="props">
+							<button class="btn btn-success font-weight-bold w-100" v-if="props.row.admin" v-on:click="editarEstado(props.row._id, props.row.admin)">Admin</button>
+							<button class="btn btn-warning font-weight-bold w-100" v-else v-on:click="editarEstado(props.row._id, props.row.admin)">Normal</button>
+						</div>
+						<div slot="delete" slot-scope="props">
+							<button  class="btn w-100 btn-inactive" v-if="props.row.admin" v-on:click="eliminarUsuario(props.row._id, props.row.admin)"><font-awesome-icon icon="trash" /></button>
+							<button class="btn w-100 btn-inactive" v-else v-on:click="eliminarUsuario(props.row._id, props.row.admin)"><font-awesome-icon icon="trash" /></button>
+						</div>
+					</v-client-table>	
+					<!-- <table  class="table" style="color:#fff !important" v-bind:style="{ 'background-color': '#1f5673'}" >
 						<thead>
 							<tr>
 								<th>
@@ -45,7 +58,7 @@
 								<th>
 									Estado
 								</th>	
-                <th>
+                				<th>
 									Borrar
 								</th>
 							</tr>
@@ -79,7 +92,7 @@
 								</tr>
 							</tbody>
 						</table>
-					</div>
+					</div> -->
 				</div>
 			</div>
   </div>
@@ -93,6 +106,29 @@
   export default {
     data(){
       return {
+		columns:['nombres' , 'email' , 'last' , 'edit' , 'delete'],
+		optionsT: {
+			filterByColumn: true,
+			texts: {
+				filter: "Filtrar:",
+				filterBy: 'Filtrar por {column}',
+				count:' '
+			},
+			headings: {
+				nombres: 'Nombre y Apellido ',
+				email: 'Correo ',
+				last: 'Último acceso ',
+				edit: 'Estado ',
+				delete: 'Borrar '
+			},
+			pagination: { chunk:10 },
+			pagination: { dropdown:true },
+			pagination: { nav: 'fixed' },
+			pagination: { edge: true },
+			sortIcon: {base:'fa' , up:'fa-sort-up', down:'fa-sort-down', is:'fa-sort'},
+			sortable: ['nombres', 'email'],
+			filterable: ['nombres', 'email']
+		},
         users: [],
         first_name: '',
 		last_name: '',
@@ -133,15 +169,11 @@
       },
       handleFileUpload(){
         this.file = this.$refs.file.files[0];
-        console.log(this.file)
+        
       },
       register() {
-
-
 			let formData = new FormData();
 			formData.append('image', this.file)
-
-
 			axios.post('users/register',
 			{
 				first_name: this.first_name,
@@ -162,18 +194,13 @@
 					this.password =  '',
 					this.file =  ''
 					this.getUsers()
+					const id = res.data.status
 
-					axios.post('users/registerImage/'+res.data.status, formData,{headers: {'Content-Type': 'multipart/form-data'}})
-					.then(res => {
-						console.log(res)
-						if (res.data.status == 'ok') {
-							this.$swal({
-								type: 'success',
-								title: 'Usuario registrado como admin',
-								showConfirmButton: false,
-								timer: 1500
-							})
-						}
+
+					const config = {headers: {'Content-Type': 'multipart/form-data'}}
+					axios.post(`users/registerImage/${id}`, formData, config)
+					.then(resData => {
+						console.log(resData)
 					})
 					.catch(err => {
 						console.log(err)
@@ -269,14 +296,62 @@
 		height: 8px;    /* Tamaño del scroll en horizontal */
 		display: none;  /* Ocultar scroll */
 	}
-  table{
-		border:none !important;
-		margin-bottom:0 !important;
-		table-layout: fixed;
-		color:#102229 !important;
-	}
+  
   .btn-inactive{
 		background-color: #FC7753;
 		color:#fff;
+	}
+	.VueTables--client .row{
+		display:none
+	}
+	.VuePagination {
+		text-align: center;
+		display:block !important;
+	}
+
+	.vue-title {
+		text-align: center;
+		margin-bottom: 10px;
+	}
+
+	.vue-pagination-ad {
+		text-align: center;
+	}
+
+	.glyphicon.glyphicon-eye-open {
+		width: 16px;
+		display: block;
+		margin: 0 auto;
+	}
+
+	th:nth-child(3) {
+	text-align: center;
+	}
+
+.VueTables__child-row-toggler {
+  width: 16px;
+  height: 16px;
+  line-height: 16px;
+  display: block;
+  margin: auto;
+  text-align: center;
+}
+
+.VueTables__child-row-toggler--closed::before {
+  content: "+";
+}
+
+.VueTables__child-row-toggler--open::before {
+  content: "-";
+}
+
+[v-cloak] {
+  display:none;
+}
+
+thead {
+		background-color: #1f5673;
+		color: #fff;
+		text-align: center
 	}
 </style>

@@ -16,7 +16,7 @@
             <div class="col-md-12">
 				<div class="shadow">	
 					<v-client-table class="text-center"  :data="clients" :columns="columns" :options="optionsT">
-						<button slot="edit"  slot-scope="props" style="width:30%;" v-on:click="pasarDatosEdit(props.row.nombre, props.row.identidad, props.row.correoCliente, props.row.instagramCliente, props.row._id)" class=" btn btn-colorsEdit"><font-awesome-icon icon="edit" /></button>
+						<button slot="edit"  slot-scope="props" v-on:click="pasarDatosEdit(props.row.nombre, props.row.identidad, props.row.correoCliente, props.row.instagramCliente, props.row._id)" class=" btn btn-colorsEdit w-100"><font-awesome-icon icon="edit" /></button>
 						<!-- <a slot="edit" slot-scope="props" class="fa fa-edit" :href="pasarDatosEdit(props.row.nombre, props.row.identidad, props.row.correoCliente, props.row.instagramCliente, props.row._id)">Hola </a> -->
 					</v-client-table>
 					<!-- <table  class="table" style="color:#fff !important; background-color: #1F5673" >
@@ -233,7 +233,8 @@ export default {
 					recomendacion: 'Recomendación ',
 					recomendaciones: 'Recomendaciones ',
 					ultimaFecha: 'Última atención ',
-					fecha: 'Fecha '
+					fecha: 'Fecha ',
+					edit: 'Editar datos'
 				},
 				pagination: { chunk:10 },
 				pagination: { dropdown:true },
@@ -544,12 +545,7 @@ export default {
 		font-family: 'Roboto', sans-serif !important;
 		letter-spacing: .09em;
 	}
-	table{
-		border:none !important;
-		margin-bottom:0 !important;
-		table-layout: fixed;
-		color:#102229 !important
-	}
+	
 	.VueTables--client .row{
 		display:none
 	}
