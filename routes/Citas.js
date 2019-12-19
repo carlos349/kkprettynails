@@ -127,19 +127,17 @@ citas.post('/getBlocks', (req,res) => {
     
     for (var w = 0; w < bloques.length; w++) { 
       if (bloques[w].validator == true) {
-        if (duracion / 15 < bloques.length - w +1  ) {
-          for (var e = 0; e < duracion / 15; e++) {  
+        if (duracion / 15 < bloques.length - (w + 2)  ) {
+          var round = (duracion / 15) + 1
+          for (var e = 1; e < round; e++) {  
               if (bloques[w+e].validator == false ) {
-              bloques[w].validator = 'nDisponible' 
-            }   
+                bloques[w].validator = 'nDisponible' 
+              }   
           }
-        }
-        else{
-              bloques[w].validator = 'nDisponible'
-              
-            }  
+        }else{
+          bloques[w].validator = 'nDisponible'
+        }  
       }  
-      
     }
     
 
