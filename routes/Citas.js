@@ -124,21 +124,25 @@ citas.post('/getBlocks', (req,res) => {
         } 
       } 
     }
-    
+    bloques.push({Horario:'21:00' , validator: 'nDisponible'})
     for (var w = 0; w < bloques.length; w++) { 
       if (bloques[w].validator == true) {
-        if (duracion / 15 < bloques.length - (w + 2)  ) {
-          var round = (duracion / 15) + 1
+        var round2 =duracion / 15
+        if ( round2 < bloques.length - w ) {
+          var round = (duracion / 15) +1
           for (var e = 1; e < round; e++) {  
               if (bloques[w+e].validator == false ) {
-                bloques[w].validator = 'nDisponible' 
+                bloques[w].validator = 'nDisponible'
+                 
               }   
+              
           }
         }else{
           bloques[w].validator = 'nDisponible'
         }  
       }  
     }
+    
     
 
     res.json(bloques)
