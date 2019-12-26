@@ -27,17 +27,20 @@
 
           <vue-cal
              :locale="locale"
-             class="calendario"
+             
              :events="events"
-             :time-from="10 * 60"
-             :time-to="21 * 60"
+             :time-from="600 "
+             :time-to="1275"
+             :timeStep="15"
+             :timeCellHeight="50"
              default-view="month"
-             :disable-views="['years', 'year']"
+             :disable-views="['years', 'year', 'week']"
              events-count-on-month-view
              :on-event-click="onEventClick"
-             :noEventOverlaps = "true"
+             :overlapsPerTimeStep="true"
              >
           </vue-cal>
+          
         </div>
       </div>
       
@@ -77,8 +80,24 @@
 		          overflow-y:scroll;background-color: rgba(31, 86, 115, 0.707);border-radius:5px" class="scroll row horas" >
               
                     
-                      <div class="col-sm-12 text-center"><h2>Horas Disponibles</h2></div>
+                      
                       <div class="col-sm-12">
+                        <div class="row mx-auto mb-2">
+
+                              <div class="col-sm-4 CMani">
+                                <div class="row p-2">
+                                  <img class="imgMani w-25" src="../assets/silueta-mujer.jpg" alt="">
+                                <h4 class="p-3">{{manicuristaFinal}}</h4>
+                                </div>
+                                
+                                </div>
+                              
+                              <div class="col-sm-8 Hdispone p-3">
+
+                                <h2>Horas Disponibles</h2>
+                                           
+                              </div>
+                            </div>
                         <div v-for="(bloque , index) of bloquesHora">
                           <div v-if="bloque.validator == true" v-on:click="selectBloq(bloque.Horario, index)" class="col-sm-12  horaDisp">
                             <div class="row">
@@ -130,20 +149,7 @@
                             </div>
                             
                           </div>
-                        </div>
-                        
-                        <div  class="col-sm-12  horaCero">
-                          <div class="row">
-                            <div class="col-sm-4 horaPred  text-center">
-                              <div class="col-sm-12 ">21:00</div>
-                            </div>
-                            <div class="col-sm-8 ">
-                              
-                              <div  class="col-sm-12 ">No seleccionable</div>
-                            </div>
-                          </div>
-                          
-                        </div>
+                        </div> 
                       </div>
                      
                       
@@ -151,17 +157,7 @@
                         <div v-for="(bloqueHora ,index) of bloquesHora">
                           <div v-if="index%2 == 0" class="lineCont left" v-on:click="selectTime(index,bloqueHora.Horario)">
                           <div :id="'t'+index" class="content">
-                            <div class="row">
-
-                              <div class="col-sm-4 p-1">
-                                <img :id="'mani'+index" class="imgMani" src="../assets/silueta-mujer.jpg" alt="">
-                                </div>
-                              
-                              <div class="col-sm-8 p-3 text-right">
-                                <div class="col-sm-12"><h6>{{manicuristaFinal}}</h6></div>
-                                <div class="col-sm-12"><h4>{{bloqueHora.Horario}}</h4></div>            
-                              </div>
-                            </div>
+                                   
                             <h4 style="color:black"></h4>                          
                           </div>
                         </div>
@@ -1917,4 +1913,21 @@
   font-size: 1.5em;
 }
 
+.Hdispone{
+  border-top: 1px solid white;
+  border-right: 1px solid white;
+  border-bottom: 1px solid white; 
+  border-radius: 0 5px 5px 0; 
+  background-color: #1f5673;
+  text-align: center
+}
+
+.CMani{
+  border-top: 1px solid white;
+  border-left: 1px solid white;
+  border-bottom: 1px solid white; 
+  border-radius: 5px 0 0 5px; 
+  background-color: #1f5673;
+  
+}
 </style>
