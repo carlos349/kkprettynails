@@ -11,6 +11,12 @@ const manicuristaSchema = new Schema({
   porcentaje:{
     type:Number
   },
+  restTime: {
+    type:String
+  },
+  restDay: {
+    type:Number
+  },
   comision:{
     type:Number
   },

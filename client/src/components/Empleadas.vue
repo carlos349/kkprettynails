@@ -19,7 +19,7 @@
 						<p slot="comision"  slot-scope="props">{{formatPrice(props.row.comision)}}</p>
 						<p slot="advancement"  slot-scope="props">{{formatPrice(props.row.advancement)}}</p>
 						<p slot="rest"  slot-scope="props">{{formatPrice(props.row.comision - props.row.advancement)}}</p>
-						<button slot="edit"  slot-scope="props" style="width:100%;" v-on:click="pasarDatosEdit(props.row.nombre,props.row.documento,props.row.porcentaje, props.row._id)" class=" btn btn-colorsEdit"><font-awesome-icon icon="edit" /></button>
+						<button slot="edit"  slot-scope="props" style="width:100%;" v-on:click="pasarDatosEdit(props.row.nombre,props.row.documento,props.row.porcentaje, props.row.restTime, props.row.restDay, props.row._id)" class=" btn btn-colorsEdit"><font-awesome-icon icon="edit" /></button>
 						<button slot="delete" style="width:100%;"  slot-scope="props" v-on:click="deletePrestador(props.row._id)" class=" btn btn-colorsTrash"><font-awesome-icon icon="trash" /></button>
 						<button slot="report" style="width:100%;"  slot-scope="props" v-on:click="sacarReporte(props.row._id)" class=" btn btn-colorsPrint"><font-awesome-icon icon="copy" /></button>
 						<!-- <a slot="edit" slot-scope="props" class="fa fa-edit" :href="pasarDatosEdit(props.row.nombre, props.row.identidad, props.row.correoCliente, props.row.instagramCliente, props.row._id)">Hola </a> -->
@@ -148,6 +148,38 @@
 						<label for="name">Porcentaje de ganancia</label>
 						<input v-model="porcentajePrestadorEdit" type="text" class="form-control inputs" placeholder="Porcentaje">
 					</div>
+					<div class="form-group row">
+						<label for="name" class="col-12">Horario de descanso</label>
+						<select class="form-control col-6" v-model="restTimeEdit" >
+							<option style="color:black;" selected value="Seleccione el tiempo">Seleccione el tiempo</option>
+							<option style="color:black;" value="12:00">12:00</option>
+							<option style="color:black;" value="12:30">12:30</option>
+							<option style="color:black;" value="1:00">1:00</option>
+							<option style="color:black;" value="1:30">1:30</option>
+							<option style="color:black;" value="2:00">2:00</option>
+						</select>
+						<select class="form-control col-6" v-model="restTimeEndEdit" >
+							<option style="color:black;" selected value="Seleccione el tiempo">Seleccione el tiempo</option>
+							<option style="color:black;" value="12:30">12:30</option>
+							<option style="color:black;" value="1:00">1:00</option>
+							<option style="color:black;" value="1:30">1:30</option>
+							<option style="color:black;" value="2:00">2:00</option>
+							<option style="color:black;" value="2:30">2:30</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label>Día libre</label>
+						<select class="form-control" v-model="restDayEdit" >
+							<option style="color:black;" selected value="Seleccione el dia">Seleccione el dia</option>
+							<option style="color:black;" value="1">Lunes</option>
+							<option style="color:black;" value="2">Martes</option>
+							<option style="color:black;" value="3">Miercoles</option>
+							<option style="color:black;" value="4">Jueves</option>
+							<option style="color:black;" value="5">Viernes</option>
+							<option style="color:black;" value="6">Sábado</option>
+							<option style="color:black;" value="0">Domingo</option>
+						</select>
+					</div>
 					<button class="btn w-100 add">Editar prestador</button>
 				</form>
 		      </div>
@@ -176,6 +208,38 @@
 					<div class="form-group">
 						<label for="name">Porcentaje de ganancia</label>
 						<input v-model="porcentaje" type="text" class="form-control inputs" placeholder="Porcentaje">
+					</div>
+					<div class="form-group row">
+						<label for="name" class="col-12">Horario de descanso</label>
+						<select class="form-control col-6" v-model="restTime" >
+							<option style="color:black;" selected value="Seleccione el tiempo">Seleccione el tiempo</option>
+							<option style="color:black;" value="12:00">12:00</option>
+							<option style="color:black;" value="12:30">12:30</option>
+							<option style="color:black;" value="1:00">1:00</option>
+							<option style="color:black;" value="1:30">1:30</option>
+							<option style="color:black;" value="2:00">2:00</option>
+						</select>
+						<select class="form-control col-6" v-model="restTimeEnd" >
+							<option style="color:black;" selected value="Seleccione el tiempo">Seleccione el tiempo</option>
+							<option style="color:black;" value="12:30">12:30</option>
+							<option style="color:black;" value="1:00">1:00</option>
+							<option style="color:black;" value="1:30">1:30</option>
+							<option style="color:black;" value="2:00">2:00</option>
+							<option style="color:black;" value="2:30">2:30</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label>Día libre</label>
+						<select class="form-control" v-model="restDay" >
+							<option style="color:black;" selected value="Seleccione el dia">Seleccione el día</option>
+							<option style="color:black;" value="1">Lunes</option>
+							<option style="color:black;" value="2">Martes</option>
+							<option style="color:black;" value="3">Miercoles</option>
+							<option style="color:black;" value="4">Jueves</option>
+							<option style="color:black;" value="5">Viernes</option>
+							<option style="color:black;" value="6">Sábado</option>
+							<option style="color:black;" value="0">Domingo</option>
+						</select>
 					</div>
 					<button class="btn w-100 add">Agregar prestador</button>
 				</form>
@@ -246,6 +310,12 @@ export default {
 			venta: new Venta(),
 			ventas: [],
 			nombrePrestador: '',
+			restTime: 'Seleccione el tiempo',
+			restTimeEnd: 'Seleccione el tiempo',
+			restTimeEdit: 'Seleccione el tiempo',
+			restTimeEndEdit: 'Seleccione el tiempo',
+			restDay: 'Seleccione el dia',
+			restDayEdit: 'Seleccione el dia',
 			documento:'',
 			porcentaje:'',
 			idManicuristaEditar: '',
@@ -285,7 +355,6 @@ export default {
 			axios.get('manicuristas')
 			.then(res => {
 				this.manicuristas = res.data
-				
 			})
 		},
 		deletePrestador(id){
@@ -332,6 +401,7 @@ export default {
             router.push({name:'reporteprestador'})
         },
 		registroPrestador(){
+			const restTime = this.restTime+"/"+this.restTimeEnd
 			if (this.nombrePrestador == '') {
 				this.$swal({
 						type: 'error',
@@ -360,7 +430,9 @@ export default {
 				axios.post('manicuristas', {
 				nombreManicurista: this.nombrePrestador,
 				documentoManicurista: this.documento,
-				porcentajeManicurista: this.porcentaje
+				porcentajeManicurista: this.porcentaje,
+				restTime: restTime,
+				restDay: this.restDay
 			})
 			.then(res => {
 				if(res.data.status == 'Manicurista ingresada'){
@@ -391,6 +463,7 @@ export default {
 			$('#ModalCreateEmploye').modal('show')
 		},
 		actualizarPrestador(){
+			const restTime = this.restTimeEdit+"/"+this.restTimeEndEdit
 			if (this.nombrePrestadorEdit == '') {
 				this.$swal({
 						type: 'error',
@@ -419,7 +492,9 @@ export default {
 				axios.put('manicuristas/' + this.idPrestadorEdit, {
 				nombre: this.nombrePrestadorEdit,
 				documento: this.documentoPrestadorEdit,
-				porcentaje: this.porcentajePrestadorEdit
+				porcentaje: this.porcentajePrestadorEdit,
+				restTime: restTime,
+				restDay: this.restDayEdit
 			})
 			.then(res => {
 				if(res.data.status == "Manicurista Editada"){
@@ -443,10 +518,25 @@ export default {
 			}
 			
 		},
-		pasarDatosEdit(nombre, documento, porcentaje, id){
+		pasarDatosEdit(nombre, documento, porcentaje, restTime, restDay, id){
+			if (restTime) {
+				const splitRest = restTime.split('/')
+				this.restTimeEdit = splitRest[0]
+				this.restTimeEndEdit = splitRest[1]
+			}else{
+				this.restTimeEdit = "Seleccione el tiempo"
+				this.restTimeEndEdit = "Seleccione el tiempo"
+			}
+			if (restDay) {
+				this.restDayEdit = restDay
+			}else{
+				this.restDayEdit = "Seleccione el dia"
+			}
 			this.nombrePrestadorEdit = nombre
 			this.documentoPrestadorEdit = documento
 			this.porcentajePrestadorEdit = porcentaje
+			
+			
 			this.idPrestadorEdit = id
 			$('#ModalEditPrestador').modal('show')
 		},

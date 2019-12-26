@@ -45,6 +45,8 @@ manicurista.post('/', (req, res) => {
     nombre: req.body.nombreManicurista,
     documento: req.body.documentoManicurista,
     porcentaje: req.body.porcentajeManicurista,
+    restTime: req.body.restTime,
+    restDay: req.body.restDay,
     comision: 0,
     advancement:0,
     class: ''
@@ -185,7 +187,9 @@ manicurista.put('/:id', (req, res) => {
     $set: {
       nombre: req.body.nombre,
       documento: req.body.documento,
-      porcentaje: req.body.porcentaje
+      porcentaje: req.body.porcentaje, 
+      restTime: req.body.restTime,
+      restDay: req.body.restDay
     }
   })
   .then(manicurista => {
