@@ -429,7 +429,7 @@
         salida:'',
         query:'',
         salidaMuestra: '',
-        format: new Date(),
+        format: 'DD-MM-YYYY',
         Days:['Lun', 'Mar', 'Mier', 'Jue', 'Vie', 'Sab', 'Dom'],
 				months:[
 					'Enero', 'Febrero', 'Marzo', 'Abril',
