@@ -493,10 +493,10 @@
       },
       insertDate(){
         
-        console.log(new Date(this.fecha).getHours() + ":"+ new Date(this.fecha).getMinutes())
+        
         var fechaBloq = this.fecha
         this.bloquesHora = []
-          console.log(this.duracion)
+          
           axios.post('citas/getBlocks', {
             employe: this.manicuristaFinal,
             date: fechaBloq,
@@ -504,18 +504,11 @@
           })
           .then(res => {
             this.bloquesHora = res.data
-            this.culito = res.data
-            
             })
             .catch(err => {
               console.log(err)
             })
-
-          
-
-
-      },
-      
+      }, 
       getClients(){
         axios.get('citas/getClients')
         .then(res => {

@@ -7,7 +7,7 @@
 			<div v-on:click="moverFU()" data-toggle="collapse" href="#collapseUser" class="col-md-12 usuarioP" style="height:70px;">
 				<div class="row">
 					<div class="col-sm-3">
-						<img class="imgHover" v-bind:src="require('../assets/users/'+image)" style="width:50px;height:50px;border-radius:40px;">
+						<img class="imgHover" v-bind:src="image" style="width:50px;height:50px;border-radius:40px;">
 					</div>
 					<div class="menuText col-sm-9">
 						<span class="infoUser align-bottom">{{nombre}} {{apellido}}</span>
@@ -211,7 +211,7 @@ export default {
 			fecha: new Date(),
 			nombre:localStorage.nombre,
 			apellido: localStorage.apellido,
-			image:localStorage.imageUser,
+			image:'http://localhost:4200/static/users/'+localStorage.imageUser,
 			authTwo: true
 		}
 	},
@@ -284,10 +284,12 @@ export default {
 			this.auth = status
 			this.nombre = localStorage.nombre
 			this.apellido = localStorage.apellido
-			this.image = localStorage.userImage
+			this.image = 'http://localhost:4200/static/users/'+localStorage.getItem('imageUser')
+		})
+		EventBus.$on('ChangeImage', status => {
+			this.image = 'http://localhost:4200/static/users/'+status
 		})
 		const User = localStorage.getItem('logged-in')
-		console.log(User)
 		if (User === 'no-admin') {
 			this.auth = 'loggedin'
 		}else if(User === 'admin'){

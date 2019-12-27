@@ -36,7 +36,7 @@ app.use('/clients', require('./routes/Clients.js'))
 
 //Static files
 
-app.use(express.static(__dirname + '/public'))
+app.use('/static', express.static(__dirname + '/public'));
 
 // server in listened
 app.listen(app.get('port'), () => {

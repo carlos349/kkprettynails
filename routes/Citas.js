@@ -25,7 +25,7 @@ citas.post('/getBlocks', (req,res) => {
   const date = req.body.date
   const duracion= req.body.time
   const dateNow = new Date(date)
-  console.log(dateNow.getDay())
+
   
   const formatDate = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()
 
@@ -136,15 +136,12 @@ citas.post('/getBlocks', (req,res) => {
                 bloques[w].validator = 'nDisponible'
                  
               }   
-              
           }
         }else{
           bloques[w].validator = 'nDisponible'
         }  
       }  
     }
-    
-    
 
     res.json(bloques)
   })

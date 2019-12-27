@@ -16,7 +16,7 @@
 			
 			</div>
 			<div class="col-sm-3">
-				<img class="infoBasic" style="width: 80%;height:30vh;" v-bind:src="require('../assets/users/'+image)" alt="">
+				<img class="infoBasic" style="width: 80%;height:30vh;" :src="image" alt="">
 				<input type="file" id="file" ref="file" v-on:change="handleFileUpload" class="btn m-1 w-75 ml-2 add pb-1" style="cursor:pointer;">
 				<button class="btn m-1 w-75 ml-2 add" v-on:click="editImage">Editar foto de perfil</button>
 			</div>
@@ -104,6 +104,7 @@
 	import jwtDecode from 'jwt-decode'
 	import router from '../router'
 	import axios from 'axios'
+	import EventBus from './eventBus'
 
 	export default {
 		data() {
@@ -148,26 +149,28 @@
 				this.email = data.data.email
 				this.admin = data.data.admin
 				this.access = data.data.LastAccess
-				this.image = data.data.userImage
+				this.image = 'http://localhost:4200/static/users/'+data.data.userImage
 			},
 			async editImage() {
 				let formData = new FormData();
-        		formData.append('image', this.file)
-				const image = await axios.post('users/registerImage/'+this.id, formData, {
-					headers: {
-						'Content-Type': 'multipart/form-data'
-					}
-				})
-				this.$swal({
-					type: 'success',
-					title: 'imagen editada',
-					showConfirmButton: false,
-					timer: 1000
-				})
-				this.getData()
-				 
-				
-				
+				formData.append('image', this.file)
+				try {
+					const image = await axios.post('users/registerImage/'+this.id, formData, {
+						headers: {
+							'Content-Type': 'multipart/form-data'
+						}
+					})
+					this.emitMethod(image.data.status)
+					this.getData()
+				} catch(err) {
+					console.log(err)
+				}
+			},
+			emitMethod(image) {
+				console.log(image)
+				EventBus.$emit('ChangeImage', image)
+				localStorage.removeItem('imageUser')
+				localStorage.setItem('imageUser', image)
 			},
 			handleFileUpload(){
 				this.file = this.$refs.file.files[0];

@@ -11,7 +11,7 @@ const multer = require('multer')
 const { diskStorage } = require('multer')
 const path = require('path')
 const storage = diskStorage({
-	destination: 'client/src/assets/users',
+	destination: 'public/users',
 	filename: (req, file, cb) => {
 		cb(null, Date.now() + path.extname(file.originalname));
 	}
@@ -30,7 +30,7 @@ users.post('/registerImage/:id', upload.single("image"), (req, res, next) => {
 		}
 	})
 	.then(changeImage => {
-		res.json({status:'ok'})
+		res.json({status:changeImage.userImage})
 	})
 })
 
