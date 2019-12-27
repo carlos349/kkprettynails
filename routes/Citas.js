@@ -25,7 +25,11 @@ citas.post('/getBlocks', (req,res) => {
   const date = req.body.date
   const duracion= req.body.time
   const dateNow = new Date(date)
-  console.log(dateNow.getDay())
+  const resTimes = req.body.resTime
+  const sepRes = resTimes.split('/')
+  
+  
+  console.log(resTimes)
   
   const formatDate = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()
 
@@ -126,7 +130,26 @@ citas.post('/getBlocks', (req,res) => {
       } 
     }
     bloques.push({Horario:'21:00' , validator: 'nDisponible'})
-    for (var w = 0; w < bloques.length; w++) { 
+    var insp = false
+    for (let j = 0; j < bloques.length; j++) {
+      if (sepRes[0] == bloques[j].Horario) {
+        bloques[j].validator = false
+        for (let l = 0; l < 10; l++) {
+          bloques[j+l].validator = false
+          if (bloques[j+l].Horario == sepRes[1]) {
+            insp = true
+            break
+          }
+          
+        }
+      } 
+      if (insp == true) {
+        break
+      }
+      
+    }
+    for (var w = 0; w < bloques.length; w++) {
+        
       if (bloques[w].validator == true) {
         var round2 =duracion / 15
         if ( round2 < bloques.length - w ) {

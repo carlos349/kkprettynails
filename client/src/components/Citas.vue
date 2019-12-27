@@ -27,19 +27,19 @@
 
           <vue-cal
              :locale="locale"
-             
              :events="events"
              :time-from="600 "
              :time-to="1275"
              :timeStep="15"
-             :timeCellHeight="50"
              default-view="month"
-             :disable-views="['years', 'year', 'week']"
+             :disable-views="['years', 'year', 'week']" 
              events-count-on-month-view
              :on-event-click="onEventClick"
              :overlapsPerTimeStep="true"
              >
           </vue-cal>
+
+          
           
         </div>
       </div>
@@ -50,7 +50,7 @@
       <div  class="modal-content armarCita p-3" style="background-color:#1f5673">
         <div  class="container p-4" style="background-color:white">
           <div class="row">
-            <div style="font-size:1.5em;color:#011627;" class="col-md-12 text-center p-3">Arma tu cita</div>
+            <div style="font-size:1.5em;color:#011627;" class="col-md-12 text-center p-3">Arma tu cita {{fecha}}</div>
             <div style="background-color:rgba(31, 86, 115, 0.707);color:azure;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14)" class="col-md-12 font-weight-bold px-3">
               <div style="margin:auto" class="row text-center">
                 <div class="wOne p-3 mx-auto col-md-3 marc">Servicio</div>
@@ -192,9 +192,9 @@
                   </div>
                 </div> 
                 <div class="col-md-4" v-for="(manicurista,index) of manicuristaCita">
-                  <div v-for="(mani,index) of manicuristas" class="p-3 col-md-12" v-if="mani.documento === manicurista ">
+                  <div v-for="(mani,index) of manicuristas" class="p-3 col-md-12" v-if="mani.documento === manicurista && mani.restDay != new Date(fecha).getDay()">
                     
-                      <div style="cursor:pointer;" v-on:click="selectManic(mani.nombre,mani.class,index)" class="fotoMani col-md-12 text-center"><img :id="'mani'+index" class="imgMani" src="../assets/silueta-mujer.jpg" alt=""></div>
+                      <div style="cursor:pointer;" v-on:click="selectManic(mani.nombre,mani.class,mani.restTime,index)" class="fotoMani col-md-12 text-center"><img :id="'mani'+index" class="imgMani" src="../assets/silueta-mujer.jpg" alt=""></div>
                       <div  class="col-md-12 text-center text-white"> {{mani.nombre}}</div>
                     
                   </div>
@@ -230,10 +230,19 @@
                       </div>
                       <div  class="col-sm-6">
                         <div class="row">
-                          <datetime placeholder="Click para seleccionar fecha y hora de entrada" v-on:click.once="disablear" type="datetime" input-class="dale"  class="theme-blue col-sm-11 p-3"  v-model="fecha" :phrases="{ok: 'Elegir', cancel: 'Salir'}" :min-datetime="minimo" :minute-step="15" :max-datetime="maximo" :format="{ year: 'numeric', month: 'long', day: 'numeric'}" auto>
+                          <!-- <datetime placeholder="Click para seleccionar fecha y hora de entrada" v-on:click.once="disablear" input-class="dale"  class="theme-blue col-sm-11 p-3"  v-model="fecha" :phrases="{ok: 'Elegir', cancel: 'Salir'}" :min-datetime="minimo" :minute-step="15" :max-datetime="maximo" :format="{ year: 'numeric', month: 'long', day: 'numeric'}" auto>
                             
-                          </datetime>
-                          <div class="col-sm-1 p-3"> <font-awesome-icon style="color:#1f5673;font-size:2em" icon="calendar-alt"/></div>
+                          </datetime> -->
+                          <date-pick
+                              v-model="fecha"
+                              :hasInputElement="false"
+                              :months="months"
+                              :weekdays="Days"
+                              :format="format"
+                              :parseDate="parseDate"
+                              :formatDate="formatDate"
+                          ></date-pick>
+                          
                          
                         </div>
                       </div>
@@ -339,11 +348,13 @@
   import axios from 'axios'
   import VueCal from 'vue-cal'
   import 'vue-cal/dist/vuecal.css'
+  import 'vue-cal/dist/i18n/es.js'
   import VueBootstrapTypeahead from 'vue-bootstrap-typeahead'
   import { Datetime } from 'vue-datetime'
   import 'vue-datetime/dist/vue-datetime.css'
   import DatePick from 'vue-date-pick';
-	import 'vue-date-pick/dist/vueDatePick.css';
+  import 'vue-date-pick/dist/vueDatePick.css';
+
   class Event {
     constructor (start, end, title, content) {
       this.start = start
@@ -384,6 +395,7 @@
         start:'',
         minimo:'',
         maximo:'',
+        fecha:'',
         design:'',
         startHora:'',
         evento: new Event(),
@@ -417,17 +429,20 @@
         salida:'',
         query:'',
         salidaMuestra: '',
+        format: new Date(),
         Days:['Lun', 'Mar', 'Mier', 'Jue', 'Vie', 'Sab', 'Dom'],
 				months:[
 					'Enero', 'Febrero', 'Marzo', 'Abril',
 					'Mayo', 'Junio', 'Julio', 'Agosto',
-					'Septiembre', 'Octubre', 'Noviembre', 'Diciembrer'
+					'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
         ],
         sort: '',
         nombreClienteRegister: '',
         instagramCliente: '',
         nombreCliente: '',
-        searchValue:''
+        searchValue:'',
+        resTime:[],
+        resTimeFinal: ''
       }
     },
     beforeCreate() {
@@ -467,13 +482,8 @@
     },
     methods: {
 
-      disablear: function(){
-        console.log("Hola vale!")
-      },
       
-      clickedButton: function() {
-        console.log(this.$refs.hora.value.length)
-      },
+     
       arrayClient(){
 				setTimeout(() => {
 					for (let index = 0; index < this.clients.length; index++) {
@@ -493,14 +503,14 @@
       },
       insertDate(){
         
-        console.log(new Date(this.fecha).getHours() + ":"+ new Date(this.fecha).getMinutes())
         var fechaBloq = this.fecha
         this.bloquesHora = []
-          console.log(this.duracion)
+          
           axios.post('citas/getBlocks', {
             employe: this.manicuristaFinal,
             date: fechaBloq,
-            time: this.duracion
+            time: this.duracion,
+            resTime:this.resTimeFinal
           })
           .then(res => {
             this.bloquesHora = res.data
@@ -562,7 +572,7 @@
         this.events = []
         axios.get('citas')
         .then(res => {
-          console.log(res.data)
+          
           for (let index = 0; index < res.data.length; index++) {
             let dateNow = new Date(res.data[index].date)
             let formatDate = ''
@@ -599,7 +609,7 @@
             this.events.push(arrayEvents)
           }
         })
-        console.log(this.events)
+        
       },
       getCitasByEmploye(){
         if (this.empByCita == "Todos") {
@@ -645,7 +655,7 @@
             this.events.push(arrayEvents)
           }
         })
-        console.log(this.events)
+        
         }
       },
       getManicuristas(){
@@ -714,7 +724,7 @@
         $(".Sig").removeClass("marcar")
         $(".Sig").prop("disabled", true)
         this.duracion = 0
-        console.log(this.duracion)
+        
       },
 
       selectAzar(){
@@ -725,7 +735,8 @@
             }
             this.manicuristaFinal = this.maniAzar[parseInt(this.aleatorio)]
             this.classFinal = this.classM[parseInt(this.aleatorio)]
-            console.log(this.manicuristaFinal)
+            this.resTimeFinal = this.resTime[parseInt(this.aleatorio)] 
+            
             this.insertDate()
             $(".Sig").removeClass("marcar")
             $(".Sig").prop("disabled", true)
@@ -739,13 +750,16 @@
       nextOne(){
         
         if($(".processTwo").css("display") == "block"){
-          console.log(this.manicuristaCita.length)
+          
           this.selectMonth()
           if (this.selectMonth()) {
+            
             for (let i = 0; i < this.manicuristaCita.length; i++) {
               for (let c = 0; c < this.manicuristas.length; c++) {
-                if (this.manicuristas[c].documento == this.manicuristaCita[i]) {
+                console.log(new Date(this.fecha).getDay() + "--" + this.manicuristas[c].restDay  )
+                if (this.manicuristas[c].documento == this.manicuristaCita[i] ) {
                   this.maniAzar.push(this.manicuristas[c].nombre)
+                  this.resTime.push(this.manicuristas[c].restTime)
                   this.classM.push(this.manicuristas[c].class)
                 }               
               }
@@ -753,6 +767,7 @@
             if (this.manicuristaCita.length == 1) {
               this.manicuristaFinal = this.maniAzar[0]
             this.classFinal = this.classM[0]
+            this.resTimeFinal = this.resTime[0]
               this.insertDate()
               $(".Sig").removeClass("marcar")
             $(".Sig").prop("disabled", true)
@@ -804,7 +819,7 @@
             
           }
           else{
-            console.log("no hola")
+            
           }
         })
           
@@ -969,7 +984,8 @@
         axios.post('citas/getBlocks', {
             employe: this.manicuristaFinal,
             date: this.fecha,
-            time: this.duracion
+            time: this.duracion,
+            resTime : this.resTimeFinal
           })
           .then(res => {
             
@@ -993,9 +1009,10 @@
         $('#ope').toggleClass("ope")
         $('#clo').toggleClass("clo")
       },
-      selectManic(nombre,clase, index){
+      selectManic(nombre,clase,rest, index){
         this.manicuristaFinal = nombre
         this.classFinal = clase
+        this.resTimeFinal = rest
         $(".Sig").prop("disabled", false)
         $(".Sig").addClass("marcar")
         $(".imgMani").removeClass("maniMarcado")
@@ -1045,7 +1062,7 @@
         var sortSp = this.hora.split(":") 
         this.sort = sortSp[0]+sortSp[1]
 
-        console.log(this.hora + this.salida + "---" + this.sort)
+        
         $(".content").removeClass("contentMarc")
         $("#t"+index).addClass("contentMarc")
         $(".Sig").addClass("marcar")
@@ -1143,11 +1160,17 @@
 
 </script>
 <style media="screen">
+  .vuecal__flex .vuecal__menu{
+    color: #fff !important
+  }
+  
   .vuecal__menu {background-color: #1F5673; }
   .vuecal__menu li {border-bottom-color: #fff;color: #fff;}
   .vuecal__menu li.active {background-color: rgba(255, 255, 255, 0.15);}
-  .vuecal__title-bar {background-color: #1F5673;}
-
+  .vuecal__title-bar {background-color: #1F5673;color: #fff !important}
+  .vuecal__title button{
+    color: white !important
+  }
   .vuecal__time-column .vuecal__time-cell{color:white;height:1vh;}
   .vuecal__event{color:#fff;font-weight:bold;cursor:pointer;}
   .vuecal__event:hover{
