@@ -192,7 +192,7 @@
                   </div>
                 </div> 
                 <div class="col-md-4" v-for="(manicurista,index) of manicuristaCita">
-                  <div v-for="(mani,index) of manicuristas" class="p-3 col-md-12" v-if="mani.documento === manicurista && mani.restDay != new Date(fecha).getDay()">
+                  <div v-for="(mani,index) of manicuristas" class="p-3 col-md-12" v-if="mani._id === manicurista && mani.restDay != new Date(fecha).getDay()">
                     
                       <div style="cursor:pointer;" v-on:click="selectManic(mani.nombre,mani.class,mani.restTime,index)" class="fotoMani col-md-12 text-center"><img :id="'mani'+index" class="imgMani" src="../assets/silueta-mujer.jpg" alt=""></div>
                       <div  class="col-md-12 text-center text-white"> {{mani.nombre}}</div>
@@ -282,7 +282,7 @@
 		        </button>
 		      </div>
 		      <div class="modal-body letters">
-		        <p>Fecha: {{ selectedEvent.startDate }}</p>
+		        <p>Fecha: {{ selectedEvent.date }}</p>
             <strong>Detalle de la cita:</strong><br><br>
             <ul class="list-group">
               <li class="list-group-item" style="background-color: transparent !important">Cliente: {{ selectedEvent.cliente }}</li>
@@ -290,8 +290,8 @@
               <li class="list-group-item"  style="background-color: transparent !important">Servicios:
                 <p v-for="service of selectedEvent.services"> - {{ service }} </p> 
               </li>
-              <li class="list-group-item" style="background-color: transparent !important">Hora de inicio: {{ selectedEvent.startTime }}</li>
-              <li class="list-group-item" style="background-color: transparent !important">Hora de finalización: {{ selectedEvent.endTime }}</li>
+              <li class="list-group-item" style="background-color: transparent !important">Hora de inicio: {{ selectedEvent.start }}</li>
+              <li class="list-group-item" style="background-color: transparent !important">Hora de finalización: {{ selectedEvent.end }}</li>
               
             </ul><br>
             <button type="button" class="btn font-weight-bold btn-style" v-on:click="borrarCita(selectedEvent.id)">Borrar cita</button>
@@ -667,7 +667,7 @@
 				})
 			},
       marcarServicio(prestadores,nombre,tiempo,index){
-        
+        console.log(prestadores)
         if (this.servicioCita == '') {
           this.servicioCita.push(nombre)
           for (let index = 0; index < prestadores.length; index++) {
@@ -752,8 +752,9 @@
             
             for (let i = 0; i < this.manicuristaCita.length; i++) {
               for (let c = 0; c < this.manicuristas.length; c++) {
-                console.log(new Date(this.fecha).getDay() + "--" + this.manicuristas[c].restDay  )
-                if (this.manicuristas[c].documento == this.manicuristaCita[i] ) {
+                
+                if (this.manicuristas[c]._id == this.manicuristaCita[i] ) {
+                  
                   this.maniAzar.push(this.manicuristas[c].nombre)
                   this.resTime.push(this.manicuristas[c].restTime)
                   this.classM.push(this.manicuristas[c].class)
