@@ -24,14 +24,16 @@ citas.post('/getBlocks', (req,res) => {
   const employe = req.body.employe
   const date = req.body.date
   const duracion= req.body.time
-  const dateNow = new Date(date)
+  const dateNow = new Date(date+' 10:00')
   const resTimes = req.body.resTime
+  
   const sepRes = resTimes.split('/')
   const formatDate = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()
 
   dateNow.setDate(dateNow.getDate() + 1)
   const formatDateTwo = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()
-  
+  console.log(formatDate)
+  console.log(formatDateTwo)
   Citas.find({
     $and:[
       {date: {$gte: formatDate, $lte: formatDateTwo}},
@@ -39,7 +41,7 @@ citas.post('/getBlocks', (req,res) => {
     ]
   }).sort({sort:1})
   .then(citas => {
-    
+    console.log(citas)
     var timelineBlock = []
     var bloques = []
     if (citas.length == 0) {
@@ -198,16 +200,16 @@ citas.post('/getDateByMani', (req, res) => {
 })
 
 citas.post('/', (req, res) => {
-  const DateSelect = new Date(req.body.fecha)
+  const DateSelect = new Date(req.body.fecha+' 10:00')
   
-  const formatDate = DateSelect.getFullYear() +"-"+(DateSelect.getMonth() + 1)+"-"+DateSelect.getDate()
+  // const formatDate = DateSelect.getFullYear() +"-"+(DateSelect.getMonth() + 1)+"-"+DateSelect.getDate()
 
-  const Datee = new Date(formatDate + " 10:00")
+  // const Datee = new Date(formatDate + " 10:00")
   const dataCitas = {
     start: req.body.entrada,
     end: req.body.salida,
     sort:req.body.sort,
-    date: Datee,
+    date: DateSelect,
     services: req.body.servicios,
     client: req.body.cliente,
     employe: req.body.manicuristas,

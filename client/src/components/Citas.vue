@@ -239,8 +239,7 @@
                               :months="months"
                               :weekdays="Days"
                               :format="format"
-                              :parseDate="parseDate"
-                              :formatDate="formatDate"
+                              
                           ></date-pick>
                           
                          
@@ -429,7 +428,7 @@
         salida:'',
         query:'',
         salidaMuestra: '',
-        format: 'DD-MM-YYYY',
+        format: 'MM-DD-YYYY',
         Days:['Lun', 'Mar', 'Mier', 'Jue', 'Vie', 'Sab', 'Dom'],
 				months:[
 					'Enero', 'Febrero', 'Marzo', 'Abril',
@@ -505,7 +504,7 @@
         
         var fechaBloq = this.fecha
         this.bloquesHora = []
-          
+          console.log(fechaBloq)
           axios.post('citas/getBlocks', {
             employe: this.manicuristaFinal,
             date: fechaBloq,
@@ -514,15 +513,12 @@
           })
           .then(res => {
             this.bloquesHora = res.data
-            this.culito = res.data
+            
             
             })
             .catch(err => {
               console.log(err)
             })
-
-          
-
 
       },
       
@@ -806,7 +802,7 @@
           this.$swal({
           title: 'Confirma tu cita',
           type: 'success',
-          html: `<h6>Servicio(s): ${this.servicioCita}</h6> <h6>Diseño: ${this.design}</h6> <h6>Cliente: ${this.clientsSelect}</h6> <h6>Fecha: ${$(".vdatetime-input").val()}</h6> <h6>Personal: ${this.manicuristaFinal}</h6><h6>Entrada: ${this.hora}</h6> <h6>Salida: ${this.salida}</h6>`,
+          html: `<h6>Servicio(s): ${this.servicioCita}</h6> <h6>Diseño: ${this.design}</h6> <h6>Cliente: ${this.clientsSelect}</h6> <h6>Fecha: ${this.fecha}</h6> <h6>Personal: ${this.manicuristaFinal}</h6><h6>Entrada: ${this.hora}</h6> <h6>Salida: ${this.salida}</h6>`,
           showCancelButton: true,
           confirmButtonText: 'Si',
           cancelButtonText: 'No',
