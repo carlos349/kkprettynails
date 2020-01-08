@@ -11,7 +11,7 @@
             <button  data-toggle="modal" class="generar" data-target=".genCita"><span></span>Generar cita</button>
           </div>
           <div class="col-sm-6">
-            <select id="manicuristas" v-model="empByCita" v-on:change="getCitasByEmploye()"  class="generar" name="manicuristas">
+            <select id="manicuristas" v-model="empByCita" v-on:change="getCitasByEmploye()"  class="generar Two" name="manicuristas">
               <option selected="true
               " >{{this.empByCita}}</option>
               <option>Todos</option>
@@ -1493,8 +1493,25 @@
      background-color: #1F5673;
      border:none;
      color: azure;
-     margin-bottom: -4%;
+     margin-bottom: 1%;
      width: 50%;
+     -webkit-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+		-moz-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+		box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+		-webkit-transition: all 0.5s ease-out;
+    font-family: 'Roboto', sans-serif !important;
+    font-size: 1.4em;
+  }
+  .generar:hover{
+    background-color: #ccc;
+    color:#001514;
+  }
+  .Two{
+    padding-bottom: 15px;
+  }
+  .Two:hover{
+    background-color: #1F5673;
+    color: azure;
   }
   .botonHora{
     background-color:#011627 ;

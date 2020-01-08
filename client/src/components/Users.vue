@@ -288,7 +288,7 @@
 		height:auto;
 		border-radius:5px;
 	}
-  .maxHeightInvent{
+  	.maxHeightInvent{
 		max-height: 200px;
 	}
 	.ListaUsers::-webkit-scrollbar {
@@ -296,10 +296,25 @@
 		height: 8px;    /* Tamaño del scroll en horizontal */
 		display: none;  /* Ocultar scroll */
 	}
-  
-  .btn-inactive{
+	.btn-success{
+		-webkit-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+		-moz-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+		box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+		-webkit-transition: all 0.5s ease-out;
+	}
+	.btn-warning{
+		-webkit-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+		-moz-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+		box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+		-webkit-transition: all 0.5s ease-out;
+	}
+	.btn-inactive{
 		background-color: #FC7753;
 		color:#fff;
+		-webkit-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+		-moz-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+		box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+		-webkit-transition: all 0.5s ease-out;
 	}
 	.VueTables--client .row{
 		display:none

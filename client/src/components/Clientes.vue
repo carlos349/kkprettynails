@@ -528,6 +528,10 @@ export default {
 	.btn-colorsEdit{
 		background-color: #28a745;
 		color:#fff;
+		-webkit-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+		-moz-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+		box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+		-webkit-transition: all 0.5s ease-out;
 	}
 	.autoClient .autocomplete-result-list{
 		background-color: #1F5673;
@@ -575,7 +579,10 @@ export default {
 		transition: all 0.5s ease-out;
 		font-family: 'Roboto', sans-serif !important;
 		font-weight:600;
-		
+		-webkit-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+		-moz-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+		box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+		-webkit-transition: all 0.5s ease-out;
 		letter-spacing: 1px;
 		border-radius:5px;
 	}
@@ -583,6 +590,7 @@ export default {
 		background-color:#ccc;
 		color:#001514;
 	}
+	
 	.inputs {
 		border: none !important;
 		border-radius: 0px !important;
@@ -624,6 +632,13 @@ export default {
 		border: none;
 		font-size: 1.3em;
 		outline: none !important;
+		-webkit-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+		-moz-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+		box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+		-webkit-transition: all 0.5s ease-out;
+	}
+	.btn-white:hover{
+		background-color: #218838;
 	}
 	.btn-white:focus{
 		outline: none !important;

@@ -4,7 +4,8 @@
 			<div class="row">
 				<div class="col-md-12  max-auto">
 					<form v-on:submit.prevent="login">
-						<img style="width:12%;margin-left:-3%" src="../assets/syswa.png" alt=""><span class="logoLetra">Syswa</span>
+						<img style="width:20%;margin-left:40%;margin-bottom:4%" src="../assets/logoNew.png" alt="">
+						<!-- <span class="logoLetra">Syswa</span> -->
 						<h1 class="h3 font-weight-normal">Iniciar sesión</h1>
 						<div class="form-group">
 							<label for="email">Dirección de correo</label>
@@ -115,10 +116,10 @@
 		top:30%;
 		left:33%;
 		padding:20px;
-		font-family: 'Raleway', sans-serif;
+		font-family: 'Roboto', sans-serif;
 		font-weight:600;
-		background-color:#2c5363;
-		color:white;
+		background-color:#fff;
+		color:black;
 		width:30%;
 		-webkit-box-shadow: 0px 14px 30px 4px rgba(0,0,0,0.75);
 		-moz-box-shadow: 0px 14px 30px 4px rgba(0,0,0,0.75);
@@ -131,6 +132,7 @@
 		border:none;
 		border-bottom: 2px solid #213b45;
 		background-color:transparent;
+		font-family: 'Roboto', sans-serif;
 		outline:none;
 		transition: all 0.5s ease-out;
 	}
@@ -140,17 +142,27 @@
 		font-size:20px;
 	}
 	.inputLogin:focus{
-		border-bottom: 2px solid white;
+		border-bottom: 2px solid #1F5673;
 		transition: all 0.5s ease-out;
 	}
 	.botonLogin{
-		background-color:#102229;
-		color:#fff;
+		background-color:#1F5673;
+		color: azure;
+		transition: all 0.5s ease-out;
+		font-family: 'Roboto', sans-serif !important;
+		font-weight:600;
+		letter-spacing: 1px;
+		border-radius:5px;
+		-webkit-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+		-moz-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+		box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+		
 	}
 	.botonLogin:hover{
-		background-color:#fff;
+		background-color:#ccc;
 		color:#102229;
 		transition: all 0.5s ease-out;
 	}
+	
 
 </style>

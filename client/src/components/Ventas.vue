@@ -747,12 +747,12 @@ export default {
     padding: 20px;
     background-color: transparent;
     border:none;
-    border-bottom: solid 3px #1F5673;
+    border: solid 3px #1F5673;
     font-size: 2em;
   }
   .findSales{
-    background-color: transparent;
-    color: black;
+    background-color: #1F5673;
+    color: #fff;
     -webkit-transition: all 0.5s ease-out;
     transition: all 0.5s ease-out;
     font-family: 'Roboto', sans-serif !important;
@@ -761,16 +761,22 @@ export default {
     letter-spacing: 1px;
     border-radius: 5px;
     padding: 20px;
-    
+    -webkit-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+-moz-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
     border-bottom: solid 3px #1F5673;
   }
   .findSales:hover{
-		background-color: #1F5673;
-		color:#fff;
+		background-color: rgb(8, 65, 95);
+    color: #fff;
 	}
   .btn-colorsPrint{
 		background-color:#495057;
 		color:#fff;
+    -webkit-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+    -moz-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+    box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+    -webkit-transition: all 0.5s ease-out;
 	}
   .VueTables--client .row{
 		display:none

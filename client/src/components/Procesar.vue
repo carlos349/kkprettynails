@@ -744,9 +744,10 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 </script>
 <style media="screen">
 	.inputs{
-		border:none !important;
+		border:none;
 		border-radius:0px !important;
-		border-bottom:2px solid #1F5673 !important;
+		border-bottom:2px solid #102229 !important;
+		border-right:2px solid #102229 !important;
 		background-color:transparent !important;
 		color:black !important;
 		font-family: 'Roboto', sans-serif !important;
@@ -868,9 +869,12 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 	.addProc{
 		background-color:#28a745;
 		color: #fff;
-		transition: all 0.5s ease-out;
 		font-family: 'Raleway', sans-serif;
 		font-weight:600;
+		-webkit-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+		-moz-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+		box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+		-webkit-transition: all 0.5s ease-out;
 	}
 	.addProc:hover{
 		background-color:#102229;
@@ -908,8 +912,15 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 		top:16%;
 		font-size:2.3em;
 		cursor: pointer;
-		color: #102230
+		color: #102230;
+		-webkit-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+		-moz-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+		box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+		-webkit-transition: all 0.5s ease-out;
 	}	
+	.buscar{
+		border-left:2px solid #102229 !important;
+	}
 	.buscar::-webkit-input-placeholder {
 		color: #cccccc;
 		font-family: 'Raleway', sans-serif;
@@ -933,6 +944,7 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 		background-color: transparent !important;
 		border: none !important;
 		border-bottom:2px solid #102229 !important;
+		border-right:2px solid #102229 !important;
 		border-radius: 0px;
 		width: 100% !important;
 		color: black !important;

@@ -708,15 +708,26 @@
 	.btn-colorsEdit{
 		background-color:#495057;
 		color:#fff;
+		-webkit-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+    -moz-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+    box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+    -webkit-transition: all 0.5s ease-out;
 	}
 	.btn-inactive{
 		background-color: #FC7753;
 		color:#fff;
+		-webkit-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+    -moz-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+    box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+    -webkit-transition: all 0.5s ease-out;
 	}
 	.btn-active{
 		background-color: #18FF6D;
 		color:#495057;
-		
+		-webkit-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+    -moz-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+    box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+    -webkit-transition: all 0.5s ease-out;
 	}
 	.ListaTwo::-webkit-scrollbar {
 		width: 8px;     /* Tamaño del scroll en vertical */
@@ -740,13 +751,22 @@
 		border:none !important;
 		border-bottom:2px solid #102229 !important;
 	}
+	.btn-success {
+		-webkit-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+    -moz-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+    box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+    -webkit-transition: all 0.5s ease-out;
+	}
 	.add{
 		background-color:#1F5673;
 		color: azure;
 		transition: all 0.5s ease-out;
 		font-family: 'Roboto', sans-serif !important;
 		font-weight:600;
-		
+		-webkit-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+    -moz-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+    box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+    -webkit-transition: all 0.5s ease-out;
 		letter-spacing: 1px;
 		border-radius:5px;
 	}
@@ -855,12 +875,18 @@
 		color: #fff;
 		border: none;
 		font-size: 1.3em;
+		-webkit-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+		-moz-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+		box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+		-webkit-transition: all 0.5s ease-out;
 		outline: none !important;
 	}
 	.btn-white:focus{
 		outline: none !important;
 	}
-
+	.btn-white:hover{
+		background-color: #218838;
+	}
 	.lupa-modal{
 		position:absolute;
 		right:8%;
@@ -873,8 +899,6 @@
 		text-align: center;
 		margin-bottom: 10px;
 	}
-
-	
 
 	.glyphicon.glyphicon-eye-open {
 		width: 16px;
