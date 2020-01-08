@@ -3,8 +3,8 @@
 	<div  v-on:click="marcarNav()" v-bind:style="{ 'background-image': 'linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),url(' + require('../assets/sidebarTwo.jpg') + ')' , 'background-size': 'cover', 'height': '100vh', 'position': 'fixed' }"  class=" pl-2 menuVer navS" v-on:mouseenter="mouseOver()" v-on:mouseleave="mouseLeave()">
 		<div style="border-bottom:1.5px solid  rgba(91, 91, 90, .5);" class="p-3  text-center col-md-12"><img src="../assets/logoNew.png" class="logoNonHover"  alt=""></div>
 
-		<div style="border-bottom:1.5px solid  rgba(91, 91, 90, .5);" class="text-white p-2 mx-auto col-md-12">
-			<div v-on:click="moverFU()" data-toggle="collapse" href="#collapseUser" class="col-md-12 usuarioP" style="height:70px;">
+		<div style="border-bottom:1.5px solid  rgba(91, 91, 90, .5);" class="text-white p-2 pb-1 pt-1 mx-auto col-md-12 paddingName">
+			<div v-on:click="moverFU()" data-toggle="collapse" href="#collapseUser" class="col-md-12 usuarioP ">
 				<div class="row">
 					<div class="col-sm-3">
 						<img class="imgHover" v-bind:src="image" style="width:50px;height:50px;border-radius:40px;">
@@ -361,10 +361,12 @@ export default {
   .text-white{
 	  text-decoration: none !important;
   }
+  
   .usuarioP{
 	  border-radius: 5px;
 	  cursor: pointer;
 	  padding: 10px;
+	  
 	  transition: all 0.5s ease-out;
   }
   .usuarioP:hover{
