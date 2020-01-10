@@ -142,7 +142,7 @@
 					</div>
 					<div class="form-group">
 						<label for="name">Documento de identificación</label>
-						<input v-model="documentoPrestadorEdit" type="numbre" class="form-control inputs" placeholder="Identificación">
+						<input v-model="documentoPrestadorEdit" type="numbre" class="form-control inputs" placeholder="Identificación" v-on:change="changeRutEdit()" v-on:click="changeToEdit()">
 					</div>
 					<div class="form-group">
 						<label for="name">Porcentaje de ganancia</label>
@@ -203,7 +203,7 @@
 					</div>
 					<div class="form-group">
 						<label for="name">Documento de identificación</label>
-						<input v-model="documento" type="text" class="form-control inputs" placeholder="Identificación" v-on:change="changeRut()">
+						<input v-model="documento" type="text" class="form-control inputs" placeholder="Identificación" v-on:change="changeRut()" v-on:click="changeTo()">
 					</div>
 					<div class="form-group">
 						<label for="name">Porcentaje de ganancia</label>
@@ -568,12 +568,30 @@ export default {
             return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
 		},
 		formatRut(value) {
-            let val = (value/1).toFixed(2).replace('.', '-')
+			let around = value.length - 3
+			let concat = ''
+			for (let index = 0; index < value.length; index++) {
+				concat = concat + value[index]
+				if (around == index) {
+					concat = concat + '.'
+				}
+			} 
+			let val = concat.replace('.', '-')
             return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
 		},
 		changeRut(){
 			this.documento = this.formatRut(this.documento)
+		},
+		changeTo(){
+			this.documento = ''
+		},
+		changeRutEdit(){
+			this.documentoPrestadorEdit = this.formatRut(this.documentoPrestadorEdit)
+		},
+		changeToEdit(){
+			this.documentoPrestadorEdit = ''
 		}
+		
 	},
 	computed: {
 		myStyles () {
