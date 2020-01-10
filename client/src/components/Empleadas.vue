@@ -154,17 +154,17 @@
 							<option style="color:black;" selected value="Seleccione el tiempo">Seleccione el tiempo</option>
 							<option style="color:black;" value="12:00">12:00</option>
 							<option style="color:black;" value="12:30">12:30</option>
-							<option style="color:black;" value="1:00">1:00</option>
-							<option style="color:black;" value="1:30">1:30</option>
-							<option style="color:black;" value="2:00">2:00</option>
+							<option style="color:black;" value="13:00">13:00</option>
+							<option style="color:black;" value="13:30">13:30</option>
+							<option style="color:black;" value="14:00">14:00</option>
 						</select>
 						<select class="form-control col-6" v-model="restTimeEndEdit" >
 							<option style="color:black;" selected value="Seleccione el tiempo">Seleccione el tiempo</option>
 							<option style="color:black;" value="12:30">12:30</option>
-							<option style="color:black;" value="1:00">1:00</option>
-							<option style="color:black;" value="1:30">1:30</option>
-							<option style="color:black;" value="2:00">2:00</option>
-							<option style="color:black;" value="2:30">2:30</option>
+							<option style="color:black;" value="13:00">13:00</option>
+							<option style="color:black;" value="13:30">13:30</option>
+							<option style="color:black;" value="14:00">14:00</option>
+							<option style="color:black;" value="14:30">14:30</option>
 						</select>
 					</div>
 					<div class="form-group">
@@ -215,17 +215,17 @@
 							<option style="color:black;" selected value="Seleccione el tiempo">Seleccione el tiempo</option>
 							<option style="color:black;" value="12:00">12:00</option>
 							<option style="color:black;" value="12:30">12:30</option>
-							<option style="color:black;" value="1:00">1:00</option>
-							<option style="color:black;" value="1:30">1:30</option>
-							<option style="color:black;" value="2:00">2:00</option>
+							<option style="color:black;" value="13:00">13:00</option>
+							<option style="color:black;" value="13:30">13:30</option>
+							<option style="color:black;" value="14:00">14:00</option>
 						</select>
 						<select class="form-control col-6" v-model="restTimeEnd" >
 							<option style="color:black;" selected value="Seleccione el tiempo">Seleccione el tiempo</option>
 							<option style="color:black;" value="12:30">12:30</option>
-							<option style="color:black;" value="1:00">1:00</option>
-							<option style="color:black;" value="1:30">1:30</option>
-							<option style="color:black;" value="2:00">2:00</option>
-							<option style="color:black;" value="2:30">2:30</option>
+							<option style="color:black;" value="13:00">13:00</option>
+							<option style="color:black;" value="13:30">13:30</option>
+							<option style="color:black;" value="14:00">14:00</option>
+							<option style="color:black;" value="14:30">14:30</option>
 						</select>
 					</div>
 					<div class="form-group">
