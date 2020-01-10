@@ -83,21 +83,24 @@
                       
                       <div class="col-sm-12">
                         <div class="row mx-auto mb-2">
+                              
+                              <div class="col-sm-3 CMani m-1" v-for="(manicurista,index) of manicuristaCita">
 
-                              <div class="col-sm-4 CMani">
-                                <div class="row p-2">
-                                  <img class="imgMani w-25" src="../assets/silueta-mujer.jpg" alt="">
-                                <h4 class="p-3">{{manicuristaFinal}}</h4>
+                                <div class="row p-2" v-for="(mani,index) of manicuristas" v-if="mani._id === manicurista && mani.restDay != new Date(fecha).getDay()" v-on:click="selectManic(mani.nombre,mani.class,mani.restTime,index)" >
+
+                                  <img class="imgMani w-25 col-sm-3" src="../assets/silueta-mujer.jpg" alt="">
+                                <h6 class="p-3 col-sm-9">{{mani.nombre}}</h6>
                                 </div>
                                 
                                 </div>
                               
-                              <div class="col-sm-8 Hdispone p-3">
+                             
+                            </div> 
+                            <div class="col-sm-8 Hdispone p-3">
 
                                 <h2>Horas Disponibles</h2>
                                            
                               </div>
-                            </div>
                         <div v-for="(bloque , index) of bloquesHora">
                           <div v-if="bloque.validator == true" v-on:click="selectBloq(bloque.Horario, index)" class="col-sm-12  horaDisp">
                             <div class="row">
@@ -777,10 +780,11 @@
             else{
               $(".Sig").removeClass("marcar")
             $(".Sig").prop("disabled", true)
+            $(".Sig").text("Crear")
             $(".wTwo").removeClass("marc")
             $(".wThree").addClass("marc")
             $(".processTwo").hide()
-            $(".processPerso").show()
+            $(".processThree").show()
             }
             
           }
@@ -1010,10 +1014,11 @@
         this.manicuristaFinal = nombre
         this.classFinal = clase
         this.resTimeFinal = rest
-        $(".Sig").prop("disabled", false)
-        $(".Sig").addClass("marcar")
-        $(".imgMani").removeClass("maniMarcado")
-        $("#mani"+index).addClass("maniMarcado")
+        this.insertDate()
+        // $(".Sig").prop("disabled", false)
+        // $(".Sig").addClass("marcar")
+        // $(".imgMani").removeClass("maniMarcado")
+        // $("#mani"+index).addClass("maniMarcado")
         
       },
       selectMonth(){
@@ -1161,7 +1166,7 @@
     color: #fff !important
   }
   
-  .vuecal__menu {background-color: #1F5673; }
+  .vuecal__menu {background-color: rgb(45, 141, 192); }
   .vuecal__menu li {border-bottom-color: #fff;color: #fff;}
   .vuecal__menu li.active {background-color: rgba(255, 255, 255, 0.15);}
   .vuecal__title-bar {background-color: #1F5673;color: #fff !important}
@@ -1371,6 +1376,7 @@
     position:fixed;
 		top:90%;
 		right:2%;
+    z-index: 1000;
     transform : translate(-50% ,-50%);
   }
   .CierreDia:link,
@@ -1494,6 +1500,7 @@
      border:none;
      color: azure;
      margin-bottom: 1%;
+     border-radius: 5px; 
      width: 50%;
      -webkit-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
 		-moz-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
@@ -1959,12 +1966,14 @@
   text-align: center
 }
 
-.CMani{
-  border-top: 1px solid white;
-  border-left: 1px solid white;
-  border-bottom: 1px solid white; 
-  border-radius: 5px 0 0 5px; 
+.CMani{ 
+  border-radius: 5px; 
   background-color: #1f5673;
-  
+  cursor: pointer;
+}
+.CMani:hover{ 
+  border-radius: 5px; 
+  background-color: #fff;
+  color: #000
 }
 </style>
