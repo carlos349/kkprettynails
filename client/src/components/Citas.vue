@@ -353,7 +353,7 @@
   import 'vue-datetime/dist/vue-datetime.css'
   import DatePick from 'vue-date-pick';
   import 'vue-date-pick/dist/vueDatePick.css';
-
+import router from '../router'
   class Event {
     constructor (start, end, title, content) {
       this.start = start
@@ -446,38 +446,21 @@
     },
     beforeCreate() {
       if (!localStorage.getItem('userToken')) {
- 			 this.$swal({
- 				 type: 'error',
- 				 title: 'URL restringida',
- 				 showConfirmButton: false,
- 				 timer: 1500
- 			 })
+        this.$swal({
+          type: 'error',
+          title: 'URL restringida',
+          showConfirmButton: false,
+          timer: 1500
+        })
         router.push({name: 'Login'})
       }
-   },
+    },
     created(){
       this.getCitas()
       this.getManicuristas()
       this.getClients()
       this.getServicios()
       this.fechaMinima()
-      $(document).ready(function(){
-        $(".vdatetime").click(function(){
-        
-        for (let i = 0; i < 24; i++) {
-          if (i == 10 || i == 11 || i == 12 || i == 13 || i == 14 || i == 15 || i == 16 || i == 17 || i == 18 || i == 19 || i == 20 || i == 21) {
-            
-          }
-          else{
-            
-            $(".vdatetime-time-picker__item:eq("+i+")").addClass("vdatetime-time-picker__item vdatetime-time-picker__item--disabled")
-          }
-          
-          
-        }
-      });
-      });
-      
     },
     methods: {
 

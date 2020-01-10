@@ -21,7 +21,22 @@ const upload = multer({
 	storage
 })
 
-users.post('/registerImage/:id', upload.single("image"), (req, res, next) => {
+users.post('/registerImage/:id', upload.single("image"), async (req, res, next) => {
+	const token = req.headers['x-access-token'];
+	if (!token) {
+		return res.status(401).json({auth: false, message: 'no token provided'})
+	}
+
+	try {
+		const decoded = jwt.verify(token, process.env.SECRET_KEY)
+		const verify = await User.findById(decoded._id)
+		if (!verify) {
+			return res.status(401).json({auth: false, message: 'invalid access'})
+		}
+	} catch(err) {
+		return res.status(401).json({auth: false, message: 'token expired'})
+	}
+
 	const images = req.file.filename
 	const id = req.params.id
 	User.findByIdAndUpdate(id, {
@@ -35,45 +50,102 @@ users.post('/registerImage/:id', upload.single("image"), (req, res, next) => {
 })
 
 users.get('/', async (req, res) => {
+	const token = req.headers['x-access-token'];
+	if (!token) {
+		return res.status(401).json({auth: false, message: 'no token provided'})
+	}
+
+	try {
+		const decoded = jwt.verify(token, process.env.SECRET_KEY)
+		const verify = await User.findById(decoded._id)
+		if (!verify) {
+			return res.status(401).json({auth: false, message: 'invalid access'})
+		}
+	} catch(err) {
+		return res.status(401).json({auth: false, message: 'token expired'})
+	}
+	
 	const userss = await User.find()
-  res.json(userss)
+  	res.json(userss)
 })
+
 users.get('/Clientes', async (req, res) => {
 	const clients = await Clientes.find()
-  	res.json(clients)
+  	res.status(200).json(clients)
 })
 
 users.delete('/:id', async (req, res) => {
+	const token = req.headers['x-access-token'];
+	if (!token) {
+		return res.status(401).json({auth: false, message: 'no token provided'})
+	}
+
+	try {
+		const decoded = jwt.verify(token, process.env.SECRET_KEY)
+		const verify = await User.findById(decoded._id)
+		if (!verify) {
+			return res.status(401).json({auth: false, message: 'invalid access'})
+		}
+	} catch(err) {
+		return res.status(401).json({auth: false, message: 'token expired'})
+	}
+
 	const userss = await User.findByIdAndRemove(req.params.id)
-  res.json(userss)
+  	res.status(200).json(userss)
 })
 
-users.put('/:id', (req, res) => {
+users.put('/:id', async (req, res, next) => {
+	const token = req.headers['x-access-token'];
+	if (!token) {
+		return res.status(401).json({auth: false, message: 'no token provided'})
+	}
+
+	try {
+		const decoded = jwt.verify(token, process.env.SECRET_KEY)
+		const verify = await User.findById(decoded._id)
+		if (!verify) {
+			return res.status(401).json({auth: false, message: 'invalid access'})
+		}
+	} catch(err) {
+		return res.status(401).json({auth: false, message: 'token expired'})
+	}
+
 	const admin = req.body.admin
 	if (admin) {
 		User.findByIdAndUpdate(req.params.id, { $set: {admin: false}})
 		.then(user => {
-			console.log(user)
 			res.json({status:false})
 		})
 		.catch(err => {
-			res.send('error: ' + err)
+			res.send(err)
 		})
 	}else{
 		User.findByIdAndUpdate(req.params.id, { $set: {admin: true}})
 		.then(user => {
-			console.log(user)
 			res.json({status:true})
 		})
 		.catch(err => {
-			res.send('error: ' + err)
+			res.send(err)
 		})
 	}
 })
 
 
-users.post('/register', (req, res) => {
+users.post('/register', async (req, res, next) => {
+	const token = req.headers['x-access-token'];
+	if (!token) {
+		return res.status(401).json({auth: false, message: 'no token provided'})
+	}
 
+	try {
+		const decoded = jwt.verify(token, process.env.SECRET_KEY)
+		const verify = await User.findById(decoded._id)
+		if (!verify) {
+			return res.status(401).json({auth: false, message: 'invalid access'})
+		}
+	} catch(err) {
+		return res.status(401).json({auth: false, message: 'token expired'})
+	}
 	
 	const today = new Date()
 	const userData = {
@@ -135,7 +207,7 @@ users.post('/login', (req, res) => {
 						LastAccess: user.LastAccess
 					}
 					let token = jwt.sign(payload, process.env.SECRET_KEY, {
-						expiresIn: 1440
+						expiresIn: 60 * 60 * 24
 					})
 					res.json({token: token, admin: user.admin})
 				})
@@ -147,11 +219,26 @@ users.post('/login', (req, res) => {
 		}
 	})
 	.catch(err => {
-		res.send('error: ' + err)
+		res.send(err)
 	})
 })
 
 users.get('/data/:id', async (req, res, next) => {
+	const token = req.headers['x-access-token'];
+	if (!token) {
+		return res.status(401).json({auth: false, message: 'no token provided'})
+	}
+
+	try {
+		const decoded = jwt.verify(token, process.env.SECRET_KEY)
+		const verify = await User.findById(decoded._id)
+		if (!verify) {
+			return res.status(401).json({auth: false, message: 'invalid access'})
+		}
+	} catch(err) {
+		return res.status(401).json({auth: false, message: 'token expired'})
+	}
+
 	const data = await User.findById(req.params.id, {password: 0})
 	if (!data) {
 		res.status(404).send('User not found')
@@ -160,6 +247,21 @@ users.get('/data/:id', async (req, res, next) => {
 })
 
 users.put('/editData/:id', async (req, res, next) => {
+	const token = req.headers['x-access-token'];
+	if (!token) {
+		return res.status(401).json({auth: false, message: 'no token provided'})
+	}
+
+	try {
+		const decoded = jwt.verify(token, process.env.SECRET_KEY)
+		const verify = await User.findById(decoded._id)
+		if (!verify) {
+			return res.status(401).json({auth: false, message: 'invalid access'})
+		}
+	} catch(err) {
+		return res.status(401).json({auth: false, message: 'token expired'})
+	}
+
 	const type = req.body.type
 	const id = req.params.id
 	const data = req.body.data
@@ -197,6 +299,21 @@ users.put('/editData/:id', async (req, res, next) => {
 })
 
 users.put('/changePass/:id', async (req, res, next) => {
+	const token = req.headers['x-access-token'];
+	if (!token) {
+		return res.status(401).json({auth: false, message: 'no token provided'})
+	}
+
+	try {
+		const decoded = jwt.verify(token, process.env.SECRET_KEY)
+		const verify = await User.findById(decoded._id)
+		if (!verify) {
+			return res.status(401).json({auth: false, message: 'invalid access'})
+		}
+	} catch(err) {
+		return res.status(401).json({auth: false, message: 'token expired'})
+	}
+	
 	const id = req.params.id
 	const newPass = req.body.newPass
 	const lastPass = req.body.lastPass
