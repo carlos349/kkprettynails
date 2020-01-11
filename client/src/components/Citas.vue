@@ -359,7 +359,7 @@
   import 'vue-datetime/dist/vue-datetime.css'
   import DatePick from 'vue-date-pick';
   import 'vue-date-pick/dist/vueDatePick.css';
-
+import router from '../router'
   class Event {
     constructor (start, end, title, content) {
       this.start = start
@@ -453,23 +453,26 @@
     },
     beforeCreate() {
       if (!localStorage.getItem('userToken')) {
- 			 this.$swal({
- 				 type: 'error',
- 				 title: 'URL restringida',
- 				 showConfirmButton: false,
- 				 timer: 1500
- 			 })
+        this.$swal({
+          type: 'error',
+          title: 'URL restringida',
+          showConfirmButton: false,
+          timer: 1500
+        })
         router.push({name: 'Login'})
       }
-   },
+    },
     created(){
       this.getCitas()
       this.getManicuristas()
       this.getClients()
       this.getServicios()
       this.fechaMinima()
+<<<<<<< HEAD
       
       
+=======
+>>>>>>> 0dc4ba6ff3de8fd008cb190d731c8e0cf331b0e5
     },
     methods: {
 

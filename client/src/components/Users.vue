@@ -153,19 +153,40 @@
     },
     methods: {
       getUsers(){
-        axios.get('users')
+		const config = {headers: {'x-access-token': localStorage.userToken}}
+        axios.get('users', config)
         .then(res => {
           this.users = res.data
-          console.log(this.users)
-        })
+		})
+		.catch(err => {
+			this.$swal({
+				type: 'error',
+				title: 'Acceso invalido, ingrese de nuevo, si el problema persiste comuniquese con el proveedor del servicio',
+				showConfirmButton: false,
+				timer: 2500
+			})
+			router.push({name: 'Login'})
+		})
       },
       editarEstado(id, admin){
+		const config = {headers: {'x-access-token': localStorage.userToken}}
         axios.put('users/'+id, {
           admin: admin
-        })
+        }, config)
         .then(res => {
+			console.log(res)
+			
           this.getUsers()
-        })
+		})
+		.catch(err => {
+			this.$swal({
+				type: 'error',
+				title: 'Acceso invalido, ingrese de nuevo, si el problema persiste comuniquese con el proveedor del servicio',
+				showConfirmButton: false,
+				timer: 2500
+			})
+			router.push({name: 'Login'})
+		})
       },
       handleFileUpload(){
         this.file = this.$refs.file.files[0];
@@ -174,13 +195,14 @@
       register() {
 			let formData = new FormData();
 			formData.append('image', this.file)
+			const configToken = {headers: {'x-access-token': localStorage.userToken}}
 			axios.post('users/register',
 			{
 				first_name: this.first_name,
 				last_name: this.last_name,
 				email: this.email,
 				password: this.password,
-			}).then(res => {
+			}, configToken).then(res => {
 					this.$swal({
 						type: 'success',
 						title: 'Usuario registrado como admin',
@@ -197,7 +219,7 @@
 					const id = res.data.status
 
 
-					const config = {headers: {'Content-Type': 'multipart/form-data'}}
+					const config = {headers: {'Content-Type': 'multipart/form-data', 'x-access-token': localStorage.userToken}}
 					axios.post(`users/registerImage/${id}`, formData, config)
 					.then(resData => {
 						console.log(resData)
@@ -208,7 +230,13 @@
 
 					
 				}).catch(err => {
-					console.log(err)
+					this.$swal({
+						type: 'error',
+						title: 'Acceso invalido, ingrese de nuevo, si el problema persiste comuniquese con el proveedor del servicio',
+						showConfirmButton: false,
+						timer: 2500
+					})
+					router.push({name: 'Login'})
 				})
 			},
 			formatDate(date) {
@@ -224,7 +252,8 @@
 						timer: 1500
 					})
 				}else{
-					axios.delete('users/' + id)
+					const configToken = {headers: {'x-access-token': localStorage.userToken}}
+					axios.delete('users/' + id, configToken)
 					.then(res => {
 						this.$swal({
 							type: 'success',
@@ -238,10 +267,11 @@
 					.catch(err => {
 						this.$swal({
 							type: 'error',
-							title: 'Disculpe tenemos problemas técnicos',
+							title: 'Acceso invalido, ingrese de nuevo, si el problema persiste comuniquese con el proveedor del servicio',
 							showConfirmButton: false,
-							timer: 1500
+							timer: 2500
 						})
+						router.push({name: 'Login'})
 					})
 				}
 			}

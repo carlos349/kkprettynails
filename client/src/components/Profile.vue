@@ -143,27 +143,47 @@
 		},
 		methods: {
 			async getData() {
-				const data = await axios.get('users/data/'+this.id)
-				this.first_name = data.data.first_name
-				this.last_name = data.data.last_name
-				this.email = data.data.email
-				this.admin = data.data.admin
-				this.access = data.data.LastAccess
-				this.image = 'http://localhost:4200/static/users/'+data.data.userImage
+				const config = {headers: {'x-access-token': localStorage.userToken}}
+				try{
+					const data = await axios.get('users/data/'+this.id, config)
+					this.first_name = data.data.first_name
+					this.last_name = data.data.last_name
+					this.email = data.data.email
+					this.admin = data.data.admin
+					this.access = data.data.LastAccess
+					this.image = 'http://localhost:4200/static/users/'+data.data.userImage
+				}catch(err) {
+					this.$swal({
+						type: 'error',
+						title: 'Acceso invalido, ingrese de nuevo, si el problema persiste comuniquese con el proveedor del servicio',
+						showConfirmButton: false,
+						timer: 2500
+					})
+					router.push({name: 'Login'})	
+				}
+				
 			},
 			async editImage() {
+				
 				let formData = new FormData();
 				formData.append('image', this.file)
 				try {
 					const image = await axios.post('users/registerImage/'+this.id, formData, {
 						headers: {
-							'Content-Type': 'multipart/form-data'
+							'Content-Type': 'multipart/form-data',
+							'x-access-token': localStorage.userToken
 						}
 					})
 					this.emitMethod(image.data.status)
 					this.getData()
-				} catch(err) {
-					console.log(err)
+				} catch(err)  {
+					this.$swal({
+						type: 'error',
+						title: 'Acceso invalido, ingrese de nuevo, si el problema persiste comuniquese con el proveedor del servicio',
+						showConfirmButton: false,
+						timer: 2500
+					})
+					router.push({name: 'Login'})
 				}
 			},
 			emitMethod(image) {
@@ -186,73 +206,122 @@
 				}
 			},
 			async EditDataEmail(){
-				const editData = await axios.put('users/editData/'+this.id, {
-					data:this.email,
-					type:'email'
-				})
-				if (editData.data.status == 'ok') {
-					this.changeEmail = true
+				const config = {headers: {'x-access-token': localStorage.userToken}}
+				try{
+					const editData = await axios.put('users/editData/'+this.id, {
+						data:this.email,
+						type:'email'
+					}, config)
+					if (editData.data.status == 'ok') {
+						this.changeEmail = true
+						this.$swal({
+							type: 'success',
+							title: 'Correo editado',
+							showConfirmButton: false,
+							timer: 1000
+						})
+					}
+				}catch(err)  {
 					this.$swal({
-						type: 'success',
-						title: 'Correo editado',
+						type: 'error',
+						title: 'Acceso invalido, ingrese de nuevo, si el problema persiste comuniquese con el proveedor del servicio',
 						showConfirmButton: false,
-						timer: 1000
+						timer: 2500
 					})
+					router.push({name: 'Login'})
 				}
 			},
 			async EditDataLast(){
-				const editData = await axios.put('users/editData/'+this.id, {
-					data:this.last_name,
-					type:'last'
-				})
-				if (editData.data.status == 'ok') {
-					this.changeLast = true
+				const config = {headers: {'x-access-token': localStorage.userToken}}
+				try{
+					const editData = await axios.put('users/editData/'+this.id, {
+						data:this.last_name,
+						type:'last'
+					}, config)
+					if (editData.data.status == 'ok') {
+						this.changeLast = true
+						this.$swal({
+							type: 'success',
+							title: 'Primer nombre editado',
+							showConfirmButton: false,
+							timer: 1000
+						})
+					}
+				}catch(err)  {
 					this.$swal({
-						type: 'success',
-						title: 'Primer nombre editado',
+						type: 'error',
+						title: 'Acceso invalido, ingrese de nuevo, si el problema persiste comuniquese con el proveedor del servicio',
 						showConfirmButton: false,
-						timer: 1000
+						timer: 2500
 					})
+					router.push({name: 'Login'})
 				}
 			},
 			async EditDataFirst() {
-				const editData = await axios.put('users/editData/'+this.id, {
-					data:this.first_name,
-					type:'first'
-				})
-				if (editData.data.status == 'ok') {
-					this.changeFirst = true
+				const config = {headers: {'x-access-token': localStorage.userToken}}
+				try{
+					const editData = await axios.put('users/editData/'+this.id, {
+						data:this.first_name,
+						type:'first'
+					}, config)
+					if (editData.data.status == 'ok') {
+						this.changeFirst = true
+						this.$swal({
+							type: 'success',
+							title: 'Segundo nombre editado',
+							showConfirmButton: false,
+							timer: 1000
+						})
+					}
+				}catch(err)  {
 					this.$swal({
-						type: 'success',
-						title: 'Segundo nombre editado',
+						type: 'error',
+						title: 'Acceso invalido, ingrese de nuevo, si el problema persiste comuniquese con el proveedor del servicio',
 						showConfirmButton: false,
-						timer: 1000
+						timer: 2500
 					})
+					router.push({name: 'Login'})
 				}
 			},
 			async EditPass(){
-				const pass = await axios.put('users/changePass/'+this.id, {
-					newPass:this.newPass,
-					lastPass: this.lastPass
-				})
-				if (pass.data.status == 'ok') {
-					this.$swal({
-						type: 'success',
-						title: 'Contraseña cambiada',
-						showConfirmButton: false,
-						timer: 1500
-					})
-				}else{
+				const config = {headers: {'x-access-token': localStorage.userToken}}
+				try{
+					const pass = await axios.put('users/changePass/'+this.id, {
+						newPass:this.newPass,
+						lastPass: this.lastPass
+					}, config)
+					if (pass.data.status == 'ok') {
+						this.$swal({
+							type: 'success',
+							title: 'Contraseña cambiada',
+							showConfirmButton: false,
+							timer: 1500
+						})
+						this.newPass = ''
+						this.lastPass = ''
+						$('#ModalEditPass').modal('hide')
+					}else{
+						this.$swal({
+							type: 'error',
+							title: 'Contraseña incorrecta',
+							showConfirmButton: false,
+							timer: 1500
+						})
+						this.newPass = ''
+						this.lastPass = ''
+					}
+				}catch(err)  {
 					this.$swal({
 						type: 'error',
-						title: 'Contraseña incorrecta',
+						title: 'Acceso invalido, ingrese de nuevo, si el problema persiste comuniquese con el proveedor del servicio',
 						showConfirmButton: false,
-						timer: 1500
+						timer: 2500
 					})
+					router.push({name: 'Login'})
 				}
 			},
 			openModal(){
-				 $('#ModalEditPass').modal('show')
+				$('#ModalEditPass').modal('show')
 			},
 			formatDate(date) {
 				let dateFormat = new Date(date)
