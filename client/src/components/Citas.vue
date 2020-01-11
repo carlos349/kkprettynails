@@ -50,7 +50,7 @@
       <div  class="modal-content armarCita p-3" style="background-color:#1f5673">
         <div  class="container p-4" style="background-color:white">
           <div class="row">
-            <div style="font-size:1.5em;color:#011627;" class="col-md-12 text-center p-3">Arma tu cita {{fecha}}</div>
+            <div style="font-size:1.5em;color:#011627;" class="col-md-12 text-center p-3">Arma tu cita </div>
             <div style="background-color:rgba(31, 86, 115, 0.707);color:azure;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14)" class="col-md-12 font-weight-bold px-3">
               <div style="margin:auto" class="row text-center">
                 <div class="wOne p-3 mx-auto col-md-3 marc">Servicio</div>
@@ -96,9 +96,9 @@
                               
                              
                             </div> 
-                            <div class="col-sm-8 Hdispone p-3">
+                            <div class="col-sm-12 Hdispone p-1 m-1">
 
-                                <h2>Horas Disponibles</h2>
+                                <h4>Horas Disponibles</h4>
                                            
                               </div>
                         <div v-for="(bloque , index) of bloquesHora">
@@ -181,7 +181,7 @@
                       </div>       -->
               </div>
             </div>
-            <div class="col-md-12 p-3 processPerso">
+            <!-- <div class="col-md-12 p-3 processPerso">
               <div class="col-md-12 text-center p-2" style="font-size:1.2em;color:#9e9e9e">Elija un personal</div>
               <div style="height:40vh;overflow:hidden;overflow-x: hidden;
 		          overflow-y:scroll;background-color: rgba(31, 86, 115, 0.707);border-radius:5px" class="scroll row horas" >      
@@ -203,7 +203,7 @@
                   </div>
                 </div>   
               </div>
-            </div>
+            </div> -->
             <div class="col-md-12 p-3 processTwo">
               <div class="col-md-12 text-center p-2" style="font-size:1.2em;color:#9e9e9e">Selecciona un cliente, fecha y hora de entrada</div>
               <div class="container">
@@ -221,12 +221,15 @@
                              <font-awesome-icon style="font-size:2em" icon="user-plus"/>
                             </button>
                           </div>
-                          <vue-bootstrap-typeahead 
-                            v-model="clientsSelect"
-                            :data="arregloClient"
-                            placeholder="Buscar clientes"
-                            class=" clientB botonClient col-9"
-                          />
+                          
+                          <autocomplete	
+                            
+                            :search="searchClient"
+                            placeholder="Buscar cliente"
+                            aria-label="Buscar cliente"
+                            @submit="handleSubmitClient"
+                            class="clientB botonClient col-9">
+                         </autocomplete>
                           
                         </div>
                         
@@ -444,7 +447,8 @@
         nombreCliente: '',
         searchValue:'',
         resTime:[],
-        resTimeFinal: ''
+        resTimeFinal: '',
+        arregloClients: []
       }
     },
     beforeCreate() {
@@ -464,22 +468,7 @@
       this.getClients()
       this.getServicios()
       this.fechaMinima()
-      $(document).ready(function(){
-        $(".vdatetime").click(function(){
-        
-        for (let i = 0; i < 24; i++) {
-          if (i == 10 || i == 11 || i == 12 || i == 13 || i == 14 || i == 15 || i == 16 || i == 17 || i == 18 || i == 19 || i == 20 || i == 21) {
-            
-          }
-          else{
-            
-            $(".vdatetime-time-picker__item:eq("+i+")").addClass("vdatetime-time-picker__item vdatetime-time-picker__item--disabled")
-          }
-          
-          
-        }
-      });
-      });
+      
       
     },
     methods: {
@@ -487,15 +476,20 @@
       
      
       arrayClient(){
-				setTimeout(() => {
-					for (let index = 0; index < this.clients.length; index++) {
-						this.arregloClient.push(this.clients[index].nombre)
-					}
-				}, 2000);
+				for (let index = 0; index < this.clients.length; index++) {
+						this.arregloClients.push(this.clients[index].nombre+'-'+this.clients[index].identidad)
+          }
+          console.log(this.arregloClients)
 			},
-      
+      searchClient(input){
+				if (input.length < 1) { return [] }
+					return this.arregloClients.filter(manicurista => {
+						return manicurista.toLowerCase()
+						.startsWith(input.toLowerCase())
+				})
+			},
       handleSubmitClient(result){
-        this.nombreCliente = result
+        this.clientsSelect = result
 			
       },
       fechaMinima(){
@@ -503,6 +497,7 @@
         this.minimo = hoy.getFullYear() + "-" + parseFloat(hoy.getMonth()+1) + "-0" + hoy.getDate() + "T10:00:00"
         
       },
+      
       insertDate(){
         
         var fechaBloq = this.fecha
@@ -1022,7 +1017,7 @@
         
       },
       selectMonth(){
-        if ($(".clientB").children().children().val() == '' && $(".vdatetime-input").val() == '' ) {
+        if ($(".clientB").children().children().val() == '' && this.fecha == '' ) {
           this.$swal({
 						  type: 'error',
 						  title: 'Debes seleccionar un cliente y una fecha',
@@ -1031,7 +1026,7 @@
             })
             return false
         }
-        else if ($(".vdatetime-input").val() == '' ) {
+        else if (this.fecha == '' ) {
           this.$swal({
 						  type: 'error',
 						  title: 'Debes seleccionar una fecha',
@@ -1454,11 +1449,7 @@
     }
   }
   
-  .clientB .autocomplete-input{
-    color: black !important;
-    border-bottom: 2px solid #1f5673 !important;
-
-  }
+  
   .clientB{
     
     padding: 15px;
@@ -1466,7 +1457,7 @@
     color: azure;
     height: 85px;
     width: 120%;
-    font-size: 2em;
+    
     outline: none !important;
     text-align: center
     
@@ -1958,10 +1949,8 @@
 }
 
 .Hdispone{
-  border-top: 1px solid white;
-  border-right: 1px solid white;
-  border-bottom: 1px solid white; 
-  border-radius: 0 5px 5px 0; 
+  border: 1px solid white;
+  border-radius: 5px; 
   background-color: #1f5673;
   text-align: center
 }
