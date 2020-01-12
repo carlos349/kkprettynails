@@ -35,12 +35,43 @@
 						<p slot="nombres"  slot-scope="props">{{props.row.first_name }} {{props.row.last_name }}</p>
 						<p slot="last"  slot-scope="props">{{formatDate(props.row.LastAccess)}}</p>
 						<div slot="edit" slot-scope="props">
-							<button class="btn btn-success font-weight-bold w-100" v-if="props.row.admin" v-on:click="editarEstado(props.row._id, props.row.admin)">Admin</button>
-							<button class="btn btn-warning font-weight-bold w-100" v-else v-on:click="editarEstado(props.row._id, props.row.admin)">Normal</button>
+							<div class="dropleft" v-if="props.row.status == 1">
+								<button class="btn btn-success font-weight-bold w-100 dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									Gerencia
+								</button>
+								<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+									<a class="dropdown-item" v-on:click="editarEstado(props.row._id, 1)">Gerencia</a>
+									<a class="dropdown-item" v-on:click="editarEstado(props.row._id, 2)">Personal de caja</a>
+									<a class="dropdown-item" v-on:click="editarEstado(props.row._id, 3)">Prestadora</a>
+								</div>
+							</div>
+							<div class="dropleft" v-if="props.row.status == 2">
+								<button class="btn btn-warning font-weight-bold w-100 dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									Personal de caja
+								</button>
+								<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+									<a class="dropdown-item" v-on:click="editarEstado(props.row._id, 1)">Gerencia</a>
+									<a class="dropdown-item" v-on:click="editarEstado(props.row._id, 2)">Personal de caja</a>
+									<a class="dropdown-item" v-on:click="editarEstado(props.row._id, 3)">Prestadora</a>
+								</div>
+							</div>
+							<div class="dropleft" v-if="props.row.status == 3">
+								<button class="btn btn-warning font-weight-bold w-100 dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									Prestadora
+								</button>
+								<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+									<a class="dropdown-item" v-on:click="editarEstado(props.row._id, 1)">Gerencia</a>
+									<a class="dropdown-item" v-on:click="editarEstado(props.row._id, 2)">Personal de caja</a>
+									<a class="dropdown-item" v-on:click="editarEstado(props.row._id, 3)">Prestadora</a>>
+								</div>
+							</div>
+							<!-- <button class="btn btn-success font-weight-bold w-100" v-if="props.row.status == 1" v-on:click="editarEstado(props.row._id, props.row.admin)">Gerencia</button> -->
+							<!-- <button class="btn btn-warning font-weight-bold w-100" v-if="props.row.status == 2" v-on:click="editarEstado(props.row._id, props.row.admin)">Cajera</button> -->
+							<!-- <button class="btn btn-warning font-weight-bold w-100" v-if="props.row.status == 3" v-on:click="editarEstado(props.row._id, props.row.admin)">Prestadora</button> -->
 						</div>
 						<div slot="delete" slot-scope="props">
-							<button  class="btn w-100 btn-inactive" v-if="props.row.admin" v-on:click="eliminarUsuario(props.row._id, props.row.admin)"><font-awesome-icon icon="trash" /></button>
-							<button class="btn w-100 btn-inactive" v-else v-on:click="eliminarUsuario(props.row._id, props.row.admin)"><font-awesome-icon icon="trash" /></button>
+							<button  class="btn w-100 btn-inactive" v-on:click="eliminarUsuario(props.row._id, props.row.status)"><font-awesome-icon icon="trash" /></button>
+							
 						</div>
 					</v-client-table>	
 					<!-- <table  class="table" style="color:#fff !important" v-bind:style="{ 'background-color': '#1f5673'}" >
@@ -168,14 +199,12 @@
 			router.push({name: 'Login'})
 		})
       },
-      editarEstado(id, admin){
+      editarEstado(id, status){
 		const config = {headers: {'x-access-token': localStorage.userToken}}
         axios.put('users/'+id, {
-          admin: admin
+          status: status
         }, config)
         .then(res => {
-			console.log(res)
-			
           this.getUsers()
 		})
 		.catch(err => {
@@ -398,5 +427,8 @@ thead {
 		background-color: #1f5673;
 		color: #fff;
 		text-align: center
+	}
+	.dropdown-item{
+		cursor: pointer !important;
 	}
 </style>

@@ -6,8 +6,9 @@
 					<h2>{{first_name}} {{last_name}}</h2>
 				</div>
 				<div v-bind:style="{ 'background-color': '#ded22f'}" class="col-sm-12 m-1  p-3 text-center infoBasic">
-					<h2 v-if="admin">Administrador</h2>
-					<h2 v-else>Trabajador</h2>
+					<h2 v-if="status == 1">Gerencia</h2>
+					<h2 v-if="status == 2">Personal de caja</h2>
+					<h2 v-if="status == 3">Prestador</h2>
 				</div>
 				<div v-bind:style="{ 'background-color': '#f0eeeb'}" class="col-sm-12 m-1  p-3 text-center infoBasic">
 					<h2>Ultima conexión</h2>
@@ -115,7 +116,7 @@
 				first_name: '',
 				last_name: '',
 				email: '',
-				admin: '',
+				status: '',
 				access: '',
 				id: decoded._id,
 				changeFirst: true,
@@ -149,7 +150,7 @@
 					this.first_name = data.data.first_name
 					this.last_name = data.data.last_name
 					this.email = data.data.email
-					this.admin = data.data.admin
+					this.status = data.data.status
 					this.access = data.data.LastAccess
 					this.image = 'http://localhost:4200/static/users/'+data.data.userImage
 				}catch(err) {

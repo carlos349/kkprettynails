@@ -16,8 +16,8 @@ const UserSchema = new Schema({
 		type:String,
 		required:true
 	},
-	admin: {
-		type:Boolean,
+	status: {
+		type:Number,
 		required:true
 	},
 	userImage: {

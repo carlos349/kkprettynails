@@ -568,7 +568,7 @@ export default {
             return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
 		},
 		formatRut(value) {
-			let around = value.length - 3
+			let around = value.length - 2
 			let concat = ''
 			for (let index = 0; index < value.length; index++) {
 				concat = concat + value[index]

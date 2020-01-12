@@ -468,11 +468,6 @@ import router from '../router'
       this.getClients()
       this.getServicios()
       this.fechaMinima()
-<<<<<<< HEAD
-      
-      
-=======
->>>>>>> 0dc4ba6ff3de8fd008cb190d731c8e0cf331b0e5
     },
     methods: {
 
