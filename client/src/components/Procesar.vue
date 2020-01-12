@@ -110,7 +110,10 @@
 						<div class="col-sm-6">
 						<div class="input-group input-group-lg mb-2 ">
 							<div class="input-group-prepend w-50 text-center">
-								<span class="spanInputs w-100  text-white input-group-text" id="inputGroup-sizing-lg">Efectivo</span>
+								<span class="spanInputs w-100  text-white input-group-text" id="inputGroup-sizing-lg">Efectivo
+								<font-awesome-icon style="font-size:1.5em; color:#1f5673" class="ml-5" icon="money-bill-wave"/>	
+								</span>
+								
 							</div>
 							<input type="text" class="form-control manicuristaFocus inputs" v-model="pagoEfectivo" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="0">
 						</div>
@@ -126,7 +129,9 @@
 					<div class="col-sm-6">
 						<div class="input-group input-group-lg mb-2 ">
 							<div class="input-group-prepend w-50 text-center">
-								<span class="spanInputs w-100  text-white input-group-text" id="inputGroup-sizing-lg">Transferecia</span>
+								<span class="spanInputs w-100  text-white input-group-text" id="inputGroup-sizing-lg">Transferecia
+									<font-awesome-icon style="font-size:1.6em; color:#1f5673" class="ml-3" icon="money-check-alt"/>
+								</span>
 							</div>
 							<input type="text" class="form-control manicuristaFocus inputs" v-model="pagoTransf" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="0">
 						</div>
@@ -134,7 +139,9 @@
 					<div class="col-sm-6">
 						<div class="input-group input-group-lg mb-2 ">
 							<div class="input-group-prepend w-50">
-								<span class="input-group-text bg-light w-100  text-white spanInputs" id="inputGroup-sizing-lg">Otros</span>
+								<span class="input-group-text bg-light w-100  text-white spanInputs" id="inputGroup-sizing-lg">Otros
+									<font-awesome-icon style="font-size:1.6em; color:#1f5673" class="ml-5" icon="hand-holding-usd"/>
+								</span>
 								
 							</div>
 							<input type="text" v-model="pagoOtros"  class="form-control manicuristaFocu inputs" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="0">
@@ -912,10 +919,8 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 		top:16%;
 		font-size:2.3em;
 		cursor: pointer;
-		color: #102230;
-		-webkit-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
-		-moz-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
-		box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+		color: #28a745;
+		
 		-webkit-transition: all 0.5s ease-out;
 	}	
 	.buscar{

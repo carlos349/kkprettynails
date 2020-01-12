@@ -74,32 +74,37 @@
               </div>
             </div>
             <div class="col-md-12 p-3 processThree">
-              <div class="col-md-12 text-center p-2" style="font-size:1.2em;color:#9e9e9e">Seleccione un horario disponible</div>
+              <div class="col-md-12 text-center p-2" >
+                <div class="row">
+                  <div style="font-size:1.2em;color:#9e9e9e" class="col-sm-4">
+                  Seleccione un prestador y horario disponible
+                  </div>
+                  <select v-model="maniBloque" v-on:change="selectManic()" class="CMani m-1  p-2 w-75 text-white col-sm-6" name="manicuristas">
+                            <option selected="true
+                            " >{{this.maniBloque}}</option>
+                            
+                            <option  v-for="(mani,index) in maniAzar" v-if="mani.restDay != new Date(fecha).getDay()"  :class="mani.class" :value="mani.nombre">
+                                {{mani.nombre}}
+                              </option>
+                          </select>
+                          <img class="imgMani ml-3" src="../assets/silueta-mujer.jpg" alt="">
+                </div>
+                
+                
+                </div>
               
               <div style="height:50vh;overflow:hidden;overflow-x: hidden;
 		          overflow-y:scroll;background-color: rgba(31, 86, 115, 0.707);border-radius:5px" class="scroll row horas" >
-              
-                    
-                      
+  
                       <div class="col-sm-12">
-                        <div class="row mx-auto mb-2">
-                              
-                              <div class="col-sm-3 CMani m-1" v-for="(manicurista,index) of manicuristaCita">
-
-                                <div class="row p-2" v-for="(mani,index) of manicuristas" v-if="mani._id === manicurista && mani.restDay != new Date(fecha).getDay()" v-on:click="selectManic(mani.nombre,mani.class,mani.restTime,index)" >
-
-                                  <img class="imgMani w-25 col-sm-3" src="../assets/silueta-mujer.jpg" alt="">
-                                <h6 class="p-3 col-sm-9">{{mani.nombre}}</h6>
-                                </div>
-                                
-                                </div>
-                              
-                             
-                            </div> 
+                        <div class="row  mb-2">
+                          <div class="col-sm-6">
+                            
+                          </div>
+                          
+                        </div> 
                             <div class="col-sm-12 Hdispone p-1 m-1">
-
-                                <h4>Horas Disponibles</h4>
-                                           
+                                <h4>Horas Disponibles</h4>            
                               </div>
                         <div v-for="(bloque , index) of bloquesHora">
                           <div v-if="bloque.validator == true" v-on:click="selectBloq(bloque.Horario, index)" class="col-sm-12  horaDisp">
@@ -235,20 +240,14 @@
                         
                       </div>
                       <div  class="col-sm-6">
-                        <div class="row">
-                          <!-- <datetime placeholder="Click para seleccionar fecha y hora de entrada" v-on:click.once="disablear" input-class="dale"  class="theme-blue col-sm-11 p-3"  v-model="fecha" :phrases="{ok: 'Elegir', cancel: 'Salir'}" :min-datetime="minimo" :minute-step="15" :max-datetime="maximo" :format="{ year: 'numeric', month: 'long', day: 'numeric'}" auto>
-                            
-                          </datetime> -->
+                        <div class="row">                         
                           <date-pick
                               v-model="fecha"
                               :hasInputElement="false"
                               :months="months"
                               :weekdays="Days"
-                              :format="format"
-                              
-                          ></date-pick>
-                          
-                         
+                              :format="format"   
+                          ></date-pick> 
                         </div>
                       </div>
                     </div>  
@@ -262,13 +261,15 @@
             </div>
             <div class="col-md-12">
               <div class="row">
-                <div class="col-md-4 "> <button v-on:click="prevOne()" disabled class="botonW Ant">Anterior</button></div>
-                <div class="col-md-4 text-center"> 
+                <div class="col-md-2"> <button v-on:click="prevOne()" disabled class="botonW Ant">Anterior</button></div>
+                <div class="col-md-8 mx-auto text-center"> 
                   <button id="redo" class="botonW " v-on:click="redo()"><font-awesome-icon style="color:#fff" icon="redo"/>
                   </button>
-
+                
+                  
                   </div>
-                <div class="col-md-4 text-right"><button v-on:click="nextOne()" disabled class="botonW Sig">Siguiente</button></div>
+                  
+                <div class="col-md-2 text-right"><button v-on:click="nextOne()" disabled class="botonW Sig">Siguiente</button></div>
               </div>
             </div>
           </div>
@@ -422,7 +423,7 @@ import router from '../router'
         selectedEvent: {},
         servicioCita: [],
         manicuristaCita: [],
-        manicuristaFinal:'',
+        manicuristaFinal:'Prestador',
         maniAzar: [],
         aleatorio: '',
         clientsSelect: '',
@@ -448,7 +449,8 @@ import router from '../router'
         searchValue:'',
         resTime:[],
         resTimeFinal: '',
-        arregloClients: []
+        arregloClients: [],
+        maniBloque: 'Seleccione un prestador'
       }
     },
     beforeCreate() {
@@ -719,25 +721,7 @@ import router from '../router'
         
       },
 
-      selectAzar(){
-
-            this.aleatorio = Math.round(Math.random()*this.maniAzar.length);
-            if (this.aleatorio == -1) {
-              this.aleatorio = 0
-            }
-            this.manicuristaFinal = this.maniAzar[parseInt(this.aleatorio)]
-            this.classFinal = this.classM[parseInt(this.aleatorio)]
-            this.resTimeFinal = this.resTime[parseInt(this.aleatorio)] 
-            
-            this.insertDate()
-            $(".Sig").removeClass("marcar")
-            $(".Sig").prop("disabled", true)
-            $(".Sig").text("Crear")
-            $(".wTwo").removeClass("marc")
-            $(".wThree").addClass("marc")
-            $(".processPerso").hide()
-            $(".processThree").show()
-      },
+      
 
       nextOne(){
         
@@ -745,32 +729,19 @@ import router from '../router'
           
           this.selectMonth()
           if (this.selectMonth()) {
-            
+            this.maniAzar = []
             for (let i = 0; i < this.manicuristaCita.length; i++) {
               for (let c = 0; c < this.manicuristas.length; c++) {
                 
                 if (this.manicuristas[c]._id == this.manicuristaCita[i] ) {
                   
-                  this.maniAzar.push(this.manicuristas[c].nombre)
-                  this.resTime.push(this.manicuristas[c].restTime)
-                  this.classM.push(this.manicuristas[c].class)
+                  this.maniAzar.push(this.manicuristas[c])
+                  console.log(this.maniAzar)
                 }               
               }
             }
-            if (this.manicuristaCita.length == 1) {
-              this.manicuristaFinal = this.maniAzar[0]
-            this.classFinal = this.classM[0]
-            this.resTimeFinal = this.resTime[0]
-              this.insertDate()
-              $(".Sig").removeClass("marcar")
-            $(".Sig").prop("disabled", true)
-            $(".Sig").text("Crear")
-            $(".wTwo").removeClass("marc")
-            $(".wThree").addClass("marc")
-            $(".processTwo").hide()
-            $(".processThree").show()
-            }
-            else{
+            
+           
               $(".Sig").removeClass("marcar")
             $(".Sig").prop("disabled", true)
             $(".Sig").text("Crear")
@@ -780,7 +751,7 @@ import router from '../router'
             $(".processThree").show()
             }
             
-          }
+          
            
           
         }
@@ -883,6 +854,7 @@ import router from '../router'
           $(".Sig").prop("disabled", false)
           $(".Sig").addClass("marcar")
           $(".Sig").text("Siguiente")
+          $(".manis").css("display","none")
         }
         else if($(".processPerso").css("display") == "block"){
           this.manicuristaFinal = ''
@@ -1003,11 +975,20 @@ import router from '../router'
         $('#ope').toggleClass("ope")
         $('#clo').toggleClass("clo")
       },
-      selectManic(nombre,clase,rest, index){
-        this.manicuristaFinal = nombre
-        this.classFinal = clase
-        this.resTimeFinal = rest
-        this.insertDate()
+      selectManic(){
+        for (let index = 0; index < this.maniAzar.length; index++) {
+          if (this.maniAzar[index].nombre == this.maniBloque) {
+            this.manicuristaFinal = this.maniAzar[index].nombre
+            this.classFinal = this.maniAzar[index].class
+            this.resTimeFinal = this.maniAzar[index].restTime
+            $(".manis").css("display","block")
+            this.insertDate()
+            break
+          }
+          
+        }
+
+        
         // $(".Sig").prop("disabled", false)
         // $(".Sig").addClass("marcar")
         // $(".imgMani").removeClass("maniMarcado")
@@ -1321,8 +1302,8 @@ import router from '../router'
 	}
 
   .imgMani{
-    border:4px solid rgba(255, 255, 255, .3);
-    width:70%;
+    border:4px solid rgba(14, 11, 11, 0.219);
+    width:5%;
     padding: 5px;
     border-radius:5px;
   }
@@ -1957,10 +1938,11 @@ import router from '../router'
   border-radius: 5px; 
   background-color: #1f5673;
   cursor: pointer;
+  font-size: 1.5em;
 }
-.CMani:hover{ 
-  border-radius: 5px; 
-  background-color: #fff;
-  color: #000
+
+.manis{
+  display: none;
 }
+
 </style>
