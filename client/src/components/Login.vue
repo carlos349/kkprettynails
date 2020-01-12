@@ -34,13 +34,25 @@
 				password: ''
 			}
 		},
+		beforeCreate(){
+			localStorage.removeItem('userToken')
+			localStorage.setItem('logged-in', 'no-loggedin')
+			localStorage.removeItem('nombre')
+			localStorage.removeItem('apellido')
+			localStorage.removeItem('image')
+			localStorage.removeItem('email')
+			localStorage.removeItem('imageUser')
+			this.nombre = ''
+			this.apellido = ''
+			this.image = ''
+			this.email = ''
+			$(".menuVer").hide()
+		},
 		created(){
-			this.logout()
 			localStorage.setItem('logged-in', 'no-logged')
 		},
 		methods: {
-			logout() {
-				
+			logout() {	
 				localStorage.removeItem('userToken')
 				localStorage.setItem('logged-in', 'no-loggedin')
 				localStorage.removeItem('nombre')
@@ -85,27 +97,18 @@
 						localStorage.setItem('apellido', decoded.last_name)
 						localStorage.setItem('imageUser', decoded.userImage)
 						localStorage.setItem('_id', decoded._id)
-						
 						router.push({name: 'Citas'})
-						
-						if(res.data.admin){
-							this.emitMethodTwo()
-						}else{
-							this.emitMethod()
-						}
+						this.emitMethod(decoded.status)
 					}
 				}).catch(err => {
 					console.log(err)
 				})
 			},
-			emitMethod() {
-				EventBus.$emit('logged-in', 'loggedin')
-				localStorage.setItem('logged-in', 'no-admin')
+			emitMethod(status) {
+				EventBus.$emit('logged-in', status)
+				localStorage.setItem('logged-in', status)
 			},
-			emitMethodTwo() {
-				EventBus.$emit('logged-in', 'loggedin-admin')
-				localStorage.setItem('logged-in', 'admin')
-			}
+			
 		}
 	}
 </script>

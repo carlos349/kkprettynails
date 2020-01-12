@@ -3,29 +3,30 @@
 	<div  v-on:click="marcarNav()" v-bind:style="{ 'background-image': 'linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),url(' + require('../assets/sidebarTwo.jpg') + ')' , 'background-size': 'cover', 'height': '100vh', 'position': 'fixed', 'z-index' : '1000' }"  class=" pl-2 menuVer navS" v-on:mouseenter="mouseOver()" v-on:mouseleave="mouseLeave()">
 		<div style="border-bottom:1.5px solid  rgba(91, 91, 90, .5);" class="p-3  text-center col-md-12"><img src="../assets/logoNew.png" class="logoNonHover"  alt=""></div>
 
-		<div style="border-bottom:1.5px solid  rgba(91, 91, 90, .5);" class="text-white p-2 pb-1 pt-1 mx-auto col-md-12 paddingName">
-			<div v-on:click="moverFU()" data-toggle="collapse" href="#collapseUser" class="col-md-12 usuarioP ">
-				<div class="row">
-					<div class="col-sm-3">
-						<img class="imgHover" v-bind:src="image" style="width:50px;height:50px;border-radius:40px;">
-					</div>
-					<div class="menuText col-sm-9">
-						<span class="infoUser align-bottom">{{nombre}} {{apellido}}</span>
-						<span style="background-color:#ded22f;padding:3px;color:black;border-radius:5px;" v-if="auth=='loggedin-admin'" class="tipoUser align-bottom">Administrador</span>
-						<span style="background-color:#ded22f;padding:3px;color:black;border-radius:5px;" v-if="auth=='loggedin'" class="tipoUser align-bottom">Trabajador</span>
-						<font-awesome-icon icon="caret-down" class="fOneU nonHover" style="float:right;font-size:1em;margin:auto;margin-top:8%" /><font-awesome-icon class="fTwoU" style="float:right;display:none;font-size:1em;margin:auto;margin-top:8%" icon="caret-up"  />
+			<div style="border-bottom:1.5px solid  rgba(91, 91, 90, .5);" class="text-white p-2 pb-1 pt-1 mx-auto col-md-12 paddingName">
+				<div v-on:click="moverFU()" data-toggle="collapse" href="#collapseUser" class="col-md-12 usuarioP ">
+					<div class="row">
+						<div class="col-sm-3">
+							<img class="imgHover" v-bind:src="image" style="width:50px;height:50px;border-radius:40px;">
+						</div>
+						<div class="menuText col-sm-9">
+							<span class="infoUser align-bottom">{{nombre}} {{apellido}}</span>
+							<span style="background-color:#ded22f;padding:3px;color:black;border-radius:5px;" v-if="auth == 1" class="tipoUser align-bottom">Gerencia</span>
+							<span style="background-color:#ded22f;padding:3px;color:black;border-radius:5px;" v-if="auth == 2" class="tipoUser align-bottom">Personal de caja</span>
+							<span style="background-color:#ded22f;padding:3px;color:black;border-radius:5px;" v-if="auth == 3" class="tipoUser align-bottom">Prestadora</span>
+							<font-awesome-icon icon="caret-down" class="fOneU nonHover" style="float:right;font-size:1em;margin:auto;margin-top:8%" /><font-awesome-icon class="fTwoU" style="float:right;display:none;font-size:1em;margin:auto;margin-top:8%" icon="caret-up"  />
+						</div>
 					</div>
 				</div>
+				<div class="collapse" id="collapseUser">
+					<ul class="listaMenu">
+						<router-link class="text-white menuText" to="/profile"> <li>Editar perfil</li> </router-link>
+						<router-link class="text-white menuText" to="/"><li v-on:click="logout">Cerrar Sesión</li> </router-link>
+					</ul>
+				</div>
+				
 			</div>
-			<div class="collapse" id="collapseUser">
-				<ul class="listaMenu">
-					<router-link class="text-white menuText" to="/profile"> <li>Editar perfil</li> </router-link>
-					<router-link class="text-white menuText" to="/"><li v-on:click="logout">Cerrar Sesión</li> </router-link>
-				</ul>
-			</div>
-			
-		</div>
-		<div v-if="auth=='loggedin-admin'"  style="border-bottom:1.5px solid  rgba(91, 91, 90, .5);">
+			<div v-if="auth == 1"  style="border-bottom:1.5px solid  rgba(91, 91, 90, .5);">
 				<div v-on:click="moverF('user')" data-toggle="collapse" href="#collapseExample" style="text-decoration:none !important" class="user usuarioP text-white" role="button" >
 					
 					<div style="color: rgba(250, 248, 248, .8);" class=" user nav-item"><font-awesome-icon class="ml-3" style="margin-right:4%;font-size:1.5em;margin-left:5.5%;" icon="users" /><span class="menuText nonHover">Usuarios 
@@ -42,7 +43,7 @@
 					</ul>
 				</div>
 			</div>
-			<div v-if="auth=='loggedin-admin' || auth == 'loggedin'" class="col-sm-12">
+			<div v-if="auth == 1 || auth == 2 || auth == 3" class="col-sm-12">
 				
 				<span style="cursor:pointer;" v-on:click="processOpen" class="text-white" to="/caja">
 						<div class="listaMenu row p-3">
@@ -54,7 +55,7 @@
 						</div>
 				</span>
 			</div>
-			<div id="Ventas" v-on:click="marcarNav('Ventas')" v-if="auth=='loggedin-admin'" class="col-sm-12">
+			<div id="Ventas" v-on:click="marcarNav('Ventas')" v-if="auth== 1 || auth == 2" class="col-sm-12">
 				
 				<router-link  class=" text-white" to="/verventas">
 						<div class="listaMenu row p-3">
@@ -66,7 +67,7 @@
 						</div>
 				</router-link>
 			</div>
-			<div id="Servicios" v-on:click="marcarNav('Servicios')" v-if="auth=='loggedin-admin'" class="col-sm-12">
+			<div id="Servicios" v-on:click="marcarNav('Servicios')" v-if="auth == 1" class="col-sm-12">
 				
 				<router-link  class=" text-white" to="/servicios">
 						<div class="listaMenu row p-3">
@@ -78,7 +79,7 @@
 						</div>
 				</router-link>
 			</div>
-			<div id="Empleadas" v-on:click="marcarNav('Empleadas')" v-if="auth=='loggedin-admin'" class="col-sm-12">
+			<div id="Empleadas" v-on:click="marcarNav('Empleadas')" v-if="auth == 1" class="col-sm-12">
 				
 				<router-link  class=" text-white" to="/empleadas">
 						<div class="listaMenu row p-3">
@@ -90,7 +91,7 @@
 						</div>
 				</router-link>
 			</div>
-			<div id="Clientes" v-on:click="marcarNav('Clientes')" v-if="auth=='loggedin-admin'" class="col-sm-12">
+			<div id="Clientes" v-on:click="marcarNav('Clientes')" v-if="auth == 1" class="col-sm-12">
 				
 				<router-link  class=" text-white" to="/clientes">
 						<div class="listaMenu row p-3">
@@ -102,7 +103,7 @@
 						</div>
 				</router-link>
 			</div>
-			<div id="Inventario" v-on:click="marcarNav('Inventario')" v-if="auth=='loggedin-admin'" class="col-sm-12">
+			<div id="Inventario" v-on:click="marcarNav('Inventario')" v-if="auth == 1" class="col-sm-12">
 				
 				<router-link  class=" text-white" to="/inventario">
 						<div class="listaMenu row p-3">
@@ -114,7 +115,7 @@
 						</div>
 				</router-link>
 			</div>
-			<div id="Gastos" v-on:click="marcarNav('Gastos')" v-if="auth=='loggedin-admin'" class="col-sm-12">
+			<div id="Gastos" v-on:click="marcarNav('Gastos')" v-if="auth == 1" class="col-sm-12">
 				
 				<router-link  class=" text-white" to="/gastos">
 						<div class="listaMenu row p-3">
@@ -126,7 +127,7 @@
 						</div>
 				</router-link>
 			</div>
-			<div id="Citas" v-on:click="marcarNav('Citas')" v-if="auth=='loggedin-admin' || auth == 'loggedin'" class="col-sm-12">
+			<div id="Citas" v-on:click="marcarNav('Citas')" v-if="auth == 1 || auth == 2 || auth == 3 " class="col-sm-12">
 				
 				<router-link  class=" text-white" to="/citas">
 						<div class="listaMenu row p-3">
@@ -138,7 +139,7 @@
 						</div>
 				</router-link>
 			</div>
-			<div id="Metricas" v-on:click="marcarNav('Metricas')" v-if="auth=='loggedin-admin'" class="col-sm-12">
+			<div id="Metricas" v-on:click="marcarNav('Metricas')" v-if="auth == 1" class="col-sm-12">
 				
 				<router-link  class=" text-white" to="/metricas">
 						<div class="listaMenu row p-3">
@@ -150,7 +151,7 @@
 						</div>
 				</router-link>
 			</div>
-			<div id="Caja" v-on:click="marcarNav('Caja')" v-if="auth=='loggedin-admin' " class="col-sm-12">
+			<div id="Caja" v-on:click="marcarNav('Caja')" v-if="auth== 1" class="col-sm-12">
 				
 				<router-link  class=" text-white" to="/caja">
 						<div class="listaMenu row p-3">
@@ -290,14 +291,8 @@ export default {
 			this.image = 'http://localhost:4200/static/users/'+status
 		})
 		const User = localStorage.getItem('logged-in')
-		if (User === 'no-admin') {
-			this.auth = 'loggedin'
-		}else if(User === 'admin'){
-			this.auth = 'loggedin-admin'
-		}else{
-			this.auth = 'no-loggedin'
-		}
-	},
+		this.auth = User
+	}
 
 	
 }

@@ -1,6 +1,8 @@
 const express = require('express')
 const ventas = express.Router()
 const cors = require('cors')
+const jwt = require('jsonwebtoken')
+const User = require('../models/User')
 
 const Venta = require('../models/Venta')
 const VentaDia = require('../models/VentaDia')
@@ -820,6 +822,21 @@ ventas.post('/ingresocliente', (req, res) => {
 })
 
 ventas.get('/', async (req, res) => {
+  const token = req.headers['x-access-token'];
+	if (!token) {
+		return res.status(401).json({auth: false, message: 'no token provided'})
+	}
+
+	try {
+		const decoded = jwt.verify(token, process.env.SECRET_KEY)
+		const verify = await User.findById(decoded._id)
+		if (!verify) {
+			return res.status(401).json({auth: false, message: 'invalid access'})
+		}
+	} catch(err) {
+		return res.status(401).json({auth: false, message: 'token expired'})
+  }
+  
   const ventas = await Venta.find()
   res.json(ventas)
 })

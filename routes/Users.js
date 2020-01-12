@@ -110,24 +110,13 @@ users.put('/:id', async (req, res, next) => {
 		return res.status(401).json({auth: false, message: 'token expired'})
 	}
 
-	const admin = req.body.admin
-	if (admin) {
-		User.findByIdAndUpdate(req.params.id, { $set: {admin: false}})
-		.then(user => {
-			res.json({status:false})
-		})
-		.catch(err => {
-			res.send(err)
-		})
-	}else{
-		User.findByIdAndUpdate(req.params.id, { $set: {admin: true}})
-		.then(user => {
-			res.json({status:true})
-		})
-		.catch(err => {
-			res.send(err)
-		})
+	const status = req.body.status
+
+	const update = await User.findByIdAndUpdate(req.params.id, { $set: {status: status}})
+	if (update) {
+		res.json(update)
 	}
+	
 })
 
 
@@ -153,7 +142,7 @@ users.post('/register', async (req, res, next) => {
 		last_name: req.body.last_name,
 		email: req.body.email,
 		password: req.body.password,
-		admin: true,
+		status: 3,
 		userImage: '',
 		LastAccess: today,
 		date: today
@@ -202,14 +191,14 @@ users.post('/login', (req, res) => {
 						first_name: user.first_name,
 						last_name: user.last_name,
 						email: user.email,
-						admin: user.admin,
+						status: user.status,
 						userImage: user.userImage,
 						LastAccess: user.LastAccess
 					}
 					let token = jwt.sign(payload, process.env.SECRET_KEY, {
 						expiresIn: 60 * 60 * 24
 					})
-					res.json({token: token, admin: user.admin})
+					res.json({token: token, status: user.status})
 				})
 			}else{
 				res.json({error: 'pass incorrecto'})

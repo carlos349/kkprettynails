@@ -377,7 +377,9 @@ export default {
   },
   methods: {
     getVentas(){
-      axios.get('ventas')
+     
+      const config = {headers: {'x-access-token': localStorage.userToken}}
+      axios.get('ventas', config)
       .then(res => {
         this.ventas = res.data
         let fechaBien = ''
@@ -388,10 +390,17 @@ export default {
           let servicio = ''
           for (let indexTwo = 0; indexTwo < this.ventas[index].servicios.length; indexTwo++) {
             servicio = servicio +'\n'+ this.ventas[index].servicios[indexTwo].servicio
-            
           }
           this.ventas[index].servicios = servicio
         }
+      }).catch(err => {
+        this.$swal({
+          type: 'error',
+          title: 'Acceso invalido, ingrese de nuevo, si el problema persiste comuniquese con el proveedor del servicio',
+          showConfirmButton: false,
+          timer: 2500
+        })
+        router.push({name: 'Login'})
       })
     },
     async findSalesByDate(){
