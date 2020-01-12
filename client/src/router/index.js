@@ -17,6 +17,7 @@ import reportePrestador from '@/components/reportePrestador'
 import Caja from '@/components/Caja'
 import Clientes from '@/components/Clientes'
 import reporteVenta from '@/components/reporteVenta'
+import emailBuild from '@/components/emailBuild'
 
 Vue.use(Router)
 
@@ -31,6 +32,11 @@ export default new Router({
       path: '/metricas',
       name: 'Metricas',
       component: Metricas
+    },
+    {
+      path: '/envioCorreo',
+      name: 'emailBuild',
+      component: emailBuild
     },
     {
       path: '/citas',

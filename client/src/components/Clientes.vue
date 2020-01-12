@@ -2,7 +2,7 @@
     <div class="container-fluid">
 		
 
-        <div class="row">
+        <div class="row pb-2">
             <div class="col-md-12 row sectionMetricsPrestador">
 				<div class="col-md-5 metrics first">
 					<p>Total clientes</p>
@@ -78,37 +78,46 @@
 				</div>
 			</div>
 			<div class="col-md-4" style="margin-top:20px;">
-				 <div class="box">
-					<button class="btn-white" v-on:click="openModalCreateClient">
-						Registrar cliente
-					</button>
-				</div>
-				<div class="shadow">
-					<table  class="table table-dark" style="color:#fff !important; background-color: #1F5673" >
-						<thead>
-							<tr>
-								<th>
-									Cliente
-								</th>
-								<th class="text-right">
-									Atenciones
-								</th>				
-							</tr>
-						</thead>
-					</table>
-					<div class="ListaPrestadorTwo">
-						<table class="table table-light table-borderless table-striped">
-							<tbody>
-								<tr v-for="clientTwo in clientTwos" v-bind:key="clientTwo._id">
-									<td class="font-weight-bold">
-										{{clientTwo.nombre}}
-									</td>
-									<td class="font-weight-bold text-right">
-										{{clientTwo.participacion}}
-									</td>
+				<div class="row">
+					<div class="box col-6">
+						<button class="btn-white" v-on:click="openModalCreateClient">
+							Registrar cliente
+						</button>
+					</div>
+					<div class="box col-6">
+						<router-link to="/envioCorreo"> 
+							<button class="btn-white Second" >
+								Correos a clientes 
+							</button>
+						</router-link>
+					</div>
+					<div class="shadow col-12">
+						<table  class="table table-dark" style="color:#fff !important; background-color: #1F5673" >
+							<thead>
+								<tr>
+									<th>
+										Cliente
+									</th>
+									<th class="text-right">
+										Atenciones
+									</th>				
 								</tr>
-							</tbody>
+							</thead>
 						</table>
+						<div class="ListaPrestadorTwo">
+							<table class="table table-light table-borderless table-striped">
+								<tbody>
+									<tr v-for="clientTwo in clientTwos" v-bind:key="clientTwo._id">
+										<td class="font-weight-bold">
+											{{clientTwo.nombre}}
+										</td>
+										<td class="font-weight-bold text-right">
+											{{clientTwo.participacion}}
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -269,27 +278,15 @@ export default {
         }
     },
     beforeCreate() {
-        const token = localStorage.getItem('userToken')
-        const decoded = jwtDecode(token)
-		if (localStorage.getItem('userToken')) {
-            if (!decoded.admin) {
-                this.$swal({
-                    type: 'error',
-                    title: 'URL restringida',
-                    showConfirmButton: false,
-                    timer: 1500
-                })
-                router.push({name: 'Citas'})
-            }
-		}else{
-            this.$swal({
-                type: 'error',
-                title: 'URL restringida',
-                showConfirmButton: false,
-                timer: 1500
-            })
-            router.push({name: 'Login'})
-        }
+        if (!localStorage.getItem('userToken')) {
+				this.$swal({
+					type: 'error',
+					title: 'URL restringida',
+					showConfirmButton: false,
+					timer: 1500
+				})
+			router.push({name: 'Login'})
+		}
     },
     created(){
 		this.getClients();
@@ -569,7 +566,7 @@ export default {
 	.ListaPrestadorTwo{
 		overflow-x: hidden;
 		overflow-y:scroll;
-		max-height: 280px;
+		max-height: 240px;
 		height:auto;
 		border-radius:5px;
 	}
@@ -639,6 +636,9 @@ export default {
 	}
 	.btn-white:hover{
 		background-color: #218838;
+	}
+	.Second{
+		background-color: #2f880c;
 	}
 	.btn-white:focus{
 		outline: none !important;
