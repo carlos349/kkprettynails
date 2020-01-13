@@ -275,6 +275,7 @@ box-shadow: 0px 0px 22px 5px rgba(31,86,115,1);">
 import axios from 'axios'
 import router from '../router'
 import Autocomplete from '@trevoreyre/autocomplete-vue'
+import EventBus from './eventBus'
 	class Manicurista{
 		constructor(nombre, comision) {
 			this.nombre = nombre;
@@ -746,7 +747,12 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 					}
 				}
 			},
-	 	}
+		 },
+		 mounted() {
+			EventBus.$on('reload-services', status => {
+				this.getManicuristas()
+			})
+		}
  }
 </script>
 <style media="screen">

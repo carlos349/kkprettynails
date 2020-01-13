@@ -314,25 +314,35 @@
 		        
 		      </div>
 		      <div class="modal-body">
-				  <form v-on:submit.prevent="ingresoCliente">
-					<div class="form-group">
-						<label for="name">Nombre del cliente</label>
-						<input v-model="nombreClienteRegister" type="text" class="form-control inputs" placeholder="Nombre del prestador">
-					</div>
-					<div class="form-group">
-						<label for="identidad">Instagram o Correo del cliente</label>
-						<input v-model="instagramCliente" type="text" class="form-control inputs" placeholder="registre instagram o correo">
-					</div>
-          <div class="form-group">
-              <label for="recomendacion">Registre recomendador</label>
-              <vue-bootstrap-typeahead 
-                v-model="nombreCliente"
-                :data="arregloClient"
-                placeholder="Buscar clientes"
-              />
-          </div>
-					<button class="btn w-100 add">Agregar cliente</button>
-				</form>
+            <form v-on:submit.prevent="ingresoCliente">
+              <div class="form-group">
+                <label for="name">Nombre del cliente <span style="color:red;">*</span></label>
+                <input v-model="nombreClienteRegister" type="text" class="form-control inputs" placeholder="Nombre del prestador" requerid>
+              </div>
+              <div class="form-group">
+                <label for="identidad">Teléfono del cliente <span style="color:red;">*</span></label>
+                <input v-model="identidadCliente" type="text" class="form-control inputs" placeholder="Registre numero telefónico" requerid>
+              </div>
+              <div class="form-group">
+                <label for="identidad">Correo del cliente <span style="color:blue;">+</span></label>
+                <input v-model="correoCliente" type="text" class="form-control inputs" placeholder="Registre correo" >
+              </div>
+              <div class="form-group">
+                <label for="identidad">Instagram del cliente <span style="color:blue;">+</span></label>
+                <input v-model="instagramCliente" type="text" class="form-control inputs" placeholder="Registre instagram" >
+              </div>
+              <div class="form-group">
+                  <label for="recomendacion">Registre recomendador</label>
+                  <autocomplete	    
+                    :search="searchClient"
+                    placeholder="Buscar cliente"
+                    aria-label="Buscar cliente"
+                    @submit="handleSubmitClient"
+                    class="clientB botonClient col-9">
+                  </autocomplete>
+              </div>
+              <button class="btn w-100 add">Agregar cliente</button>
+            </form>
 		      </div>
 		    </div>
 		  </div>
@@ -444,8 +454,10 @@ import router from '../router'
         ],
         sort: '',
         nombreClienteRegister: '',
-        instagramCliente: '',
+        identidadCliente: '',
         nombreCliente: '',
+        correoCliente:'',
+			  instagramCliente:'',
         searchValue:'',
         resTime:[],
         resTimeFinal: '',
@@ -472,9 +484,6 @@ import router from '../router'
       this.fechaMinima()
     },
     methods: {
-
-      
-     
       arrayClient(){
 				for (let index = 0; index < this.clients.length; index++) {
 						this.arregloClients.push(this.clients[index].nombre+'-'+this.clients[index].identidad)
@@ -528,11 +537,26 @@ import router from '../router'
           this.arrayClient();
         })
       },
+      MaysPrimera(string){
+        return string.charAt(0).toUpperCase() + string.slice(1);
+      },
       ingresoCliente() {
+        const name = this.nombreClienteRegister.split(' ')
+        var firstName, lastName, fullName
+        if (name[1]) {
+          firstName = this.MaysPrimera(name[0])
+          lastName = this.MaysPrimera(name[1])
+          fullName = firstName+' '+lastName
+        }else{
+          fullName = this.MaysPrimera(name[0])
+        }
+        
 				axios.post('clients', {
-					nombre:this.nombreClienteRegister,
-					identidad:this.instagramCliente,
-					recomendador:this.nombreCliente
+					nombre:fullName,
+					identidad:this.identidadCliente,
+					recomendador:this.clientsSelect,
+					correoCliente:this.correoCliente,
+					instagramCliente:this.instagramCliente
 				})
 				.then(res => {
 					if (res.data.status == 'Registrado') {

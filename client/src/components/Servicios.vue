@@ -20,6 +20,7 @@
 					<v-client-table class="text-center"  :data="servicios" :columns="columns" :options="optionsT">
 						<p slot="prestadoress"  slot-scope="props">{{props.row.prestadores.length}}</p>
 						<p slot="precio"  slot-scope="props">{{formatPrice(props.row.precio)}}</p>
+						<p slot="tiempoo"  slot-scope="props">{{props.row.tiempo}} min</p>
 						<div slot="activee"  slot-scope="props">
 							<button v-on:click="desactivarServicio(props.row._id)" v-if="props.row.active" class=" btn btn-success w-100">Activo</button>
 							<button v-on:click="desactivarServicio(props.row._id)" v-if="!props.row.active" class=" btn btn-inactive w-100">Inactivo</button>
@@ -251,7 +252,7 @@
 	import axios from 'axios'
 	import LineChart from '../plugins/LineChart.js'
 	import router from '../router'
-
+	import EventBus from './eventBus'
 	class Manicurista{
 		constructor(nombre, documento, porcentaje, comision) {
 			this.nombre = nombre;
@@ -294,7 +295,7 @@
 		},
 		data() {
 			return {
-				columns:['nombre' , 'precio' , 'tiempo' , 'prestadoress' , 'activee' , 'edit'],
+				columns:['nombre' , 'precio' , 'tiempoo' , 'prestadoress' , 'activee' , 'edit'],
 				optionsT: {
 					filterByColumn: true,
 					texts: {
@@ -305,7 +306,7 @@
 					headings: {
 						nombre: 'Nombre ',
 						precio: 'Costo ',
-						tiempo: 'Tiempo ',
+						tiempoo: 'Tiempo ',
 						prestadoress: 'Prestadores ',
 						activee: 'Activación ',
 						edit: 'Editar '
@@ -315,7 +316,7 @@
 					pagination: { nav: 'fixed' },
 					pagination: { edge: true },
 					sortIcon: {base:'fa' , up:'fa-sort-up', down:'fa-sort-down', is:'fa-sort'},
-					sortable: ['nombre', 'precio' , 'tiempo'],
+					sortable: ['nombre', 'precio' , 'tiempoo'],
 					filterable: ['nombre', 'precio']
 				},
 				manicurista: new Manicurista(),
@@ -383,6 +384,7 @@
 				axios.put('servicios/changeActive/' + id)
 				.then(res => {
 					this.getServicios();
+					this.emitMethod()
 				})
 				.catch(err => {
 					this.$swal({
@@ -434,6 +436,7 @@
 								this.tiempoServi = 'Seleccione el tiempo'
 								this.prestadoresSeleccionados = []
 								$('.checkFirst').prop('checked', false)
+								this.emitMethod()
 							}else{
 								this.$swal({
 								type: 'error',
@@ -445,6 +448,9 @@
 						})
 					}
 				}
+			},
+			emitMethod() {
+				EventBus.$emit('reload-services', 'updated')
 			},
 			presSelect(prestador, id){
 				console.log(prestador)
@@ -528,6 +534,7 @@
 							})
 							this.getServicios()
 							$('#myModal2').modal('hide')
+							this.emitMethod()
 						}else{
 							this.$swal({
 							type: 'error',
@@ -542,7 +549,7 @@
 				}
 			},
 			pasarDatosEdit(nombre,tiempo, precio, prestadores, id){
-				console.log(prestadores)
+				
 				this.prestadoresSeleccionadosTwos = []
 				$(".desMarc").prop("checked", false)
 				this.nombreServicio = nombre
