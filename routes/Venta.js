@@ -863,11 +863,20 @@ ventas.post('/verificacioncliente', (req, res) => {
     res.send('error: ' + err)
   })
 })
+ventas.put('/:id', async (req, res, next) => {
+    
 
+    const id = req.params.id
+    const cancelSale = await Venta.findByIdAndUpdate(id, {
+      $set: { status: false}
+    })
+    if (cancelSale) {
+      res.status(200).json({status: 'ok'})
+    }
+})
 ventas.post('/procesar', (req, res) => {
   let clientEdit = req.body.cliente
   const finalClient = clientEdit.split("-")
-  console.log(finalClient[0])
   let today = ''
   if (req.body.fecha == 'fecha') {
     today = new Date()
@@ -880,7 +889,7 @@ ventas.post('/procesar', (req, res) => {
   const comisionFinal = parseFloat(total) * parseFloat(comision)
   const comisionDosdecimales = comisionFinal.toFixed(2)
   const gananciaLocal = parseFloat(total) * parseFloat(comisionLocal)
-  console.log(gananciaLocal) 
+  
   const venta = {
     cliente: req.body.cliente,
     manicurista: req.body.manicurista,
@@ -892,6 +901,7 @@ ventas.post('/procesar', (req, res) => {
     pagoTransf:req.body.pagoTransf,
     descuento:req.body.descuento,
     ganancialocal: gananciaLocal,
+    status: true,
     total: total,
     fecha: today
   }

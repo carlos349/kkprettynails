@@ -251,7 +251,7 @@
               </div>
               <ul class="list-group mb-2 " style="width:100%;">
                 <li class="list-group-item"  style="background-color: transparent !important">Servicios:
-                  <span v-for="(service, index) of arreglo.servicios" style="margin-bottom:-5px"> 
+                  <span v-for="(service, index) of arreglo.servicios" :key="service._id" style="margin-bottom:-5px"> 
                     <span v-if="index == 0"> {{service.servicio}}</span>
                     <span v-else> / {{service.servicio}}</span>
                   </span> 
@@ -261,14 +261,8 @@
                 <li class="list-group-item" style="background-color: transparent !important"><h5>Descuento: <span style="float:right;"> {{arreglo.descuento }}% </span></h5></li>
                 <li class="list-group-item" style="background-color: transparent !important"><h5>Total:<span style="float:right;"> {{ formatPrice(arreglo.total) }}</span></h5></li>
               </ul>
-              <button class="btn w-100 add">Editar</button>
-              <!-- <form v-on:submit.prevent="modalDetalleSale">
-                <div class="form-group row">
-                  <label for="name">Nombre del servicio</label>
-                  <input v-model="nombreDetalleCliente" type="text" class="form-control inputs" placeholder="Nombre servicio">
-                </div>
-                <button class="btn w-100 add">Agregar</button>
-              </form> -->
+              
+              <button class="btn w-100 add" v-on:click="cancelSale(arreglo._id)">Anular venta</button>
             </div>
           </div>
         </div>
@@ -487,6 +481,28 @@ export default {
         console.error(err)
       })
     },
+    async cancelSale(id){
+      
+      
+      try {
+        const config = {headers: {'x-access-token': localStorage.userToken}}
+        const cancelSale = await axios.put('/ventas/'+id, config)
+        this.$swal({
+          type: 'success',
+          title: 'Venta anulada',
+          showConfirmButton: false,
+          timer: 1500
+        })
+      }catch(err){
+        this.$swal({
+          type: 'error',
+          title: 'Acceso invalido, ingrese de nuevo, si el problema persiste comuniquese con el proveedor del servicio',
+          showConfirmButton: false,
+          timer: 2500
+        })
+        
+      }
+    },
     getMonthPerMonthSelected(month){
       this.loaded = false
       const date = new Date()
@@ -528,7 +544,6 @@ export default {
         try {
             const sale = await axios.get('ventas/getSale/'+id)
             this.arreglo = sale.data
-            console.log(this.arreglo)
             $('#modalDetalleSale').modal('show')
         } catch(err) {
               this.$swal({

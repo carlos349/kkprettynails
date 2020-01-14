@@ -32,6 +32,9 @@ const VentaSchema = new Schema({
 	pagoTransf: {
 		type: Number
 	},
+	status: {
+		type: Boolean
+	},
 	total: {
 		type: Number
 	},
