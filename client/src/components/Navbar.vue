@@ -289,6 +289,8 @@ export default {
 		})
 		EventBus.$on('ChangeImage', status => {
 			this.image = 'http://localhost:4200/static/users/'+status
+			console.log(status)
+			console.log(this.image)
 		})
 		const User = localStorage.getItem('logged-in')
 		this.auth = User

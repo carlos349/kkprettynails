@@ -192,6 +192,7 @@
 				EventBus.$emit('ChangeImage', image)
 				localStorage.removeItem('imageUser')
 				localStorage.setItem('imageUser', image)
+				console.log(localStorage)
 			},
 			handleFileUpload(){
 				this.file = this.$refs.file.files[0];
