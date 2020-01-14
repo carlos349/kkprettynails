@@ -85,11 +85,9 @@
 						</button>
 					</div>
 					<div class="box col-6">
-						<router-link to="/envioCorreo"> 
-							<button class="btn-white Second" >
-								Correos a clientes 
-							</button>
-						</router-link>
+						<button class="btn-white Second" v-on:click="showTemplates">
+							Correos a clientes 
+						</button>
 					</div>
 					<div class="shadow col-12">
 						<table  class="table table-dark" style="color:#fff !important; background-color: #1F5673" >
@@ -170,7 +168,7 @@
 		    </div>
 		  </div>
 		</div>
-		 <div class="modal fade" id="ModalEditClient" tabindex="-1"  role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		<div class="modal fade" id="ModalEditClient" tabindex="-1"  role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered"  >
 		    <div class="modal-content p-3" v-bind:style="{ 'background-color': '#ffffff'}">
 		      <div class="modal-header" v-bind:style="{ 'background-color': '#1F5673'}">
@@ -213,6 +211,52 @@
 		    </div>
 		  </div>
 		</div>
+		<div class="modal fade" id="modalShowTemplates" tabindex="-1"  role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		  <div class="modal-dialog modal-xl modal-dialog-centered"  >
+		    <div class="modal-content p-3" v-bind:style="{ 'background-color': '#ffffff'}">
+		      <div class="modal-header" v-bind:style="{ 'background-color': '#1F5673'}">
+		        <h5 class="modal-title text-white font-weight-bold" id="exampleModalCenterTitle">Elige una plantilla para tu correo</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true" class="text-white" v-bind:style="{ 'font-size': '1.5em'}">&times;</span>
+		        </button>
+		      </div>
+		      <div  class="modal-body">
+		        <div class="row">
+					<div class="col-2 p-1">
+						<div class="template" v-on:click="selectTemplate(1)">
+							<img src="../assets/template-1.png" style="width:100%;" alt="">
+						</div>
+					</div>
+					<div class="col-2 p-1">
+						<div class="template" v-on:click="selectTemplate(2)">
+							<img src="../assets/template-2.png" style="width:100%;" alt="">
+						</div>
+					</div>
+					<div class="col-2 p-1">
+						<div class="template" v-on:click="selectTemplate(3)">
+							<img src="../assets/template-3.png" style="width:100%;" alt="">
+						</div>
+					</div>
+					<div class="col-2 p-1">
+						<div class="template" v-on:click="selectTemplate(4)">
+							<img src="../assets/template-4.png" style="width:100%;" alt="">
+						</div>
+					</div>
+					<div class="col-2 p-1">
+						<div class="template" v-on:click="selectTemplate(5)">
+							<img src="../assets/template-5.png" style="width:100%;" alt="">
+						</div>
+					</div>
+					<div class="col-2 p-1">
+						<div class="template" v-on:click="selectTemplate(6)">
+							<img src="../assets/template-6.png" style="width:100%;" alt="">
+						</div>
+					</div>
+				</div>
+		      </div>
+		    </div>
+		  </div>
+		</div>
     </div>
 </template>
 <script>
@@ -221,6 +265,7 @@ import jwtDecode from 'jwt-decode'
 import router from '../router'
 import Autocomplete from '@trevoreyre/autocomplete-vue'
 import LineChart from '../plugins/LineChart.js'
+import EventBus from './eventBus'
 
 export default {
 	components: {
@@ -312,6 +357,9 @@ export default {
 					
 				}
             })
+		},
+		showTemplates(){
+			$('#modalShowTemplates').modal('show')
 		},
 		getClientsTwo(){
             axios.get('clients/bestClient')
@@ -486,7 +534,16 @@ export default {
         formatDate(date) {
             let dateFormat = new Date(date)
             return dateFormat.getDate()+"-"+(dateFormat.getMonth() + 1)+"-"+dateFormat.getFullYear()+" "+" ("+ dateFormat.getHours()+":"+ dateFormat.getMinutes()+")"
-        }
+		},
+		selectTemplate(select){
+			$('#modalShowTemplates').modal('hide')
+			router.push({name: 'emailBuild'})
+			this.emitMethod(select)
+		},
+		emitMethod(select) {
+			EventBus.$emit('select-template', select)
+			localStorage.setItem('selectTemplate', select)
+		}
 	},
 	computed: {
 		myStyles () {
@@ -556,7 +613,15 @@ export default {
 	.VueTables--client .row .col-md-12{
 		padding: -10px;
 	}
-	
+	.template{
+		padding: 5px;
+		background-color: #e4e8ec;
+		cursor: pointer;
+		-webkit-transition: all 0.5s ease-out;
+	}
+	.template:hover{
+		background-color: rgb(29, 29, 29);
+	}
 	
 	.ListaPrestador::-webkit-scrollbar {
 		width: 8px;     /* Tamaño del scroll en vertical */
@@ -675,6 +740,8 @@ export default {
   margin: auto;
   text-align: center;
 }
+
+
 
 .VueTables__child-row-toggler--closed::before {
   content: "+";
