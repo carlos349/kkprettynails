@@ -108,7 +108,7 @@
                             </tbody>
                         </table>
                     </div>
-					<button class="btn w-100 add mt-3">Editar prestador</button>
+					<button class="btn w-100 add mt-3">Registrar adelanto</button>
 				</form>
 		      </div>
 		    </div>

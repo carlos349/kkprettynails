@@ -306,7 +306,58 @@
 		    </div>
 		  </div>
 		</div>
-    <div class="modal fade" id="myModalRegisterClient" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal fade" id="myModalRegisterClient" tabindex="-1"  role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		  <div class="modal-dialog modal-dialog-centered"  >
+		    <div class="modal-content p-3" v-bind:style="{ 'background-color': '#ffffff'}">
+		      <div class="modal-header" v-bind:style="{ 'background-color': '#1F5673'}">
+		        <h5 class="modal-title text-white font-weight-bold" id="exampleModalCenterTitle">Registrar cliente</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true" class="text-white" v-bind:style="{ 'font-size': '1.5em'}">&times;</span>
+		        </button>
+		      </div>
+		      <div  class="modal-body">
+		        <form v-on:submit.prevent="ingresoCliente">
+					<div class="form-group">
+						<label for="name">Nombre del cliente <span style="color:red;">*</span></label>
+						<input v-model="nombreClienteRegister" type="text" class="form-control inputs" placeholder="Nombre del prestador" requerid>
+					</div>
+					<div class="form-group">
+						<label for="identidad">Teléfono del cliente <span style="color:red;">*</span></label>
+						<input v-model="identidadCliente" type="text" class="form-control inputs" placeholder="Registre numero telefónico" requerid>
+					</div>
+					<div class="form-group">
+						<label for="identidad">Correo del cliente <span style="color:blue;">+</span></label>
+						<input v-model="correoCliente" type="text" class="form-control inputs" placeholder="Registre correo" >
+					</div>
+					<div class="form-group">
+						<label for="identidad">Instagram del cliente <span style="color:blue;">+</span></label>
+						<input v-model="instagramCliente" type="text" class="form-control inputs" placeholder="Registre instagram" >
+					</div>
+          <div class="form-group">
+              <label for="recomendacion">Registre recomendador</label>
+              <vue-bootstrap-typeahead 
+                v-model="nombreCliente"
+                :data="arregloClient"
+                placeholder="Buscar clientes"
+              />
+          </div>
+                    <!-- <div class="form-group">
+                        <label for="recomendacion">Registre recomendador</label>
+                        <autocomplete	
+                            :search="searchClientOnClient"
+                            placeholder="Buscar cliente"
+                            aria-label="Buscar cliente"
+                            @submit="handleSubmitClientOnClient"
+                            class="auto autoClient w-100">
+                        </autocomplete>
+                    </div> -->
+					<button class="btn w-100 add">Agregar cliente</button>
+				</form>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+    <!-- <div class="modal fade" id="myModalRegisterClient" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered" role="document">
 		    <div class="modal-content">
 		      <div class="modal-header " v-bind:style="{ 'background-color': '#1F5673'}">
@@ -336,7 +387,7 @@
 		      </div>
 		    </div>
 		  </div>
-		</div>
+		</div> -->
     <div class="boxDates">
       <button class="CierreDia btn-whiteDates btn-animation-1" v-on:click="daySaleClose">
         <font-awesome-icon icon="cloud-upload-alt" />
@@ -450,7 +501,10 @@ import router from '../router'
         resTime:[],
         resTimeFinal: '',
         arregloClients: [],
-        maniBloque: 'Seleccione un prestador'
+        maniBloque: 'Seleccione un prestador',
+        correoCliente : '',
+        instagramCliente: '',
+        identidadCliente:''
       }
     },
     beforeCreate() {
@@ -532,7 +586,9 @@ import router from '../router'
 				axios.post('clients', {
 					nombre:this.nombreClienteRegister,
 					identidad:this.instagramCliente,
-					recomendador:this.nombreCliente
+          recomendador:this.nombreCliente,
+          correoCliente:this.correoCliente,
+					instagramCliente:this.instagramCliente
 				})
 				.then(res => {
 					if (res.data.status == 'Registrado') {
@@ -1137,10 +1193,11 @@ import router from '../router'
 </script>
 <style media="screen">
   .vuecal__flex .vuecal__menu{
-    color: #fff !important
+    color: #0a0a0a !important
   }
   
-  .vuecal__menu {background-color: rgb(45, 141, 192); }
+  .vuecal__menu {background-color: transparent;border: none; }
+  .vuecal__menu button{background-color:rgba(7, 7, 7, 0.116);outline: none}
   .vuecal__menu li {border-bottom-color: #fff;color: #fff;}
   .vuecal__menu li.active {background-color: rgba(255, 255, 255, 0.15);}
   .vuecal__title-bar {background-color: #1F5673;color: #fff !important}

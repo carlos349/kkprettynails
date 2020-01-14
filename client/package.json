@@ -13,6 +13,8 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "^16.0.0",
+    "@ckeditor/ckeditor5-vue": "^1.0.1",
     "@fortawesome/fontawesome-svg-core": "^1.2.19",
     "@fortawesome/free-solid-svg-icons": "^5.9.0",
     "@fortawesome/vue-fontawesome": "^0.1.6",
@@ -22,8 +24,10 @@
     "bootstrap": "^4.4.1",
     "bootstrap-vue": "^2.1.0",
     "chart.js": "^2.8.0",
+    "ckeditor4": "^4.13.1",
     "debounce": "^1.2.0",
     "eventbus": "0.0.3",
+    "froala-editor": "^3.0.6",
     "jwt-decode": "^2.2.0",
     "luxon": "^1.21.3",
     "resize-observer-polyfill": "^1.5.1",

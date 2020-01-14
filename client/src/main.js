@@ -10,7 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import Autocomplete from '@trevoreyre/autocomplete-vue'
 import '@trevoreyre/autocomplete-vue/dist/style.css'
 import {ServerTable, ClientTable, Event} from 'vue-tables-2'
-
+import CKEditor from '@ckeditor/ckeditor5-vue';
 
 
 require("../node_modules/bootstrap/dist/css/bootstrap.css")
@@ -22,11 +22,12 @@ Vue.config.productionTip = false
 Vue.use(VueSweetalert2);
 Vue.use(Autocomplete)
 Vue.use(ClientTable);
-
+Vue.use(CKEditor);
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
   components: { App },
-  template: '<App/>'
+  template: '<App/>',
+  
 })
