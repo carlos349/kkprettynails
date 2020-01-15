@@ -127,7 +127,7 @@
                         drag: 'Selecciona una foto..',
                         change:'Cambiar imagen'
                     }"
-                    @change="onChange">
+                    @change="onChangeTwo">
                     </picture-input>
                         </div>
                         <div class="col-sm-6">
@@ -148,7 +148,7 @@
                         drag: 'Selecciona una foto..',
                         change:'Cambiar imagen'
                     }"
-                    @change="onChange">
+                    @change="onChangeThree">
                     </picture-input>
                         </div>
                     </div>
@@ -235,7 +235,7 @@
                         drag: 'Selecciona una foto..',
                         change:'Cambiar imagen'
                     }"
-                    @change="onChange">
+                    @change="onChangeTwo">
                     </picture-input>
                     
                     
@@ -306,13 +306,22 @@ export default {
     },
     methods: {
         onChange (image) {
-            console.log('New picture selected!')
             if (image) {
-                console.log('Picture loaded.')
-                // this.image = image
-                
                 this.image = this.$refs.pictureInput.file
-                console.log(this.image)
+            } else {
+                console.log('FileReader API not supported: use the <form>, Luke!')
+            }
+        },
+        onChangeTwo (image) {
+            if (image) {
+                this.imageTwo = this.$refs.pictureInput.file
+            } else {
+                console.log('FileReader API not supported: use the <form>, Luke!')
+            }
+        },
+        onChangeThree (image) {
+            if (image) {
+                this.imageThree = this.$refs.pictureInput.file
             } else {
                 console.log('FileReader API not supported: use the <form>, Luke!')
             }
@@ -331,10 +340,54 @@ export default {
             const splitMails = this.mails.split(',')
             this.mailsQuantity = splitMails.length
         },
-        SendMail(){
+
+        async SendMail(){
             const from = this.de
             const to = this.mails
             const subject = this.subject
+            const config = {headers: {'Content-Type': 'multipart/form-data', 'x-access-token': localStorage.userToken}}
+            let formData = new FormData();
+            formData.append('from', from)
+            formData.append('to', to)
+            formData.append('subject', subject)
+            if (this.template == 1) {
+                formData.append('image', this.image)
+                
+            }
+            if (this.template == 2) {
+                formData.append('text', this.textareaOne)
+            }
+            if (this.template == 3) {
+                formData.append('image', this.image)
+                formData.append('text', this.textareaOne)
+            }
+            if (this.template == 4) {
+                formData.append('image', this.image)
+                formData.append('text', this.textareaOne)
+                formData.append('imageTwo', this.imageTwo)
+                formData.append('imageThree', this.imageThree)
+                formData.append('textTwo', this.textareaTwo)
+                
+            }
+            if (this.template == 5) {
+                formData.append('text', this.textareaOne)
+                formData.append('image', this.image)
+        
+            }
+            if (this.template == 6) {
+                formData.append('image', this.image)
+                formData.append('text', this.textareaOne)
+                formData.append('imageTwo', this.imageTwo)
+                formData.append('textTwo', this.textareaTwo)
+        
+            }
+            try{
+                const send = await axios.post('clients/sendmail', formData, config)
+                console.log(send)
+            }catch(err){
+                console.log(err)
+            }
+                
         },
         editarTextarea (info, model){
             $(".textarea").removeClass("sombreado")
