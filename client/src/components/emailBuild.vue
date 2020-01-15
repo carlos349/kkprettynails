@@ -228,8 +228,6 @@
                     :hideChangeButton='true'
                     accept="image/jpeg,image/png" 
                     size="10" 
-                    
-                    button-class="btn btn-primary"
                     class="mt-4"
                     :custom-strings="{
                         tap: 'Click para seleccionar una foto.',
@@ -249,27 +247,28 @@
                 
             </div>
             <div style="background-color:#ecebea;border-radius:5px" class="col-sm-5 p-3">
+                <button class="btn btn-primary float-right mb-2" v-on:click="SendMail">Enviar correo</button>
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="basic-addon1">De:</span>
                     </div>
-                    <input type="text" class="form-control" placeholder="ejemplo@ejemplo.com" aria-label="Username" aria-describedby="basic-addon1">
+                    <input v-model="de" type="text" class="form-control" placeholder="ejemplo@ejemplo.com" aria-label="Username" aria-describedby="basic-addon1">
                 </div>
-                <p style="color:#ccc7c3" class="font-italic float-right">*Estas enviando el E-Mail a 0 personas</p>
+                <p style="color:#8b8a89" class="font-italic float-right">*Estas enviando el E-Mail a {{mailsQuantity}} personas</p>
                 <div class="input-group mb-3">
                     
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="basic-addon1">Para:</span>
                     </div>
-                    <input type="text" class="form-control" placeholder="ejemplo@ejemplo.com" aria-label="Username" aria-describedby="basic-addon1">
+                    <input v-model="mails" type="text" class="form-control" placeholder="ejemplo@ejemplo.com" aria-label="Username" aria-describedby="basic-addon1">
                 </div>
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="basic-addon1">Asunto:</span>
                     </div>
-                    <input type="text" class="form-control" placeholder="Asunto.." aria-label="Username" aria-describedby="basic-addon1">
+                    <input v-model="subject" type="text" class="form-control" placeholder="Asunto.." aria-label="Username" aria-describedby="basic-addon1">
                 </div>
-                <ckeditor @input="changeTextarea()" :editor="editor" v-model="editorData" :config="editorConfig"></ckeditor>
+                <ckeditor @input="changeTextarea()" :editor="editor" v-model="editorData" ></ckeditor>
             </div>
         </div>
         
@@ -279,85 +278,111 @@
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import PictureInput from 'vue-picture-input'
 import EventBus from './eventBus'
+import axios from 'axios'
+
 export default {
     data() {
     return {
-        editor: ClassicEditor,
-        editorData: '',
-        template: localStorage.getItem("selectTemplate"),
-        editorConfig: {
-           
+            editor: ClassicEditor,
+            editorData: '',
+            template: localStorage.getItem("selectTemplate"),
+            change: 'Change Photsado',
+            textareaOne:'Click para editar en el editor...',
+            textareaTwo:'Click para editar en el editor...',
+            textareaThree:'Click para editar en el editor...',
+            select: 0,
+            de: 'kkprettynails@gmail.com',
+            mails: '',
+            mailsQuantity: '',
+            subject: ''
+        };
         
+    },
+    components: {
+        PictureInput
+    },
+    created(){
+        this.getMails()
+    },
+    methods: {
+        onChange (image) {
+            console.log('New picture selected!')
+            if (image) {
+                console.log('Picture loaded.')
+                // this.image = image
+                
+                this.image = this.$refs.pictureInput.file
+                console.log(this.image)
+            } else {
+                console.log('FileReader API not supported: use the <form>, Luke!')
+            }
         },
-        change: 'Change Photsado',
-        textareaOne:'Click para editar en el editor...',
-        textareaTwo:'Click para editar en el editor...',
-        textareaThree:'Click para editar en el editor...',
-        select: 0
-    };
-    
-},
-
-components: {
-    PictureInput
-  },
-  methods: {
-    onChange (image) {
-      console.log('New picture selected!')
-      if (image) {
-        console.log('Picture loaded.')
-        this.image = image
-      } else {
-        console.log('FileReader API not supported: use the <form>, Luke!')
-      }
-    },
-    editarTextarea (info, model){
-        $(".textarea").removeClass("sombreado")
-        $(".textarea").eq(model-1).addClass("sombreado")
-        $(".ck-content").focus()
-        this.select = model
-        if (model == 1 && info != 'Click para editar en el editor...') {
-            this.editorData = this.textareaOne
-        }
-        else if (info == 'Click para editar en el editor...') {
-            this.editorData = ''
-        }
-        if (model == 2 && info != 'Click para editar en el editor...') {
-            this.editorData = this.textareaTwo
-        }
-        else if (info == 'Click para editar en el editor...') {
-            this.editorData = ''
-        }
-        if (model == 3 && info != 'Click para editar en el editor...') {
-            this.editorData = this.textareaThree
-        }
-        else if (info == 'Click para editar en el editor...') {
-            this.editorData = ''
-        }
+        async getMails(){
+            const mails = await axios('clients/mails')
+            for (let index = 0; index < mails.data.length; index++) {
+                if(mails.data[index].correoCliente){
+                    if (this.mails == '') {
+                        this.mails = mails.data[index].correoCliente
+                    }else{
+                        this.mails = this.mails + ', ' + mails.data[index].correoCliente
+                    }
+                }
+            }
+            const splitMails = this.mails.split(',')
+            this.mailsQuantity = splitMails.length
+        },
+        SendMail(){
+            const from = this.de
+            const to = this.mails
+            const subject = this.subject
+        },
+        editarTextarea (info, model){
+            $(".textarea").removeClass("sombreado")
+            $(".textarea").eq(model-1).addClass("sombreado")
+            $(".ck-content").focus()
+            this.select = model
+            if (model == 1 && info != 'Click para editar en el editor...') {
+                this.editorData = this.textareaOne
+            }
+            else if (info == 'Click para editar en el editor...') {
+                this.editorData = ''
+            }
+            if (model == 2 && info != 'Click para editar en el editor...') {
+                this.editorData = this.textareaTwo
+            }
+            else if (info == 'Click para editar en el editor...') {
+                this.editorData = ''
+            }
+            if (model == 3 && info != 'Click para editar en el editor...') {
+                this.editorData = this.textareaThree
+            }
+            else if (info == 'Click para editar en el editor...') {
+                this.editorData = ''
+            }
+                
             
-        
-    },
-    changeTextarea(){
-        console.log("Epale")
-            if (this.select == 1) {
-                this.textareaOne = this.editorData
-            }
-            if (this.select == 2) {
-                this.textareaTwo = this.editorData
-            }
-            if (this.select == 3) {
-                this.textareaThree = this.editorData
-            }
-        
-    }
+        },
+        changeTextarea(){
+            console.log("Epale")
+                if (this.select == 1) {
+                    this.textareaOne = this.editorData
+                }
+                if (this.select == 2) {
+                    this.textareaTwo = this.editorData
+                }
+                if (this.select == 3) {
+                    this.textareaThree = this.editorData
+                }
+            
+        }
 
-    },
-    mounted(){
-        EventBus.$on("select-template",select => {
-            this.template = select
-        })
+        },
+        mounted(){
+            EventBus.$on("select-template",select => {
+                this.template = select
+            })
+        }
     }
-}
 </script>
 <style>
  .textarea {

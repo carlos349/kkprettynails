@@ -219,7 +219,7 @@
       },
       handleFileUpload(){
         this.file = this.$refs.file.files[0];
-        
+        console.log(this.file)
       },
       register() {
 			let formData = new FormData();
