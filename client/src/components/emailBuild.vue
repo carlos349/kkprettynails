@@ -111,7 +111,7 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <picture-input 
-                    ref="pictureInput"
+                    ref="pictureInputTwo"
                     width="200" 
                     height="200" 
                     margin="16"
@@ -132,7 +132,7 @@
                         </div>
                         <div class="col-sm-6">
                             <picture-input 
-                    ref="pictureInput"
+                    ref="pictureInputThree"
                     width="200" 
                     height="200" 
                     margin="16"
@@ -314,14 +314,15 @@ export default {
         },
         onChangeTwo (image) {
             if (image) {
-                this.imageTwo = this.$refs.pictureInput.file
+                this.imageTwo = this.$refs.pictureInputTwo.file
             } else {
                 console.log('FileReader API not supported: use the <form>, Luke!')
             }
         },
         onChangeThree (image) {
             if (image) {
-                this.imageThree = this.$refs.pictureInput.file
+                this.imageThree = this.$refs.pictureInputThree.file
+                console.log(this.imageThree)
             } else {
                 console.log('FileReader API not supported: use the <form>, Luke!')
             }
@@ -345,44 +346,53 @@ export default {
             const from = this.de
             const to = this.mails
             const subject = this.subject
-            const config = {headers: {'Content-Type': 'multipart/form-data', 'x-access-token': localStorage.userToken}}
+            const config = {headers: {'Content-Type': 'multipart/form-data'}}
             let formData = new FormData();
             formData.append('from', from)
             formData.append('to', to)
             formData.append('subject', subject)
             if (this.template == 1) {
                 formData.append('image', this.image)
-                
+                formData.append('type', this.template)
             }
             if (this.template == 2) {
                 formData.append('text', this.textareaOne)
+                formData.append('type', this.template)
             }
             if (this.template == 3) {
                 formData.append('image', this.image)
                 formData.append('text', this.textareaOne)
+                formData.append('type', this.template)
             }
             if (this.template == 4) {
+                console.log(this.image)
+                console.log(this.imageTwo)
+                console.log(this.imageThree)
                 formData.append('image', this.image)
+                formData.append('image', this.imageTwo)
+                formData.append('image', this.imageThree)
                 formData.append('text', this.textareaOne)
-                formData.append('imageTwo', this.imageTwo)
-                formData.append('imageThree', this.imageThree)
                 formData.append('textTwo', this.textareaTwo)
-                
+                formData.append('type', this.template)
             }
             if (this.template == 5) {
                 formData.append('text', this.textareaOne)
                 formData.append('image', this.image)
-        
+                formData.append('type', this.template)
             }
             if (this.template == 6) {
                 formData.append('image', this.image)
+                formData.append('image', this.imageTwo)
                 formData.append('text', this.textareaOne)
-                formData.append('imageTwo', this.imageTwo)
                 formData.append('textTwo', this.textareaTwo)
         
             }
             try{
-                const send = await axios.post('clients/sendmail', formData, config)
+                const send = await axios.post('clients/sendmail', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                })
                 console.log(send)
             }catch(err){
                 console.log(err)

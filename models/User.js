@@ -20,6 +20,9 @@ const UserSchema = new Schema({
 		type:Number,
 		required:true
 	},
+	linkLender: {
+		type: String
+	},
 	userImage: {
 		type: String,
 	},

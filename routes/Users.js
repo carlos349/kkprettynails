@@ -111,11 +111,20 @@ users.put('/:id', async (req, res, next) => {
 	}
 
 	const status = req.body.status
-
-	const update = await User.findByIdAndUpdate(req.params.id, { $set: {status: status}})
-	if (update) {
-		res.json(update)
+	const employe = req.body.employe
+	if(status == 3){
+		const update = await User.findByIdAndUpdate(req.params.id, { $set: {status: status, linkLender: employe}})
+		if (update) {
+			console.log(update)
+			res.json(update)
+		}
+	}else{
+		const update = await User.findByIdAndUpdate(req.params.id, { $set: {status: status, linkLender: ''}})
+		if (update) {
+			res.json(update)
+		}
 	}
+	
 	
 })
 
@@ -142,7 +151,8 @@ users.post('/register', async (req, res, next) => {
 		last_name: req.body.last_name,
 		email: req.body.email,
 		password: req.body.password,
-		status: 3,
+		status: 2,
+		linkLender: '',
 		userImage: '',
 		LastAccess: today,
 		date: today

@@ -1,138 +1,166 @@
 <template>
   <div class="container-fluid row pt-5">
     <div class="col-md-4">
-				<div class="forms" v-bind:style="{ 'background-color': '#fff'}">
-					<h2 class="p-3" v-bind:style="{ 'background-color': '#1f5673'}">Registrar usuario</h2>
-					<form v-on:submit.prevent="register">
-						<div class="form-group">
-							<label for="name">Nombre del usuario</label>
-							<input type="text" v-model="first_name" class="form-control inputs" placeholder="Nombre del usuario">
-						</div>
-            			<div class="form-group">
-							<label for="name">Apellido del usuario</label>
-							<input type="text" v-model="last_name" class="form-control inputs" placeholder="Apellido del usuario">
-						</div>
-           			 	<div class="form-group">
-							<label for="name">Correo del usuario</label>
-							<input type="file" id="file" ref="file" v-on:change="handleFileUpload()" class="form-control inputs" placeholder="Correo del usuario">
-						</div>
-            			<div class="form-group">
-							<label for="name">Correo del usuario</label>
-							<input type="email" v-model="email" class="form-control inputs" placeholder="Correo del usuario">
-						</div>
-            			<div class="form-group">
-							<label for="name">Contraseña</label>
-							<input type="password" v-model="password" class="form-control inputs" placeholder="Contraseña">
-						</div>
-						<button type="submit" class="btn w-100 add">Agregar</button>
-					</form>
+		<div class="forms" v-bind:style="{ 'background-color': '#fff'}">
+			<h2 class="p-3" v-bind:style="{ 'background-color': '#1f5673'}">Registrar usuario</h2>
+			<form v-on:submit.prevent="register">
+				<div class="form-group">
+					<label for="name">Nombre del usuario</label>
+					<input type="text" v-model="first_name" class="form-control inputs" placeholder="Nombre del usuario">
 				</div>
+				<div class="form-group">
+					<label for="name">Apellido del usuario</label>
+					<input type="text" v-model="last_name" class="form-control inputs" placeholder="Apellido del usuario">
+				</div>
+				<div class="form-group">
+					<label for="name">Correo del usuario</label>
+					<input type="file" id="file" ref="file" v-on:change="handleFileUpload()" class="form-control inputs" placeholder="Correo del usuario">
+				</div>
+				<div class="form-group">
+					<label for="name">Correo del usuario</label>
+					<input type="email" v-model="email" class="form-control inputs" placeholder="Correo del usuario">
+				</div>
+				<div class="form-group">
+					<label for="name">Contraseña</label>
+					<input type="password" v-model="password" class="form-control inputs" placeholder="Contraseña">
+				</div>
+				<button type="submit" class="btn w-100 add">Agregar</button>
+			</form>
 		</div>
+	</div>
     <div class="col-md-8">
-				<div class="shadow">
-					<v-client-table class="text-center" :data="users" :columns="columns" :options="optionsT">
+			<div class="shadow">
+				<v-client-table class="text-center" :data="users" :columns="columns" :options="optionsT">
+					
+					<p slot="nombres"  slot-scope="props">{{props.row.first_name }} {{props.row.last_name }}</p>
+					<p slot="last"  slot-scope="props">{{formatDate(props.row.LastAccess)}}</p>
+					<div slot="edit" slot-scope="props">
+						<div class="dropleft" v-if="props.row.status == 1">
+							<button class="btn btn-success font-weight-bold w-100 dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								Gerencia
+							</button>
+							<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+								<a class="dropdown-item" v-on:click="editarEstado(props.row._id, 1, 'no-prestador')">Gerencia</a>
+								<a class="dropdown-item" v-on:click="editarEstado(props.row._id, 2, 'no-prestador')">Personal de caja</a>
+								<a class="dropdown-item" v-on:click="editarEstado(props.row._id, 3, 'prestador')">Prestadora</a>
+							</div>
+						</div>
+						<div class="dropleft" v-if="props.row.status == 2">
+							<button class="btn btn-warning font-weight-bold w-100 dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								Personal de caja
+							</button>
+							<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+								<a class="dropdown-item" v-on:click="editarEstado(props.row._id, 1, 'no-prestador')">Gerencia</a>
+								<a class="dropdown-item" v-on:click="editarEstado(props.row._id, 2, 'no-prestador')">Personal de caja</a>
+								<a class="dropdown-item" v-on:click="editarEstado(props.row._id, 3, 'prestador')">Prestadora</a>
+							</div>
+						</div>
+						<div class="dropleft" v-if="props.row.status == 3">
+							<button class="btn btn-warning font-weight-bold w-100 dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								Prestadora
+							</button>
+							<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+								<a class="dropdown-item" v-on:click="editarEstado(props.row._id, 1, 'no-prestador')">Gerencia</a>
+								<a class="dropdown-item" v-on:click="editarEstado(props.row._id, 2, 'no-prestador')">Personal de caja</a>
+								<a class="dropdown-item" v-on:click="editarEstado(props.row._id, 3, 'prestador')">Prestadora</a>>
+							</div>
+						</div>
+						<!-- <button class="btn btn-success font-weight-bold w-100" v-if="props.row.status == 1" v-on:click="editarEstado(props.row._id, props.row.admin)">Gerencia</button> -->
+						<!-- <button class="btn btn-warning font-weight-bold w-100" v-if="props.row.status == 2" v-on:click="editarEstado(props.row._id, props.row.admin)">Cajera</button> -->
+						<!-- <button class="btn btn-warning font-weight-bold w-100" v-if="props.row.status == 3" v-on:click="editarEstado(props.row._id, props.row.admin)">Prestadora</button> -->
+					</div>
+					<div slot="delete" slot-scope="props">
+						<button  class="btn w-100 btn-inactive" v-on:click="eliminarUsuario(props.row._id, props.row.status)"><font-awesome-icon icon="trash" /></button>
 						
-						<p slot="nombres"  slot-scope="props">{{props.row.first_name }} {{props.row.last_name }}</p>
-						<p slot="last"  slot-scope="props">{{formatDate(props.row.LastAccess)}}</p>
-						<div slot="edit" slot-scope="props">
-							<div class="dropleft" v-if="props.row.status == 1">
-								<button class="btn btn-success font-weight-bold w-100 dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									Gerencia
-								</button>
-								<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-									<a class="dropdown-item" v-on:click="editarEstado(props.row._id, 1)">Gerencia</a>
-									<a class="dropdown-item" v-on:click="editarEstado(props.row._id, 2)">Personal de caja</a>
-									<a class="dropdown-item" v-on:click="editarEstado(props.row._id, 3)">Prestadora</a>
-								</div>
-							</div>
-							<div class="dropleft" v-if="props.row.status == 2">
-								<button class="btn btn-warning font-weight-bold w-100 dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									Personal de caja
-								</button>
-								<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-									<a class="dropdown-item" v-on:click="editarEstado(props.row._id, 1)">Gerencia</a>
-									<a class="dropdown-item" v-on:click="editarEstado(props.row._id, 2)">Personal de caja</a>
-									<a class="dropdown-item" v-on:click="editarEstado(props.row._id, 3)">Prestadora</a>
-								</div>
-							</div>
-							<div class="dropleft" v-if="props.row.status == 3">
-								<button class="btn btn-warning font-weight-bold w-100 dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									Prestadora
-								</button>
-								<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-									<a class="dropdown-item" v-on:click="editarEstado(props.row._id, 1)">Gerencia</a>
-									<a class="dropdown-item" v-on:click="editarEstado(props.row._id, 2)">Personal de caja</a>
-									<a class="dropdown-item" v-on:click="editarEstado(props.row._id, 3)">Prestadora</a>>
-								</div>
-							</div>
-							<!-- <button class="btn btn-success font-weight-bold w-100" v-if="props.row.status == 1" v-on:click="editarEstado(props.row._id, props.row.admin)">Gerencia</button> -->
-							<!-- <button class="btn btn-warning font-weight-bold w-100" v-if="props.row.status == 2" v-on:click="editarEstado(props.row._id, props.row.admin)">Cajera</button> -->
-							<!-- <button class="btn btn-warning font-weight-bold w-100" v-if="props.row.status == 3" v-on:click="editarEstado(props.row._id, props.row.admin)">Prestadora</button> -->
-						</div>
-						<div slot="delete" slot-scope="props">
-							<button  class="btn w-100 btn-inactive" v-on:click="eliminarUsuario(props.row._id, props.row.status)"><font-awesome-icon icon="trash" /></button>
-							
-						</div>
-					</v-client-table>	
-					<!-- <table  class="table" style="color:#fff !important" v-bind:style="{ 'background-color': '#1f5673'}" >
-						<thead>
-							<tr>
-								<th>
-									Nombre y Apellido
-								</th>
-								<th>
-									Correo
-								</th>
-								<th>
-									Ultimo acceso
-								</th>
-								<th>
-									Estado
-								</th>	
-                				<th>
-									Borrar
-								</th>
+					</div>
+				</v-client-table>	
+				<!-- <table  class="table" style="color:#fff !important" v-bind:style="{ 'background-color': '#1f5673'}" >
+					<thead>
+						<tr>
+							<th>
+								Nombre y Apellido
+							</th>
+							<th>
+								Correo
+							</th>
+							<th>
+								Ultimo acceso
+							</th>
+							<th>
+								Estado
+							</th>	
+							<th>
+								Borrar
+							</th>
+						</tr>
+					</thead>
+				</table>	
+				<div class="ListaUsers tbl-content">
+					<table class="table table-light table-borderless table-striped text-left" style="font-size:.8em">
+						<tbody>
+							<tr v-for="user in users" v-bind:key="user._id">
+								<td>
+									{{user.first_name}} {{user.last_name}}
+								</td>
+								<td>
+									{{user.email}}
+								</td>
+								<td>
+									{{formatDate(user.LastAccess)}}
+								</td>
+								<td >
+									<button class="btn btn-success font-weight-bold" v-if="user.admin" v-on:click="editarEstado(user._id, user.admin)">Admin</button>
+									<button class="btn btn-warning font-weight-bold" v-else v-on:click="editarEstado(user._id, user.admin)">Normal</button>
+								</td>
+								<td>
+									<button  class="btn w-25 btn-inactive" v-if="user.admin" v-on:click="eliminarUsuario(user._id, user.admin)">
+									<font-awesome-icon icon="trash" />
+									</button>
+									<button class="btn w-25 btn-inactive" v-else v-on:click="eliminarUsuario(user._id, user.admin)">
+									<font-awesome-icon icon="trash"  />
+									</button>
+								</td>
 							</tr>
-						</thead>
-					</table>	
-					<div class="ListaUsers tbl-content">
-						<table class="table table-light table-borderless table-striped text-left" style="font-size:.8em">
-							<tbody>
-								<tr v-for="user in users" v-bind:key="user._id">
-									<td>
-										{{user.first_name}} {{user.last_name}}
-									</td>
-									<td>
-										{{user.email}}
-									</td>
-									<td>
-										{{formatDate(user.LastAccess)}}
-									</td>
-									<td >
-										<button class="btn btn-success font-weight-bold" v-if="user.admin" v-on:click="editarEstado(user._id, user.admin)">Admin</button>
-										<button class="btn btn-warning font-weight-bold" v-else v-on:click="editarEstado(user._id, user.admin)">Normal</button>
-									</td>
-									<td>
-										<button  class="btn w-25 btn-inactive" v-if="user.admin" v-on:click="eliminarUsuario(user._id, user.admin)">
-										<font-awesome-icon icon="trash" />
-										</button>
-										<button class="btn w-25 btn-inactive" v-else v-on:click="eliminarUsuario(user._id, user.admin)">
-										<font-awesome-icon icon="trash"  />
-										</button>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</div> -->
+						</tbody>
+					</table>
+				</div> -->
+			</div>
+		</div>
+		<div class="modal fade" id="ModalLinkLender" tabindex="-1"  role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered"  >
+				<div class="modal-content pt-3 pl-3 pr-3" v-bind:style="{ 'background-color': '#ffffff'}">
+					<div class="modal-header" v-bind:style="{ 'background-color': '#1F5673'}">
+						<h4 class="modal-title font-weight-bold text-white" id="exampleModalCenterTitle">Vincular prestador con usuario</h4>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close" >
+						<span aria-hidden="true" class="text-white" v-bind:style="{ 'font-size': '1.5em'}">&times;</span>
+						</button>
+					</div>
+					<div  class="modal-body">
+						<div class="form-group row">
+							<div class="form-group w-100">
+								<label for="recomendacion">Vincule el prestador</label>
+								<autocomplete	
+									:search="searchPrestador"
+									placeholder="Buscar prestador"
+									aria-label="Buscar prestador"
+									@submit="handleSubmitPrestador"
+									class="auto autoClient w-100">
+								</autocomplete>
+							</div>
+							<button class="btn w-100 add" v-on:click="editarEstado(idSelect, 3, 'no-prestador')">Vincular</button>
+						</div>
+					</div>
 				</div>
 			</div>
-  </div>
+		</div>
+  </div>	
   
 </template>
 
-<script type="text/javascript">
-  import axios from 'axios'
-  import router from '../router'
+<script type="text/javascript">	
+	import axios from 'axios'
+	import router from '../router'
+	import Autocomplete from '@trevoreyre/autocomplete-vue'
 
   export default {
     data(){
@@ -165,7 +193,10 @@
 		last_name: '',
 		email: '',
         password: '',
-        file: ''
+		file: '',
+		prestador: '',
+		arregloManicuristas: [],
+		idSelect: ''
       }
     },
     beforeCreate() {
@@ -180,48 +211,82 @@
       }
    },
     created(){
-      this.getUsers();
+	  this.getUsers();
+	  this.getManicuristas();
     },
     methods: {
-      getUsers(){
-		const config = {headers: {'x-access-token': localStorage.userToken}}
-        axios.get('users', config)
-        .then(res => {
-          this.users = res.data
-		})
-		.catch(err => {
-			this.$swal({
-				type: 'error',
-				title: 'Acceso invalido, ingrese de nuevo, si el problema persiste comuniquese con el proveedor del servicio',
-				showConfirmButton: false,
-				timer: 2500
+		getUsers(){
+			const config = {headers: {'x-access-token': localStorage.userToken}}
+			axios.get('users', config)
+			.then(res => {
+			this.users = res.data
 			})
-			router.push({name: 'Login'})
-		})
-      },
-      editarEstado(id, status){
-		const config = {headers: {'x-access-token': localStorage.userToken}}
-        axios.put('users/'+id, {
-          status: status
-        }, config)
-        .then(res => {
-          this.getUsers()
-		})
-		.catch(err => {
-			this.$swal({
-				type: 'error',
-				title: 'Acceso invalido, ingrese de nuevo, si el problema persiste comuniquese con el proveedor del servicio',
-				showConfirmButton: false,
-				timer: 2500
+			.catch(err => {
+				this.$swal({
+					type: 'error',
+					title: 'Acceso invalido, ingrese de nuevo, si el problema persiste comuniquese con el proveedor del servicio',
+					showConfirmButton: false,
+					timer: 2500
+				})
+				router.push({name: 'Login'})
 			})
-			router.push({name: 'Login'})
-		})
-      },
-      handleFileUpload(){
-        this.file = this.$refs.file.files[0];
-        console.log(this.file)
-      },
-      register() {
+		},
+		arrayUsers(){
+			for (let index = 0; index < this.manicuristas.length; index++) {
+				this.arregloManicuristas.push(this.manicuristas[index].nombre + '-'+this.manicuristas[index]._id)
+
+			} 
+        },
+	    getManicuristas(){
+			axios.get('manicuristas')
+			.then(res => {
+				this.manicuristas = res.data
+				this.arrayUsers()
+				console.log(this.arregloManicuristas)
+			})
+		},
+		searchPrestador(input){
+			if (input.length < 1) { return [] }
+				return this.arregloManicuristas.filter(manicurista => {
+					return manicurista.toLowerCase()
+					.startsWith(input.toLowerCase())
+			})
+		},
+		handleSubmitPrestador(result){
+			const split = result.split('-')
+			this.prestador = split[1]
+			console.log(this.prestador)
+		},
+		editarEstado(id, status, type){
+			console.log(type)
+			if (type == 'prestador') {
+				$('#ModalLinkLender').modal('show')
+				this.idSelect = id
+			}else{
+				const config = {headers: {'x-access-token': localStorage.userToken}}
+				axios.put('users/'+id, {
+					status: status,
+					employe: this.prestador
+				}, config)
+				.then(res => {
+					this.getUsers()
+				})
+				.catch(err => {
+					this.$swal({
+						type: 'error',
+						title: 'Acceso invalido, ingrese de nuevo, si el problema persiste comuniquese con el proveedor del servicio',
+						showConfirmButton: false,
+						timer: 2500
+					})
+					router.push({name: 'Login'})
+				})
+			}
+		},
+		handleFileUpload(){
+			this.file = this.$refs.file.files[0];
+			console.log(this.file)
+		},
+		register() {
 			let formData = new FormData();
 			formData.append('image', this.file)
 			const configToken = {headers: {'x-access-token': localStorage.userToken}}
@@ -269,14 +334,14 @@
 				})
 			},
 			formatDate(date) {
-               let dateFormat = new Date(date)
-               return dateFormat.getDate()+"-"+(dateFormat.getMonth() + 1)+"-"+dateFormat.getFullYear()+" "+" ("+ dateFormat.getHours()+":"+ dateFormat.getMinutes()+")"
-            },
+				let dateFormat = new Date(date)
+				return dateFormat.getDate()+"-"+(dateFormat.getMonth() + 1)+"-"+dateFormat.getFullYear()+" "+" ("+ dateFormat.getHours()+":"+ dateFormat.getMinutes()+")"
+			},
 			eliminarUsuario(id, admin){
-				if(admin){
+				if(admin == 1){
 					this.$swal({
 						type: 'error',
-						title: 'No puede borrar un administrador',
+						title: 'No puede borrar un gerente',
 						showConfirmButton: false,
 						timer: 1500
 					})
@@ -304,7 +369,7 @@
 					})
 				}
 			}
-    }
+    	}
   }
 </script>
 <style >

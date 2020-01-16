@@ -2,8 +2,109 @@ const express = require('express');
 const clients = express.Router()
 const cors = require('cors');
 const Cliente = require('../models/Cliente')
-
+const email = require('../modelsMails/Mails')
+const multer = require('multer')
+const { diskStorage } = require('multer')
+const path = require('path')
+const storage = diskStorage({
+	destination: 'public/mailsImage',
+	filename: (req, files, cb) => {
+		cb(null, Date.now() + path.extname(files.originalname));
+	}
+})
+const upload = multer({
+	storage:storage
+})
+const KMails = new email({
+	host: 'smtp.gmail.com',
+	port: '465',
+	secure: true,
+	auth: {
+		type: 'login',
+		user: 'carlos.gomes349@gmail.com',
+		pass: '25430435carlos16'
+	}
+})
 clients.use(cors())
+
+
+
+
+clients.post('/sendmail', upload.array('image', 3),  async (req, res, next) => {
+    var array = {}
+    let mail = {}
+    if (req.body.type == 1) {
+        array = {
+            to: req.body.to,
+            from: req.body.from,
+            subject: req.body.subject,
+            image: req.files[0].filename
+        }
+        mail = {
+            from: array.from,
+            to: array.to,
+            subject: array.subject,
+            html: `<div>aqui el template http://192.1:4200/static/users/${array.image} </div>`
+        }
+    }
+    if (req.body.type == 2) {
+        array = {
+            to: req.body.to,
+            from: req.body.from,
+            subject: req.body.subject,
+            text: req.body.text
+        }
+    }
+    if (req.body.type == 3) {
+        array = {
+            to: req.body.to,
+            from: req.body.from,
+            subject: req.body.subject,
+            text: req.body.text,
+            image: req.files[0].filename
+        }
+    }
+    if (req.body.type == 4) {
+        array = {
+            to: req.body.to,
+            from: req.body.from,
+            subject: req.body.subject,
+            text: req.body.text,
+            textTwo: req.body.textTwo,
+            image: req.files[0].filename,
+            imageTwo: req.files[1].filename,
+            imageThree: req.files[2].filename
+        }
+    }
+    if (req.body.type == 5) {
+        array = {
+            to: req.body.to,
+            from: req.body.from,
+            subject: req.body.subject,
+            text: req.body.text,
+            image: req.files[0].filename,
+        }
+    }
+    if (req.body.type == 6) {
+        array = {
+            to: req.body.to,
+            from: req.body.from,
+            subject: req.body.subject,
+            text: req.body.text,
+            textTwo: req.body.textTwo,
+            image: req.files[0].filename,
+            imageTwo: req.files[1].filename,
+        }
+    }
+    
+    try{
+        const send = await KMails.sendMail(mail)
+        res.json({status: 'ok'})
+    }catch(err){
+        res.send(err)
+    }
+    
+})
 
 clients.get('/', async (req, res) => {
     const Clients = await Cliente.find().sort({ultimaFecha: -1})

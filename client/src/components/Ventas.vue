@@ -131,8 +131,11 @@
 					<div class="col-md-12">
             <div class="shadow">	
               <v-client-table class="text-center"  :data="ventas" :columns="columns" :options="optionsT">
-
-                <button slot="print"  slot-scope="props" style="width:100%;" v-on:click="reporteVenta(props.row._id)" class=" btn btn-colorsPrint"><font-awesome-icon icon="copy" /></button>
+                <div slot="print"  slot-scope="props">
+                  <button v-if="props.row.status" style="width:100%;" v-on:click="reporteVenta(props.row._id)" class=" btn btn-colorsPrint"><font-awesome-icon icon="copy" /></button>
+                  <button v-else style="width:100%;" v-on:click="reporteVenta(props.row._id)" class=" btn btn-danger"><font-awesome-icon icon="copy" /></button>
+                </div>
+                
                 
                 <p slot="descuentoo" slot-scope="props">{{props.row.descuento}}%</p>
                 <p slot="comisionn" slot-scope="props">{{formatPrice(props.row.comision)}}</p>
@@ -262,7 +265,7 @@
                 <li class="list-group-item" style="background-color: transparent !important"><h5>Total:<span style="float:right;"> {{ formatPrice(arreglo.total) }}</span></h5></li>
               </ul>
               
-              <button class="btn w-100 add" v-on:click="cancelSale(arreglo._id)">Anular venta</button>
+              <button v-if="arreglo.status" class="btn w-100 add" v-on:click="cancelSale(arreglo._id)">Anular venta</button>
             </div>
           </div>
         </div>
@@ -482,8 +485,6 @@ export default {
       })
     },
     async cancelSale(id){
-      
-      
       try {
         const config = {headers: {'x-access-token': localStorage.userToken}}
         const cancelSale = await axios.put('/ventas/'+id, config)
@@ -493,6 +494,7 @@ export default {
           showConfirmButton: false,
           timer: 1500
         })
+        this.getVentas()
       }catch(err){
         this.$swal({
           type: 'error',
