@@ -20,6 +20,13 @@ citas.get('/:employe', async (req, res) => {
   res.json(citasByEmploye)
 })
 
+// citas.get('/byId/:employe', async (req, res) => {
+//   console.log(req.params.employe)
+//   const citasByEmploye = await Citas.findById(req.params.employe)
+//   console.log(citasByEmploye)
+//   res.json(citasByEmploye)
+// })
+
 citas.post('/getBlocks', (req,res) => {
   const employe = req.body.employe
   const date = req.body.date
