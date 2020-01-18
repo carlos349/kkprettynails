@@ -11,7 +11,7 @@
             <button  data-toggle="modal" class="generar" data-target=".genCita"><span></span>Generar cita</button>
           </div>
           <div class="col-sm-6">
-            <select id="manicuristas" v-model="empByCita" v-on:change="getCitasByEmploye()"  class="generar Two" name="manicuristas">
+            <select v-if="lender == ''" id="manicuristas" v-model="empByCita" v-on:change="getCitasByEmploye()"  class="generar Two" name="manicuristas">
               <option selected="true
               " >{{this.empByCita}}</option>
               <option>Todos</option>
@@ -421,6 +421,8 @@
   import 'vue-datetime/dist/vue-datetime.css'
   import DatePick from 'vue-date-pick';
   import 'vue-date-pick/dist/vueDatePick.css';
+  import jwtDecode from 'jwt-decode'
+
 import router from '../router'
   class Event {
     constructor (start, end, title, content) {
@@ -531,6 +533,7 @@ import router from '../router'
       }
     },
     created(){
+      this.validatorLender()
       this.getCitas()
       this.getManicuristas()
       this.getClients()
@@ -542,8 +545,13 @@ import router from '../router'
 				for (let index = 0; index < this.clients.length; index++) {
 						this.arregloClients.push(this.clients[index].nombre+'-'+this.clients[index].identidad)
           }
-          console.log(this.arregloClients)
-			},
+      },
+      validatorLender(){
+        const token = localStorage.userToken
+        const decoded = jwtDecode(token)
+        this.lender = decoded.linkLender
+        console.log(this.lender)
+      },
       searchClient(input){
 				if (input.length < 1) { return [] }
 					return this.arregloClients.filter(manicurista => {
@@ -641,93 +649,131 @@ import router from '../router'
         e.stopPropagation()
       },
       getCitas () {
-        this.events = []
-        axios.get('citas')
-        .then(res => {
-          
-          for (let index = 0; index < res.data.length; index++) {
-            let dateNow = new Date(res.data[index].date)
-            let formatDate = ''
-            let formatDateTwo = ''
-            if (dateNow.getMonth() == 9 || dateNow.getMonth() == 10 || dateNow.getMonth() == 11) {
-              if (dateNow.getDate() < 10) {
-                formatDate = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-0"+dateNow.getDate()+" "+res.data[index].start
-                formatDateTwo = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-0"+dateNow.getDate()+" "+res.data[index].end
+        if (this.lender != '') {
+          this.events = []
+          axios.get('citas/' + this.lender)
+          .then(res => {
+            for (let index = 0; index < res.data.length; index++) {
+              let dateNow = new Date(res.data[index].date)
+              let formatDate = ''
+              let formatDateTwo = ''
+              if (dateNow.getMonth() == 9 || dateNow.getMonth() == 10 || dateNow.getMonth() == 11) {
+                if (dateNow.getDate() < 10) {
+                  formatDate = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-0"+dateNow.getDate()+" "+res.data[index].start
+                  formatDateTwo = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-0"+dateNow.getDate()+" "+res.data[index].end
+                }else{
+                  formatDate = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()+" "+res.data[index].start
+                  formatDateTwo = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()+" "+res.data[index].end
+                }
+                
               }else{
-                formatDate = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()+" "+res.data[index].start
-                formatDateTwo = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()+" "+res.data[index].end
+                if (dateNow.getDate() < 10) {
+                  formatDate = dateNow.getFullYear() +"-0"+(dateNow.getMonth() + 1)+"-0"+dateNow.getDate()+" "+res.data[index].start
+                  formatDateTwo = dateNow.getFullYear() +"-0"+(dateNow.getMonth() + 1)+"-0"+dateNow.getDate()+" "+res.data[index].end
+                }else{
+                  formatDate = dateNow.getFullYear() +"-0"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()+" "+res.data[index].start
+                  formatDateTwo = dateNow.getFullYear() +"-0"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()+" "+res.data[index].end
+                }  
               }
-              
-            }else{
-              if (dateNow.getDate() < 10) {
-                formatDate = dateNow.getFullYear() +"-0"+(dateNow.getMonth() + 1)+"-0"+dateNow.getDate()+" "+res.data[index].start
-                formatDateTwo = dateNow.getFullYear() +"-0"+(dateNow.getMonth() + 1)+"-0"+dateNow.getDate()+" "+res.data[index].end
+              let arrayEvents = {
+                start: formatDate,
+                end: formatDateTwo,
+                title: res.data[index].services[0]+" - "+res.data[index].employe,
+                content: res.data[index].client,
+                class: res.data[index].class,
+                cliente: res.data[index].client,
+                services: res.data[index].services,
+                empleada: res.data[index].employe,
+                id:res.data[index]._id
+              }
+              this.events.push(arrayEvents)
+            }
+          })
+        }else{
+          this.events = []
+          axios.get('citas')
+          .then(res => {
+            for (let index = 0; index < res.data.length; index++) {
+              let dateNow = new Date(res.data[index].date)
+              let formatDate = ''
+              let formatDateTwo = ''
+              if (dateNow.getMonth() == 9 || dateNow.getMonth() == 10 || dateNow.getMonth() == 11) {
+                if (dateNow.getDate() < 10) {
+                  formatDate = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-0"+dateNow.getDate()+" "+res.data[index].start
+                  formatDateTwo = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-0"+dateNow.getDate()+" "+res.data[index].end
+                }else{
+                  formatDate = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()+" "+res.data[index].start
+                  formatDateTwo = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()+" "+res.data[index].end
+                }
+                
               }else{
-                formatDate = dateNow.getFullYear() +"-0"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()+" "+res.data[index].start
-                formatDateTwo = dateNow.getFullYear() +"-0"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()+" "+res.data[index].end
-              }  
+                if (dateNow.getDate() < 10) {
+                  formatDate = dateNow.getFullYear() +"-0"+(dateNow.getMonth() + 1)+"-0"+dateNow.getDate()+" "+res.data[index].start
+                  formatDateTwo = dateNow.getFullYear() +"-0"+(dateNow.getMonth() + 1)+"-0"+dateNow.getDate()+" "+res.data[index].end
+                }else{
+                  formatDate = dateNow.getFullYear() +"-0"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()+" "+res.data[index].start
+                  formatDateTwo = dateNow.getFullYear() +"-0"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()+" "+res.data[index].end
+                }  
+              }
+              let arrayEvents = {
+                start: formatDate,
+                end: formatDateTwo,
+                title: res.data[index].services[0]+" - "+res.data[index].employe,
+                content: res.data[index].client,
+                class:res.data[index].class,
+                cliente: res.data[index].client,
+                services: res.data[index].services,
+                empleada: res.data[index].employe,
+                id:res.data[index]._id
+              }
+              this.events.push(arrayEvents)
             }
-            let arrayEvents = {
-              start: formatDate,
-              end: formatDateTwo,
-              title: res.data[index].services[0]+" - "+res.data[index].employe,
-              content: res.data[index].client,
-              class:res.data[index].class,
-              cliente: res.data[index].client,
-              services: res.data[index].services,
-              empleada: res.data[index].employe,
-              id:res.data[index]._id
-            }
-            this.events.push(arrayEvents)
-          }
-        })
-        
+          })
+        }
       },
       getCitasByEmploye(){
         if (this.empByCita == "Todos") {
           this.getCitas()
-        }
-        else{
+        }else{
           this.events = []
-        axios.get('citas/' + this.empByCita)
-        .then(res => {
-          for (let index = 0; index < res.data.length; index++) {
-            let dateNow = new Date(res.data[index].date)
-            let formatDate = ''
-            let formatDateTwo = ''
-            if (dateNow.getMonth() == 9 || dateNow.getMonth() == 10 || dateNow.getMonth() == 11) {
-              if (dateNow.getDate() < 10) {
-                formatDate = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-0"+dateNow.getDate()+" "+res.data[index].start
-                formatDateTwo = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-0"+dateNow.getDate()+" "+res.data[index].end
+          axios.get('citas/' + this.empByCita)
+          .then(res => {
+            for (let index = 0; index < res.data.length; index++) {
+              let dateNow = new Date(res.data[index].date)
+              let formatDate = ''
+              let formatDateTwo = ''
+              if (dateNow.getMonth() == 9 || dateNow.getMonth() == 10 || dateNow.getMonth() == 11) {
+                if (dateNow.getDate() < 10) {
+                  formatDate = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-0"+dateNow.getDate()+" "+res.data[index].start
+                  formatDateTwo = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-0"+dateNow.getDate()+" "+res.data[index].end
+                }else{
+                  formatDate = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()+" "+res.data[index].start
+                  formatDateTwo = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()+" "+res.data[index].end
+                }
+                
               }else{
-                formatDate = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()+" "+res.data[index].start
-                formatDateTwo = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()+" "+res.data[index].end
+                if (dateNow.getDate() < 10) {
+                  formatDate = dateNow.getFullYear() +"-0"+(dateNow.getMonth() + 1)+"-0"+dateNow.getDate()+" "+res.data[index].start
+                  formatDateTwo = dateNow.getFullYear() +"-0"+(dateNow.getMonth() + 1)+"-0"+dateNow.getDate()+" "+res.data[index].end
+                }else{
+                  formatDate = dateNow.getFullYear() +"-0"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()+" "+res.data[index].start
+                  formatDateTwo = dateNow.getFullYear() +"-0"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()+" "+res.data[index].end
+                }  
               }
-              
-            }else{
-              if (dateNow.getDate() < 10) {
-                formatDate = dateNow.getFullYear() +"-0"+(dateNow.getMonth() + 1)+"-0"+dateNow.getDate()+" "+res.data[index].start
-                formatDateTwo = dateNow.getFullYear() +"-0"+(dateNow.getMonth() + 1)+"-0"+dateNow.getDate()+" "+res.data[index].end
-              }else{
-                formatDate = dateNow.getFullYear() +"-0"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()+" "+res.data[index].start
-                formatDateTwo = dateNow.getFullYear() +"-0"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()+" "+res.data[index].end
-              }  
+              let arrayEvents = {
+                start: formatDate,
+                end: formatDateTwo,
+                title: res.data[index].services[0]+" - "+res.data[index].employe,
+                content: res.data[index].client,
+                class: res.data[index].class,
+                cliente: res.data[index].client,
+                services: res.data[index].services,
+                empleada: res.data[index].employe,
+                id:res.data[index]._id
+              }
+              this.events.push(arrayEvents)
             }
-            let arrayEvents = {
-              start: formatDate,
-              end: formatDateTwo,
-              title: res.data[index].services[0]+" - "+res.data[index].employe,
-              content: res.data[index].client,
-              class: res.data[index].class,
-              cliente: res.data[index].client,
-              services: res.data[index].services,
-              empleada: res.data[index].employe,
-              id:res.data[index]._id
-            }
-            this.events.push(arrayEvents)
-          }
-        })
-        
+          })
         }
       },
       getManicuristas(){

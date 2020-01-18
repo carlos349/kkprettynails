@@ -203,7 +203,8 @@ users.post('/login', (req, res) => {
 						email: user.email,
 						status: user.status,
 						userImage: user.userImage,
-						LastAccess: user.LastAccess
+						LastAccess: user.LastAccess,
+						linkLender: user.linkLender
 					}
 					let token = jwt.sign(payload, process.env.SECRET_KEY, {
 						expiresIn: 60 * 60 * 24

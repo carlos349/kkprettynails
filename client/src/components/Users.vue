@@ -62,7 +62,7 @@
 							<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 								<a class="dropdown-item" v-on:click="editarEstado(props.row._id, 1, 'no-prestador')">Gerencia</a>
 								<a class="dropdown-item" v-on:click="editarEstado(props.row._id, 2, 'no-prestador')">Personal de caja</a>
-								<a class="dropdown-item" v-on:click="editarEstado(props.row._id, 3, 'prestador')">Prestadora</a>>
+								<a class="dropdown-item" v-on:click="editarEstado(props.row._id, 3, 'prestador')">Prestadora</a>
 							</div>
 						</div>
 						<!-- <button class="btn btn-success font-weight-bold w-100" v-if="props.row.status == 1" v-on:click="editarEstado(props.row._id, props.row.admin)">Gerencia</button> -->
@@ -233,7 +233,7 @@
 		},
 		arrayUsers(){
 			for (let index = 0; index < this.manicuristas.length; index++) {
-				this.arregloManicuristas.push(this.manicuristas[index].nombre + '-'+this.manicuristas[index]._id)
+				this.arregloManicuristas.push(this.manicuristas[index].nombre)
 
 			} 
         },
@@ -252,10 +252,8 @@
 					.startsWith(input.toLowerCase())
 			})
 		},
-		handleSubmitPrestador(result){
-			const split = result.split('-')
-			this.prestador = split[1]
-			console.log(this.prestador)
+		handleSubmitPrestador(result){	
+			this.prestador = result
 		},
 		editarEstado(id, status, type){
 			console.log(type)
@@ -270,6 +268,8 @@
 				}, config)
 				.then(res => {
 					this.getUsers()
+					this.prestador = ''
+					$('#ModalLinkLender').modal('hide')
 				})
 				.catch(err => {
 					this.$swal({
