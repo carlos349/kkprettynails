@@ -41,10 +41,14 @@ clients.post('/sendmail', upload.array('image', 3),  async (req, res, next) => {
             image: req.files[0].filename
         }
         mail = {
-            from: array.from,
+            from: "kkprettynails",
             to: array.to,
             subject: array.subject,
-            html: `<div>aqui el template http://192.1:4200/static/users/${array.image} </div>`
+            html: `<div>
+                <center>
+                    <img src="http://192.168.0.103:4200/static/mailsImage/${array.image}" alt="Imagen de correo">
+                </center> 
+            </div>`
         }
     }
     if (req.body.type == 2) {
@@ -54,6 +58,19 @@ clients.post('/sendmail', upload.array('image', 3),  async (req, res, next) => {
             subject: req.body.subject,
             text: req.body.text
         }
+        mail = {
+            from: "kkprettynails",
+            to: array.to,
+            subject: array.subject,
+            html: `
+            
+            <div style="width: 50%;margin: auto;background-color: #ecebea;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;">
+                
+                    ${array.text}
+                    
+                
+            </div>`
+        }
     }
     if (req.body.type == 3) {
         array = {
@@ -62,6 +79,18 @@ clients.post('/sendmail', upload.array('image', 3),  async (req, res, next) => {
             subject: req.body.subject,
             text: req.body.text,
             image: req.files[0].filename
+        }
+        mail = {
+            from: "kkprettynails",
+            to: array.to,
+            subject: array.subject,
+            html: `<div style="width: 50%;margin: auto;background-color: #ecebea;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;">
+                    <center>
+                       <img src="http://192.168.0.103:4200/static/mailsImage/${array.image}" alt="Imagen de correo"> 
+                    </center>
+                    
+                ${array.text}
+            </div>`
         }
     }
     if (req.body.type == 4) {
@@ -75,6 +104,26 @@ clients.post('/sendmail', upload.array('image', 3),  async (req, res, next) => {
             imageTwo: req.files[1].filename,
             imageThree: req.files[2].filename
         }
+        mail = {
+            from: "kkprettynails",
+            to: array.to,
+            subject: array.subject,
+            html: `<div style="width: 50%;margin: auto;background-color: #ecebea;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;">
+                    <center>
+                       <img src="http://192.168.0.103:4200/static/mailsImage/${array.image}" alt="Imagen de correo"> 
+                    </center>
+                    
+                ${array.text}
+
+                <center>
+                    <div style="display: inline-block;">
+                        <img src="http://192.168.0.103:4200/static/mailsImage/${array.imageTwo}" alt="Imagen de correo2"> 
+                        <img src="http://192.168.0.103:4200/static/mailsImage/${array.imageThree}" alt="Imagen de correo3"> 
+                    </div>
+                </center>
+                ${array.textTwo}
+            </div>`
+        }
     }
     if (req.body.type == 5) {
         array = {
@@ -84,7 +133,19 @@ clients.post('/sendmail', upload.array('image', 3),  async (req, res, next) => {
             text: req.body.text,
             image: req.files[0].filename,
         }
+        mail = {
+            from: "kkprettynails",
+            to: array.to,
+            subject: array.subject,
+            html: `<div style="width: 50%;margin: auto;background-color: #ecebea;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;">     
+                ${array.text}
+                <center>
+                    <img src="http://192.168.0.103:4200/static/mailsImage/${array.image}" alt="Imagen de correo"> 
+                 </center>
+            </div>`
+        }
     }
+    console.log(req.body.type)
     if (req.body.type == 6) {
         array = {
             to: req.body.to,
@@ -94,6 +155,23 @@ clients.post('/sendmail', upload.array('image', 3),  async (req, res, next) => {
             textTwo: req.body.textTwo,
             image: req.files[0].filename,
             imageTwo: req.files[1].filename,
+            
+        }
+        
+        mail = {
+            from: "kkprettynails",
+            to: array.to,
+            subject: array.subject,
+            html: `<div style="width: 50%;margin: auto;background-color: #ecebea;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;">     
+                <center>
+                    <img src="http://192.168.0.103:4200/static/mailsImage/${array.image}" alt="Imagen de correo"> 
+                 </center>
+                 ${array.text}
+                 <center>
+                    <img src="http://192.168.0.103:4200/static/mailsImage/${array.imageTwo}" alt="Imagen de correo2"> 
+                 </center>
+                 ${array.textTwo}
+            </div>`
         }
     }
     

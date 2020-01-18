@@ -221,7 +221,7 @@
                     <div v-html="textareaOne" style="max-height:22vh;overflow:hidden" v-on:click="editarTextarea(textareaOne,1)"  class="m-3 p-3 textarea">
                     </div>
                     <picture-input 
-                    ref="pictureInput"
+                    ref="pictureInputTwo"
                     width="200" 
                     height="200" 
                     margin="16"
@@ -385,6 +385,7 @@ export default {
                 formData.append('image', this.imageTwo)
                 formData.append('text', this.textareaOne)
                 formData.append('textTwo', this.textareaTwo)
+                formData.append('type', this.template)
         
             }
             try{
