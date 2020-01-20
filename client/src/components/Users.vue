@@ -5,24 +5,40 @@
 			<h2 class="p-3" v-bind:style="{ 'background-color': '#1f5673'}">Registrar usuario</h2>
 			<form v-on:submit.prevent="register">
 				<div class="form-group">
-					<label for="name">Nombre del usuario</label>
+					<label for="name">Nombre del usuario <span style="color:red;">*</span></label>
 					<input type="text" v-model="first_name" class="form-control inputs" placeholder="Nombre del usuario">
 				</div>
 				<div class="form-group">
-					<label for="name">Apellido del usuario</label>
+					<label for="name">Apellido del usuario <span style="color:red;">*</span></label>
 					<input type="text" v-model="last_name" class="form-control inputs" placeholder="Apellido del usuario">
 				</div>
 				<div class="form-group">
-					<label for="name">Correo del usuario</label>
-					<input type="file" id="file" ref="file" v-on:change="handleFileUpload()" class="form-control inputs" placeholder="Correo del usuario">
+					<label for="name">Imagen de perfil</label>
+					<input type="file" id="file" ref="file" v-on:change="handleFileUpload()" class="form-control inputs" >
 				</div>
 				<div class="form-group">
-					<label for="name">Correo del usuario</label>
+					<label for="name">Correo del usuario <span style="color:red;">*</span></label>
 					<input type="email" v-model="email" class="form-control inputs" placeholder="Correo del usuario">
 				</div>
+				<div v-if="emailValidator" class="form-group">
+					<label for="name">Confirme correo <span style="color:red;">*</span></label>
+					<input type="email" v-model="emailConfirm" class="form-control inputs" placeholder="Correo del usuario">
+				</div>
+				<div v-else class="form-group">
+					<label for="name">Confirme correo <span style="color:red;">*</span></label>
+					<input type="email" v-model="emailConfirm" class="form-control inputs badPass" placeholder="Correo del usuario">
+				</div>
 				<div class="form-group">
-					<label for="name">Contraseña</label>
+					<label for="name">Contraseña <span style="color:red;">*</span></label>
 					<input type="password" v-model="password" class="form-control inputs" placeholder="Contraseña">
+				</div>
+				<div v-if="passwordValidator" class="form-group">
+					<label for="name">Confirme contraseña <span style="color:red;">*</span></label>
+					<input type="password" v-model="passwordConfirm" class="form-control inputs" placeholder="Contraseña">
+				</div>
+				<div v-else class="form-group">
+					<label for="name">Confirme contraseña <span style="color:red;">*</span></label>
+					<input type="password" v-model="passwordConfirm" class="form-control inputs badPass" placeholder="Contraseña">
 				</div>
 				<button type="submit" class="btn w-100 add">Agregar</button>
 			</form>
@@ -196,7 +212,11 @@
 		file: '',
 		prestador: '',
 		arregloManicuristas: [],
-		idSelect: ''
+		idSelect: '',
+		emailConfirm: '',
+		emailValidator: true,
+		passwordConfirm: '',
+		passwordValidator: true,
       }
     },
     beforeCreate() {
@@ -287,78 +307,70 @@
 			console.log(this.file)
 		},
 		register() {
-			let formData = new FormData();
-			formData.append('image', this.file)
-			const configToken = {headers: {'x-access-token': localStorage.userToken}}
-			axios.post('users/register',
-			{
-				first_name: this.first_name,
-				last_name: this.last_name,
-				email: this.email,
-				password: this.password,
-			}, configToken).then(res => {
-					this.$swal({
-						type: 'success',
-						title: 'Usuario registrado como admin',
-						showConfirmButton: false,
-						timer: 1500
-					})
-					this.users =  []
-					this.first_name =  '',
-					this.last_name =  '',
-					this.email =  '',
-					this.password =  '',
-					this.file =  ''
-					this.getUsers()
-					const id = res.data.status
-
-
-					const config = {headers: {'Content-Type': 'multipart/form-data', 'x-access-token': localStorage.userToken}}
-					axios.post(`users/registerImage/${id}`, formData, config)
-					.then(resData => {
-						console.log(resData)
-					})
-					.catch(err => {
-						console.log(err)
-					})
-
-					
-				}).catch(err => {
-					this.$swal({
-						type: 'error',
-						title: 'Acceso invalido, ingrese de nuevo, si el problema persiste comuniquese con el proveedor del servicio',
-						showConfirmButton: false,
-						timer: 2500
-					})
-					router.push({name: 'Login'})
+			if (this.first_name == '' || this.last_name == '' || this.email == '' || this.password == '') {
+				this.$swal({
+					type: 'error',
+					title: 'Llene los campos requeridos',
+					showConfirmButton: false,
+					timer: 1500
 				})
-			},
-			formatDate(date) {
-				let dateFormat = new Date(date)
-				return dateFormat.getDate()+"-"+(dateFormat.getMonth() + 1)+"-"+dateFormat.getFullYear()+" "+" ("+ dateFormat.getHours()+":"+ dateFormat.getMinutes()+")"
-			},
-			eliminarUsuario(id, admin){
-				if(admin == 1){
+			}else{
+				if (this.password != this.passwordConfirm) {
 					this.$swal({
 						type: 'error',
-						title: 'No puede borrar un gerente',
+						title: 'Las contraseñas no coinciden',
 						showConfirmButton: false,
 						timer: 1500
 					})
+					this.passwordValidator = false
+				}else if (this.email != this.emailConfirm) {
+					this.$swal({
+						type: 'error',
+						title: 'Los correos no coinciden',
+						showConfirmButton: false,
+						timer: 1500
+					})
+					this.emailValidator = false
 				}else{
+					let formData = new FormData();
+					formData.append('image', this.file)
 					const configToken = {headers: {'x-access-token': localStorage.userToken}}
-					axios.delete('users/' + id, configToken)
-					.then(res => {
+					axios.post('users/register',
+					{
+						first_name: this.first_name,
+						last_name: this.last_name,
+						email: this.email,
+						password: this.password,
+					}, configToken).then(res => {
 						this.$swal({
 							type: 'success',
-							title: res.data.first_name+' '+res.data.last_name+' ha sido Borrado',
+							title: 'Usuario registrado como admin',
 							showConfirmButton: false,
 							timer: 1500
 						})
-						
+						this.users =  []
+						this.first_name =  ''
+						this.last_name =  ''
+						this.email =  ''
+						this.password =  ''
+						this.file =  ''
+						this.emailConfirm = ''
+						this.passwordConfirm = ''
+						this.passwordValidator = true
+						this.emailValidator = true
 						this.getUsers()
-					})
-					.catch(err => {
+						const id = res.data.status
+
+
+						const config = {headers: {'Content-Type': 'multipart/form-data', 'x-access-token': localStorage.userToken}}
+						axios.post(`users/registerImage/${id}`, formData, config)
+						.then(resData => {
+							console.log(resData)
+						})
+						.catch(err => {
+							console.log(err)
+						})
+					}).catch(err => {
 						this.$swal({
 							type: 'error',
 							title: 'Acceso invalido, ingrese de nuevo, si el problema persiste comuniquese con el proveedor del servicio',
@@ -369,7 +381,44 @@
 					})
 				}
 			}
-    	}
+		},
+		formatDate(date) {
+			let dateFormat = new Date(date)
+			return dateFormat.getDate()+"-"+(dateFormat.getMonth() + 1)+"-"+dateFormat.getFullYear()+" "+" ("+ dateFormat.getHours()+":"+ dateFormat.getMinutes()+")"
+		},
+		eliminarUsuario(id, admin){
+			if(admin == 1){
+				this.$swal({
+					type: 'error',
+					title: 'No puede borrar un gerente',
+					showConfirmButton: false,
+					timer: 1500
+				})
+			}else{
+				const configToken = {headers: {'x-access-token': localStorage.userToken}}
+				axios.delete('users/' + id, configToken)
+				.then(res => {
+					this.$swal({
+						type: 'success',
+						title: res.data.first_name+' '+res.data.last_name+' ha sido Borrado',
+						showConfirmButton: false,
+						timer: 1500
+					})
+					
+					this.getUsers()
+				})
+				.catch(err => {
+					this.$swal({
+						type: 'error',
+						title: 'Acceso invalido, ingrese de nuevo, si el problema persiste comuniquese con el proveedor del servicio',
+						showConfirmButton: false,
+						timer: 2500
+					})
+					router.push({name: 'Login'})
+				})
+			}
+		}
+    }
   }
 </script>
 <style >
@@ -482,6 +531,10 @@
 
 .VueTables__child-row-toggler--open::before {
   content: "-";
+}
+.badPass{
+	border-bottom: solid 2px red !important;
+	border-right: solid 2px red !important;
 }
 
 [v-cloak] {

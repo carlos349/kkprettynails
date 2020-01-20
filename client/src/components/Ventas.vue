@@ -31,20 +31,32 @@
 				</div>
 			</div>
       <div class="row">
-        <div class="col-md-5">
-          <div class="pt-3 pb-3" style="padding-left:10%;">
+        <div class="col-md-3">
+          <div class="pt-3 pb-3" style="padding-left:20%;">
+            <datetime placeholder="filtar día" class="theme-blue"  v-model="justOneDay" :phrases="{ok: 'Elegir', cancel: 'Salir'}" :format="{ year: 'numeric', month: 'long', day: 'numeric'}" auto></datetime>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="pt-3 pb-3">
+            <button class="btn findSales w-75" v-on:click="findSalesByDay">
+              Filtrar día
+            </button>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="pt-3 pb-3" >
             <datetime placeholder="Desde" class="theme-blue"  v-model="fechaDesde" :phrases="{ok: 'Elegir', cancel: 'Salir'}" :format="{ year: 'numeric', month: 'long', day: 'numeric'}" auto></datetime>
           </div>
         </div>
-        <div class="col-md-5">
+        <div class="col-md-2">
           <div class="pt-3 pb-3">
             <datetime placeholder="Hasta" class="theme-blue"  v-model="fechaHasta" :phrases="{ok: 'Elegir', cancel: 'Salir'}" :format="{ year: 'numeric', month: 'long', day: 'numeric'}" auto></datetime>
           </div>
         </div>
         <div class="col-md-2">
-          <div class="pt-4 pb-3">
-            <button class="btn findSales w-75" v-on:click="findSalesByDate">
-              Buscar
+          <div class="pt-3 pb-3">
+            <button class="btn findSales w-100" v-on:click="findSalesByDate">
+              Filtar rango
             </button>
           </div>
         </div>
@@ -353,7 +365,8 @@ export default {
       height:360,
       arreglo: [],
       fechaDesde: '',
-      fechaHasta: ''
+      fechaHasta: '',
+      justOneDay: ''
     }
   },
   beforeCreate() {
@@ -417,7 +430,7 @@ export default {
             timer: 1500
           })
         }else{
-          this.ventas = res.data.status
+          this.ventas = sales.data.status
           let fechaBien = ''
           for (let index = 0; index < this.ventas.length; index++) {
             let fech = new Date(this.ventas[index].fecha)
@@ -435,8 +448,42 @@ export default {
       catch(err){
         console.log(err)
       }
-      
+    },
+    async findSalesByDay(){
+      const dateDesde = new Date(this.justOneDay)
+      const formatDesde = dateDesde.getFullYear() +"-"+(dateDesde.getMonth() + 1)+"-"+dateDesde.getDate()
+      dateDesde.setDate(dateDesde.getDate() + 1)
+      const formatHasta = dateDesde.getFullYear() +"-"+(dateDesde.getMonth() + 1)+"-"+dateDesde.getDate()
+      const Dates = formatDesde+':'+formatHasta
+      console.log(Dates)
 
+      try {
+        const sales = await axios.get('ventas/findSalesByDay/'+Dates)
+        if (sales.data.status == 'no Sales') {
+          this.$swal({
+            type: 'error',
+            title: 'No hay ventas en la fecha seleccionada',
+            showConfirmButton: false,
+            timer: 1500
+          })
+        }else{
+          this.ventas = sales.data.status
+          let fechaBien = ''
+          for (let index = 0; index < this.ventas.length; index++) {
+            let fech = new Date(this.ventas[index].fecha)
+            fechaBien = fech.getDate() +"/"+ (fech.getMonth() + 1) +"/"+fech.getFullYear() +" "+" ("+ fech.getHours()+":"+ fech.getMinutes()+")"
+            this.ventas[index].fecha = fechaBien
+            let servicio = ''
+            for (let indexTwo = 0; indexTwo < this.ventas[index].servicios.length; indexTwo++) {
+              servicio = servicio +'\n'+ this.ventas[index].servicios[indexTwo].servicio
+              
+            }
+            this.ventas[index].servicios = servicio
+          }
+        }
+      }catch(err){
+        console.log(err)
+      }
     },
     sacarReporte() {
       $('.afuera').hide()
@@ -485,25 +532,28 @@ export default {
       })
     },
     async cancelSale(id){
-      try {
-        const config = {headers: {'x-access-token': localStorage.userToken}}
-        const cancelSale = await axios.put('/ventas/'+id, config)
-        this.$swal({
-          type: 'success',
-          title: 'Venta anulada',
-          showConfirmButton: false,
-          timer: 1500
+        const cancelSale = await axios.put('/ventas/'+id, {
+          comision: this.arreglo.comision,
+          prestador: this.arreglo.manicurista
         })
-        this.getVentas()
-      }catch(err){
-        this.$swal({
-          type: 'error',
-          title: 'Acceso invalido, ingrese de nuevo, si el problema persiste comuniquese con el proveedor del servicio',
-          showConfirmButton: false,
-          timer: 2500
-        })
-        
-      }
+        if (cancelSale.data.status == 'ok') {
+          this.$swal({
+            type: 'success',
+            title: 'Venta anulada',
+            showConfirmButton: false,
+            timer: 1500
+          })
+          this.getVentas()
+          this.arreglo.status = false
+        }
+        else{
+          this.$swal({
+            type: 'error',
+            title: 'no se pudo anular la venta',
+            showConfirmButton: false,
+            timer: 2500
+          }) 
+        }
     },
     getMonthPerMonthSelected(month){
       this.loaded = false
@@ -769,12 +819,12 @@ export default {
 		font-weight:600;
 	}
   .vdatetime-input{
-    width:80%;
+    width:100%;
     padding: 20px;
     background-color: transparent;
     border:none;
     border: solid 3px #1F5673;
-    font-size: 2em;
+    font-size: 1.4em;
   }
   .findSales{
     background-color: #1F5673;

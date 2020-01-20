@@ -137,6 +137,26 @@ ventas.get('/findSalesByDate/:dates', async (req, res) => {
  
 })
 
+ventas.get('/findSalesByDay/:dates', async (req, res) => {
+  const dates = req.params.dates
+  const splitDates = dates.split(':')
+  const desde = splitDates[0]
+  const hasta = splitDates[1]
+  
+  try {
+    const Sales = await Venta.find({fecha: { $gte: desde, $lte: hasta }})
+    
+    if (Sales.length == 0) {
+      res.json({status: 'no Sales'})
+    }else{
+      res.json({status: Sales})
+    }
+  } catch(err) {
+    res.send(err)
+  }
+ 
+})
+
 ventas.get('/closingPerMonth/:month', (req, res) => {
   const monthSelect = parseFloat(req.params.month)
   const closing = []
@@ -863,17 +883,32 @@ ventas.post('/verificacioncliente', (req, res) => {
     res.send('error: ' + err)
   })
 })
-ventas.put('/:id', async (req, res, next) => {
-    
 
+ventas.put('/:id', async (req, res, next) => {
     const id = req.params.id
+    const comision = '-'+req.body.comision 
+    const comisionFinal = parseFloat(comision)
+    const prestador = req.body.prestador
+    const split = prestador.split('/')
+    console.log(split[1])
     const cancelSale = await Venta.findByIdAndUpdate(id, {
       $set: { status: false}
     })
     if (cancelSale) {
-      res.status(200).json({status: 'ok'})
+      const removeSale = await VentaDia.findOneAndRemove({idTableSales: id})
+      if (removeSale) {
+        const removeComision = await Manicurista.updateOne({documento:split[1]},{$inc: {comision: comisionFinal}})
+      
+        if (removeComision) {
+          res.status(200).json({status: 'ok'})
+        }
+        res.json({status: 'bad'})
+      }  
+      res.json({status: 'bad'})
     }
+    res.json({status: 'bad'})
 })
+
 ventas.post('/procesar', (req, res) => {
   let clientEdit = req.body.cliente
   const finalClient = clientEdit.split("-")
@@ -889,10 +924,11 @@ ventas.post('/procesar', (req, res) => {
   const comisionFinal = parseFloat(total) * parseFloat(comision)
   const comisionDosdecimales = comisionFinal.toFixed(2)
   const gananciaLocal = parseFloat(total) * parseFloat(comisionLocal)
-  
+  const documentoManicurista = req.body.documentoManicurista
+
   const venta = {
     cliente: req.body.cliente,
-    manicurista: req.body.manicurista,
+    manicurista: req.body.manicurista+"/"+documentoManicurista,
     servicios: req.body.servicios,
     comision: comisionFinal,
     pagoEfectivo:req.body.pagoEfectivo,
@@ -905,9 +941,28 @@ ventas.post('/procesar', (req, res) => {
     total: total,
     fecha: today
   }
-  const documentoManicurista = req.body.documentoManicurista
+
+  const ventaDia = {
+    cliente: req.body.cliente,
+    manicurista: req.body.manicurista,
+    servicios: req.body.servicios,
+    comision: comisionFinal,
+    pagoEfectivo:req.body.pagoEfectivo,
+    pagoOtros:req.body.pagoOtros,
+    pagoRedC:req.body.pagoRedC,
+    pagoTransf:req.body.pagoTransf,
+    descuento:req.body.descuento,
+    ganancialocal: gananciaLocal,
+    status: true,
+    total: total,
+    idTableSales: '',
+    fecha: today
+  }
+
+  
   Venta.create(venta)
   .then(ventas => {
+    ventaDia.idTableSales = ventas._id
     Manicurista.updateOne({documento:documentoManicurista},{
       $inc: {comision:ventas.comision}
     })
@@ -920,7 +975,7 @@ ventas.post('/procesar', (req, res) => {
           $set: {ultimaFecha: today}
         })
         .then(lasDate => {
-          VentaDia.create(venta)
+          VentaDia.create(ventaDia)
           .then(venta => {
             res.json({status: 'Venta registrada'})
           })

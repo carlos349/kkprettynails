@@ -35,6 +35,9 @@ const DaySaleSchema = new Schema({
 	total: {
 		type: Number
 	},
+	idTableSales: {
+		type: String
+	},
 	fecha: {
 		type: Date,
 		default: Date.now
