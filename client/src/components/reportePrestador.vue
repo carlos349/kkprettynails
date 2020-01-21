@@ -3,7 +3,7 @@
         <div class="recuadro mt-4" >
             <h1 class="text-center ">Reporte prestador</h1>
             <h2>Fecha: {{fecha}}</h2>
-            <h3>Nombre: {{identificacion}}</h3>
+            <h3>Nombre: {{nameLender}}</h3>
             <button class="btn add float-right" style="margin-top:-50px;" v-on:click="openPrestDiscount">Adelantos o Bonos</button>
         </div>
         <div class="row">
@@ -189,8 +189,9 @@
                     this.fecha = date.getDate()+"-"+(date.getMonth() + 1)+"-"+date.getFullYear()
                     this.codigo = resData.data._id
                     this.porcentaje = resData.data.porcentaje
-                    this.identificacion = resData.data.nombre
-                    axios.get('manicuristas/SalesByPrest/'+this.identificacion)
+                    this.nameLender = resData.data.nombre
+                    const identificacion = resData.data.nombre+':'+resData.data.documento
+                    axios.get('manicuristas/SalesByPrest/'+identificacion)
                     .then(res => {
                         this.sales = res.data
                         let totales = 0

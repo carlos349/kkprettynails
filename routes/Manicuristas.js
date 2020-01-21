@@ -27,13 +27,16 @@ manicurista.get('/SalesByPrest/:nombre', async (req, res) => {
   const dateNow = new Date()
   const formatDate = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+'-1'
   const formatDateTwo = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-31"
-
+  const split = req.params.nombre.split(':')
+  const lender = split[0]+'/'+split[1]
+  
   const manicuristas = await Venta.find({
     $and: [
-      {manicurista: req.params.nombre},
+      {manicurista: lender},
       {
         fecha: { $gte: formatDate, $lte: formatDateTwo }
-      }
+      },
+      {status: true}
     ]   
   })
   console.log(manicuristas)

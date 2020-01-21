@@ -12,8 +12,7 @@
           </div>
           <div class="col-sm-6">
             <select v-if="lender == 1 || lender == 2" id="manicuristas" v-model="empByCita" v-on:change="getCitasByEmploye()"  class="generar Two" name="manicuristas">
-              <option selected="true
-              " >{{this.empByCita}}</option>
+              <option v-if="sectionDelete" selected="true" >{{empByCita}}</option>
               <option>Todos</option>
               <option  v-for="manicurista in manicuristas" v-bind:key="manicurista._id">
                   {{manicurista.nombre}}
@@ -518,7 +517,8 @@ import router from '../router'
         maniBloque: 'Seleccione un prestador',
         correoCliente : '',
         instagramCliente: '',
-        identidadCliente:''
+        identidadCliente:'',
+        sectionDelete: true
       }
     },
     beforeCreate() {
@@ -773,6 +773,7 @@ import router from '../router'
               }
               this.events.push(arrayEvents)
             }
+            this.sectionDelete = false
           })
         }
       },
