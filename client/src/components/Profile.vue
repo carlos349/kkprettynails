@@ -100,7 +100,7 @@
 		</div>
 		<div class="col-md-12">
             <div class="shadow pl-5">
-				<div class="row pl-3">
+				<div v-if="link != ''" class="row pl-3">
 					<div class="col-md-2 col-sm-5 metricss first">
 					<p>Total de ventas</p>
 					<h2>{{ventas.length}}</h2>
@@ -111,7 +111,7 @@
 					</div>
 				</div>
 				
-              <v-client-table class="text-center"  :data="ventas" :columns="columns" :options="optionsT">
+              <v-client-table v-if="link != ''" class="text-center"  :data="ventas" :columns="columns" :options="optionsT">
                 <div slot="print"  slot-scope="props">
                   <button v-if="props.row.status" style="width:100%;" v-on:click="reporteVenta(props.row._id)" class=" btn btn-colorsPrint"><font-awesome-icon icon="copy" /></button>
                   <button v-else style="width:100%;" v-on:click="reporteVenta(props.row._id)" class=" btn btn-danger"><font-awesome-icon icon="copy" /></button>
@@ -186,7 +186,8 @@
 				image: '',
 				file: '',
 				ventas:[],
-				yourComision:0
+				yourComision:0,
+				link:''
 			}
 		},
 		beforeCreate() {
@@ -234,6 +235,7 @@
 				const ident = localStorage.userToken
 				const decoded = jwtDecode(ident)
 				const link = decoded.linkLender
+				this.link = decoded.linkLender
 				if (link != '') {
 					const split = link.split("/")
 					const sales = await axios.get('manicuristas/SalesByPrest/'+split[0]+":"+split[1])
