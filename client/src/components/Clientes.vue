@@ -437,6 +437,7 @@ export default {
 						this.arrayUsers();
 						this.ServicesQuantityChartFunc();
 						$('#ModalEditClient').modal('hide')
+						this.emitMethodTwo()
 					}else{
 						this.$swal({
 							type: 'error',
@@ -510,6 +511,7 @@ export default {
 						this.instagramCliente = ''
 						$('.autocomplete-input').val('')
 						$('#ModalCreateClient').modal('hide')
+						this.emitMethodTwo()
 					}else{
 						this.$swal({
 							type: 'error',
@@ -543,7 +545,10 @@ export default {
 		emitMethod(select) {
 			EventBus.$emit('select-template', select)
 			localStorage.setItem('selectTemplate', select)
-		}
+		},
+		emitMethodTwo() {
+			EventBus.$emit('reload-services', 'updated')
+		},
 	},
 	computed: {
 		myStyles () {
