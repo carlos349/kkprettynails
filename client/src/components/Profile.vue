@@ -98,6 +98,34 @@
 		    </div>
 		  </div>
 		</div>
+		<div class="col-md-12">
+            <div class="shadow pl-5">
+				<div class="row pl-3">
+					<div class="col-md-2 col-sm-5 metricss first">
+					<p>Total de ventas</p>
+					<h2>{{ventas.length}}</h2>
+					</div>	
+					<div class="col-md-2 col-sm-5 metricss second">
+						<p>Comision total</p>
+						<h2>{{yourComision}}</h2>
+					</div>
+				</div>
+				
+              <v-client-table class="text-center"  :data="ventas" :columns="columns" :options="optionsT">
+                <div slot="print"  slot-scope="props">
+                  <button v-if="props.row.status" style="width:100%;" v-on:click="reporteVenta(props.row._id)" class=" btn btn-colorsPrint"><font-awesome-icon icon="copy" /></button>
+                  <button v-else style="width:100%;" v-on:click="reporteVenta(props.row._id)" class=" btn btn-danger"><font-awesome-icon icon="copy" /></button>
+                </div>
+                
+                
+                <p slot="descuentoo" slot-scope="props">{{props.row.descuento}}%</p>
+                <p slot="comisionn" slot-scope="props">{{formatPrice(props.row.comision)}}</p>
+                <p slot="locall" slot-scope="props">{{formatPrice(props.row.ganancialocal)}}</p>
+                <p slot="totall" slot-scope="props">{{formatPrice(props.row.total)}}</p>
+                <!-- <a slot="edit" slot-scope="props" class="fa fa-edit" :href="pasarDatosEdit(props.row.nombre, props.row.identidad, props.row.correoCliente, props.row.instagramCliente, props.row._id)">Hola </a> -->
+              </v-client-table>
+            </div>
+          </div>
 	</div>
 </template>
 
@@ -106,13 +134,44 @@
 	import router from '../router'
 	import axios from 'axios'
 	import EventBus from './eventBus'
-
+	import LineChart from '../plugins/LineChart.js'
+	
 	export default {
+		components:{
+			LineChart
+		},
 		data() {
 			const token = localStorage.userToken
 			const decoded = jwtDecode(token)
-			console.log(decoded)
+			
 			return {
+				columns:['fecha' , 'servicios' , 'cliente' , 'descuentoo' , 'comisionn' , 'totall', 'print'],
+				optionsT: {
+					filterByColumn: true,
+					texts: {
+						filter: "Filtrar:",
+						filterBy: 'Filtrar por {column}',
+						count:' '
+					},
+					headings: {
+						fecha: 'Fecha ',
+						servicioss: 'Servicios ',
+						cliente: 'Cliente ',
+						manicurista: 'Prestador ',
+						descuentoo: 'Descuento ',
+						comisionn: 'Comision ',
+						locall: 'Local ',
+						totall: 'Total',
+						print: 'Reporte'
+					},
+					pagination: { chunk:10 },
+					pagination: { dropdown:true },
+					pagination: { nav: 'fixed' },
+					pagination: { edge: true },
+					sortIcon: {base:'fa' , up:'fa-sort-up', down:'fa-sort-down', is:'fa-sort'},
+					sortable: ['fecha'],
+					filterable: ['fecha']
+				},
 				first_name: '',
 				last_name: '',
 				email: '',
@@ -125,7 +184,9 @@
 				lastPass: '',
 				newPass:'',
 				image: '',
-				file: ''
+				file: '',
+				ventas:[],
+				yourComision:0
 			}
 		},
 		beforeCreate() {
@@ -141,6 +202,7 @@
 		},
 		created(){
 			this.getData();
+			this.getYourSales();
 		},
 		methods: {
 			async getData() {
@@ -164,6 +226,37 @@
 				}
 				
 			},
+			formatPrice(value) {
+				let val = (value/1).toFixed(2).replace('.', ',')
+				return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+			},
+			async getYourSales(){
+				const ident = localStorage.userToken
+				const decoded = jwtDecode(ident)
+				const link = decoded.linkLender
+				if (link != '') {
+					const split = link.split("/")
+					const sales = await axios.get('manicuristas/SalesByPrest/'+split[0]+":"+split[1])
+					this.ventas = sales.data
+					
+					let fechaBien = ''
+					for (let index = 0; index < this.ventas.length; index++) {
+					let fech = new Date(this.ventas[index].fecha)
+					fechaBien = fech.getDate() +"/"+ (fech.getMonth() + 1) +"/"+fech.getFullYear() +" "+" ("+ fech.getHours()+":"+ fech.getMinutes()+")"
+					this.ventas[index].fecha = fechaBien
+					let servicio = ''
+					this.yourComision = this.yourComision + this.ventas[index].comision
+					for (let indexTwo = 0; indexTwo < this.ventas[index].servicios.length; indexTwo++) {
+						servicio = servicio +'\n'+ this.ventas[index].servicios[indexTwo].servicio
+					}
+					this.ventas[index].servicios = servicio
+					}
+					console.log(this.salesByUser)
+				}
+				
+
+			},
+
 			async editImage() {
 				
 				let formData = new FormData();
@@ -351,4 +444,77 @@
 		color:#001514;
     }
 
+	.VueTables--client .row{
+		display:none
+	}
+	.VuePagination {
+		text-align: center;
+		display:block !important;
+	}
+
+	.vue-title {
+		text-align: center;
+		margin-bottom: 10px;
+	}
+
+	.vue-pagination-ad {
+		text-align: center;
+	}
+
+	.glyphicon.glyphicon-eye-open {
+		width: 16px;
+		display: block;
+		margin: 0 auto;
+	}
+
+	th:nth-child(3) {
+	text-align: center;
+	}
+
+.VueTables__child-row-toggler {
+  width: 16px;
+  height: 16px;
+  line-height: 16px;
+  display: block;
+  margin: auto;
+  text-align: center;
+}
+
+.VueTables__child-row-toggler--closed::before {
+  content: "+";
+}
+
+.VueTables__child-row-toggler--open::before {
+  content: "-";
+}
+
+[v-cloak] {
+  display:none;
+}
+
+thead {
+		background-color: #1f5673;
+		color: #fff;
+		text-align: center
+	}
+	.metricss{
+		height: auto;
+		margin:10px;
+    padding: auto;
+    margin-top: 20px;
+		color:#fff;
+		box-shadow: 0 0.46875rem 2.1875rem rgba(4,9,20,0.03), 0 0.9375rem 1.40625rem rgba(4,9,20,0.03), 0 0.25rem 0.53125rem rgba(4,9,20,0.05), 0 0.125rem 0.1875rem rgba(4,9,20,0.03);
+		border-radius:5px;
+	}
+	.metricss p{
+		font-size: 1.3em;
+		margin-top: 10px;
+		
+	}
+	.first{
+		background:#1F5673; /* fallback for old browsers */
+	}
+	.second{
+		background:#1F5673; /* fallback for old browsers */
+	}
 </style>

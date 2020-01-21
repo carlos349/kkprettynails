@@ -1,5 +1,5 @@
 <template>
-<div>
+<div style="z-index:10000">
 	<div class="container contenedor">
 		<div class="row">
 			<div class="col-md-12">
@@ -84,7 +84,7 @@
 								<span class="input-group-text bg-light font-weight-bold text-white spanInputs" id="inputGroup-sizing-lg">Descuento</span>
 								
 							</div>
-							<input type="text" placeholder="%" v-model="descuento" v-on:change="descuentoFunc" class="form-control manicuristaFocu inputs" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+							<input type="text" placeholder="0%" v-model="descuento" v-on:change="descuentoFunc" class="form-control manicuristaFocu inputs" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
 						</div>
 					</div>
 				</div>
@@ -120,10 +120,11 @@
 					</div>
 					<div class="col-sm-6">
 						<div class="input-group input-group-lg mb-2 ">
-							<div class="input-group-prepend w-50 text-center">
-								<span class="spanInputs w-100 text-white input-group-text" id="inputGroup-sizing-lg"><img class="w-100"  src="../assets/redC.png" alt=""></span>
+							<div class="input-group-prepend w-25 p-0 ">
+								<span class="spanInputs w-100 p-0 text-white input-group-text" id="inputGroup-sizing-lg"><img style="width:98%;padding-left:1px"  src="../assets/redC.png" alt=""></span>
 							</div>
-							<input type="text" class="form-control manicuristaFocus inputs" v-model="pagoRedC" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="0">
+							<input type="number" class="form-control manicuristaFocus inputs p-1" v-model="pagoRedCDebito" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="Débito">
+							<input type="number" class="form-control manicuristaFocus inputs p-1" v-model="pagoRedCCredito" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="Crédito">
 						</div>
 					</div>
 					<div class="col-sm-6">
@@ -176,7 +177,7 @@
 		</div>
 		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered" role="document">
-		    <div class="modal-content p-2" style="-webkit-box-shadow: 0px 0px 22px 5px rgba(31,86,115,1);
+		    <div class="modal-content p-1" style="-webkit-box-shadow: 0px 0px 22px 5px rgba(31,86,115,1);
 -moz-box-shadow: 0px 0px 22px 5px rgba(31,86,115,1);
 box-shadow: 0px 0px 22px 5px rgba(31,86,115,1);">
 		      <div class="modal-header " v-bind:style="{ 'background-color': '#1F5673'}">
@@ -212,7 +213,7 @@ box-shadow: 0px 0px 22px 5px rgba(31,86,115,1);">
 		</div>
 		<div class="modal fade" id="myModalAddServiceFast" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered" role="document">
-		    <div class="modal-content p-2" style="-webkit-box-shadow: 0px 0px 22px 5px rgba(31,86,115,1);
+		    <div class="modal-content p-1" style="-webkit-box-shadow: 0px 0px 22px 5px rgba(31,86,115,1);
 -moz-box-shadow: 0px 0px 22px 5px rgba(31,86,115,1);
 box-shadow: 0px 0px 22px 5px rgba(31,86,115,1);">
 		      <div class="modal-header"  v-bind:style="{ 'background-color': '#1F5673'}">
@@ -314,7 +315,8 @@ import EventBus from './eventBus'
 			},
 			pagoEfectivo: '',
 			pagoOtros: '',
-			pagoRedC: '',
+			pagoRedCDebito: '',
+			pagoRedCCredito: '',
 			pagoTransf: '',
 			nombreCliente: '',
 			nombreClienteRegister:'',
@@ -567,13 +569,19 @@ import EventBus from './eventBus'
 				if (this.pagoOtros == '') {
 					this.pagoOtros = 0
 				}
-				if (this.pagoRedC == '') {
-					this.pagoRedC = 0
+				if (this.pagoRedCDebito == '') {
+					this.pagoRedCDebito = 0
+				}
+				if (this.pagoRedCCredito == '') {
+					this.pagoRedCCredito = 0
 				}
 				if (this.pagoTransf == '') {
 					this.pagoTransf = 0
 				}
-				const totalFormadePago = parseFloat(this.pagoEfectivo) + parseFloat(this.pagoOtros) + parseFloat(this.pagoRedC) + parseFloat(this.pagoTransf)
+				if (this.descuento == '') {
+					this.descuento = 0
+				}
+				const totalFormadePago = parseFloat(this.pagoEfectivo) + parseFloat(this.pagoOtros) + parseFloat(this.pagoRedCDebito) + parseFloat(this.pagoRedCCredito) + parseFloat(this.pagoTransf)
 				
 				if (this.nombreCliente != '' && this.maniSelect != '') {
 					if (this.totalSinFormato == totalFormadePago ) {
@@ -584,7 +592,8 @@ import EventBus from './eventBus'
 							comision: this.comision,
 							pagoEfectivo:this.pagoEfectivo,
 							pagoOtros:this.pagoOtros,
-							pagoRedC:this.pagoRedC,
+							pagoRedCDebito:this.pagoRedCDebito,
+							pagoRedCCredito:this.pagoRedCCredito,
 							pagoTransf:this.pagoTransf,
 							descuento:this.descuento,
 							fecha:this.fechaVenta,
@@ -882,6 +891,7 @@ import EventBus from './eventBus'
 	.addProc{
 		background-color:#28a745;
 		color: #fff;
+		border-radius: 5px !important;
 		font-family: 'Raleway', sans-serif;
 		font-weight:600;
 		-webkit-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
