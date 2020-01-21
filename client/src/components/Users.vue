@@ -1,7 +1,7 @@
 <template>
   <div class="container-fluid row pt-5">
     <div class="col-md-4">
-		<div class="forms" v-bind:style="{ 'background-color': '#fff'}">
+		<div class="formsUsers" v-bind:style="{ 'background-color': '#fff'}">
 			<h2 class="p-3" v-bind:style="{ 'background-color': '#1f5673'}">Registrar usuario</h2>
 			<form v-on:submit.prevent="register">
 				<div class="form-group">
@@ -422,7 +422,7 @@
   }
 </script>
 <style >
-  .forms{
+  .formsUsers{
 		color:#fff;
 		box-shadow: 0 0.46875rem 2.1875rem rgba(4,9,20,0.03), 0 0.9375rem 1.40625rem rgba(4,9,20,0.03), 0 0.25rem 0.53125rem rgba(4,9,20,0.05), 0 0.125rem 0.1875rem rgba(4,9,20,0.03);
 		padding: 20px;
@@ -432,7 +432,7 @@
 		height:auto;
 		border-radius:5px;
 	}
-	.forms::-webkit-scrollbar {
+	.formsUsers::-webkit-scrollbar {
 		width: 8px;     /* Tamaño del scroll en vertical */
 		height: 8px;    /* Tamaño del scroll en horizontal */
 		display: none;  /* Ocultar scroll */

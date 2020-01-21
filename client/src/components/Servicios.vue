@@ -2,15 +2,15 @@
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-12 row sectionMetrics">
-				<div class="col-md-3 metrics first">
+				<div class="col-md-3 metricsServices first">
 					<p>Total Servicios</p>
 					<h1>{{TotalServicios}}</h1>
 				</div>
-				<div class="col-md-3 metrics second">
+				<div class="col-md-3 metricsServices second">
 					<p>Servicios mensuales</p>
 					<h1>{{TotalCantidadServicios}}</h1>
 				</div>
-				<div class="col-md-3 metrics three">
+				<div class="col-md-3 metricsServices three">
 					<p>Prestadores</p>
 					<h1>{{TotalPrestadores}}</h1>
 				</div>
@@ -218,7 +218,7 @@
 						<div class="form-group row" style="margin-top:-15px;">
 							<div class="w-100">
 							<input type="text" id="myInputServ" v-on:keyup="myFunctionServ()" class="form-control buscar inputs mb-1 w-100" placeholder="Buscar prestadores"/>
-							<font-awesome-icon class="lupa-modal" icon="search"/></div>
+							<font-awesome-icon class="lupa-modalServices" icon="search"/></div>
 							<div class="ListaProcesar maxHeight">
 								<table class="table table-light table-borderless table-striped" id="myTableServ">
 									<tbody>
@@ -647,7 +647,7 @@
 	}
 </script>
 <style>
-	.metrics{
+	.metricsServices{
 		height: auto;
 		background-color: #fff;
 		margin:20px;
@@ -657,7 +657,7 @@
 		box-shadow: 0 0.46875rem 2.1875rem rgba(4,9,20,0.03), 0 0.9375rem 1.40625rem rgba(4,9,20,0.03), 0 0.25rem 0.53125rem rgba(4,9,20,0.05), 0 0.125rem 0.1875rem rgba(4,9,20,0.03);
 		border-radius:5px;
 	}
-	.metrics p{
+	.metricsServices p{
 		font-size: 1em;
 		margin-top: 10px;
 	}
@@ -667,7 +667,7 @@
 	.maxHeightEdit{
 		max-height: 150px;
 	}
-	.metrics h1{
+	.metricsServices h1{
 		float: right;
 		margin-top: -55px;
 	}
@@ -894,7 +894,7 @@
 	.btn-white:hover{
 		background-color: #218838;
 	}
-	.lupa-modal{
+	.lupa-modalServices{
 		position:absolute;
 		right:8%;
 		top:51%;
