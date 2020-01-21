@@ -26,7 +26,10 @@ const VentaSchema = new Schema({
 	pagoOtros: {
 		type: Number
 	},
-	pagoRedC: {
+	pagoRedCDebito: {
+		type: Number
+	},
+	pagoRedCCredito: {
 		type: Number
 	},
 	pagoTransf: {

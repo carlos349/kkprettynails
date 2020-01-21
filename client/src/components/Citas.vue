@@ -11,7 +11,7 @@
             <button  data-toggle="modal" class="generar" data-target=".genCita"><span></span>Generar cita</button>
           </div>
           <div class="col-sm-6">
-            <select v-if="lender == 1 || lender == 2" id="manicuristas" v-model="empByCita" v-on:change="getCitasByEmploye()"  class="generar Two" name="manicuristas">
+            <select v-if="status == 1 || status == 2" id="manicuristas" v-model="empByCita" v-on:change="getCitasByEmploye()"  class="generar Two" name="manicuristas">
               <option v-if="sectionDelete" selected="true" >{{empByCita}}</option>
               <option>Todos</option>
               <option  v-for="manicurista in manicuristas" v-bind:key="manicurista._id">
@@ -458,6 +458,7 @@ import router from '../router'
     data () {
       return {
         image: "'../assets/fondo.jpg'",
+        status:'',
         arregloHora:[],
         locale: 'es',
         start:'',
@@ -549,7 +550,9 @@ import router from '../router'
       validatorLender(){
         const token = localStorage.userToken
         const decoded = jwtDecode(token)
-        this.lender = decoded.status
+        const split = decoded.linkLender.split("/")
+        this.lender = split[0]
+        this.status = decoded.status
         console.log(this.lender)
       },
       searchClient(input){

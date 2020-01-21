@@ -23,6 +23,7 @@ manicurista.get('/justOneById/:id', async (req, res) => {
   res.json(manicurista)
 })
 
+
 manicurista.get('/SalesByPrest/:nombre', async (req, res) => {
   const dateNow = new Date()
   const formatDate = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+'-1'

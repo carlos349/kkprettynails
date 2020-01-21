@@ -260,7 +260,8 @@
               <div class="form-group col-md-6">
                 <label for="name">Métodos de pago</label>
                 <label v-if="arreglo.pagoEfectivo > 0">Efectivo: {{formatPrice(arreglo.pagoEfectivo)}}</label>
-                <label v-if="arreglo.pagoRedC > 0">RedCompra: {{formatPrice(arreglo.pagoRedC)}}</label>
+                <label v-if="arreglo.pagoRedCDebito > 0">RedCompra Debito: {{formatPrice(arreglo.pagoRedCDebito)}}</label>
+                <label v-if="arreglo.pagoRedCCredito > 0">RedCompra Credito: {{formatPrice(arreglo.pagoRedCCredito)}}</label>
                 <label v-if="arreglo.pagoTransf > 0">Transferencia: {{formatPrice(arreglo.pagoTransf)}}</label>
                 <label v-if="arreglo.pagoOtros > 0">Otros: {{formatPrice(arreglo.pagoOtros)}}</label>
               </div>

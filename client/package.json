@@ -44,7 +44,7 @@
     "vue-session": "^1.0.0",
     "vue-sessionstorage": "^1.0.0",
     "vue-sweetalert2": "^2.0.5",
-    "vue-tables-2": "^1.5.46",
+    "vue-tables-2": "^1.6.23",
     "vuejs-datepicker": "^1.6.2",
     "weekstart": "^1.0.1"
   },

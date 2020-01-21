@@ -253,7 +253,7 @@
 		},
 		arrayUsers(){
 			for (let index = 0; index < this.manicuristas.length; index++) {
-				this.arregloManicuristas.push(this.manicuristas[index].nombre)
+				this.arregloManicuristas.push(this.manicuristas[index].nombre+"/"+this.manicuristas[index].documento)
 
 			} 
         },
