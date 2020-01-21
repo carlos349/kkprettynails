@@ -1,28 +1,28 @@
 <template>
     <div class="container-fluid">
-      <div class="col-md-12 row sectionMetricss">
-				<div class="col-md-2 col-sm-5 metricss first">
+      <div class="col-md-12 row sectionMetricssSales">
+				<div class="col-md-2 col-sm-5 metricssSales first">
 					<p>Total de ventas</p>
 					<h2>{{ventas.length}}</h2>
 				</div>
-				<div class="col-md-3 col-sm-5 metricss second">
-          <div class="row metricTotal">
+				<div class="col-md-3 col-sm-5 metricssSales second">
+          <div class="row metricTotalSales">
             <div class="col-sm-6 ant"><h6>Mes anterior</h6></div>
             <div class="col-sm-6 ant"><h5 class="text-right">{{localAnterior}} $</h5></div>
             <div class="col-sm-4"><p>Total local</p></div>
             <div class="col-sm-8"><h3 class="text-right mt-2">{{totalLocal}} $</h3></div> 
           </div>
 				</div>
-				<div class="col-md-3 col-sm-5 metricss three">
-          <div class="row metricTotal">
+				<div class="col-md-3 col-sm-5 metricssSales three">
+          <div class="row metricTotalSales">
             <div class="col-sm-6 ant"><h6>Mes anterior</h6></div>
             <div class="col-sm-6 ant"><h5 class="text-right">{{netaAnterior}} $</h5></div>
             <div class="col-sm-4"><p>Ganancia</p></div>
             <div class="col-sm-8"><h3 class="text-right mt-2">{{gananciaNeta}} $</h3></div> 
           </div>
 				</div>
-        <div class="col-md-3 col-sm-5 metricss four">
-          <div class="row metricTotal">
+        <div class="col-md-3 col-sm-5 metricssSales four">
+          <div class="row metricTotalSales">
             <div class="col-sm-6 ant"><h6>Mes anterior</h6></div>
             <div class="col-sm-6 ant"><h5 class="text-right">{{totalAnterior}} $</h5></div>
             <div class="col-sm-4"><p>Total</p></div>
@@ -33,7 +33,7 @@
       <div class="row">
         <div class="col-md-3">
           <div class="pt-3 pb-3" style="padding-left:20%;">
-            <datetime placeholder="filtar día" class="theme-blue"  v-model="justOneDay" :phrases="{ok: 'Elegir', cancel: 'Salir'}" :format="{ year: 'numeric', month: 'long', day: 'numeric'}" auto></datetime>
+            <datetime placeholder="filtar día" class="theme-blue SalesInputs"  v-model="justOneDay" :phrases="{ok: 'Elegir', cancel: 'Salir'}" :format="{ year: 'numeric', month: 'long', day: 'numeric'}" auto></datetime>
           </div>
         </div>
         <div class="col-md-2">
@@ -45,12 +45,12 @@
         </div>
         <div class="col-md-2">
           <div class="pt-3 pb-3" >
-            <datetime placeholder="Desde" class="theme-blue"  v-model="fechaDesde" :phrases="{ok: 'Elegir', cancel: 'Salir'}" :format="{ year: 'numeric', month: 'long', day: 'numeric'}" auto></datetime>
+            <datetime placeholder="Desde" class="theme-blue SalesInputs"  v-model="fechaDesde" :phrases="{ok: 'Elegir', cancel: 'Salir'}" :format="{ year: 'numeric', month: 'long', day: 'numeric'}" auto></datetime>
           </div>
         </div>
         <div class="col-md-2">
           <div class="pt-3 pb-3">
-            <datetime placeholder="Hasta" class="theme-blue"  v-model="fechaHasta" :phrases="{ok: 'Elegir', cancel: 'Salir'}" :format="{ year: 'numeric', month: 'long', day: 'numeric'}" auto></datetime>
+            <datetime placeholder="Hasta" class="theme-blue SalesInputs"  v-model="fechaHasta" :phrases="{ok: 'Elegir', cancel: 'Salir'}" :format="{ year: 'numeric', month: 'long', day: 'numeric'}" auto></datetime>
           </div>
         </div>
         <div class="col-md-2">
@@ -657,10 +657,10 @@ export default {
 </script>
 <style media="screen">
   @media (max-width: 1450px) {
-    .metricss p{
+    .metricssSales p{
       font-size: .6em;
     }
-    .metricss h2{
+    .metricssSales h2{
       margin-top: 0 !important;
       font-size: 1em;
       float:left !important;
@@ -670,10 +670,10 @@ export default {
     .respons{
       font-size: 2vw;
     }
-    .metricss p{
+    .metricssSales p{
       font-size: .6em
     }
-    .metricss h1{
+    .metricssSales h1{
       font-size: 1em
     }
   }
@@ -771,7 +771,7 @@ export default {
     background:rgb(54, 95, 116);
   }
 
-  .metricss{
+  .metricssSales{
 		height: auto;
 		margin:10px;
     padding: auto;
@@ -780,13 +780,13 @@ export default {
 		box-shadow: 0 0.46875rem 2.1875rem rgba(4,9,20,0.03), 0 0.9375rem 1.40625rem rgba(4,9,20,0.03), 0 0.25rem 0.53125rem rgba(4,9,20,0.05), 0 0.125rem 0.1875rem rgba(4,9,20,0.03);
 		border-radius:5px;
 	}
-	.metricss p{
+	.metricssSales p{
 		font-size: 1.3em;
 		margin-top: 10px;
 		
 	}
 	
-	.sectionMetricss{
+	.sectionMetricssSales{
 		margin-left: 0.5%;
 	}
 
@@ -803,7 +803,7 @@ export default {
 		box-shadow: 0 0.46875rem 2.1875rem rgba(4,9,20,0.03), 0 0.9375rem 1.40625rem rgba(4,9,20,0.03), 0 0.25rem 0.53125rem rgba(4,9,20,0.05), 0 0.125rem 0.1875rem rgba(4,9,20,0.03);
 		border-radius: 5px;
 	}
-  .metricTotal{
+  .metricTotalSales{
     margin-top: 3%;
   }
   .ant{
@@ -818,7 +818,7 @@ export default {
 		font-family: 'Raleway', sans-serif;
 		font-weight:600;
 	}
-  .vdatetime-input{
+  .SalesInputs .vdatetime-input{
     width:100%;
     padding: 20px;
     background-color: transparent;

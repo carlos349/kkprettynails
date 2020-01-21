@@ -53,7 +53,7 @@
 									</tbody>
 								</table>
 							</div>
-					<button class="btn w-100 add">Agregar</button>
+							<button class="btn w-100 add">Agregar</button>
 							</form>
 						</div>
 				
@@ -538,7 +538,7 @@ export default {
 		display: none;  /* Ocultar scroll */
 	}
 	.add{
-		background-color:#102229;
+		background-color:#1F5673;
 		color:#fff;
 		transition: all 0.5s ease-out;
 		font-family: 'Raleway', sans-serif;
