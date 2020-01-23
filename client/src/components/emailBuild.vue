@@ -279,6 +279,7 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import PictureInput from 'vue-picture-input'
 import EventBus from './eventBus'
 import axios from 'axios'
+import router from '../router'
 
 export default {
     data() {
@@ -301,6 +302,17 @@ export default {
     components: {
         PictureInput
     },
+    beforeCreate() {
+		if (!localStorage.getItem('userToken')) {
+			this.$swal({
+				type: 'error',
+				title: 'URL restringida',
+				showConfirmButton: false,
+				timer: 1500
+			})
+			router.push({name: 'Login'})
+		}
+ 	},
     created(){
         this.getMails()
     },
@@ -365,9 +377,6 @@ export default {
                 formData.append('type', this.template)
             }
             if (this.template == 4) {
-                console.log(this.image)
-                console.log(this.imageTwo)
-                console.log(this.imageThree)
                 formData.append('image', this.image)
                 formData.append('image', this.imageTwo)
                 formData.append('image', this.imageThree)
@@ -388,17 +397,30 @@ export default {
                 formData.append('type', this.template)
         
             }
-            try{
-                const send = await axios.post('clients/sendmail', formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    }
+
+            
+            const send = await axios.post('clients/sendmail', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+            console.log(send)
+            if (send.data.status == "ok"){ 
+                this.$swal({
+                    type: 'success',
+                    title: 'Correo enviado correctamente',
+                    showConfirmButton: false,
+                    timer: 1500
                 })
-                console.log(send)
-            }catch(err){
-                console.log(err)
-            }
-                
+                router.push({name: 'Clientes'})
+            }else{
+                this.$swal({
+                    type: 'error',
+                    title: 'Error al enviar el correo',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+            }       
         },
         editarTextarea (info, model){
             $(".textarea").removeClass("sombreado")

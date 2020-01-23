@@ -397,6 +397,7 @@ import EventBus from './eventBus'
 		  	getManicuristas(){
 				axios.get('manicuristas')
 				.then(res => {
+					this.arregloManicuristas = []
 					this.manicuristas = res.data
 					this.arrayMani()
 				}),

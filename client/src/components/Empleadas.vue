@@ -254,6 +254,7 @@
 import axios from 'axios'
 import LineChart from '../plugins/LineChart.js'
 import router from '../router'
+import EventBus from './eventBus'
 
 class Manicurista{
 	constructor(nombre, documento, porcentaje, comision) {
@@ -379,6 +380,7 @@ export default {
 						timer: 1500
 					})
 					this.getManicuristas()
+					this.emitMethod()
 				}
 			})
 			.catch(err => {
@@ -395,6 +397,9 @@ export default {
           }
         })
 			
+		},
+		emitMethod() {
+			EventBus.$emit('reload-services', 'updated')
 		},
 		sacarReporte(id) {
             localStorage.setItem('reportePrestador', id)
@@ -447,6 +452,7 @@ export default {
 					this.documento = ''
 					this.porcentaje = ''
 					$('#ModalCreateEmploye').modal('hide')
+					this.emitMethod()
 				}else{
 					this.$swal({
 						type: 'error',
@@ -506,6 +512,7 @@ export default {
 					})
 					$('#ModalEditPrestador').modal('hide')
 					this.getManicuristas()
+					this.emitMethod()
 				}else{
 					this.$swal({
 						type: 'error',
