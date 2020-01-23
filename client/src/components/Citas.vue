@@ -227,7 +227,7 @@
                           </div>
                           
                           <autocomplete	
-                            
+                            ref="autocomplete"
                             :search="searchClient"
                             placeholder="Buscar cliente"
                             aria-label="Buscar cliente"
@@ -1030,7 +1030,7 @@ import router from '../router'
             $(".wThree").removeClass("marc")
             $('.botonClient div input').val('')
             $('.inputssDate input').val('Click para seleccionar fecha')
-            
+            this.maniBloque = "Seleccione un prestador"
             this.clientsSelect = ''
             this.servicioCita = []
             this.manicuristaCita = []
@@ -1046,6 +1046,7 @@ import router from '../router'
             this.salidaMuestra = ''
             this.duracion = 0
             this.bloquesHora = []
+            this.result = ''
             $("#Dat").val(0)
             $("#Dat").prop("disabled", true)
             $(".autocomplete-input").val('')
@@ -2073,5 +2074,6 @@ import router from '../router'
 .manis{
   display: none;
 }
+
 
 </style>

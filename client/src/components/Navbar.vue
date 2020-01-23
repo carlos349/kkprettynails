@@ -20,8 +20,8 @@
 				</div>
 				<div class="collapse" id="collapseUser">
 					<ul class="listaMenu">
-						<router-link class="text-white menuText" to="/profile"> <li>Editar perfil</li> </router-link>
-						<router-link class="text-white menuText" to="/"><li v-on:click="logout">Cerrar Sesión</li> </router-link>
+						<router-link class="text-white menuText" to="/profile"> <li><font-awesome-icon class="icons mr-3" icon="edit" />Editar perfil</li> </router-link>
+						<router-link class="text-white menuText" to="/"><li v-on:click="logout"><font-awesome-icon class="icons mr-3" icon="sign-out-alt" />Cerrar Sesión</li> </router-link>
 					</ul>
 				</div>
 				
@@ -259,6 +259,12 @@ export default {
 			
 		},
 		mouseOver(){
+			
+			$(".collapse").removeClass("show")
+			$(".fOne").show()
+			$(".fTwo").hide()
+			$(".fOneU").show()
+			$(".fTwoU").hide()
 			setTimeout(() => {
 				if ($(".navS").width() > "200" ) {
 				$('.menuText').show("slow")
@@ -268,6 +274,12 @@ export default {
 			
 		},
 		mouseLeave(){
+			
+			$(".collapse").removeClass("show")
+			$(".fOne").show()
+			$(".fTwo").hide()
+			$(".fOneU").show()
+			$(".fTwoU").hide()
 			$('.menuText').hide()		
 		},
 		intervalM(){
