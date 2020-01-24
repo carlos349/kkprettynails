@@ -194,6 +194,11 @@ clients.get('/bestClient', async (req, res) => {
     res.json(Clients)
 })
 
+clients.get('/onlyData', async (req, res) => {
+    const Clients = await Cliente.find()
+    res.json(Clients)
+})
+
 clients.get('/mails', async (req, res) => {
     const Clients = await Cliente.find()
     res.json(Clients)
