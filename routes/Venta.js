@@ -857,7 +857,7 @@ ventas.get('/', async (req, res) => {
 		return res.status(401).json({auth: false, message: 'token expired'})
   }
   
-  const ventas = await Venta.find()
+  const ventas = await Venta.find().sort({fecha: -1})
   res.json(ventas)
 })
 

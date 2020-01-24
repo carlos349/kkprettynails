@@ -102,7 +102,7 @@
 				</div>
 				
 				
-					<span class="spanInputs w-100 font-weight-bold text-center text-white input-group-text text-center" ><h5 class="text-center w-100">Medios de pago</h5> </span>
+					<span class="spanInputs w-100 font-weight-bold text-center text-white input-group-text text-center" style="background-color: rgb(31, 86, 115) !important; color:#fff !important; border:none !important;padding-top:10px;" ><h5 class="text-center w-100">Medios de pago</h5> </span>
 					<div class="input-group-prepend w-25 text-center">
 						
 					</div>
@@ -845,7 +845,7 @@ import EventBus from './eventBus'
 	}
 	.contenedor{
 		width:40%;
-		border:2px solid #1F5673;
+		
 		padding-top:12px;
 		background-color: transparent;
 		min-width: 100%;
