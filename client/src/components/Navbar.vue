@@ -167,14 +167,19 @@
         </div>
 		<div class="modal fade bd-example-modal-xl" id="myModalThree" tabindex="-1"  aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-lg " role="document">
-		    <div v-bind:style="{ 'background-color': '#fff'}"  class="modal-content p-3">
+		    <div v-bind:style="{ 'background-color': '#fff'}"  class="modal-content p-0">
 		      <div class="modal-header" v-bind:style="{ 'background-color': '#1F5673'}">
-		        <h5 class="modal-title text-white" id="exampleModalCenterTitle">Procesar venta</h5>
-		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-		          <span aria-hidden="true" class="text-white">&times;</span>
-		        </button>
+				  <img src="" alt="">
+				  <div class=" text-center p-0 col-md-12">
+					  <img src="../assets/logoNew.png" class="logoVenta"  alt="">
+					  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true" class="text-white">&times;</span>
+					  </button>
+				  </div>
+		        <!-- <h5 class="modal-title text-white" id="exampleModalCenterTitle">Procesar venta</h5> -->
+		        
 		      </div>
-		      <div class="modal-body">
+		      <div class="modal-body pb-0">
 		        <procesar></procesar>
 		      </div>
 		    </div>
@@ -406,6 +411,11 @@ export default {
   .logoNonHover{
 	  width: 50px;
 	  transition: all 0.5s ease-out;
+  }
+  .logoVenta{
+	  width: 7%;
+	  transition: all 0.5s ease-out;
+	  float: left;
   }
 
   #mydiv {

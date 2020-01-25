@@ -1,12 +1,11 @@
 <template>
 <div style="z-index:10000">
-	<div class="container contenedor">
+	<div class="contenedor">
 		<div class="row">
 			<div class="col-md-12">
-				<div class="input-group mb-3">
-					<div class="input-group-prepend w-25">
-					<button class="btn addProc w-100" v-on:click="verificacionCliente" id="button-addon1">Ingresar cliente</button>
-					</div>
+				<div class="row mb-2">
+					<div class="input-group col-sm-6">
+					
 					<autocomplete	
 						:search="searchClient"
 						placeholder="Buscar cliente"
@@ -15,10 +14,8 @@
 						class="auto">
 					</autocomplete>
 				</div>
-				<div class="input-group input-group-lg mb-2 ">
-				  <div class="input-group-prepend w-25 text-center">
-				    <span  class="spanInputs w-100 font-weight-bold  input-group-text text-center" id="inputGroup-sizing-lg">Manicurista</span>
-				  </div>
+				<div class="input-group input-group-lg col-sm-6">
+				  
 					<autocomplete	
 						:search="search"
 						placeholder="Buscar manicurista"
@@ -27,9 +24,11 @@
 						class="auto">
 					</autocomplete>
 				</div>
+				</div>
+				
 				<div class="">
 					<input type="text" id="myInput" v-on:keyup="myFunction()" class="form-control buscar inputs" placeholder="Filtrar servicios"/>
-					<font-awesome-icon class="lupa" icon="search"/>
+					
 				</div>
 				<table class="table table-dark" v-bind:style="{ 'background-color': '#1F5673'}" >
 					<thead>
@@ -38,7 +37,7 @@
 								Servicio
 							</th>
 							<th class="text-center text-white">
-								Precio <font-awesome-icon class="icon-add" icon="plus-square" v-on:click="addService"/>
+								Precio 
 							</th>
 						</tr>
 					</thead>
@@ -70,84 +69,94 @@
 					</table>
 				</div>
 				<div class="row pt-3 shadowTop">
-					<div class="col-sm-8">
-						<div class="input-group input-group-lg mb-2 ">
-							<div class="input-group-prepend w-25 text-center">
-								<span class="spanInputs w-100 font-weight-bold  text-white input-group-text text-center" id="inputGroup-sizing-lg">Sub-Total</span>
+					<div class="col-sm-6">
+						<div class="input-group input-group-lg mb-2">
+							<div class="input-group-prepend text-center">
+								<span style="font-size:1.5em;color:#5a5a5a !important" class="inputsVenta w-100 text-white input-group-text text-center" id="inputGroup-sizing-lg">Subtotal</span>
 							</div>
-							<input readonly type="text" class="form-control manicuristaFocus inputs" v-model="precio" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+							<input style="font-size:1.5em;color:#5a5a5a !important" readonly type="text" disabled class="inputsVenta text-center w-100 form-control manicuristaFocus" v-model="precio" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
 						</div>
 					</div>
-					<div class="col-sm-4">
+					<div class="col-sm-3">
 						<div class="input-group input-group-lg mb-2 ">
-							<div class="input-group-prepend">
-								<span class="input-group-text bg-light font-weight-bold text-white spanInputs" id="inputGroup-sizing-lg">Descuento</span>
+							<div class="input-group-prepend w-25 inputsVenta">
+								<font-awesome-icon style="font-size:1.5em;color:#5a5a5a" icon="tag"/>
 								
 							</div>
-							<input type="text" placeholder="0%" v-model="descuento" v-on:change="descuentoFunc" class="form-control manicuristaFocu inputs" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+							<input type="text" placeholder="0%" v-model="descuento" v-on:change="descuentoFunc" class="form-control manicuristaFocu inputsVenta text-center" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+						</div>
+					</div>
+					<div class="col-sm-3">
+						<div class="input-group input-group-lg mb-2 ">
+							
+							<input type="text" placeholder="Diseño" class="form-control manicuristaFocu inputsVenta" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
 						</div>
 					</div>
 				</div>
 				<div class="w-75 mx-auto input-group input-group-lg mb-2">
-					<div class="input-group-prepend">
-						<span class="input-group-text bg-light font-weight-bold text-white spanInputs" id="inputGroup-sizing-lg">Total</span>
-					<span class="input-group-text bg-light font-weight-bold text-white spanInputs" id="inputGroup-sizing-lg ">$</span>
-					</div>
-					<input readonly type="text" class="form-control inputs" id="inputTotal" v-model="total" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+					
 					<input readonly type="hidden" class="form-control inputs" id="inputTotal" v-model="totalSinFormato" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
-					<div class="input-group-prepend">
-						<button class="btn plusBtns" v-on:click="borrarServicios()" id="button-addon2"><font-awesome-icon icon="trash"/></button>
-					</div>
+					
 					
 				</div>
 				
 				
-					<span class="spanInputs w-100 font-weight-bold text-center text-white input-group-text text-center" style="background-color: rgb(31, 86, 115) !important; color:#fff !important; border:none !important;padding-top:10px;" ><h5 class="text-center w-100">Medios de pago</h5> </span>
+					<span class="spanInputs w-100 font-weight-bold text-center text-white input-group-text text-center" style="background-color: rgb(31, 86, 115) !important; color:#fff !important; border:none !important;padding-top:10px;border-radius:10px !important" ><h5 class="text-center w-100">Medios de pago</h5> </span>
 					<div class="input-group-prepend w-25 text-center">
 						
 					</div>
 					<div class="row pt-2 ">
-						<div class="col-sm-6">
+						<div class="col-sm-4">
+							<div class="input-group input-group-lg mb-2">
+								<div class="input-group-prepend text-center w-25">
+									<span class="inputsVenta  w-100  text-white input-group-text" id="inputGroup-sizing-lg">
+									<font-awesome-icon style="font-size:1em; color:#1f5673" icon="money-bill-wave"/>	
+									</span>
+									
+								</div>
+								<input type="text" class="inputsVenta form-control text-center manicuristaFocus" v-model="pagoEfectivo" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="Efectivo">
+							</div>
+						</div>
+						<div class="col-sm-4">
 						<div class="input-group input-group-lg mb-2 ">
-							<div class="input-group-prepend w-50 text-center">
-								<span class="spanInputs w-100  text-white input-group-text" id="inputGroup-sizing-lg">Efectivo
-								<font-awesome-icon style="font-size:1.5em; color:#1f5673" class="ml-5" icon="money-bill-wave"/>	
+							<div class="input-group-prepend w-25 text-center">
+								<span class="inputsVenta w-100  text-white input-group-text" id="inputGroup-sizing-lg">
+									<font-awesome-icon style="font-size:1em; color:#1f5673" icon="money-check-alt"/>
+								</span>
+							</div>
+							<input type="text" class="form-control text-center manicuristaFocus inputsVenta" v-model="pagoTransf" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="Transferencia">
+						</div>
+					</div>
+					<div class="col-sm-4">
+						<div class="input-group input-group-lg mb-2 ">
+							<div class="input-group-prepend w-25">
+								<span class="input-group-text bg-light w-100  text-white inputsVenta" id="inputGroup-sizing-lg">
+									<font-awesome-icon style="font-size:1em; color:#1f5673" icon="hand-holding-usd"/>
 								</span>
 								
 							</div>
-							<input type="text" class="form-control manicuristaFocus inputs" v-model="pagoEfectivo" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="0">
+							<input type="text" v-model="pagoOtros"  class="form-control text-center manicuristaFocu inputsVenta" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="Otros">
 						</div>
 					</div>
-					<div class="col-sm-6">
+					<div class="col-sm-4 mx-auto">
 						<div class="input-group input-group-lg mb-2 ">
 							<div class="input-group-prepend w-25 p-0 ">
-								<span class="spanInputs w-100 p-0 text-white input-group-text" id="inputGroup-sizing-lg"><img style="width:98%;padding-left:1px"  src="../assets/redC.png" alt=""></span>
+								<span class="inputsVenta w-100 p-0 text-white input-group-text" id="inputGroup-sizing-lg"><img style="width:98%;padding-left:1px"  src="../assets/trans1.png" alt=""></span>
 							</div>
-							<input type="number" class="form-control manicuristaFocus inputs p-1" v-model="pagoRedCDebito" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="Débito">
-							<input type="number" class="form-control manicuristaFocus inputs p-1" v-model="pagoRedCCredito" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="Crédito">
+							
+							<input type="text" class="form-control text-center manicuristaFocus inputsVenta p-1" v-model="pagoRedCCredito" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="Crédito">
 						</div>
 					</div>
-					<div class="col-sm-6">
+					<div class="col-sm-4 mx-auto">
 						<div class="input-group input-group-lg mb-2 ">
-							<div class="input-group-prepend w-50 text-center">
-								<span class="spanInputs w-100  text-white input-group-text" id="inputGroup-sizing-lg">Transferecia
-									<font-awesome-icon style="font-size:1.6em; color:#1f5673" class="ml-3" icon="money-check-alt"/>
-								</span>
+							<div class="input-group-prepend w-25 p-0 ">
+								<span class="inputsVenta w-100 p-0 text-white input-group-text" id="inputGroup-sizing-lg"><img style="width:98%;padding-left:1px"  src="../assets/trans1.png" alt=""></span>
 							</div>
-							<input type="text" class="form-control manicuristaFocus inputs" v-model="pagoTransf" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="0">
+							<input type="text" class="form-control text-center manicuristaFocus inputsVenta p-1" v-model="pagoRedCDebito" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="Débito">
+							
 						</div>
 					</div>
-					<div class="col-sm-6">
-						<div class="input-group input-group-lg mb-2 ">
-							<div class="input-group-prepend w-50">
-								<span class="input-group-text bg-light w-100  text-white spanInputs" id="inputGroup-sizing-lg">Otros
-									<font-awesome-icon style="font-size:1.6em; color:#1f5673" class="ml-5" icon="hand-holding-usd"/>
-								</span>
-								
-							</div>
-							<input type="text" v-model="pagoOtros"  class="form-control manicuristaFocu inputs" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="0">
-						</div>
-					</div>
+					
 						<!-- <label v-on:click="elegirManicurista()" class="contRadio mx-auto">Efectivo
 							<input type="radio" id="efectivo" checked="checked" name="radio"  v-model="pagoTipo">
 							<span class="checkRadio mt-1"></span>
@@ -166,13 +175,34 @@
 					</select> -->
 				
 				
-				<button v-if="!inspector" type="button" class="font-weight-bold mb-3 btn procesar w-100" v-on:click="procesar" disabled>Procesar
+				<!-- <button v-if="!inspector" type="button" class="font-weight-bold btn procesar w-100" v-on:click="procesar" disabled>Procesar
 				</button>
 				
 				<button v-else type="button" class="font-weight-bold mb-3 btn procesar w-100" v-on:click="procesar">Procesar
-				</button>
+				</button> -->
 			</div>
-
+				<div class="col-sm-12 p-2 mt-2">
+					<div class="row p-0">
+						<div class="col-sm-6">
+						<div style="width:120%" class="input-group input-group-lg">
+							<div style="width:30%" class="input-group-prepend text-center">
+								<span style="color:#5a5a5a !important;font-size:2.3em" class="inputsVentaTotal2 ml-4 w-100 text-white input-group-text text-center" id="inputGroup-sizing-lg"><b>Total:</b> </span>
+							</div>
+							<input style="color:#5a5a5a !important;width:100%;font-size:2.3em;" v-model="total"  readonly type="text" disabled class="inputsVentaTotal2 font-weight-bold text-center mr-5 w-100 form-control manicuristaFocus"  aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+						</div>
+						
+					</div>
+					<div style="height:40%" class="col-sm-6">
+						<!-- <button v-if="!inspector" type="button" class="font-weight-bold btn m-0 procesar w-100" v-on:click="procesar" disabled>Procesar
+					</button> -->
+						<div style="font-size:2em"  class="procesarFinal p-2 text-center w-100">
+							 <b>Procesar</b>
+						</div>
+					</div>
+					</div>
+					
+					
+				</div>
 			</div>
 		</div>
 		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -269,6 +299,46 @@ box-shadow: 0px 0px 22px 5px rgba(31,86,115,1);">
 
 		  </div>
 		</div>
+		<div v-bind:style="{  'height': '5vh', 'z-index' : '1000' }" v-on:click="verificacionCliente"  class="p-2 menuVerVentas navSVenta" v-on:mouseenter="mouseOverVenta('textOne',0)" v-on:mouseleave="mouseLeaveVenta('textOne',0)">
+			<div class="row">
+				<div class="col-sm-2">
+					<font-awesome-icon class="icons" style="color:#1f5673;font-size:1.6em" icon="user-plus" />
+				</div>
+				<div  class="col-sm-10 pl-4 pt-1 textOne">
+					<b>Nuevo Cliente</b>	
+				</div>
+			</div>
+			
+			 	
+        </div>
+		<div v-bind:style="{  'height': '5vh', 'z-index' : '1000' }" v-on:click="addService" class="p-2 menuVerServi navSServi" v-on:mouseenter="mouseOverVenta('textTwo',1)" v-on:mouseleave="mouseLeaveVenta('textTwo',1)">
+			
+
+			<div class="row">
+				<div class="col-sm-2">
+					<font-awesome-icon class="icons" style="color:#1f5673;font-size:2em" icon="folder-plus" />
+				</div>
+				<div  class="col-sm-10 pl-4 pt-1 textTwo">
+					<b>Nuevo Servicio</b>	
+				</div>
+			</div>
+			
+			
+        </div>
+		<div v-bind:style="{  'height': '5vh', 'z-index' : '1000' }" v-on:click="borrarServicios()" class="p-2 menuVerRedo navSRedo" v-on:mouseenter="mouseOverVenta('textThree',2)" v-on:mouseleave="mouseLeaveVenta('textThree',2)">
+			
+
+			<div class="row">
+				<div class="col-sm-2">
+					<font-awesome-icon class="icons" style="color:#1f5673;font-size:2em" icon="redo" />
+				</div>
+				<div  class="col-sm-10 pl-4 pt-1 textThree">
+					<b>Reiniciar Venta</b>	
+				</div>
+			</div>
+			
+			
+        </div>
 	</div>
 </template>
 
@@ -356,7 +426,7 @@ import EventBus from './eventBus'
   	},
  	created(){
 		this.getManicuristas();
-		
+		this.intervalM();
 
 	},
 	methods: {
@@ -660,6 +730,34 @@ import EventBus from './eventBus'
 				this.total = 0;
 				this.totalSinFormato = 0;
 			},
+			mouseOverVenta(clase,num){
+			setTimeout(() => {
+				
+				$('.'+clase).show("slow")
+				$('.icons').eq(1).addClass("iconsProce")
+			
+			}, 500);
+			
+			},
+			mouseLeaveVenta(clase,num){
+				$('.'+clase).hide()		
+			},
+			intervalM(){
+				setInterval(() => {
+					if ($(".navSVenta").width() < "100" ) {
+					$('.textOne').hide("slow")
+					
+				}
+				if ($(".navSServi").width() < "100" ) {
+					$('.textTwo').hide("slow")
+					
+				}
+				if ($(".navSRedo").width() < "100" ) {
+					$('.textThree').hide("slow")
+					
+				}
+				}, 500);
+			},
 			formatPrice(value) {
 				let val = (value/1).toFixed(2).replace('.', ',')
 				return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
@@ -793,7 +891,7 @@ import EventBus from './eventBus'
 			font-size: 0.6em !important;
 		}
 		.contenedor{
-			width:40%;
+			width:60%;
 			min-width:400px;
 			border:2px solid #102229;
 			padding-top:12px;
@@ -954,23 +1052,84 @@ import EventBus from './eventBus'
 		font-weight:600;
 	}
 	.auto{
-		width: 75%;
+		width: 100%;
+		background-color: transparent;
+		color: white !important;
+		box-shadow: inset 8px 8px 10px 0;
 	}
 	.autocomplete{
 		width: 100% !important;
+		box-shadow: inset 8px 8px 10px 0;
 	}
 	.autoProcess {
 		width: 100%;
 	}
 	.autocomplete-input{
 		background-color: transparent !important;
+		-webkit-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+		-moz-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+		box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
 		border: none !important;
-		border-bottom:2px solid #102229 !important;
-		border-right:2px solid #102229 !important;
-		border-radius: 0px;
+		border-radius: 5px;
 		width: 100% !important;
 		color: black !important;
 	}
+	.inputsVenta{
+		background-color: transparent !important;
+		-webkit-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+		-moz-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+		box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+		border: none !important;
+		border-radius: 5px;
+		padding: 10px;
+		width: 50% ;
+		color: black !important;
+	}
+	.inputsVentaTotal{
+		background-color: transparent !important;
+		-webkit-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+		-moz-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+		box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+		border: none !important;
+		border-radius:0 0 0 5px;
+		padding: 10px;
+		width: 50% ;
+		color: black !important;
+	}
+	.inputsVentaTotal2{
+		background-color: transparent !important;
+		
+		border: none !important;
+		
+	}
+	.procesarFinal{
+		height: 100%;
+		width: 100%;
+		background-color: #00b7cb;
+		color: azure;
+		border-radius: 30px;
+		margin-left:-10px; 
+		cursor: pointer;
+		-webkit-box-shadow: 0px 2px 6px 2px rgba(0,0,0,0.79);
+		-moz-box-shadow: 0px 2px 6px 2px rgba(0,0,0,0.79);
+		box-shadow: 0px 2px 6px 2px rgba(0,0,0,0.79);
+		transition: all 0.5s ease-out;
+	}
+	.procesarFinal:hover{
+		height: 100%;
+		width: 100%;
+		font-size: 2.2em !important;
+		background-color: #28a745;
+		color: azure;
+		border-radius: 30px;
+		margin-left:-10px; 
+		cursor: pointer;
+		-webkit-box-shadow: 0px 2px 6px 2px rgba(0,0,0,0.79);
+		-moz-box-shadow: 0px 2px 6px 2px rgba(0,0,0,0.79);
+		box-shadow: 0px 2px 6px 2px rgba(0,0,0,0.79);
+		
+	}
+
 	.conCheck {
 		display: inline-block;
 		margin-left: 5%;
@@ -1100,5 +1259,73 @@ import EventBus from './eventBus'
 	height: 8px;
 	border-radius: 50%;
 	background: white;
+}
+.menuVerVentas{
+	transition: all 0.5s ease-out;
+	
+}
+.navSVenta{
+	cursor: pointer;
+	width:7%;
+	top:3.5%;
+	right:-7%;
+	background-color: white;
+	position: absolute;
+	border-radius: 0 5px 5px 0;
+}
+.menuVerServi{
+	transition: all 0.5s ease-out;
+	
+}
+.navSServi{
+	cursor: pointer;
+	width:7%;
+	top:9.5%;
+	right:-7%;
+	background-color: white;
+	position: absolute;
+	border-radius: 0 5px 5px 0;
+}
+.menuVerRedo{
+	transition: all 0.5s ease-out;
+	
+}
+.navSRedo{
+	cursor: pointer;
+	width:7%;
+	top:15.5%;
+	right:-7%;
+	background-color: white;
+	position: absolute;
+	border-radius: 0 5px 5px 0;
+}
+.menuVerVentas:hover{
+	width: 25%;
+	right:-25%;
+	z-index:2;
+}
+.menuVerServi:hover{
+	width: 25%;
+	right:-25%;
+	z-index:2;
+}
+.menuVerRedo:hover{
+	width: 25%;
+	right:-25%;
+	z-index:2;
+}
+
+.iconsProce{
+	padding-right: 5px;
+	border-right: 1px solid rgba(0, 0, 0, 0.404) ;
+}
+.textOne{
+	display: none;
+}
+.textTwo{
+	display: none;
+}
+.textThree{
+	display: none
 }
 </style>
