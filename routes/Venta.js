@@ -200,9 +200,12 @@ ventas.get('/getClosingDay', (req, res) => {
   const formatDateTwo = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()
   
 
-  const data = {
+  var data = {
     efectivo: 0,
-    banco: 0,
+    redCompraDebito: 0,
+    redCompraCredito: 0,
+    transferencia: 0,
+    otros: 0,
     total: 0
   }
   
@@ -210,14 +213,24 @@ ventas.get('/getClosingDay', (req, res) => {
   .then(ventas => {
     if (ventas.length > 0) {
       for (let index = 0; index < ventas.length; index++) {
-        if (ventas[index].pago == 'tarjeta') {
-          data.banco = data.banco + ventas[index].total
-        }else{
-          data.efectivo = data.efectivo + ventas[index].total
+        
+        if (ventas[index].pagoEfectivo > 0) {
+          data.efectivo = data.efectivo + ventas[index].pagoEfectivo
         }
+        if (ventas[index].pagoRedCDebito > 0) {
+          data.redCompraDebito = data.redCompraDebito + ventas[index].pagoRedCDebito
+        }
+        if (ventas[index].pagoRedCCredito > 0) {
+          data.redCompraCredito = data.redCompraCredito + ventas[index].pagoRedCCredito
+        }
+        if (ventas[index].pagoOtros > 0) {
+          data.otros = data.otros + ventas[index].pagoOtros
+        }
+        if (ventas[index].pagoTransf > 0) {
+          data.transferencia = data.transferencia + ventas[index].pagoTransf
+        }
+        data.total = data.total + ventas[index].total
       }
-      
-      data.total = data.banco + data.efectivo
       res.json(data)
     }else{
       res.json({status: 'bad'})
@@ -308,7 +321,7 @@ ventas.get('/totalSales/:month', (req, res) => {
 
 })
 
-ventas.get('/CloseDay/:name', (req, res) => {
+ventas.post('/closeDay/:name', async (req, res) => {
   const closeName = req.params.name
   const dateNow = new Date()
   const formatDate = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()
@@ -317,171 +330,37 @@ ventas.get('/CloseDay/:name', (req, res) => {
   const formatDateTwo = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()
   const dateTomorrow = new Date(formatDateTwo)
   
-  let DaySales = {
-    aperturaEfectivo: 0,
-    aperturaBanco: 0,
-    totalApertura: 0,
-    cierreEfectivo: 0,
-    cierreBanco: 0,
-    totalCierre: 0,
-    total:0,
-    gastos: 0,
-    identificacionCierre: '',
+  const CloseDay = {
+    manual: {
+      ingresoFondo: req.body.fondoManual,
+      efectivo: req.body.efectivoManual,
+      totalEfectivo: req.body.totalEfectivoManual,
+      debito: req.body.redCompreDManual,
+      credito: req.body.redCompreCManual,
+      transferencia: req.body.transferenciaManual, 
+      otros: req.body.otrosManual,
+      total: req.body.totalManual
+    },
+    sistema: {
+      ingresoFondo: req.body.fondoSistema,
+      efectivo: req.body.efectivoSistema,
+      totalEfectivo: req.body.totalEfectivoSistema,
+      debito: req.body.redCompraDebitoSistema,
+      credito: req.body.redCompraCreditoSistema,
+      transferencia: req.body.transferenciaSistema, 
+      otros: req.body.otrosSistema,
+      total: req.body.totalSistema
+    },
+    identificacionCierre: closeName,
     fecha: new Date()
   }
 
-  let DaySalesTomorrow = {
-    aperturaEfectivo: 0,
-    aperturaBanco: 0,
-    totalApertura: 0,
-    cierreEfectivo: 0,
-    cierreBanco: 0,
-    totalCierre: 0,
-    total:0,
-    gastos: 0,
-    identificacionCierre: '',
-    fecha: dateTomorrow
+  const closed = await Cierres.create(CloseDay)
+  if (closed) {
+    res.json({status: 'ok'})
   }
+  res.json({status: 'bad'})
 
-  let DaySalesThree = {
-    aperturaEfectivo: 0,
-    aperturaBanco: 0,
-    totalApertura: 0,
-    cierreEfectivo: 0,
-    cierreBanco: 0,
-    totalCierre: 0,
-    total:0,
-    gastos: 0,
-    identificacionCierre: '',
-    fecha: new Date()
-  }
-
-  VentaDia.find()
-  .then(ventas => {
-    if (ventas.length > 0) {
-      for (let index = 0; index < ventas.length; index++) {
-        if (ventas[index].pago == 'tarjeta') {
-          DaySales.cierreBanco = DaySales.cierreBanco + ventas[index].total
-        }else{
-          DaySales.cierreEfectivo = DaySales.cierreEfectivo + ventas[index].total
-        }
-      }
-      Cierres.find()
-      .then(allClose => {
-        if (allClose.length === 0) {
-          DaySales.totalCierre = DaySales.cierreBanco + DaySales.cierreEfectivo
-          DaySales.total = DaySales.cierreBanco + DaySales.cierreEfectivo
-          DaySales.identificacionCierre = closeName
-          Cierres.create(DaySales)
-          .then(first => {
-            DaySalesTomorrow.aperturaEfectivo = DaySales.cierreEfectivo
-            DaySalesTomorrow.aperturaBanco = DaySales.cierreBanco
-            DaySalesTomorrow.totalApertura = DaySales.totalCierre
-            Cierres.create(DaySalesTomorrow)
-            .then(clean => {
-              VentaDia.remove({})
-                .then(done => {
-                  res.json({status: 'ok'})
-                })
-                .catch(err => {
-                  res.send(err)
-                })
-            })
-            .catch(err => {
-              res.send(err)
-            })
-          })
-          .catch(err => {
-            res.send(err)
-          })
-        }else{
-          Cierres.find({
-            fecha: { $gte: formatDate, $lte: formatDateTwo }
-          })
-          .then(close => {
-            DaySales.identificacionCierre = closeName
-            if (close.length === 0) {
-              Cierres.find().sort({fecha: -1}).limit(1)
-              .then(lastDate => { 
-                DaySalesThree.aperturaEfectivo = lastDate[0].aperturaEfectivo
-                DaySalesThree.aperturaBanco = lastDate[0].aperturaBanco
-                DaySalesThree.totalApertura = lastDate[0].totalApertura
-                DaySales.totalCierre = DaySales.cierreBanco + DaySales.cierreEfectivo
-                DaySales.total = lastDate[0].totalApertura + DaySales.cierreBanco + DaySales.cierreEfectivo
-                Cierres.create(DaySalesThree)
-                .then(closing => {
-                  Cierres.findByIdAndUpdate(closing._id, 
-                    { 
-                    $set : { cierreEfectivo: DaySales.cierreEfectivo, cierreBanco: DaySales.cierreBanco, totalCierre: DaySales.totalCierre,total: DaySales.total, identificacionCierre: DaySales.identificacionCierre  }
-                    })
-                    .then(editClose => {
-                      DaySalesTomorrow.aperturaEfectivo = DaySales.cierreEfectivo
-                      DaySalesTomorrow.aperturaBanco = DaySales.cierreBanco
-                      DaySalesTomorrow.totalApertura = DaySales.totalCierre
-                      Cierres.create(DaySalesTomorrow)
-                      .then(newClose => {
-                        VentaDia.remove({})
-                        .then(done => {
-                          res.json({status: 'ok'})
-                        })
-                        .catch(err => {
-                          res.send(err)
-                        })
-                      })
-                      .catch(err => {
-                        res.send(err)
-                      })
-                    })
-                    .catch(err => {
-                      res.send(err)
-                    })
-                })
-                .catch(err => {
-                  res.send(err)
-                })
-              })
-            }else{       
-                DaySales.totalCierre = DaySales.cierreBanco + DaySales.cierreEfectivo
-                DaySales.total = close[0].totalApertura + DaySales.cierreBanco + DaySales.cierreEfectivo
-                Cierres.findOneAndUpdate({fecha: { $gte: formatDate, $lte: formatDateTwo }}, 
-                { 
-                 $set : { cierreEfectivo: DaySales.cierreEfectivo, cierreBanco: DaySales.cierreBanco, totalCierre: DaySales.totalCierre,total: DaySales.total, identificacionCierre: DaySales.identificacionCierre  }
-                })
-                .then(back => {
-                  DaySalesTomorrow.aperturaEfectivo = DaySales.cierreEfectivo
-                  DaySalesTomorrow.aperturaBanco = DaySales.cierreBanco
-                  DaySalesTomorrow.totalApertura = DaySales.totalCierre
-                  Cierres.create(DaySalesTomorrow)
-                  .then(newCierre => {
-                    VentaDia.remove({})
-                    .then(finish => {
-                      res.json({status: 'ok'})
-                    })
-                    .catch(err => {
-                      res.send(err)
-                    })
-                  })
-                  .catch(err => {
-                    res.send(err)
-                  })
-                })
-                .catch(err => {
-                  res.send(err)
-                })
-            }
-          })
-          .catch(err => {
-            res.send(err)
-          })
-        }
-      })
-    }else{
-      res.json({'status':'bad'})
-    }
-  })
-  .catch(err => {
-    res.send(err)
-  })
 })
 
 ventas.get('/getMonthPerMonthSelected/:month', (req, res) => {
@@ -950,7 +829,8 @@ ventas.post('/procesar', (req, res) => {
     comision: comisionFinal,
     pagoEfectivo:req.body.pagoEfectivo,
     pagoOtros:req.body.pagoOtros,
-    pagoRedC:req.body.pagoRedC,
+    pagoRedCDebito:req.body.pagoRedCDebito,
+    pagoRedCCredito:req.body.pagoRedCCredito,
     pagoTransf:req.body.pagoTransf,
     descuento:req.body.descuento,
     ganancialocal: gananciaLocal,

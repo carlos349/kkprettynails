@@ -2,29 +2,11 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const CierresSchema = new Schema ({
-    aperturaEfectivo: {
-        type: Number
+    manual: {
+        type: Object
     },
-    aperturaBanco:{
-        type: Number
-    },
-    totalApertura: {
-        type: Number
-    },
-    cierreEfectivo: {
-        type: Number
-    },
-    cierreBanco: {
-        type: Number
-    },
-    totalCierre: {
-        type: Number
-    },
-    total: {
-        type: Number
-    },
-    gastos: {
-        type: Number
+    sistema: {
+        type: Object
     },
     identificacionCierre: {
         type: String

@@ -11,26 +11,32 @@ const DaySaleSchema = new Schema({
 	servicios: {
 		type: Array
 	},
-	pago: {
-		type: String
-	},
 	descuento: {
-		type: Number
-	},
-	comision: {
-		type: Number
-	},
-	ganancianeta: {
 		type: Number
 	},
 	ganancialocal: {
 		type: Number
 	},
-	reinversion: {
+	comision: {
 		type: Number
 	},
-	credito: {
+	pagoEfectivo: {
 		type: Number
+	},
+	pagoOtros: {
+		type: Number
+	},
+	pagoRedCDebito: {
+		type: Number
+	},
+	pagoRedCCredito: {
+		type: Number
+	},
+	pagoTransf: {
+		type: Number
+	},
+	status: {
+		type: Boolean
 	},
 	total: {
 		type: Number
@@ -44,5 +50,6 @@ const DaySaleSchema = new Schema({
 	}
 
 })
+
 
 module.exports = VentaDia = mongoose.model('ventasDia', DaySaleSchema)
