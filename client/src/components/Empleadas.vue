@@ -19,9 +19,9 @@
 						<p slot="comision"  slot-scope="props">{{formatPrice(props.row.comision)}}</p>
 						<p slot="advancement"  slot-scope="props">{{formatPrice(props.row.advancement)}}</p>
 						<p slot="rest"  slot-scope="props">{{formatPrice(props.row.comision - props.row.advancement)}}</p>
-						<button slot="edit"  slot-scope="props" style="width:100%;" v-on:click="pasarDatosEdit(props.row.nombre,props.row.documento,props.row.porcentaje, props.row.restTime, props.row.restDay, props.row._id)" class=" btn btn-colorsEdit"><font-awesome-icon icon="edit" /></button>
-						<button slot="delete" style="width:100%;"  slot-scope="props" v-on:click="deletePrestador(props.row._id)" class=" btn btn-colorsTrash"><font-awesome-icon icon="trash" /></button>
-						<button slot="report" style="width:100%;"  slot-scope="props" v-on:click="sacarReporte(props.row._id)" class=" btn btn-colorsPrint"><font-awesome-icon icon="copy" /></button>
+						<button slot="edit"  slot-scope="props" style="width:100%;" v-on:click="pasarDatosEdit(props.row.nombre,props.row.documento,props.row.porcentaje, props.row.restTime, props.row.restDay, props.row._id)" class=" btn btn-colorsEditLender"><font-awesome-icon icon="edit" /></button>
+						<button slot="delete" style="width:100%;"  slot-scope="props" v-on:click="deletePrestador(props.row._id)" class=" btn btn-colorsTrashLender"><font-awesome-icon icon="trash" /></button>
+						<button slot="report" style="width:100%;"  slot-scope="props" v-on:click="sacarReporte(props.row._id)" class=" btn btn-colorsPrintLender"><font-awesome-icon icon="copy" /></button>
 						<!-- <a slot="edit" slot-scope="props" class="fa fa-edit" :href="pasarDatosEdit(props.row.nombre, props.row.identidad, props.row.correoCliente, props.row.instagramCliente, props.row._id)">Hola </a> -->
 					</v-client-table>
 					<!-- <table  class="table table-dark" style="color:#fff !important; background-color: #1F5673" >
@@ -736,7 +736,7 @@ export default {
 		height: 8px;    /* Tamaño del scroll en horizontal */
 		display: none;  /* Ocultar scroll */
 	}
-	.btn-colorsTrash{
+	.btn-colorsTrashLender{
 		background-color: #FC7753;
 		color:#fff;
 		-webkit-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
@@ -744,7 +744,7 @@ export default {
 		box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
 		-webkit-transition: all 0.5s ease-out;
 	}
-	.btn-colorsEdit{
+	.btn-colorsEditLender{
 		background-color:#28a745;
 		color:#fff;
 		-webkit-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
@@ -752,7 +752,7 @@ export default {
 		box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
 		-webkit-transition: all 0.5s ease-out;
 	}
-	.btn-colorsPrint{
+	.btn-colorsPrintLender{
 		background-color:#495057;
 		color:#fff;
 		-webkit-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);

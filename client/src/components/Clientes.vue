@@ -1,7 +1,5 @@
 <template>
     <div class="container-fluid">
-		
-
         <div class="row pb-2">
             <div class="col-md-12 row sectionMetricsPrestador">
 				<div class="col-md-5 metrics first">
@@ -16,7 +14,7 @@
             <div class="col-md-12">
 				<div class="shadow">	
 					<v-client-table class="text-center"  :data="clients" :columns="columns" :options="optionsT">
-						<button slot="edit"  slot-scope="props" v-on:click="pasarDatosEdit(props.row.nombre, props.row.identidad, props.row.correoCliente, props.row.instagramCliente, props.row._id)" class=" btn btn-colorsEdit w-100"><font-awesome-icon icon="edit" /></button>
+						<button slot="edit"  slot-scope="props" v-on:click="pasarDatosEdit(props.row.nombre, props.row.identidad, props.row.correoCliente, props.row.instagramCliente, props.row._id)" class=" btn btn-colorsEditClient w-100"><font-awesome-icon icon="edit" /></button>
 						<!-- <a slot="edit" slot-scope="props" class="fa fa-edit" :href="pasarDatosEdit(props.row.nombre, props.row.identidad, props.row.correoCliente, props.row.instagramCliente, props.row._id)">Hola </a> -->
 					</v-client-table>
 					<!-- <table  class="table" style="color:#fff !important; background-color: #1F5673" >
@@ -154,13 +152,26 @@
 					</div>
                     <div class="form-group">
                         <label for="recomendacion">Registre recomendador</label>
-                        <autocomplete	
+                        <!-- <autocomplete	
                             :search="searchClientOnClient"
                             placeholder="Buscar cliente"
                             aria-label="Buscar cliente"
                             @submit="handleSubmitClientOnClient"
                             class="auto autoClient w-100">
-                        </autocomplete>
+                        </autocomplete> -->
+						<div v-on:click="prueba">
+							<autocomplete
+							ref="autocomplete"
+							placeholder="Buscar cliente"
+							:source="arregloClients"
+							input-class="form-control esteqlq"
+							results-property="data"
+							:results-display="formattedDisplay"
+							@selected="addDistributionGroup">
+							</autocomplete>
+							<span v-on:click="prueba" style="position:absolute;top:400px;left:50px;background-color:white;">{{recomendador}}</span>
+						</div>
+						
                     </div>
 					<button class="btn w-100 add">Agregar cliente</button>
 				</form>
@@ -263,13 +274,15 @@
 import axios from 'axios'
 import jwtDecode from 'jwt-decode'
 import router from '../router'
-import Autocomplete from '@trevoreyre/autocomplete-vue'
+// import Autocomplete from '@trevoreyre/autocomplete-vue'
 import LineChart from '../plugins/LineChart.js'
 import EventBus from './eventBus'
+import Autocomplete from 'vuejs-auto-complete'
 
 export default {
 	components: {
-		LineChart
+		LineChart,
+		Autocomplete
 	},
     data(){
         return {
@@ -319,7 +332,8 @@ export default {
 			correoCliente:'',
 			instagramCliente:'',
 			correoClienteEditar: '',
-			instagramClienteEditar: ''
+			instagramClienteEditar: '',
+			recomend: ''
         }
     },
     beforeCreate() {
@@ -336,7 +350,7 @@ export default {
     created(){
 		this.getClients();
 		this.getClientsTwo();
-		this.arrayUsers();
+		this.getClientsThree()
 		this.ServicesQuantityChartFunc();
     },
     methods: {
@@ -346,6 +360,7 @@ export default {
 				console.log(res.data)
 				this.clients = res.data
 				for (let i = 0; i < this.clients.length; i++) {
+					// this.clients[i].push({thatId:this.clients[i].identidad}) 
 					if (this.clients[i].correoCliente) {
 						this.clients[i].identidad = this.clients[i].identidad + '\n' + this.clients[i].correoCliente 
 					}
@@ -356,16 +371,28 @@ export default {
 					this.clients[i].ultimaFecha = this.formatDate(this.clients[i].ultimaFecha)
 					
 				}
+				console.log(this.clients)
             })
 		},
 		showTemplates(){
 			$('#modalShowTemplates').modal('show')
+		},
+		prueba(){
+			this.recomendador = ''
+			$('.esteqlq').focus()
 		},
 		getClientsTwo(){
             axios.get('clients/bestClient')
             .then(res => {
                 this.clientTwos = res.data
                 this.top = res.data[0].nombre
+            })
+		},
+		getClientsThree(){
+            axios.get('clients/onlyData')
+            .then(res => {
+                this.arregloClients = res.data
+                console.log(this.arregloClients)
             })
         },
         arrayUsers(){
@@ -382,7 +409,19 @@ export default {
                     return manicurista.toLowerCase()
                     .startsWith(input.toLowerCase())
             })
-        },
+		},
+		formattedDisplay (result) {
+			return result.nombre+'-'+result.identidad
+		},
+		addDistributionGroup (group) {
+			setTimeout(() => {
+				this.recomendador = group.display
+			}, 100);
+			// access the autocomplete component methods from the parent
+			// this.$refs.autocomplete.clear()
+			// $('.esteqlq').val(group.display)
+			
+		},
         handleSubmitClientOnClient(result){
             console.log(result)
             this.recomendador = result
@@ -584,7 +623,7 @@ export default {
 	.sectionMetricsPrestador{
 		margin-left: 8%;
 	}
-	.btn-colorsEdit{
+	.btn-colorsEditClient{
 		background-color: #28a745;
 		color:#fff;
 		-webkit-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
@@ -766,4 +805,11 @@ thead {
 		text-align: center
 	}
 
+.autocomplete__results{
+	overflow: hidden !important;
+	max-height: 70px !important;
+	background-color:rgb(31, 86, 115) !important;
+	color: #fff !important;
+	border:none !important;
+}
 </style>
