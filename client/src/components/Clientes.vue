@@ -159,7 +159,7 @@
                             @submit="handleSubmitClientOnClient"
                             class="auto autoClient w-100">
                         </autocomplete> -->
-						<div v-on:click="prueba">
+						<div v-on:click="clearInput">
 							<autocomplete
 							ref="autocomplete"
 							placeholder="Buscar cliente"
@@ -169,7 +169,7 @@
 							:results-display="formattedDisplay"
 							@selected="addDistributionGroup">
 							</autocomplete>
-							<span v-on:click="prueba" style="position:absolute;top:400px;left:50px;background-color:white;">{{recomendador}}</span>
+							<span v-on:click="clearInput" style="position:absolute;top:400px;left:50px;background-color:white;">{{recomendador}}</span>
 						</div>
 						
                     </div>
@@ -377,7 +377,7 @@ export default {
 		showTemplates(){
 			$('#modalShowTemplates').modal('show')
 		},
-		prueba(){
+		clearInput(){
 			this.recomendador = ''
 			$('.esteqlq').focus()
 		},

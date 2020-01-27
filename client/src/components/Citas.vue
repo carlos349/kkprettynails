@@ -1,29 +1,23 @@
 <template id="">
   <div class="container-fluid">
     <div class="row">
-
-          <!--  -->
-
         <div style="padding-left:2%;" id="calen" class="col-sm-12">
           <div style="" class="col-sm-12 mx-auto text-center p-1">
-        <div class="row">
-          <div class="col-sm-6">
-            <button  data-toggle="modal" class="generar" data-target=".genCita"><span></span>Generar cita</button>
+            <div class="row">
+              <div class="col-sm-6">
+                <button  data-toggle="modal" class="generar" data-target=".genCita"><span></span>Generar cita</button>
+              </div>
+              <div class="col-sm-6">
+                <select v-if="status == 1 || status == 2" id="manicuristas" v-model="empByCita" v-on:change="getCitasByEmploye()"  class="generar Two" name="manicuristas">
+                  <option v-if="sectionDelete" selected="true" >{{empByCita}}</option>
+                  <option>Todos</option>
+                  <option  v-for="manicurista in manicuristas" v-bind:key="manicurista._id">
+                      {{manicurista.nombre}}
+                    </option>
+                </select>
+              </div>
+            </div>
           </div>
-          <div class="col-sm-6">
-            <select v-if="status == 1 || status == 2" id="manicuristas" v-model="empByCita" v-on:change="getCitasByEmploye()"  class="generar Two" name="manicuristas">
-              <option v-if="sectionDelete" selected="true" >{{empByCita}}</option>
-              <option>Todos</option>
-              <option  v-for="manicurista in manicuristas" v-bind:key="manicurista._id">
-                  {{manicurista.nombre}}
-                </option>
-            </select>
-          </div>
-        </div>
-        
-        
-      </div>
-
           <vue-cal
              :locale="locale"
              :events="events"
@@ -34,14 +28,10 @@
              :disable-views="['years', 'year', 'week']" 
              events-count-on-month-view
              :on-event-click="onEventClick"
-             :overlapsPerTimeStep="true"
-             >
+             :overlapsPerTimeStep="true">
           </vue-cal>
-
-          
-          
         </div>
-      </div>
+    </div>
       
 
     <div class="modal fade genCita bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
@@ -59,8 +49,7 @@
             </div>
             <div class="col-md-12 p-3 processOne">
               <div class="col-md-12 text-center p-2" style="font-size:1.2em;color:#1f5673">Selecciona los servicios a utlizar</div>
-              <div style="height:40vh;overflow:hidden;overflow-x: hidden;
-		overflow-y:scroll;background-color: rgba(31, 86, 115, 0.707);border-radius:5px;" class="scroll row p-3" >
+              <div style="height:40vh;overflow:hidden;overflow-x: hidden;overflow-y:scroll;background-color: rgba(31, 86, 115, 0.707);border-radius:5px;" class="scroll row p-3" >
                 <div class="col-md-6" v-for="(servicio,index) of servicios">
                   <div class="p-2 servPretty" v-on:click="marcarServicio(servicio.prestadores,servicio.nombre,servicio.tiempo,index)">
                     <div class="row">
@@ -1203,53 +1192,144 @@ import router from '../router'
             })
           }else{
             const efectivo = res.data.efectivo
-            const banco = res.data.banco
+            const redCompraDebito = res.data.redCompraDebito
+            const redCompraCredito = res.data.redCompraCredito
+            const transferencia = res.data.transferencia
+            const otros = res.data.otros
             const total = res.data.total
+            const fondo = 50000
+            
             this.$swal({
-              title: '¿Estás seguro de hacer el Cierre?',
-              html: `<p>
-              Cierre en efectivo: ${this.formatPrice(efectivo)} <br> 
-              Cierre en banco: ${this.formatPrice(banco)} <br>
-              Total cierre: ${this.formatPrice(total)}       
-              </p>`,
+              title: 'Verificación de ventas',
+              html: `
+                <form>
+                  <div class="row">
+                    <div class="form-group col-6" style="width:100%;">
+                      <label style="float:left;">Fondo de la caja</label>
+                      <input type="number" class="form-control classFondo" value="50000" onlyread requerid>
+                    </div>
+                    <div class="form-group col-6" style="width:100%;">
+                      <label style="float:left;">Efectivo</label>
+                      <input type="number" class="form-control classEfectivo" placeholder="Monto en caja de efectivo" requerid>
+                    </div>
+                    <div class="form-group col-6" style="width:100%;">
+                      <label style="float:left;">Redcompra débito</label>
+                      <input type="number" class="form-control classRedcompreD" placeholder="Monto en caja de Redcompre débito" requerid>
+                    </div>
+                    <div class="form-group col-6" style="width:100%;">
+                      <label style="float:left;">Redcompra crédito</label>
+                      <input type="number" class="form-control classRedcompreC" placeholder="Monto en caja de Redcompre crédito" requerid>
+                    </div>
+                    <div class="form-group col-6" style="width:100%;">
+                      <label style="float:left;">Transferencias</label>
+                      <input type="number" class="form-control classTransferencia" placeholder="Monto en caja de Transferencias" requerid>
+                    </div>
+                    <div class="form-group col-6" style="width:100%;">
+                      <label style="float:left;">Otros</label>
+                      <input type="number" class="form-control classOtros" placeholder="Monto en caja de Otros" requerid>
+                    </div>
+                    <div class="form-group col-12" style="width:100%;">
+                      <label>Monto total de ventas</label>
+                      <input style="width:70%;margin-left:16%;" type="number" class="form-control classTotal" placeholder="Monto total en caja de ventas" requerid>
+                    </div>
+                  </div>
+                </form>
+              `,
               type: 'warning',
               showCancelButton: true,
-              confirmButtonText: 'Si hacer Cierre',
-              cancelButtonText: 'No hacer Cierre',
+              confirmButtonText: 'Confirmar',
+              cancelButtonText: 'Cerrar',
               showCloseButton: true,
               showLoaderOnConfirm: true
             })
             .then((result) => {
-              if(result.value) {
-                this.$swal({
-                title: 'Por favor, escriba su nombre ^^',
-                input: 'text',
-                inputPlaceholder: 'Escriba su nombre aquí',
-                showCloseButton: true,
-              })
-              .then(result => {
-                axios.get('/ventas/CloseDay/'+result.value)
-                .then(res => {
-                  if (res.data.status == 'ok') {
+                if(result.value) {
+                  const fondoManual = $('.classFondo').val()
+                  const efectivoManual = $('.classEfectivo').val()
+                  const redCompreDManual = $('.classRedcompreD').val()
+                  const redCompreCManual = $('.classRedcompreC').val()
+                  const transferenciaManual = $('.classTransferencia').val()
+                  const otrosManual = $('.classOtros').val()
+                  const totalManual = $('.classTotal').val()
+                  if (fondoManual == '' || efectivoManual == '' || redCompreDManual == '' || redCompreCManual == '' || otrosManual == '' || totalManual == '' || transferenciaManual == '') {
                     this.$swal({
-                      type: 'succes',
-                      title: 'Se hizo el cierre satisfactoriamente',
+                      type: 'error',
+                      title: 'Complete todos los campos',
                       showConfirmButton: false,
                       timer: 1500
                     })
                   }else{
                     this.$swal({
-                      type: 'error',
-                      title: 'Sin ventas el dia no se puede cerrar',
-                      showConfirmButton: false,
-                      timer: 1500
+                      title: 'Por favor, escriba su nombre ^^',
+                      input: 'text',
+                      inputPlaceholder: 'Escriba su nombre aquí',
+                      showCloseButton: true,
+                    })
+                    .then(result => {
+                      if (result.value == '') {
+                        this.$swal({
+                          type: 'error',
+                          title: 'Debe escribir su nombre',
+                          showConfirmButton: false,
+                          timer: 1500
+                        })
+                      }else if(result.dismiss){
+                        this.$swal({
+                          type: 'info',
+                          title: 'Aborto cierre',
+                          showConfirmButton: false,
+                          timer: 1500
+                        })
+                      }else{
+                        var totalEfectivoSistema = 0
+                        var totalEfectivoManual = 0
+                        if (fondo > efectivo) {
+                          totalEfectivoSistema = fondo - efectivo
+                        }else{
+                          totalEfectivoSistema = efectivo - fondo
+                        }
+                        if (fondoManual > efectivoManual) {
+                          totalEfectivoManual = fondoManual - efectivoManual
+                        }else{
+                          totalEfectivoManual = efectivoManual - fondoManual
+                        }
+                        const identificacionCierre = result.value
+                        axios.post('ventas/closeDay/'+identificacionCierre, {
+                          efectivoSistema: parseFloat(efectivo),
+                          redCompraDebitoSistema: parseFloat(redCompraDebito),
+                          redCompraCreditoSistema: parseFloat(redCompraCredito),
+                          transferenciaSistema: parseFloat(transferencia),
+                          otrosSistema: parseFloat(otros),
+                          totalSistema: parseFloat(total),
+                          fondoSistema: parseFloat(fondo),
+                          totalEfectivoSistema: parseFloat(totalEfectivoSistema),
+                          
+                          totalEfectivoManual: parseFloat(totalEfectivoManual),
+                          fondoManual: parseFloat(fondoManual),
+                          efectivoManual: parseFloat(efectivoManual),
+                          redCompreDManual: parseFloat(redCompreDManual),
+                          redCompreCManual: parseFloat(redCompreCManual),
+                          transferenciaManual: parseFloat(transferenciaManual),
+                          otrosManual: parseFloat(otrosManual),
+                          totalManual: parseFloat(totalManual)
+                        })
+                        .then(res => {
+                          console.log(res)
+                        })
+                        .catch(err => {
+                          console.log(err)
+                        })
+                      }
                     })
                   }
-                })
-              })
-              }else {
-                this.$swal('No se hizo el cierre', 'Aborto la acción', 'info')
-              }
+                }else{
+                  this.$swal({
+                    type: 'info',
+                    title: 'Aborto cierre',
+                    showConfirmButton: false,
+                    timer: 1500
+                  })
+                }
             })
           }
         })

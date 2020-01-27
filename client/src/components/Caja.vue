@@ -85,14 +85,7 @@
         <div class="row">
             <div class="shadow">
                 <v-client-table class="text-center"  :data="cierres" :columns="columns" :options="optionsT">
-                    <p slot="aperturaEfectivoo"  slot-scope="props">{{formatPrice(props.row.aperturaEfectivo)}}</p>
-                    <p slot="aperturaBancoo"  slot-scope="props">{{formatPrice(props.row.aperturaBanco)}}</p>
-                    <p slot="totalAperturaa"  slot-scope="props">{{formatPrice(props.row.totalApertura)}}</p>
-                    <p slot="cierreEfectivoo"  slot-scope="props">{{formatPrice(props.row.cierreEfectivo)}}</p>
-                    <p slot="cierreBancoo"  slot-scope="props">{{formatPrice(props.row.cierreBanco)}}</p>
-                    <p slot="totalCierree"  slot-scope="props">{{formatPrice(props.row.totalCierre - props.row.gastos)}}</p>
-                    <p slot="totall"  slot-scope="props">{{formatPrice(props.row.total)}}</p>
-                    <p slot="gastoss"  slot-scope="props">{{formatPrice(props.row.gastos)}}</p>
+                    <p slot="totalCierre" slot-scope="props">{{formatPrice(props.row.sistema.total)}}</p>
                     <button slot="edit"  slot-scope="props" style="width:30%;" v-on:click="sacarReporte(props.row._id)" class="btn btn-warning"><font-awesome-icon icon="copy" /></button>
                     <!-- <a slot="edit" slot-scope="props" class="fa fa-edit" :href="pasarDatosEdit(props.row.nombre, props.row.identidad, props.row.correoCliente, props.row.instagramCliente, props.row._id)">Hola </a> -->
                 </v-client-table>
@@ -181,7 +174,7 @@ import EventBus from './eventBus'
 export default {
     data(){
         return {
-            columns:['fecha' , 'aperturaEfectivoo' , 'aperturaBancoo' , 'totalAperturaa' , 'cierreEfectivoo' , 'cierreBancoo', 'totalCierree', 'totall', 'gastoss', 'edit'],
+            columns:['fecha' , 'identificacionCierre', 'totalCierre', 'edit'],
             optionsT: {
                 filterByColumn: true,
                 texts: {
@@ -191,14 +184,8 @@ export default {
                 },
                 headings: {
                     fecha: 'Fecha ',
-                    aperturaEfectivoo: 'Apertura Efectivo ',
-                    aperturaBancoo: 'Apertura Banco ',
-                    totalAperturaa: 'Total Apertura ',
-                    cierreEfectivoo: '	Cierre Efectivo ',
-                    cierreBancoo: 'Cierre Banco ',
-                    totalCierree: 'Total Cierre ',
-                    totall: 'Total ',
-                    gastoss: 'Gastos ',
+                    identificacionCierre: 'Encargado del cierre ',
+                    totalCierre: 'Total del cierre ',
                     edit: 'Reportes '
                 },
                 pagination: { chunk:10 },
