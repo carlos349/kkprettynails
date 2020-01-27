@@ -26,17 +26,18 @@
 				</div>
 				</div>
 				
-				<div class="">
+				<!-- <div class="">
 					<input type="text" id="myInput" v-on:keyup="myFunction()" class="form-control buscar inputs" placeholder="Filtrar servicios"/>
 					
-				</div>
-				<table class="table table-dark" v-bind:style="{ 'background-color': '#1F5673'}" >
+				</div> -->
+				<table class="table" v-bind:style="{ 'background-color': '#1F5673', 'border-radius' : '15px'}" >
 					<thead>
 						<tr>
-							<th class="text-left pl-4 text-white">
-								Servicio
+							<th style="border-radius:15px !important;" class="text-left pl-4 text-white">
+								
+								<input type="text" id="myInput" v-on:keyup="myFunction()" class="form-control buscar inputsVenta w-100 text-white" placeholder="Filtrar servicios"/>
 							</th>
-							<th class="text-center text-white">
+							<th style="border-radius:15px !important;" class="text-center pb-3 text-white">
 								Precio 
 							</th>
 						</tr>
@@ -83,13 +84,17 @@
 								<font-awesome-icon style="font-size:1.5em;color:#5a5a5a" icon="tag"/>
 								
 							</div>
-							<input type="text" placeholder="0%" v-model="descuento" v-on:change="descuentoFunc" class="form-control manicuristaFocu inputsVenta text-center" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+							<input type="text" selectionEnd="%" inputmode="numeric" placeholder="0" v-model="descuento"  v-on:change="descuentoFunc" class="form-control manicuristaFocu inputsVenta text-center" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+							<div class="input-group-prepend w-25 inputsVenta">
+								<font-awesome-icon style="font-size:1.5em;color:#5a5a5a" icon="percent"/>
+								
+							</div>
 						</div>
 					</div>
 					<div class="col-sm-3">
 						<div class="input-group input-group-lg mb-2 ">
 							
-							<input type="text" placeholder="Diseño" class="form-control manicuristaFocu inputsVenta" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+							<input type="text" v-on:keyup="formatDiscount()" v-model="diseño" placeholder="Diseño" class="form-control manicuristaFocu inputsVenta" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
 						</div>
 					</div>
 				</div>
@@ -188,14 +193,19 @@
 							<div style="width:30%" class="input-group-prepend text-center">
 								<span style="color:#5a5a5a !important;font-size:2.3em" class="inputsVentaTotal2 ml-4 w-100 text-white input-group-text text-center" id="inputGroup-sizing-lg"><b>Total:</b> </span>
 							</div>
-							<input style="color:#5a5a5a !important;width:100%;font-size:2.3em;" v-model="total"  readonly type="text" disabled class="inputsVentaTotal2 font-weight-bold text-center mr-5 w-100 form-control manicuristaFocus"  aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+							<input  style="color:#5a5a5a !important;width:100%;font-size:2.3em;" v-model="total"  readonly type="text" disabled class="inputsVentaTotal2 font-weight-bold text-center mr-5 w-100 form-control manicuristaFocus"  aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+
+							
 						</div>
 						
 					</div>
 					<div style="height:40%" class="col-sm-6">
 						<!-- <button v-if="!inspector" type="button" class="font-weight-bold btn m-0 procesar w-100" v-on:click="procesar" disabled>Procesar
 					</button> -->
-						<div style="font-size:2em"  class="procesarFinal p-2 text-center w-100">
+						<div v-if="!inspector" style="font-size:2em"  class="procesarFinale p-2 text-center w-100">
+							 <b>Procesar</b>
+						</div>
+						<div v-else v-on:click="procesar" style="font-size:2em"  class="procesarFinal p-2 text-center w-100">
 							 <b>Procesar</b>
 						</div>
 					</div>
@@ -410,7 +420,8 @@ import EventBus from './eventBus'
 			tiempoServi:'Seleccione el tiempo',
 			precioServi:'',
 			clients: [],
-			arregloClients: []
+			arregloClients: [],
+			diseño:''
 		 }
 	 },
 	 beforeCreate() {
@@ -463,6 +474,22 @@ import EventBus from './eventBus'
 				this.maniSelect = result
 				this.elegirManicurista()
 				this.inspector = true
+			},
+			formatDiscount(){
+				 
+				if (this.diseño.length == 1) {
+					
+					this.diseño = "$" + this.diseño 
+				}
+				if (this.diseño == "$$") {
+					this.diseño = ''
+				}
+				// else{
+				// 	const sp = this.diseño.split("$")
+				// 	this.diseño = "$" + this.formatPrice(sp[1])
+				// }
+				
+				
 			},
 		  	getManicuristas(){
 				axios.get('manicuristas')
@@ -568,10 +595,10 @@ import EventBus from './eventBus'
 					const conteoTotal = parseFloat(conteo) - 1
 					$("#"+esto).text(conteoTotal)
 					const subTotal = parseFloat(this.totalSinFormato) - parseFloat(precio)
-					this.precio = this.formatPrice(subTotal)
+					this.precio = "$"+this.formatPrice(subTotal)
 					this.totalSinFormato = subTotal
 					if(this.descuento == ""){
-						this.total = this.formatPrice(subTotal)
+						this.total = "$"+this.formatPrice(subTotal)
 					}else{
 						this.descuentoFunc()
 					}
@@ -593,7 +620,7 @@ import EventBus from './eventBus'
 					const descuento = parseFloat(this.descuento) / 100
 					const porcentaje = 1 - parseFloat(descuento)
 					const precioConDescuento = parseFloat(this.totalSinFormato) * parseFloat(porcentaje)
-					this.total = this.formatPrice(precioConDescuento)
+					this.total = "$"+ this.formatPrice(precioConDescuento)
 					this.totalSinFormato = precioConDescuento
 				}
 			},
@@ -602,10 +629,10 @@ import EventBus from './eventBus'
 				const porcentaje = 1 - parseFloat(descuento)
 				const precioTotal = parseFloat(this.totalSinFormato) + parseFloat(precio)
 				console.log(parseFloat(this.precio))
-				this.precio = this.formatPrice(precioTotal)
+				this.precio = "$"+this.formatPrice(precioTotal)
 				this.totalSinFormato = precioTotal
 				if(this.descuento === ''){
-					this.total = this.formatPrice(precioTotal)
+					this.total = "$"+this.formatPrice(precioTotal)
 				}else{
 					const precioConDescuento = parseFloat(this.totalSinFormato) * parseFloat(porcentaje)
 					this.total = this.formatPrice(precioConDescuento)
@@ -1110,6 +1137,18 @@ import EventBus from './eventBus'
 		border-radius: 30px;
 		margin-left:-10px; 
 		cursor: pointer;
+		-webkit-box-shadow: 0px 2px 6px 2px rgba(0,0,0,0.79);
+		-moz-box-shadow: 0px 2px 6px 2px rgba(0,0,0,0.79);
+		box-shadow: 0px 2px 6px 2px rgba(0,0,0,0.79);
+		transition: all 0.5s ease-out;
+	}
+	.procesarFinale{
+		height: 100%;
+		width: 100%;
+		background-color: #9ca0a0;
+		color: rgba(240, 255, 255, 0.404);
+		border-radius: 30px;
+		margin-left:-10px;
 		-webkit-box-shadow: 0px 2px 6px 2px rgba(0,0,0,0.79);
 		-moz-box-shadow: 0px 2px 6px 2px rgba(0,0,0,0.79);
 		box-shadow: 0px 2px 6px 2px rgba(0,0,0,0.79);
