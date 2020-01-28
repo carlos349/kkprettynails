@@ -35,9 +35,9 @@
 						<tr>
 							<th style="border-radius:15px !important;" class="text-left pl-4 text-white">
 								
-								<input type="text" id="myInput" v-on:keyup="myFunction()" class="form-control buscar inputsVenta w-100 text-white" placeholder="Filtrar servicios"/>
+								<input autocomplete="off" style="color:white !important;outline:none !important" type="text" id="myInput" v-on:keyup="myFunction()" class="form-control buscar inputsVenta w-75 text-white" placeholder="Filtrar servicios"/>
 							</th>
-							<th style="border-radius:15px !important;" class="text-center pb-3 text-white">
+							<th style="border-radius:15px !important;" class="text-center pl-5 pb-3 text-white">
 								Precio 
 							</th>
 						</tr>
@@ -113,9 +113,10 @@
 					<div class="row pt-2 ">
 						<div class="col-sm-4">
 							<div class="input-group input-group-lg mb-2">
-								<div class="input-group-prepend text-center w-25">
+								<div v-on:click="hundredPorcent('efectivo')" v-on:mouseenter="hundredMouseOver('efectivo')" v-on:mouseleave="hundredMouseNonOver('efectivo')" class="input-group-prepend text-center w-25 hundred">
 									<span class="inputsVenta  w-100  text-white input-group-text" id="inputGroup-sizing-lg">
-									<font-awesome-icon style="font-size:1em; color:#1f5673" icon="money-bill-wave"/>	
+										<b class="efectivo" style="font-size:0.6em;display:none">100%</b>
+									<font-awesome-icon  class="efectivo" style="font-size:1em; color:#1f5673" icon="money-bill-wave"/>	
 									</span>
 									
 								</div>
@@ -124,9 +125,10 @@
 						</div>
 						<div class="col-sm-4">
 						<div class="input-group input-group-lg mb-2 ">
-							<div class="input-group-prepend w-25 text-center">
+							<div v-on:click="hundredPorcent('transferencia')" v-on:mouseenter="hundredMouseOver('transferencia')" v-on:mouseleave="hundredMouseNonOver('transferencia')" class="input-group-prepend hundred w-25 text-center">
 								<span class="inputsVenta w-100  text-white input-group-text" id="inputGroup-sizing-lg">
-									<font-awesome-icon style="font-size:1em; color:#1f5673" icon="money-check-alt"/>
+									<b class="transferencia" style="font-size:0.6em;display:none">100%</b>
+									<font-awesome-icon class="transferencia" style="font-size:1em; color:#1f5673" icon="money-check-alt"/>
 								</span>
 							</div>
 							<input type="text" class="form-control text-center manicuristaFocus inputsVenta" v-model="pagoTransf" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="Transferencia">
@@ -134,9 +136,10 @@
 					</div>
 					<div class="col-sm-4">
 						<div class="input-group input-group-lg mb-2 ">
-							<div class="input-group-prepend w-25">
+							<div v-on:click="hundredPorcent('otros')" v-on:mouseenter="hundredMouseOver('otros')" v-on:mouseleave="hundredMouseNonOver('otros')" class="input-group-prepend w-25 hundred">
 								<span class="input-group-text bg-light w-100  text-white inputsVenta" id="inputGroup-sizing-lg">
-									<font-awesome-icon style="font-size:1em; color:#1f5673" icon="hand-holding-usd"/>
+									<b class="otros" style="font-size:0.6em;display:none">100%</b>
+									<font-awesome-icon class="otros" style="font-size:1em; color:#1f5673" icon="hand-holding-usd"/>
 								</span>
 								
 							</div>
@@ -145,17 +148,21 @@
 					</div>
 					<div class="col-sm-4 mx-auto">
 						<div class="input-group input-group-lg mb-2 ">
-							<div class="input-group-prepend w-25 p-0 ">
-								<span class="inputsVenta w-100 p-0 text-white input-group-text" id="inputGroup-sizing-lg"><img style="width:98%;padding-left:1px"  src="../assets/trans1.png" alt=""></span>
+							<div v-on:click="hundredPorcent('credito')" v-on:mouseenter="hundredMouseOver('credito')" v-on:mouseleave="hundredMouseNonOver('credito')" class="input-group-prepend hundred w-25 p-0 ">
+								<span class="inputsVenta w-100 p-0 text-white input-group-text" id="inputGroup-sizing-lg">
+									<b class="credito pl-3" style="font-size:0.6em;display:none">100%</b>
+									<img style="width:98%;padding-left:1px" class="credito"  src="../assets/trans1.png" alt=""></span>
 							</div>
 							
 							<input type="text" class="form-control text-center manicuristaFocus inputsVenta p-1" v-model="pagoRedCCredito" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="Crédito">
 						</div>
 					</div>
 					<div class="col-sm-4 mx-auto">
-						<div class="input-group input-group-lg mb-2 ">
-							<div class="input-group-prepend w-25 p-0 ">
-								<span class="inputsVenta w-100 p-0 text-white input-group-text" id="inputGroup-sizing-lg"><img style="width:98%;padding-left:1px"  src="../assets/trans1.png" alt=""></span>
+						<div v-on:click="hundredPorcent('debito')" v-on:mouseenter="hundredMouseOver('debito')" v-on:mouseleave="hundredMouseNonOver('debito')" class="input-group input-group-lg mb-2 ">
+							<div class="input-group-prepend w-25 p-0 hundred">
+								<span class="inputsVenta w-100 p-0 text-white input-group-text" id="inputGroup-sizing-lg">
+									<b class="debito pl-3" style="font-size:0.6em;display:none">100%</b>
+									<img class="debito" style="width:98%;padding-left:1px"  src="../assets/trans1.png" alt=""></span>
 							</div>
 							<input type="text" class="form-control text-center manicuristaFocus inputsVenta p-1" v-model="pagoRedCDebito" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="Débito">
 							
@@ -789,6 +796,30 @@ import EventBus from './eventBus'
 				let val = (value/1).toFixed(2).replace('.', ',')
 				return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
 			},
+			hundredPorcent(tipo){
+				if (tipo == "efectivo") {
+					this.pagoEfectivo = this.total
+					
+				}
+				if (tipo == "transferencia") {
+					this.pagoTransf = this.total
+				}
+				if (tipo == "otros") {
+					this.pagoOtros = this.total
+				}
+				if (tipo == "credito") {
+					this.pagoRedCCredito = this.total
+				}
+				if (tipo == "debito") {
+					this.pagoRedCDebito = this.total
+				}
+			},
+			hundredMouseOver(tipo){
+				$("."+tipo).toggle()
+			},
+			hundredMouseNonOver(tipo){
+				$("."+tipo).toggle()
+			},
 			myFunctionServFast() {
 			  var input, filter, table, tr, td, i, txtValue;
 			  input = document.getElementById("myInputServFast");
@@ -1366,5 +1397,14 @@ import EventBus from './eventBus'
 }
 .textThree{
 	display: none
+}
+.hundred{
+	cursor: pointer;
+	transition: all 0.5s ease-out;
+}
+.hundred:hover{
+	background-color: rgba(31, 86, 115, 0.342);
+	color: white !important;
+	border-radius: 5px;
 }
 </style>

@@ -171,7 +171,8 @@
 		      <div class="modal-header" v-bind:style="{ 'background-color': '#1F5673'}">
 				  <img src="" alt="">
 				  <div class=" text-center p-0 col-md-12">
-					  <img src="../assets/logoNew.png" class="logoVenta"  alt="">
+					  <img src="../assets/logokk.png" class="logoVenta"  alt="">
+					   <b style="font-size:1.5em" class="text-white">KKPrettyNails</b>
 					  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true" class="text-white">&times;</span>
 					  </button>
