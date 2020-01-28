@@ -21,6 +21,7 @@ const September = require('../models/September')
 const October = require('../models/October')
 const November = require('../models/November')
 const December = require('../models/December')
+const cashFunds = require('../models/cashFund')
 ventas.use(cors())
 
 ventas.put('/updateServicesMonth/:service', (req, res) => {
@@ -321,6 +322,11 @@ ventas.get('/totalSales/:month', (req, res) => {
 
 })
 
+ventas.get('/getFund', async (req, res) => {
+  const idFunds = await cashFunds.find()
+  res.status(200).json(idFunds)
+})
+
 ventas.post('/closeDay/:name', async (req, res) => {
   const closeName = req.params.name
   const dateNow = new Date()
@@ -357,10 +363,27 @@ ventas.post('/closeDay/:name', async (req, res) => {
 
   const closed = await Cierres.create(CloseDay)
   if (closed) {
-    res.json({status: 'ok'})
+    const removeSales = await VentaDia.deleteMany({})
+    if (removeSales) {
+      const idFunds = await cashFunds.find()
+      if (idFunds) {
+        const reloadFunds = await cashFunds.findByIdAndUpdate(idFunds[0]._id, {
+          $set: {
+            userRegister: '',
+            amount: 0, 
+            validator: false
+          }
+        })
+        if (reloadFunds) {
+          res.json({status: 'ok'})
+        }
+        res.json({status: 'bad'})
+      }
+      res.json({status: 'bad'})
+    }
+    res.json({status: 'bad'})
   }
   res.json({status: 'bad'})
-
 })
 
 ventas.get('/getMonthPerMonthSelected/:month', (req, res) => {
@@ -839,46 +862,82 @@ ventas.post('/procesar', (req, res) => {
     idTableSales: '',
     fecha: today
   }
-
-  
-  Venta.create(venta)
-  .then(ventas => {
-    ventaDia.idTableSales = ventas._id
-    Manicurista.updateOne({documento:documentoManicurista},{
-      $inc: {comision:ventas.comision}
-    })
-    .then(comision => {
-      Cliente.updateOne({identidad: finalClient[1]},{
-        $inc: {participacion: 1}
-      })
-      .then(participacion => {
-        Cliente.updateOne({identidad: finalClient[1]},{
-          $set: {ultimaFecha: today}
-        })
-        .then(lasDate => {
-          VentaDia.create(ventaDia)
-          .then(venta => {
-            res.json({status: 'Venta registrada'})
+  console.log(venta)
+  console.log(ventaDia)
+  cashFunds.find()
+  .then(have => {
+    if (have.length > 0) {
+      if (have[0].validator) {
+        Venta.create(venta)
+        .then(ventas => {
+          ventaDia.idTableSales = ventas._id
+          Manicurista.updateOne({documento:documentoManicurista},{
+            $inc: {comision:ventas.comision}
+          })
+          .then(comision => {
+            Cliente.updateOne({identidad: finalClient[1]},{
+              $inc: {participacion: 1}
+            })
+            .then(participacion => {
+              Cliente.updateOne({identidad: finalClient[1]},{
+                $set: {ultimaFecha: today}
+              })
+              .then(lasDate => {
+                VentaDia.create(ventaDia)
+                .then(venta => {
+                  res.json({status: 'Venta registrada'})
+                })
+                .catch(err => {
+                  res.send('Error:' + err)
+                })
+              })
+              .catch(err => {
+                res.send(err)
+              })
+            })
+            .catch(err => {
+              res.send('Error:' + err)
+            })
           })
           .catch(err => {
             res.send('Error:' + err)
           })
         })
         .catch(err => {
-          res.send(err)
+          res.send('Error: ' + err)
         })
+      }else{
+        res.json({status: 'no-cash'})
+      }
+    }else{
+      cashFunds.create({
+        userRegister:'',
+        amount:0,
+        quantity:0,
+        validator: false
+      }).then(createCash => {
+        res.json({status: 'no-cash'})
       })
-      .catch(err => {
-        res.send('Error:' + err)
-      })
-    })
-    .catch(err => {
-      res.send('Error:' + err)
-    })
+    }
   })
-  .catch(err => {
-    res.send('Error: ' + err)
-  })
+})
+
+ventas.post('/registerFund', async (req, res) => {
+  const find = await cashFunds.find()
+  if (find) {
+    const register = await cashFunds.findByIdAndUpdate(find[0]._id, {
+      $set: {
+        userRegister: req.body.userRegister,
+        amount: req.body.amount,
+        validator: true
+      }
+    })
+    if (register) {
+      res.status(200).json({status: 'ok'})
+    }
+    res.json({status: 'bad'})
+  }
+  res.json({status: 'bad'})
 })
 
 ventas.get('/GetSalesPerMonth', (req, res) => {

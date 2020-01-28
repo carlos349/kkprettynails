@@ -307,9 +307,8 @@ export default {
 	}
 	.three{
 		background:rgb(46, 93, 117);
-  }
+    }
     
-
     .metricss{
         height: auto;
         padding: auto;

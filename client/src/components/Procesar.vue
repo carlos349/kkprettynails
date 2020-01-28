@@ -258,7 +258,6 @@ box-shadow: 0px 0px 22px 5px rgba(31,86,115,1);">
 box-shadow: 0px 0px 22px 5px rgba(31,86,115,1);">
 		      <div class="modal-header"  v-bind:style="{ 'background-color': '#1F5673'}">
 		        <h5 class="modal-title text-white font-weight-bold" id="exampleModalCenterTitle">Registrar servicio</h5>
-		        
 		      </div>
 		      <div class="modal-body">
 		        <form v-on:submit.prevent="registroServicio">
@@ -306,7 +305,32 @@ box-shadow: 0px 0px 22px 5px rgba(31,86,115,1);">
 					</form>
 		      </div>
 		    </div>
-
+		  </div>
+		</div>
+		<div class="modal fade" id="myModalRegisterFund" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		  <div class="modal-dialog modal-dialog-centered" role="document">
+		    <div class="modal-content p-1" style="-webkit-box-shadow: 0px 0px 22px 5px rgba(31,86,115,1);
+-moz-box-shadow: 0px 0px 22px 5px rgba(31,86,115,1);
+box-shadow: 0px 0px 22px 5px rgba(31,86,115,1);">
+		      <div class="modal-header"  v-bind:style="{ 'background-color': '#1F5673'}">
+		        <h5 class="modal-title text-white font-weight-bold" id="exampleModalCenterTitle">Registre un fondo de caja</h5>
+		      </div>
+		      <div class="modal-body">
+		        <form v-on:submit.prevent="registroFondo">
+					<div class="row">
+						<div class="form-group col-6">
+							<label for="name">Nombre del cajero</label>
+							<input v-model="nombreCaja" type="text" class="form-control inputsVenta w-100" placeholder="Ingrese su nombre">
+						</div>
+						<div class="form-group col-6">
+							<label for="name">Fondo de caja</label>
+							<input v-model="montoCaja" type="text" class="form-control inputsVenta w-100" placeholder="Ingrese el fondo de la caja">
+						</div>
+						<button class="btn w-100 add">Ingresar</button>
+					</div>
+				</form>
+		      </div>
+		    </div>
 		  </div>
 		</div>
 		<div v-bind:style="{  'height': '5vh', 'z-index' : '1000' }" v-on:click="verificacionCliente"  class="p-2 menuVerVentas navSVenta" v-on:mouseenter="mouseOverVenta('textOne',0)" v-on:mouseleave="mouseLeaveVenta('textOne',0)">
@@ -317,13 +341,9 @@ box-shadow: 0px 0px 22px 5px rgba(31,86,115,1);">
 				<div  class="col-sm-10 pl-4 pt-1 textOne">
 					<b>Nuevo Cliente</b>	
 				</div>
-			</div>
-			
-			 	
+			</div>	
         </div>
 		<div v-bind:style="{  'height': '5vh', 'z-index' : '1000' }" v-on:click="addService" class="p-2 menuVerServi navSServi" v-on:mouseenter="mouseOverVenta('textTwo',1)" v-on:mouseleave="mouseLeaveVenta('textTwo',1)">
-			
-
 			<div class="row">
 				<div class="col-sm-2">
 					<font-awesome-icon class="icons" style="color:#1f5673;font-size:2em" icon="folder-plus" />
@@ -332,12 +352,8 @@ box-shadow: 0px 0px 22px 5px rgba(31,86,115,1);">
 					<b>Nuevo Servicio</b>	
 				</div>
 			</div>
-			
-			
         </div>
 		<div v-bind:style="{  'height': '5vh', 'z-index' : '1000' }" v-on:click="borrarServicios()" class="p-2 menuVerRedo navSRedo" v-on:mouseenter="mouseOverVenta('textThree',2)" v-on:mouseleave="mouseLeaveVenta('textThree',2)">
-			
-
 			<div class="row">
 				<div class="col-sm-2">
 					<font-awesome-icon class="icons" style="color:#1f5673;font-size:2em" icon="redo" />
@@ -346,8 +362,6 @@ box-shadow: 0px 0px 22px 5px rgba(31,86,115,1);">
 					<b>Reiniciar Venta</b>	
 				</div>
 			</div>
-			
-			
         </div>
 	</div>
 </template>
@@ -393,6 +407,8 @@ import EventBus from './eventBus'
 				'Accept': 'application/json',
 				'Content-type': 'application/json'
 			},
+			nombreCaja:'',
+			montoCaja: '',
 			pagoEfectivo: '',
 			pagoOtros: '',
 			pagoRedCDebito: '',
@@ -660,6 +676,22 @@ import EventBus from './eventBus'
 					console.log(err)
 				})
 			},
+			registroFondo(){
+				axios.post('ventas/registerFund', {
+					userRegister: this.nombreCaja,
+					amount: this.montoCaja
+				}).then(res => {
+					if (res.data.status == 'ok') {
+						this.$swal({
+							type: 'success',
+							title: '¡Ya puede ingresar ventas!',
+							showConfirmButton: false,
+							timer: 1500
+						})
+						$('#myModalRegisterFund').modal('hide')
+					}
+				})
+			},
 			procesar() {
 				if (this.pagoEfectivo == '') {
 					this.pagoEfectivo = 0
@@ -709,6 +741,14 @@ import EventBus from './eventBus'
 									showConfirmButton: false,
 									timer: 1500
 								})
+							}else if(res.data.status == "no-cash"){
+								this.$swal({
+									type: 'error',
+									title: 'Primero debe registrar un fondo de caja',
+									showConfirmButton: false,
+									timer: 1500
+								})
+								$('#myModalRegisterFund').modal('show')
 							}
 						}).catch(err => {
 							this.$swal({
