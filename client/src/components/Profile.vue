@@ -107,7 +107,7 @@
 					</div>	
 					<div class="col-md-2 col-sm-5 metricss second">
 						<p>Comision total</p>
-						<h2>{{yourComision}}</h2>
+						<h2>{{formatPrice(yourComision)}}</h2>
 					</div>
 				</div>
 				
@@ -119,6 +119,7 @@
                 
                 
                 <p slot="descuentoo" slot-scope="props">{{props.row.descuento}}%</p>
+				<p slot="clientNombre" slot-scope="props">{{justName(props.row.cliente)}}</p>
                 <p slot="comisionn" slot-scope="props">{{formatPrice(props.row.comision)}}</p>
                 <p slot="locall" slot-scope="props">{{formatPrice(props.row.ganancialocal)}}</p>
                 <p slot="totall" slot-scope="props">{{formatPrice(props.row.total)}}</p>
@@ -145,7 +146,7 @@
 			const decoded = jwtDecode(token)
 			
 			return {
-				columns:['fecha' , 'servicios' , 'cliente' , 'descuentoo' , 'comisionn' , 'totall', 'print'],
+				columns:['fecha' , 'servicios' , 'clientNombre' , 'descuentoo' , 'comisionn' , 'totall', 'print'],
 				optionsT: {
 					filterByColumn: true,
 					texts: {
@@ -156,7 +157,7 @@
 					headings: {
 						fecha: 'Fecha ',
 						servicioss: 'Servicios ',
-						cliente: 'Cliente ',
+						clientNombre: 'Cliente ',
 						manicurista: 'Prestador ',
 						descuentoo: 'Descuento ',
 						comisionn: 'Comision ',
@@ -230,6 +231,10 @@
 			formatPrice(value) {
 				let val = (value/1).toFixed(2).replace('.', ',')
 				return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+			},
+			justName(value){
+				const split = value.split('-')
+				return split[0]
 			},
 			async getYourSales(){
 				const ident = localStorage.userToken

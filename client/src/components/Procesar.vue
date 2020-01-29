@@ -735,6 +735,7 @@ import EventBus from './eventBus'
 							descuento:this.descuento,
 							fecha:this.fechaVenta,
 							total: this.totalSinFormato,
+							diseno: this.diseño,
 							documentoManicurista: this.documentoManicurista
 						})
 						.then(res => {

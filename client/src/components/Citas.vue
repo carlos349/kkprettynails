@@ -68,9 +68,8 @@
                   Seleccione un prestador y horario disponible
                   </div>
                   <select v-model="maniBloque" v-on:change="selectManic()" class="CMani m-1  p-2 w-75 text-white col-sm-6" name="manicuristas">
-                            <option selected="true
-                            " >{{this.maniBloque}}</option>
-                            
+                           
+                            <option v-if="sectionDeleteTwo" selected="true" >{{maniBloque}}</option>
                             <option  v-for="(mani,index) in maniAzar" v-if="mani.restDay != new Date(fecha).getDay()"  :class="mani.class" :value="mani.nombre">
                                 {{mani.nombre}}
                               </option>
@@ -215,15 +214,26 @@
                             </button>
                           </div>
                           
-                          <autocomplete	
+                          <!-- <autocomplete	
                             ref="autocomplete"
                             :search="searchClient"
                             placeholder="Buscar cliente"
                             aria-label="Buscar cliente"
                             @submit="handleSubmitClient"
                             class="clientB botonClient col-9">
-                         </autocomplete>
-                          
+                         </autocomplete> -->
+                          <div v-on:click="clearInput" class="col-9">
+                            <autocomplete
+                              ref="autocomplete"
+                              placeholder="Buscar cliente"
+                              :source="clients"
+                              input-class="form-control esteqlq"
+                              results-property="data"
+                              :results-display="formattedDisplay"
+                              @selected="addDistributionGroup">
+                            </autocomplete>
+                            <span v-on:click="clearInput" style="position:absolute;top:8px;left:50px;background-color:#FBF5F3;">{{clientsSelect}}</span>
+                          </div>
                         </div>
                         
                       </div>
@@ -410,6 +420,7 @@
   import DatePick from 'vue-date-pick';
   import 'vue-date-pick/dist/vueDatePick.css';
   import jwtDecode from 'jwt-decode'
+  import Autocomplete from 'vuejs-auto-complete'
 
 import router from '../router'
   class Event {
@@ -442,7 +453,8 @@ import router from '../router'
       VueCal,
       DatePick,
       VueBootstrapTypeahead,
-      Datetime
+      Datetime,
+      Autocomplete
     },
     data () {
       return {
@@ -508,7 +520,8 @@ import router from '../router'
         correoCliente : '',
         instagramCliente: '',
         identidadCliente:'',
-        sectionDelete: true
+        sectionDelete: true,
+        sectionDeleteTwo: true
       }
     },
     beforeCreate() {
@@ -531,11 +544,11 @@ import router from '../router'
       this.fechaMinima()
     },
     methods: {
-      arrayClient(){
-				for (let index = 0; index < this.clients.length; index++) {
-						this.arregloClients.push(this.clients[index].nombre+'-'+this.clients[index].identidad)
-          }
-      },
+      // arrayClient(){
+			// 	for (let index = 0; index < this.clients.length; index++) {
+			// 			this.arregloClients.push(this.clients[index].nombre+'-'+this.clients[index].identidad)
+      //     }
+      // },
       validatorLender(){
         const token = localStorage.userToken
         const decoded = jwtDecode(token)
@@ -560,7 +573,19 @@ import router from '../router'
         this.minimo = hoy.getFullYear() + "-" + parseFloat(hoy.getMonth()+1) + "-0" + hoy.getDate() + "T10:00:00"
         
       },
-      
+      formattedDisplay (result) {
+        console.log(result)
+        return result.nombre+'-'+result.identidad
+      },
+      addDistributionGroup (group) {
+        setTimeout(() => {
+          this.clientsSelect = group.display
+        }, 100);
+      },
+      clearInput(){
+        this.clientsSelect = ''
+        $('.esteqlq').focus()
+      },
       insertDate(){
         
         var fechaBloq = this.fecha
@@ -588,7 +613,7 @@ import router from '../router'
         .then(res => {
           this.arregloClient = []
           this.clients = res.data
-          this.arrayClient();
+          // this.arrayClient();
         })
       },
       MaysPrimera(string){
@@ -1106,7 +1131,7 @@ import router from '../router'
           
         }
 
-        
+        this.sectionDeleteTwo = false
         // $(".Sig").prop("disabled", false)
         // $(".Sig").addClass("marcar")
         // $(".imgMani").removeClass("maniMarcado")
@@ -2164,6 +2189,33 @@ import router from '../router'
 .manis{
   display: none;
 }
-
+.autocomplete__results{
+	overflow: hidden !important;
+	max-height: 100px !important;
+	background-color:rgb(31, 86, 115) !important;
+	color: #fff !important;
+	border:none !important;
+}
+.autocomplete__box{
+	border: none !important;
+	border-radius:0 !important;
+}
+.esteqlq{
+	background-color: transparent !important;
+	-webkit-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+	-moz-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+	box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+	border: none !important;
+	border-radius: 5px;
+	padding: 10px;
+  padding-top:20px;
+  padding-bottom:20px;
+	width: 50% ;
+	color: black !important;
+	width: 100%;
+}
+.autocomplete__results__item{
+	padding: 13px !important;
+}
 
 </style>

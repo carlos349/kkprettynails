@@ -148,7 +148,7 @@
                   <button v-else style="width:100%;" v-on:click="reporteVenta(props.row._id)" class=" btn btn-danger"><font-awesome-icon icon="copy" /></button>
                 </div>
                 
-                
+                <p slot="lender" slot-scope="props">{{justName(props.row.manicurista)}}</p>
                 <p slot="descuentoo" slot-scope="props">{{props.row.descuento}}%</p>
                 <p slot="comisionn" slot-scope="props">{{formatPrice(props.row.comision)}}</p>
                 <p slot="locall" slot-scope="props">{{formatPrice(props.row.ganancialocal)}}</p>
@@ -251,11 +251,11 @@
               </div>
               <div class="form-group col-md-6">
                 <label for="name">Nombre del cliente</label>
-                <h4>{{arreglo.cliente}}</h4>
+                <h4>{{justNameTwo(arreglo.cliente)}} <br> {{justNameThree(arreglo.cliente)}}</h4>
               </div>
               <div class="form-group col-md-6">
                 <label for="name">Nombre del prestador</label>
-                <h4>{{arreglo.manicurista}}</h4>
+                <h4>{{justName(arreglo.manicurista)}}</h4>
               </div>
               <div class="form-group col-md-6">
                 <label for="name">Métodos de pago</label>
@@ -275,6 +275,7 @@
                 <li class="list-group-item" style="background-color: transparent !important"><h5>Comisión: <span style="float:right;"> {{ formatPrice(arreglo.comision) }}</span></h5></li>
                 <li class="list-group-item" style="background-color: transparent !important"><h5>Ganancia del local:<span style="float:right;"> {{ formatPrice(arreglo.ganancialocal) }}</span></h5></li>
                 <li class="list-group-item" style="background-color: transparent !important"><h5>Descuento: <span style="float:right;"> {{arreglo.descuento }}% </span></h5></li>
+                <li v-if="arreglo.design" class="list-group-item" style="background-color: transparent !important"><h5>Diseño: <span style="float:right;"> {{ formatPrice(arreglo.design) }}</span></h5></li>
                 <li class="list-group-item" style="background-color: transparent !important"><h5>Total:<span style="float:right;"> {{ formatPrice(arreglo.total) }}</span></h5></li>
               </ul>
               
@@ -317,7 +318,7 @@ export default {
 	},
   data(){
     return {
-      columns:['fecha' , 'servicios' , 'cliente' , 'manicurista' , 'descuentoo' , 'comisionn' , 'locall', 'totall', 'print'],
+      columns:['fecha' , 'servicios' , 'cliente' , 'lender' , 'descuentoo' , 'comisionn' , 'locall', 'totall', 'print'],
 			optionsT: {
 				filterByColumn: true,
 				texts: {
@@ -329,7 +330,7 @@ export default {
 					fecha: 'Fecha ',
 					servicioss: 'Servicios ',
 					cliente: 'Cliente ',
-					manicurista: 'Prestador ',
+					lender: 'Prestador ',
 					descuentoo: 'Descuento ',
           comisionn: 'Comision ',
           locall: 'Local ',
@@ -532,6 +533,27 @@ export default {
         console.error(err)
       })
     },
+    justName(value){
+      console.log(value)
+      if(value){
+        const split = value.split('/')
+				return split[0]
+      }
+    },
+    justNameTwo(value){
+      console.log(value)
+      if(value){
+        const split = value.split('-')
+				return split[0]
+      }
+    },
+    justNameThree(value){
+      console.log(value)
+      if(value){
+        const split = value.split('-')
+				return split[1]
+      }
+		},
     async cancelSale(id){
         const cancelSale = await axios.put('/ventas/'+id, {
           comision: this.arreglo.comision,

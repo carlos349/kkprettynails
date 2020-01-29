@@ -169,7 +169,7 @@
 							:results-display="formattedDisplay"
 							@selected="addDistributionGroup">
 							</autocomplete>
-							<span v-on:click="clearInput" style="position:absolute;top:400px;left:50px;background-color:white;">{{recomendador}}</span>
+							<span v-on:click="clearInput" style="position:absolute;top:400px;left:50px;background-color:#FBF5F3;">{{recomendador}}</span>
 						</div>
 						
                     </div>
@@ -807,9 +807,28 @@ thead {
 
 .autocomplete__results{
 	overflow: hidden !important;
-	max-height: 70px !important;
+	max-height: 100px !important;
 	background-color:rgb(31, 86, 115) !important;
 	color: #fff !important;
 	border:none !important;
+}
+.autocomplete__box{
+	border: none !important;
+	border-radius:0 !important;
+}
+.esteqlq{
+	background-color: transparent !important;
+	-webkit-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+	-moz-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+	box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+	border: none !important;
+	border-radius: 5px;
+	padding: 10px;
+	width: 50% ;
+	color: black !important;
+	width: 100%;
+}
+.autocomplete__results__item{
+	padding: 13px !important;
 }
 </style>

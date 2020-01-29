@@ -840,6 +840,7 @@ ventas.post('/procesar', (req, res) => {
     pagoTransf:req.body.pagoTransf,
     descuento:req.body.descuento,
     ganancialocal: gananciaLocal,
+    design: req.body.diseno,
     status: true,
     total: total,
     fecha: today
@@ -857,6 +858,7 @@ ventas.post('/procesar', (req, res) => {
     pagoTransf:req.body.pagoTransf,
     descuento:req.body.descuento,
     ganancialocal: gananciaLocal,
+    design: req.body.diseno,
     status: true,
     total: total,
     idTableSales: '',

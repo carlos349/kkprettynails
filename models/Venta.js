@@ -35,6 +35,9 @@ const VentaSchema = new Schema({
 	pagoTransf: {
 		type: Number
 	},
+	design: {
+		type: Number
+	},
 	status: {
 		type: Boolean
 	},

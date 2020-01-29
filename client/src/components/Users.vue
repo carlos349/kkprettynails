@@ -155,13 +155,25 @@
 						<div class="form-group row">
 							<div class="form-group w-100">
 								<label for="recomendacion">Vincule el prestador</label>
-								<autocomplete	
+								<!-- <autocomplete	
 									:search="searchPrestador"
 									placeholder="Buscar prestador"
 									aria-label="Buscar prestador"
 									@submit="handleSubmitPrestador"
 									class="auto autoClient w-100">
-								</autocomplete>
+								</autocomplete> -->
+								<div v-on:click="clearInput">
+									<autocomplete
+										ref="autocomplete"
+										placeholder="Buscar cliente"
+										:source="arregloManicuristas"
+										input-class="form-control esteqlq"
+										results-property="data"
+										:results-display="formattedDisplay"
+										@selected="addDistributionGroup">
+									</autocomplete>
+									<span v-on:click="clearInput" style="position:absolute;top:55px;left:35px;background-color:#FBF5F3;">{{prestador}}</span>
+								</div>
 							</div>
 							<button class="btn w-100 add" v-on:click="editarEstado(idSelect, 3, 'no-prestador')">Vincular</button>
 						</div>
@@ -176,9 +188,12 @@
 <script type="text/javascript">	
 	import axios from 'axios'
 	import router from '../router'
-	import Autocomplete from '@trevoreyre/autocomplete-vue'
+	import Autocomplete from 'vuejs-auto-complete'
 
   export default {
+	components: {
+		Autocomplete
+	},
     data(){
       return {
 		columns:['nombres' , 'email' , 'last' , 'edit' , 'delete'],
@@ -251,30 +266,47 @@
 				router.push({name: 'Login'})
 			})
 		},
-		arrayUsers(){
-			for (let index = 0; index < this.manicuristas.length; index++) {
-				this.arregloManicuristas.push(this.manicuristas[index].nombre+"/"+this.manicuristas[index].documento)
+		// arrayUsers(){
+		// 	for (let index = 0; index < this.manicuristas.length; index++) {
+		// 		this.arregloManicuristas.push(this.manicuristas[index].nombre+"/"+this.manicuristas[index].documento)
 
-			} 
-        },
+		// 	} 
+		// },
+		formattedDisplay (result) {
+			console.log(result)
+			return result.nombre+"/"+result.documento
+		},
+		addDistributionGroup (group) {
+			setTimeout(() => {
+				this.prestador = group.display
+			}, 100);
+			// access the autocomplete component methods from the parent
+			// this.$refs.autocomplete.clear()
+			// $('.esteqlq').val(group.display)
+			
+		},
+		clearInput(){
+			this.prestador = ''
+			$('.esteqlq').focus()
+		},
 	    getManicuristas(){
 			axios.get('manicuristas')
 			.then(res => {
-				this.manicuristas = res.data
-				this.arrayUsers()
-				console.log(this.arregloManicuristas)
+				this.arregloManicuristas = res.data
+				// this.arrayUsers()
+				// console.log(this.arregloManicuristas)
 			})
 		},
-		searchPrestador(input){
-			if (input.length < 1) { return [] }
-				return this.arregloManicuristas.filter(manicurista => {
-					return manicurista.toLowerCase()
-					.startsWith(input.toLowerCase())
-			})
-		},
-		handleSubmitPrestador(result){	
-			this.prestador = result
-		},
+		// searchPrestador(input){
+		// 	if (input.length < 1) { return [] }
+		// 		return this.arregloManicuristas.filter(manicurista => {
+		// 			return manicurista.toLowerCase()
+		// 			.startsWith(input.toLowerCase())
+		// 	})
+		// },
+		// handleSubmitPrestador(result){	
+		// 	this.prestador = result
+		// },
 		editarEstado(id, status, type){
 			console.log(type)
 			if (type == 'prestador') {
@@ -360,8 +392,6 @@
 						this.emailValidator = true
 						this.getUsers()
 						const id = res.data.status
-
-
 						const config = {headers: {'Content-Type': 'multipart/form-data', 'x-access-token': localStorage.userToken}}
 						axios.post(`users/registerImage/${id}`, formData, config)
 						.then(resData => {
@@ -549,4 +579,31 @@ thead {
 	.dropdown-item{
 		cursor: pointer !important;
 	}
+	.autocomplete__box{
+		border: none !important;
+		border-radius:0 !important;
+
+	}
+	.esteqlq{
+		background-color: transparent !important;
+		-webkit-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+		-moz-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+		box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+		border: none !important;
+		border-radius: 5px;
+		padding: 10px;
+		width: 50% ;
+		color: black !important;
+		width: 100%;
+	}
+.autocomplete__results{
+	overflow: hidden !important;
+	max-height: 100px !important;
+	background-color:rgb(31, 86, 115) !important;
+	color: #fff !important;
+	border:none !important;
+}
+.autocomplete__results__item{
+	padding: 13px !important;
+}
 </style>
