@@ -158,8 +158,8 @@
 						</div>
 					</div>
 					<div class="col-sm-4 mx-auto">
-						<div v-on:click="hundredPorcent('debito')" v-on:mouseenter="hundredMouseOver('debito')" v-on:mouseleave="hundredMouseNonOver('debito')" class="input-group input-group-lg mb-2 ">
-							<div class="input-group-prepend w-25 p-0 hundred">
+						<div class="input-group input-group-lg mb-2 ">
+							<div  v-on:click="hundredPorcent('debito')" v-on:mouseenter="hundredMouseOver('debito')" v-on:mouseleave="hundredMouseNonOver('debito')" class="input-group-prepend w-25 p-0 hundred">
 								<span class="inputsVenta w-100 p-0 text-white input-group-text" id="inputGroup-sizing-lg">
 									<b class="debito pl-3" style="font-size:0.6em;display:none">100%</b>
 									<img class="debito" style="width:98%;padding-left:1px"  src="../assets/trans1.png" alt=""></span>
@@ -197,8 +197,8 @@
 					<div class="row p-0">
 						<div class="col-sm-6">
 						<div style="width:120%" class="input-group input-group-lg">
-							<div style="width:30%" class="input-group-prepend text-center">
-								<span style="color:#5a5a5a !important;font-size:2.3em" class="inputsVentaTotal2 ml-4 w-100 text-white input-group-text text-center" id="inputGroup-sizing-lg"><b>Total:</b> </span>
+							<div style="width:26%" class="input-group-prepend text-center">
+								<span style="color:#5a5a5a !important;font-size:2.3em" class="inputsVentaTotal2  w-100 text-white input-group-text text-center" id="inputGroup-sizing-lg"><b>Total:</b> </span>
 							</div>
 							<input  style="color:#5a5a5a !important;width:100%;font-size:2.3em;" v-model="total"  readonly type="text" disabled class="inputsVentaTotal2 font-weight-bold text-center mr-5 w-100 form-control manicuristaFocus"  aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
 
@@ -235,11 +235,11 @@ box-shadow: 0px 0px 22px 5px rgba(31,86,115,1);">
 				  <form v-on:submit.prevent="ingresoCliente">
 					<div class="form-group">
 						<label for="name">Nombre del cliente</label>
-						<input v-model="nombreClienteRegister" type="text" class="form-control inputs" placeholder="Nombre del prestador">
+						<input v-model="nombreClienteRegister" type="text" class="form-control w-100 inputsVenta" placeholder="Nombre del prestador">
 					</div>
 					<div class="form-group">
 						<label for="identidad">Instagram o Correo del cliente</label>
-						<input v-model="instagramCliente" type="text" class="form-control inputs" placeholder="registre instagram o correo">
+						<input v-model="instagramCliente" type="text" class="form-control w-100 inputsVenta" placeholder="Registre instagram o correo">
 					</div>
                     <div class="form-group">
                         <label for="recomendacion">Registre recomendador</label>
@@ -270,11 +270,11 @@ box-shadow: 0px 0px 22px 5px rgba(31,86,115,1);">
 		        <form v-on:submit.prevent="registroServicio">
 						<div class="form-group">
 							<label for="name">Nombre del servicio</label>
-							<input v-model="nombreServi" type="text" class="form-control inputs" placeholder="Nombre servicio">
+							<input v-model="nombreServi" type="text" class="form-control inputsVenta w-100" placeholder="Nombre servicio">
 						</div>
 						<div class="form-group">
 							<label for="nombre">Tiempo</label>
-							<select class="form-control" v-model="tiempoServi">
+							<select class="form-control inputsVenta" v-model="tiempoServi">
 								<option style="color:black;" selected value="Seleccione el tiempo">Seleccione el tiempo</option>
 								<option style="color:black;" value="15">15 Minutos</option>
 								<option style="color:black;" value="30">30 Minutos</option>
@@ -286,10 +286,10 @@ box-shadow: 0px 0px 22px 5px rgba(31,86,115,1);">
 						</div>
 						<div class="form-group">
 							<label for="name">Precio</label>
-							<input v-model="precioServi" type="text" class="form-control inputs" placeholder="Precio">
+							<input v-model="precioServi" type="text" class="form-control inputsVenta" placeholder="Precio">
 						</div>
 						<div class="form-group row" style="margin-top:-15px;">
-							<input type="text" id="myInputServFast" v-on:keyup="myFunctionServFast()" class="form-control buscar inputs" placeholder="Seleccione prestadores"/>
+							<input type="text" id="myInputServFast" v-on:keyup="myFunctionServFast()" class="form-control buscar inputsVenta w-100 mt-2" placeholder="Buscar prestadores"/>
 							<div class="ListaProcesarServ maxHeight">
 								<table class="table tableBg" id="myTableServFast">
 									<tbody>
@@ -444,7 +444,9 @@ import EventBus from './eventBus'
 			precioServi:'',
 			clients: [],
 			arregloClients: [],
-			diseño:''
+			diseño:'',
+			resto: 0
+
 		 }
 	 },
 	 beforeCreate() {
@@ -499,20 +501,21 @@ import EventBus from './eventBus'
 				this.inspector = true
 			},
 			formatDiscount(){
-				 
-				if (this.diseño.length == 1) {
+				console.log(this.diseño.length)
 					
-					this.diseño = "$" + this.diseño 
-				}
-				if (this.diseño == "$$") {
-					this.diseño = ''
-				}
-				// else{
-				// 	const sp = this.diseño.split("$")
-				// 	this.diseño = "$" + this.formatPrice(sp[1])
-				// }
-				
-				
+					if (this.diseño.length == 0) {
+						this.totalSinFormato = parseFloat(this.totalSinFormato) - parseFloat(this.resto)
+						this.total = "$" + this.formatPrice(this.totalSinFormato)
+						this.resto = 0
+						
+					}
+					else{
+					this.totalSinFormato = parseFloat(this.totalSinFormato) - parseFloat(this.resto)
+					this.totalSinFormato = parseFloat(this.totalSinFormato) + parseFloat(this.diseño)
+					this.total = "$" + this.formatPrice(this.totalSinFormato)
+					this.resto = this.diseño
+					}
+					
 			},
 		  	getManicuristas(){
 				axios.get('manicuristas')
@@ -838,20 +841,20 @@ import EventBus from './eventBus'
 			},
 			hundredPorcent(tipo){
 				if (tipo == "efectivo") {
-					this.pagoEfectivo = this.total
+					this.pagoEfectivo = this.totalSinFormato
 					
 				}
 				if (tipo == "transferencia") {
-					this.pagoTransf = this.total
+					this.pagoTransf = this.totalSinFormato
 				}
 				if (tipo == "otros") {
-					this.pagoOtros = this.total
+					this.pagoOtros = this.totalSinFormato
 				}
 				if (tipo == "credito") {
-					this.pagoRedCCredito = this.total
+					this.pagoRedCCredito = this.totalSinFormato
 				}
 				if (tipo == "debito") {
-					this.pagoRedCDebito = this.total
+					this.pagoRedCDebito = this.totalSinFormato
 				}
 			},
 			hundredMouseOver(tipo){
@@ -1157,7 +1160,7 @@ import EventBus from './eventBus'
 	}
 	.autocomplete{
 		width: 100% !important;
-		box-shadow: inset 8px 8px 10px 0;
+		
 	}
 	.autoProcess {
 		width: 100%;
