@@ -2209,32 +2209,43 @@ import router from '../router'
 .manis{
   display: none;
 }
+.autocomplete__box{
+		background-color: transparent !important;
+		-webkit-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+		-moz-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+		box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+		border: none !important;
+		border-radius: 5px;
+		padding: 10px;
+		width: 50% ;
+		color: black !important;
+		width: 100%;
+		outline: none !important;
+	}
+	.esteqlq{
+		outline: none !important;
+		background-color: transparent !important;
+		border: none !important;
+		border-radius: 5px;
+		padding: 10px;
+		width: 50% ;
+		color: black !important;
+		width: 100%;
+	}
 .autocomplete__results{
+	outline: none !important;
 	overflow: hidden !important;
 	max-height: 100px !important;
-	background-color:rgb(31, 86, 115) !important;
-	color: #fff !important;
-	border:none !important;
-}
-.autocomplete__box{
-	border: none !important;
-	border-radius:0 !important;
-}
-.esteqlq{
-	background-color: transparent !important;
+	background-color: white !important;
 	-webkit-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
 	-moz-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
 	box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
-	border: none !important;
+	color: #000 !important;
+	border:none !important;
 	border-radius: 5px;
-	padding: 10px;
-  padding-top:20px;
-  padding-bottom:20px;
-	width: 50% ;
-	color: black !important;
-	width: 100%;
 }
 .autocomplete__results__item{
+	outline: none !important;
 	padding: 13px !important;
 }
 

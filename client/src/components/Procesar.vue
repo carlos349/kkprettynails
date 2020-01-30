@@ -3,26 +3,50 @@
 	<div class="contenedor">
 		<div class="row">
 			<div class="col-md-12">
-				<div class="row mb-2">
+				<div class="row mb-4">
 					<div class="input-group col-sm-6">
-					
-					<autocomplete	
+						<div class="w-100 " v-on:click="clearInput">
+							<autocomplete
+							ref="autocomplete"
+							placeholder="Buscar cliente"
+							:source="clients"
+							input-class="esteqlq one"
+							results-property="data"
+							:results-display="formattedDisplay"
+							@selected="addDistributionGroup">
+							</autocomplete>
+							<span v-on:click="clearInput" style="position:absolute;top:10px;left:50px;background-color:#FBF5F3;">{{nombreCliente}}</span>
+						</div>
+
+
+					<!-- <autocomplete	
 						:search="searchClient"
 						placeholder="Buscar cliente"
 						aria-label="Buscar cliente"
 						@submit="handleSubmitClient"
 						class="auto">
-					</autocomplete>
+					</autocomplete> -->
 				</div>
 				<div class="input-group input-group-lg col-sm-6">
-				  
-					<autocomplete	
+					<div class="w-100 " v-on:click="clearInputTwo">
+							<autocomplete
+							ref="autocomplete"
+							placeholder="Buscar Prestador"
+							:source="manicuristas"
+							input-class="esteqlq two"
+							results-property="data"
+							:results-display="formattedDisplayTwo"
+							@selected="addDistributionGroupTwo">
+							</autocomplete>
+							<span v-on:click="clearInputTwo" style="position:absolute;top:10px;left:50px;background-color:#FBF5F3;">{{maniSelect}}</span>
+						</div>
+					<!-- <autocomplete	
 						:search="search"
 						placeholder="Buscar manicurista"
 						aria-label="Buscar manicurista"
 						@submit="handleSubmit"
 						class="auto">
-					</autocomplete>
+					</autocomplete> -->
 				</div>
 				</div>
 				
@@ -376,8 +400,8 @@ box-shadow: 0px 0px 22px 5px rgba(31,86,115,1);">
 <script type="text/javascript">
 import axios from 'axios'
 import router from '../router'
-import Autocomplete from '@trevoreyre/autocomplete-vue'
 import EventBus from './eventBus'
+import Autocomplete from 'vuejs-auto-complete'
 	class Manicurista{
 		constructor(nombre, comision) {
 			this.nombre = nombre;
@@ -401,6 +425,9 @@ import EventBus from './eventBus'
 		}
 	}
  export default{
+	 components:{
+		 Autocomplete
+	 },
 	 data() {
 		 return {
 			manicurista: new Manicurista(),
@@ -483,6 +510,31 @@ import EventBus from './eventBus'
 						return manicurista.toLowerCase()
 						.startsWith(input.toLowerCase())
 				})
+			},
+			formattedDisplay (result) {
+			return result.nombre+'-'+result.identidad
+			},
+			addDistributionGroup (group) {
+				setTimeout(() => {
+					this.nombreCliente = group.display
+				}, 100);
+				// access the autocomplete component methods from the parent
+				// this.$refs.autocomplete.clear()
+				// $('.esteqlq').val(group.display)
+				
+			},
+			formattedDisplayTwo (result) {
+			return result.nombre
+			},
+			addDistributionGroupTwo (group) {
+				this.inspector = true
+				setTimeout(() => {
+					this.maniSelect = group.display
+				}, 100);
+				// access the autocomplete component methods from the parent
+				// this.$refs.autocomplete.clear()
+				// $('.esteqlq').val(group.display)
+				
 			},
 			handleSubmitClient(result){
 				console.log(result)
@@ -864,6 +916,14 @@ import EventBus from './eventBus'
 			hundredMouseNonOver(tipo){
 				$("."+tipo).toggle()
 			},
+			clearInput(){
+			this.nombreCliente = ''
+			$('.one').focus()
+			},
+			clearInputTwo(){
+			this.maniSelect = ''
+			$('.two').focus()
+			},
 			myFunctionServFast() {
 			  var input, filter, table, tr, td, i, txtValue;
 			  input = document.getElementById("myInputServFast");
@@ -1022,16 +1082,7 @@ import EventBus from './eventBus'
 		font-weight:600;
 		cursor:pointer;
 	}
-	.autocomplete-input{
-		color:azure !important;
-	}
-	.autocomplete-result-list{
-		background-color: #1F5673;
-		color:azure;
-	}
-	.autocomplete-result-list li{
-		color:azure;
-	}
+	
 	.procesar:hover{
 		color:white;
 		background-color:#1F5673;
@@ -1156,29 +1207,12 @@ import EventBus from './eventBus'
 		font-family: 'Raleway', sans-serif;
 		font-weight:600;
 	}
-	.auto{
-		width: 100%;
-		background-color: transparent;
-		color: white !important;
-		box-shadow: inset 8px 8px 10px 0;
-	}
-	.autocomplete{
-		width: 100% !important;
-		
-	}
+
+	
 	.autoProcess {
 		width: 100%;
 	}
-	.autocomplete-input{
-		background-color: transparent !important;
-		-webkit-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
-		-moz-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
-		box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
-		border: none !important;
-		border-radius: 5px;
-		width: 100% !important;
-		color: black !important;
-	}
+	
 	.inputsVenta{
 		background-color: transparent !important;
 		-webkit-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
@@ -1453,5 +1487,44 @@ import EventBus from './eventBus'
 	background-color: rgba(31, 86, 115, 0.342);
 	color: white !important;
 	border-radius: 5px;
+}
+.autocomplete__box{
+		background-color: transparent !important;
+		-webkit-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+		-moz-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+		box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+		border: none !important;
+		border-radius: 5px;
+		padding: 10px;
+		width: 50% ;
+		color: black !important;
+		width: 100%;
+		outline: none !important;
+	}
+	.esteqlq{
+		outline: none !important;
+		background-color: transparent !important;
+		border: none !important;
+		border-radius: 5px;
+		padding: 10px;
+		width: 50% ;
+		color: black !important;
+		width: 100%;
+	}
+.autocomplete__results{
+	outline: none !important;
+	overflow: hidden !important;
+	max-height: 100px !important;
+	background-color: white !important;
+	-webkit-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+	-moz-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+	box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+	color: #000 !important;
+	border:none !important;
+	border-radius: 5px;
+}
+.autocomplete__results__item{
+	outline: none !important;
+	padding: 13px !important;
 }
 </style>
