@@ -43,7 +43,7 @@
 					</ul>
 				</div>
 			</div>
-			<div v-if="auth == 1 || auth == 2 || auth == 3" class="col-sm-12">
+			<div id="procesarVentas" v-if="auth == 1 || auth == 2 || auth == 3" class="col-sm-12">
 				
 				<span style="cursor:pointer;" v-on:click="processOpen" class="text-white" to="/caja">
 						<div class="listaMenu row p-3">

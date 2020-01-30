@@ -534,21 +534,18 @@ export default {
       })
     },
     justName(value){
-      console.log(value)
       if(value){
         const split = value.split('/')
 				return split[0]
       }
     },
     justNameTwo(value){
-      console.log(value)
       if(value){
         const split = value.split('-')
 				return split[0]
       }
     },
     justNameThree(value){
-      console.log(value)
       if(value){
         const split = value.split('-')
 				return split[1]

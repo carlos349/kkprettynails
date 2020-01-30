@@ -962,6 +962,9 @@ import EventBus from './eventBus'
 			EventBus.$on('reload-services', status => {
 				this.getManicuristas()
 			})
+			EventBus.$on('process', id => {
+				console.log(id)
+			})
 		}
  }
 </script>
