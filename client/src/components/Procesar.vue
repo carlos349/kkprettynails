@@ -15,7 +15,7 @@
 							:results-display="formattedDisplay"
 							@selected="addDistributionGroup">
 							</autocomplete>
-							<span v-on:click="clearInput" style="position:absolute;top:10px;left:50px;background-color:#FBF5F3;">{{nombreCliente}}</span>
+							<span v-on:click="clearInput" style="position:absolute;top:20px;left:50px;background-color:#FBF5F3;">{{nombreCliente}}</span>
 						</div>
 
 
@@ -38,7 +38,7 @@
 							:results-display="formattedDisplayTwo"
 							@selected="addDistributionGroupTwo">
 							</autocomplete>
-							<span v-on:click="clearInputTwo" style="position:absolute;top:10px;left:50px;background-color:#FBF5F3;">{{maniSelect}}</span>
+							<span v-on:click="clearInputTwo" style="position:absolute;top:20px;left:50px;background-color:#FBF5F3;">{{maniSelect}}</span>
 						</div>
 					<!-- <autocomplete	
 						:search="search"
@@ -73,13 +73,13 @@
 							<tr v-for="(servicio, index) in servicios" v-bind:key="servicio._id">
 								<td v-if="servicio.active" class="font-weight-bold">
 									<button v-if="!inspector" type="button" class="w-75 btn procesar text-left" v-on:click="conteoServicio(servicio._id,servicio.nombre, servicio.precio)" disabled>
-									  {{servicio.nombre}} <span class="badge badge-light conteoServ mt-1 float-right" v-bind:id="servicio._id">0</span>
+									  {{servicio.nombre}} <span class="badge badge-light conteoServ mt-1 float-right" v-bind:class="formatClass(servicio.nombre)" v-bind:id="servicio._id">0</span>
 									</button>
 									<button v-if="!inspector" type="button" class="w-20 btn btn-back  text-left"  disabled>
 									  <font-awesome-icon icon="times"/>
 									</button>
 									<button v-else type="button" class="w-75 btn procesar  text-left" v-on:click="conteoServicio(servicio._id ,servicio.nombre, servicio.precio)">
-									  {{servicio.nombre}} <span class="badge badge-light conteoServ mt-1 float-right" v-bind:id="servicio._id">0</span>
+									  {{servicio.nombre}} <span class="badge badge-light conteoServ mt-1 float-right" v-bind:class="formatClass(servicio.nombre)" v-bind:id="servicio._id">0</span>
 									</button>
 									<button v-if="inspector" type="button" class="w-20 btn btn-back  text-left" v-on:click="borrarServicio(servicio.nombre,index,servicio._id,servicio.precio)">
 									  <font-awesome-icon icon="times"/>
@@ -90,6 +90,7 @@
 									{{formatPrice(servicio.precio)}}
 								</td>
 							</tr>
+							
 						</tbody>
 					</table>
 				</div>
@@ -267,13 +268,13 @@ box-shadow: 0px 0px 22px 5px rgba(31,86,115,1);">
 					</div>
                     <div class="form-group">
                         <label for="recomendacion">Registre recomendador</label>
-                        <autocomplete	
+                        <!-- <autocomplete	
                             :search="searchClient"
                             placeholder="Buscar cliente"
                             aria-label="Buscar cliente"
                             @submit="handleSubmitClient"
                             class="autoProcess">
-                        </autocomplete>
+                        </autocomplete> -->
                     </div>
 					<button class="btn w-100 add">Agregar cliente</button>
 				</form>
@@ -472,8 +473,9 @@ import Autocomplete from 'vuejs-auto-complete'
 			clients: [],
 			arregloClients: [],
 			diseño:'',
-			resto: 0
-
+			resto: 0,
+			servicesProcess: [],
+			listServicesProcess: []
 		 }
 	 },
 	 beforeCreate() {
@@ -493,534 +495,587 @@ import Autocomplete from 'vuejs-auto-complete'
 
 	},
 	methods: {
-			arrayMani(){
-					for (let index = 0; index < this.manicuristas.length; index++) {
-						this.arregloManicuristas.push(this.manicuristas[index].nombre)
-					}
-			},
-			arrayUsers(){	
-					for (let index = 0; index < this.clients.length; index++) {
-						this.arregloClients.push(this.clients[index].nombre+'-'+this.clients[index].identidad)
-					}
-			},
-			
-			searchClient(input){
-				if (input.length < 1) { return [] }
-					return this.arregloClients.filter(manicurista => {
-						return manicurista.toLowerCase()
-						.startsWith(input.toLowerCase())
-				})
-			},
-			formattedDisplay (result) {
-			return result.nombre+'-'+result.identidad
-			},
-			addDistributionGroup (group) {
-				setTimeout(() => {
-					this.nombreCliente = group.display
-				}, 100);
-				// access the autocomplete component methods from the parent
-				// this.$refs.autocomplete.clear()
-				// $('.esteqlq').val(group.display)
-				
-			},
-			formattedDisplayTwo (result) {
-			return result.nombre
-			},
-			addDistributionGroupTwo (group) {
-				this.inspector = true
-				setTimeout(() => {
-					this.maniSelect = group.display
-				}, 100);
-				// access the autocomplete component methods from the parent
-				// this.$refs.autocomplete.clear()
-				// $('.esteqlq').val(group.display)
-				
-			},
-			handleSubmitClient(result){
-				console.log(result)
-				this.nombreCliente = result
-			},
-		  	search(input) {
-				if (input.length < 1) { return [] }
-				return this.arregloManicuristas.filter(manicurista => {
+		arrayMani(){
+				for (let index = 0; index < this.manicuristas.length; index++) {
+					this.arregloManicuristas.push(this.manicuristas[index].nombre)
+				}
+		},
+		arrayUsers(){	
+				for (let index = 0; index < this.clients.length; index++) {
+					this.arregloClients.push(this.clients[index].nombre+'-'+this.clients[index].identidad)
+				}
+		},
+		
+		searchClient(input){
+			if (input.length < 1) { return [] }
+				return this.arregloClients.filter(manicurista => {
 					return manicurista.toLowerCase()
 					.startsWith(input.toLowerCase())
-				})
-			},
-			handleSubmit(result) {
-				this.maniSelect = result
-				this.elegirManicurista()
-				this.inspector = true
-			},
-			formatDiscount(){
-				console.log(this.diseño.length)
-					
-					if (this.diseño.length == 0) {
-						this.totalSinFormato = parseFloat(this.totalSinFormato) - parseFloat(this.resto)
-						this.total = "$" + this.formatPrice(this.totalSinFormato)
-						this.resto = 0
-						
-					}
-					else{
-					this.totalSinFormato = parseFloat(this.totalSinFormato) - parseFloat(this.resto)
-					this.totalSinFormato = parseFloat(this.totalSinFormato) + parseFloat(this.diseño)
-					this.total = "$" + this.formatPrice(this.totalSinFormato)
-					this.resto = this.diseño
-					}
-					
-			},
-		  	getManicuristas(){
-				axios.get('manicuristas')
-				.then(res => {
-					this.arregloManicuristas = []
-					this.manicuristas = res.data
-					this.arrayMani()
-				}),
-				axios.get('users/clientes')
-				.then(res => {
-					this.arregloClients = []
-					this.clients = res.data
-					this.arrayUsers()
-				})
-				axios.get('servicios')
-				.then(res => {
-					this.servicios = res.data
-				})
-				this.precio = 0
-				this.indentidadCliente = ""
-				this.inspector = false
-				this.nombreCliente = ""
-				this.correoCliente = ""
-			},
-			maxCount(){
-				setTimeout(() => {
-					if (this.tiempoServi > 3) {
-						this.tiempoServi = 3
-					}
-				}, 500)	
-			},
-			myFunction() {
-			  var input, filter, table, tr, td, i, txtValue;
-			  input = document.getElementById("myInput");
-			  filter = input.value.toUpperCase();
-			  table = document.getElementById("myTable");
-			  tr = table.getElementsByTagName("tr");
-			  for (i = 0; i < tr.length; i++) {
-			    td = tr[i].getElementsByTagName("td")[0];
-			    if (td) {
-			      txtValue = td.textContent || td.innerText;
-			      if (txtValue.toUpperCase().indexOf(filter) > -1) {
-			        tr[i].style.display = "";
-			      } else {
-			        tr[i].style.display = "none";
-			      }
-			    }
-			  }
-			},
-			addService(){
-				$('#myModalAddServiceFast').modal('show')
-			},
-			verificacionCliente(){
-				$('#myModal').modal('show')	
-			},
-			ingresoCliente() {
-				axios.post('clients', {
-					nombre:this.nombreClienteRegister,
-					identidad:this.instagramCliente,
-					recomendador:this.nombreCliente
-				})
-				.then(res => {
-					if (res.data.status == 'Registrado') {
-						this.$swal({
-							type: 'success',
-							title: 'Cliente registrado',
-							showConfirmButton: false,
-							timer: 1500
-						})
-						this.getManicuristas()
-						$('#myModal').modal('hide')
-					}else{
-						this.$swal({
-							type: 'error',
-							title: 'El cliente ya existe',
-							showConfirmButton: false,
-							timer: 1500
-						})
-					}
-				})
-			},
-			elegirManicurista(){
-				axios.get('manicuristas/justone/' + this.maniSelect)
-				.then(res => {
-					this.documentoManicurista = res.data.documento
-					this.comision = res.data.porcentaje
-					this.nombreManicurista = this.maniSelect
-				})
-				.catch(err => {
-					console.log(err)
-				})
-			},
-			borrarServicio(servicio,index,esto,precio){
-				for (var i = 0; i < this.serviciosSelecionados.length; i++) {
-					console.log(i)
-					if (this.serviciosSelecionados[i].servicio == servicio ) {
-						this.serviciosSelecionados.splice(i, 1)
-						break
-					}
-				}
-				if ($("#"+esto).text() != "0") {
-					const conteo = $("#"+esto).text()
-					const conteoTotal = parseFloat(conteo) - 1
-					$("#"+esto).text(conteoTotal)
-					const subTotal = parseFloat(this.totalSinFormato) - parseFloat(precio)
-					this.precio = "$"+this.formatPrice(subTotal)
-					this.totalSinFormato = subTotal
-					if(this.descuento == ""){
-						this.total = "$"+this.formatPrice(subTotal)
-					}else{
-						this.descuentoFunc()
-					}
-					axios.put('ventas/updateServicesMonthDiscount/' + servicio)
-					.catch(err => {
-						console.log(err)
-					})
-
-					axios.put('ventas/updateProviderMonthDiscount/' + this.maniSelect)
-					.catch(err => {
-						console.log(err)
-					})
-				}
-				
-
-			},
-			descuentoFunc(){
-				if(this.descuento != ""){
-					const descuento = parseFloat(this.descuento) / 100
-					const porcentaje = 1 - parseFloat(descuento)
-					const precioConDescuento = parseFloat(this.totalSinFormato) * parseFloat(porcentaje)
-					this.total = "$"+ this.formatPrice(precioConDescuento)
-					this.totalSinFormato = precioConDescuento
-				}
-			},
-			conteoServicio(esto, servicio, precio){
-				const descuento = parseFloat(this.descuento) / 100
-				const porcentaje = 1 - parseFloat(descuento)
-				const precioTotal = parseFloat(this.totalSinFormato) + parseFloat(precio)
-				console.log(parseFloat(this.precio))
-				this.precio = "$"+this.formatPrice(precioTotal)
-				this.totalSinFormato = precioTotal
-				if(this.descuento === ''){
-					this.total = "$"+this.formatPrice(precioTotal)
+			})
+		},
+		formattedDisplay (result) {
+		return result.nombre+'-'+result.identidad
+		},
+		addDistributionGroup (group) {
+			setTimeout(() => {
+				this.nombreCliente = group.display
+			}, 100);
+			// access the autocomplete component methods from the parent
+			// this.$refs.autocomplete.clear()
+			// $('.esteqlq').val(group.display)
+			
+		},
+		formatClass(value){
+			if (value) {
+				const split = value.split(' ')
+				if (split[1]) {
+					return split[0]+split[1]
 				}else{
-					const precioConDescuento = parseFloat(this.totalSinFormato) * parseFloat(porcentaje)
-					this.total = this.formatPrice(precioConDescuento)
-					this.totalSinFormato = precioConDescuento
+					return split[0]
 				}
-
-				const conteo = $("#"+esto).text()
-				const conteoTotal = parseFloat(conteo) + 1
-				$("#"+esto).text(conteoTotal)
-				const servicios = {'servicio': servicio}
-				this.serviciosSelecionados.push(servicios)
 				
-				axios.put('ventas/updateServicesMonth/' + servicio)
-				.catch(err => {
+			}
+		},
+		formattedDisplayTwo (result) {
+		return result.nombre
+		},
+		addDistributionGroupTwo (group) {
+			this.inspector = true
+			setTimeout(() => {
+				this.maniSelect = group.display
+			}, 100);
+			// access the autocomplete component methods from the parent
+			// this.$refs.autocomplete.clear()
+			// $('.esteqlq').val(group.display)
+			
+		},
+		handleSubmitClient(result){
+			console.log(result)
+			this.nombreCliente = result
+		},
+		search(input) {
+			if (input.length < 1) { return [] }
+			return this.arregloManicuristas.filter(manicurista => {
+				return manicurista.toLowerCase()
+				.startsWith(input.toLowerCase())
+			})
+		},
+		handleSubmit(result) {
+			this.maniSelect = result
+			this.elegirManicurista()
+			this.inspector = true
+		},
+		formatDiscount(){
+			console.log(this.diseño.length)
+				
+				if (this.diseño.length == 0) {
+					this.totalSinFormato = parseFloat(this.totalSinFormato) - parseFloat(this.resto)
+					this.total = "$" + this.formatPrice(this.totalSinFormato)
+					this.resto = 0
+					
+				}
+				else{
+				this.totalSinFormato = parseFloat(this.totalSinFormato) - parseFloat(this.resto)
+				this.totalSinFormato = parseFloat(this.totalSinFormato) + parseFloat(this.diseño)
+				this.total = "$" + this.formatPrice(this.totalSinFormato)
+				this.resto = this.diseño
+				}
+				
+		},
+		getManicuristas(){
+			axios.get('manicuristas')
+			.then(res => {
+				this.arregloManicuristas = []
+				this.manicuristas = res.data
+				this.arrayMani()
+			}),
+			axios.get('users/clientes')
+			.then(res => {
+				this.arregloClients = []
+				this.clients = res.data
+				this.arrayUsers()
+			})
+			axios.get('servicios')
+			.then(res => {
+				this.servicios = res.data
+			})
+			this.precio = 0
+			this.indentidadCliente = ""
+			this.inspector = false
+			this.nombreCliente = ""
+			this.correoCliente = ""
+		},
+		maxCount(){
+			setTimeout(() => {
+				if (this.tiempoServi > 3) {
+					this.tiempoServi = 3
+				}
+			}, 500)	
+		},
+		myFunction() {
+			var input, filter, table, tr, td, i, txtValue;
+			input = document.getElementById("myInput");
+			filter = input.value.toUpperCase();
+			table = document.getElementById("myTable");
+			tr = table.getElementsByTagName("tr");
+			for (i = 0; i < tr.length; i++) {
+			td = tr[i].getElementsByTagName("td")[0];
+			if (td) {
+				txtValue = td.textContent || td.innerText;
+				if (txtValue.toUpperCase().indexOf(filter) > -1) {
+				tr[i].style.display = "";
+				} else {
+				tr[i].style.display = "none";
+				}
+			}
+			}
+		},
+		addService(){
+			$('#myModalAddServiceFast').modal('show')
+		},
+		verificacionCliente(){
+			$('#myModal').modal('show')	
+		},
+		ingresoCliente() {
+			axios.post('clients', {
+				nombre:this.nombreClienteRegister,
+				identidad:this.instagramCliente,
+				recomendador:this.nombreCliente
+			})
+			.then(res => {
+				if (res.data.status == 'Registrado') {
 					this.$swal({
-						type: 'error',
-						title: 'experimentamos problemas :(',
+						type: 'success',
+						title: 'Cliente registrado',
 						showConfirmButton: false,
 						timer: 1500
 					})
-				})
-				console.log(this.maniSelect)
-				axios.put('ventas/updateProviderMonth/' + this.maniSelect)
+					this.getManicuristas()
+					$('#myModal').modal('hide')
+				}else{
+					this.$swal({
+						type: 'error',
+						title: 'El cliente ya existe',
+						showConfirmButton: false,
+						timer: 1500
+					})
+				}
+			})
+		},
+		elegirManicurista(){
+			axios.get('manicuristas/justone/' + this.maniSelect)
+			.then(res => {
+				this.documentoManicurista = res.data.documento
+				this.comision = res.data.porcentaje
+				this.nombreManicurista = this.maniSelect
+			})
+			.catch(err => {
+				console.log(err)
+			})
+		},
+		borrarServicio(servicio,index,esto,precio){
+			for (var i = 0; i < this.serviciosSelecionados.length; i++) {
+				console.log(i)
+				if (this.serviciosSelecionados[i].servicio == servicio ) {
+					this.serviciosSelecionados.splice(i, 1)
+					break
+				}
+			}
+			if ($("#"+esto).text() != "0") {
+				const conteo = $("#"+esto).text()
+				const conteoTotal = parseFloat(conteo) - 1
+				$("#"+esto).text(conteoTotal)
+				const subTotal = parseFloat(this.totalSinFormato) - parseFloat(precio)
+				this.precio = "$"+this.formatPrice(subTotal)
+				this.totalSinFormato = subTotal
+				if(this.descuento == ""){
+					this.total = "$"+this.formatPrice(subTotal)
+				}else{
+					this.descuentoFunc()
+				}
+				axios.put('ventas/updateServicesMonthDiscount/' + servicio)
 				.catch(err => {
 					console.log(err)
 				})
-			},
-			registroFondo(){
-				axios.post('ventas/registerFund', {
-					userRegister: this.nombreCaja,
-					amount: this.montoCaja
-				}).then(res => {
-					if (res.data.status == 'ok') {
-						this.$swal({
-							type: 'success',
-							title: '¡Ya puede ingresar ventas!',
-							showConfirmButton: false,
-							timer: 1500
-						})
-						$('#myModalRegisterFund').modal('hide')
-					}
+
+				axios.put('ventas/updateProviderMonthDiscount/' + this.maniSelect)
+				.catch(err => {
+					console.log(err)
 				})
-			},
-			procesar() {
-				if (this.pagoEfectivo == '') {
-					this.pagoEfectivo = 0
+			}
+			
+
+		},
+		descuentoFunc(){
+			if(this.descuento != ""){
+				const descuento = parseFloat(this.descuento) / 100
+				const porcentaje = 1 - parseFloat(descuento)
+				const precioConDescuento = parseFloat(this.totalSinFormato) * parseFloat(porcentaje)
+				this.total = "$"+ this.formatPrice(precioConDescuento)
+				this.totalSinFormato = precioConDescuento
+			}
+		},
+		conteoServicio(esto, servicio, precio){
+			const descuento = parseFloat(this.descuento) / 100
+			const porcentaje = 1 - parseFloat(descuento)
+			const precioTotal = parseFloat(this.totalSinFormato) + parseFloat(precio)
+			console.log(parseFloat(this.precio))
+			this.precio = "$"+this.formatPrice(precioTotal)
+			this.totalSinFormato = precioTotal
+			if(this.descuento === ''){
+				this.total = "$"+this.formatPrice(precioTotal)
+			}else{
+				const precioConDescuento = parseFloat(this.totalSinFormato) * parseFloat(porcentaje)
+				this.total = this.formatPrice(precioConDescuento)
+				this.totalSinFormato = precioConDescuento
+			}
+
+			const conteo = $("#"+esto).text()
+			const conteoTotal = parseFloat(conteo) + 1
+			$("#"+esto).text(conteoTotal)
+			const servicios = {'servicio': servicio}
+			this.serviciosSelecionados.push(servicios)
+			
+			axios.put('ventas/updateServicesMonth/' + servicio)
+			.catch(err => {
+				this.$swal({
+					type: 'error',
+					title: 'experimentamos problemas :(',
+					showConfirmButton: false,
+					timer: 1500
+				})
+			})
+			console.log(this.maniSelect)
+			console.log(this.serviciosSelecionados)
+			axios.put('ventas/updateProviderMonth/' + this.maniSelect)
+			.catch(err => {
+				console.log(err)
+			})
+		},
+		registroFondo(){
+			axios.post('ventas/registerFund', {
+				userRegister: this.nombreCaja,
+				amount: this.montoCaja
+			}).then(res => {
+				if (res.data.status == 'ok') {
+					this.$swal({
+						type: 'success',
+						title: '¡Ya puede ingresar ventas!',
+						showConfirmButton: false,
+						timer: 1500
+					})
+					$('#myModalRegisterFund').modal('hide')
 				}
-				if (this.pagoOtros == '') {
-					this.pagoOtros = 0
-				}
-				if (this.pagoRedCDebito == '') {
-					this.pagoRedCDebito = 0
-				}
-				if (this.pagoRedCCredito == '') {
-					this.pagoRedCCredito = 0
-				}
-				if (this.pagoTransf == '') {
-					this.pagoTransf = 0
-				}
-				if (this.descuento == '') {
-					this.descuento = 0
-				}
-				const totalFormadePago = parseFloat(this.pagoEfectivo) + parseFloat(this.pagoOtros) + parseFloat(this.pagoRedCDebito) + parseFloat(this.pagoRedCCredito) + parseFloat(this.pagoTransf)
-				
-				if (this.nombreCliente != '' && this.maniSelect != '') {
-					if (this.totalSinFormato == totalFormadePago ) {
-						axios.post('ventas/procesar', {
-							cliente: this.nombreCliente,
-							manicurista: this.maniSelect,
-							servicios: this.serviciosSelecionados,
-							comision: this.comision,
-							pagoEfectivo:this.pagoEfectivo,
-							pagoOtros:this.pagoOtros,
-							pagoRedCDebito:this.pagoRedCDebito,
-							pagoRedCCredito:this.pagoRedCCredito,
-							pagoTransf:this.pagoTransf,
-							descuento:this.descuento,
-							fecha:this.fechaVenta,
-							total: this.totalSinFormato,
-							diseno: this.diseño,
-							documentoManicurista: this.documentoManicurista
-						})
-						.then(res => {
-							if (res.data.status == "Venta registrada") {
-								setTimeout(function(){
-									location.reload()
-								},400)
-								this.$swal({
-									type: 'success',
-									title: 'Venta procesada',
-									showConfirmButton: false,
-									timer: 1500
-								})
-							}else if(res.data.status == "no-cash"){
-								this.$swal({
-									type: 'error',
-									title: 'Primero debe registrar un fondo de caja',
-									showConfirmButton: false,
-									timer: 1500
-								})
-								$('#myModalRegisterFund').modal('show')
+			})
+		},
+		getDataToDate(id){
+			this.inspector = true
+			this.servicesProcess = []
+			this.serviciosSelecionados = []
+
+			axios.get('citas/getDataToDate/'+id)
+			.then(res => {
+				this.nombreCliente = res.data.client
+				this.maniSelect = res.data.employe
+				this.servicesProcess = res.data.services
+				this.elegirManicurista()
+				axios.get('servicios')
+				.then(res => {
+					var subTotal = 0
+					for (let index = 0; index < this.servicesProcess.length; index++) {
+						this.serviciosSelecionados.push({servicio: this.servicesProcess[index]})
+						for (let indexTwo = 0; indexTwo < res.data.length; indexTwo++) {
+							if (this.servicesProcess[index] == res.data[indexTwo].nombre) {
+								subTotal = subTotal + parseFloat(res.data[indexTwo].precio)
+								let valSpan = $(`#${res.data[indexTwo]._id}`).text()
+								let sumaVal = parseFloat(valSpan) + 1
+								$(`#${res.data[indexTwo]._id}`).text(sumaVal)
 							}
-						}).catch(err => {
+						}
+					}
+					this.precio = '$'+this.formatPrice(subTotal)
+					this.total = '$'+this.formatPrice(subTotal)
+					this.totalSinFormato = subTotal
+				})
+			})
+		},
+		procesar() {
+			if (this.pagoEfectivo == '') {
+				this.pagoEfectivo = 0
+			}
+			if (this.pagoOtros == '') {
+				this.pagoOtros = 0
+			}
+			if (this.pagoRedCDebito == '') {
+				this.pagoRedCDebito = 0
+			}
+			if (this.pagoRedCCredito == '') {
+				this.pagoRedCCredito = 0
+			}
+			if (this.pagoTransf == '') {
+				this.pagoTransf = 0
+			}
+			if (this.descuento == '') {
+				this.descuento = 0
+			}
+			const totalFormadePago = parseFloat(this.pagoEfectivo) + parseFloat(this.pagoOtros) + parseFloat(this.pagoRedCDebito) + parseFloat(this.pagoRedCCredito) + parseFloat(this.pagoTransf)
+			
+			if (this.nombreCliente != '' && this.maniSelect != '') {
+				if (this.totalSinFormato == totalFormadePago ) {
+					axios.post('ventas/procesar', {
+						cliente: this.nombreCliente,
+						manicurista: this.maniSelect,
+						servicios: this.serviciosSelecionados,
+						comision: this.comision,
+						pagoEfectivo:this.pagoEfectivo,
+						pagoOtros:this.pagoOtros,
+						pagoRedCDebito:this.pagoRedCDebito,
+						pagoRedCCredito:this.pagoRedCCredito,
+						pagoTransf:this.pagoTransf,
+						descuento:this.descuento,
+						fecha:this.fechaVenta,
+						total: this.totalSinFormato,
+						diseno: this.diseño,
+						documentoManicurista: this.documentoManicurista
+					})
+					.then(res => {
+						
+						if (res.data.status == "Venta registrada") {
 							this.$swal({
-								type: 'error',
-								title: 'experimentamos problemas :(',
+								type: 'success',
+								title: 'Venta procesada',
 								showConfirmButton: false,
 								timer: 1500
 							})
-						})
-					}else{
+							this.borrarServicios()
+						}else if(res.data.status == "no-cash"){
+							this.$swal({
+								type: 'error',
+								title: 'Primero debe registrar un fondo de caja',
+								showConfirmButton: false,
+								timer: 1500
+							})
+							$('#myModalRegisterFund').modal('show')
+						}
+					}).catch(err => {
 						this.$swal({
 							type: 'error',
-							title: 'Total no coincide, con los montos en medios de pago',
-							showConfirmButton: false,
-							timer: 2000
-						})
-						if (this.pagoEfectivo == 0) {
-							this.pagoEfectivo = ''
-						}
-						if (this.pagoOtros == 0) {
-							this.pagoOtros = ''
-						}
-						if (this.pagoRedC == 0) {
-							this.pagoRedC = ''
-						}
-						if (this.pagoTransf == 0) {
-							this.pagoTransf = ''
-						}
-					}	
-				}else{
-					this.$swal({
-						type: 'error',
-						title: 'Complete los datos necesarios',
-						showConfirmButton: false,
-						timer: 1500
-					})
-				}
-				
-			},
-			borrarServicios(){
-				$(".conteoServ").text(0)
-				this.precio = '0';
-				this.serviciosSelecionados = [];
-				this.contador = true;
-				this.descuento = "";
-				this.total = 0;
-				this.totalSinFormato = 0;
-			},
-			mouseOverVenta(clase,num){
-			setTimeout(() => {
-				
-				$('.'+clase).show("slow")
-				$('.icons').eq(1).addClass("iconsProce")
-			
-			}, 500);
-			
-			},
-			mouseLeaveVenta(clase,num){
-				$('.'+clase).hide()		
-			},
-			intervalM(){
-				setInterval(() => {
-					if ($(".navSVenta").width() < "100" ) {
-					$('.textOne').hide("slow")
-					
-				}
-				if ($(".navSServi").width() < "100" ) {
-					$('.textTwo').hide("slow")
-					
-				}
-				if ($(".navSRedo").width() < "100" ) {
-					$('.textThree').hide("slow")
-					
-				}
-				}, 500);
-			},
-			formatPrice(value) {
-				let val = (value/1).toFixed(2).replace('.', ',')
-				return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
-			},
-			hundredPorcent(tipo){
-				if (tipo == "efectivo") {
-					this.pagoEfectivo = this.totalSinFormato
-					
-				}
-				if (tipo == "transferencia") {
-					this.pagoTransf = this.totalSinFormato
-				}
-				if (tipo == "otros") {
-					this.pagoOtros = this.totalSinFormato
-				}
-				if (tipo == "credito") {
-					this.pagoRedCCredito = this.totalSinFormato
-				}
-				if (tipo == "debito") {
-					this.pagoRedCDebito = this.totalSinFormato
-				}
-			},
-			hundredMouseOver(tipo){
-				$("."+tipo).toggle()
-			},
-			hundredMouseNonOver(tipo){
-				$("."+tipo).toggle()
-			},
-			clearInput(){
-			this.nombreCliente = ''
-			$('.one').focus()
-			},
-			clearInputTwo(){
-			this.maniSelect = ''
-			$('.two').focus()
-			},
-			myFunctionServFast() {
-			  var input, filter, table, tr, td, i, txtValue;
-			  input = document.getElementById("myInputServFast");
-			  filter = input.value.toUpperCase();
-			  table = document.getElementById("myTableServFast");
-			  tr = table.getElementsByTagName("tr");
-			  for (i = 0; i < tr.length; i++) {
-			    td = tr[i].getElementsByTagName("td")[0];
-			    if (td) {
-			      txtValue = td.textContent || td.innerText;
-			      if (txtValue.toUpperCase().indexOf(filter) > -1) {
-			        tr[i].style.display = "";
-			      } else {
-			        tr[i].style.display = "none";
-			      }
-			    }
-			  }
-			},
-			presSelect(prestador, index){
-				if ($(".checkFirst").is(":checked") == false ) {
-					this.prestadoresSeleccionados = []
-				}
-				if ($("#"+index).prop("checked")!=true ) {
-					for (let i = 0; i < this.prestadoresSeleccionados.length; i++) {
-						if (this.prestadoresSeleccionados[i] == prestador ) {
-							this.prestadoresSeleccionados.splice(i, 1)
-							break
-						}
-					}
-				}
-				else{
-					let select = prestador
-					this.prestadoresSeleccionados.push(prestador)
-				}
-				console.log(this.prestadoresSeleccionados)
-			},
-			registroServicio(){
-				if (this.nombreServi == '' && this.precioServi == '' && this.tiempoServi == '') {
-					this.$swal({
-						type: 'error',
-						title: 'Llene todos los campos',
-						showConfirmButton: false,
-						timer: 1500
-					})
-				}else if(this.tiempoServi > 3){
-					this.$swal({
-						type: 'error',
-						title: 'El tiempo del servicio no puede ser mayor a 3 Horas',
-						showConfirmButton: false,
-						timer: 1500
-					})
-				}else{
-					if (this.prestadoresSeleccionados.length == 0) {
-						this.$swal({
-							type: 'error',
-							title: 'Seleccione almenos un prestador',
+							title: 'experimentamos problemas :(',
 							showConfirmButton: false,
 							timer: 1500
 						})
-					}else{
-						axios.post('servicios', {
-							nombreServicio: this.nombreServi,
-							precioServicio: this.precioServi,
-							tiempoServicio: this.tiempoServi,
-							prestadores: this.prestadoresSeleccionados
-
-						})
-						.then(res => {
-							if(res.data.status == 'Servicio creado'){
-								this.$swal({
-								type: 'success',
-								title: 'Servicio creado',
-								showConfirmButton: false,
-								timer: 1500
-								})
-								this.getManicuristas();
-								this.nombreServi = ''
-								this.precioServi = ''
-								this.tiempoServi = ''
-								this.prestadoresSeleccionados = []
-								$('.checkFirst').prop('checked', false)
-							}else{
-								this.$swal({
-								type: 'error',
-								title: 'El servicio ya existe',
-								showConfirmButton: false,
-								timer: 1500
-								})
-							}
-						})
+					})
+				}else{
+					this.$swal({
+						type: 'error',
+						title: 'Total no coincide, con los montos en medios de pago',
+						showConfirmButton: false,
+						timer: 2000
+					})
+					if (this.pagoEfectivo == 0) {
+						this.pagoEfectivo = ''
+					}
+					if (this.pagoOtros == 0) {
+						this.pagoOtros = ''
+					}
+					if (this.pagoRedC == 0) {
+						this.pagoRedC = ''
+					}
+					if (this.pagoTransf == 0) {
+						this.pagoTransf = ''
+					}
+				}	
+			}else{
+				this.$swal({
+					type: 'error',
+					title: 'Complete los datos necesarios',
+					showConfirmButton: false,
+					timer: 1500
+				})
+			}
+			
+		},
+		borrarServicios(){
+			$(".conteoServ").text(0)
+			this.precio = '0';
+			this.serviciosSelecionados = [];
+			this.contador = true;
+			this.descuento = "";
+			this.total = 0;
+			this.totalSinFormato = 0;
+			this.diseño = ''
+			this.pagoEfectivo = ''
+			this.pagoOtros = ''
+			this.pagoRedCDebito = ''
+			this.pagoRedCCredito = ''
+			this.pagoTransf = ''
+			this.maniSelect = ''
+			this.nombreCliente = ''
+		},
+		mouseOverVenta(clase,num){
+		setTimeout(() => {
+			
+			$('.'+clase).show("slow")
+			$('.icons').eq(1).addClass("iconsProce")
+		
+		}, 500);
+		
+		},
+		mouseLeaveVenta(clase,num){
+			$('.'+clase).hide()		
+		},
+		intervalM(){
+			setInterval(() => {
+				if ($(".navSVenta").width() < "100" ) {
+				$('.textOne').hide("slow")
+				
+			}
+			if ($(".navSServi").width() < "100" ) {
+				$('.textTwo').hide("slow")
+				
+			}
+			if ($(".navSRedo").width() < "100" ) {
+				$('.textThree').hide("slow")
+				
+			}
+			}, 500);
+		},
+		formatPrice(value) {
+			let val = (value/1).toFixed(2).replace('.', ',')
+			return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+		},
+		hundredPorcent(tipo){
+			if (tipo == "efectivo") {
+				this.pagoEfectivo = this.totalSinFormato
+				
+			}
+			if (tipo == "transferencia") {
+				this.pagoTransf = this.totalSinFormato
+			}
+			if (tipo == "otros") {
+				this.pagoOtros = this.totalSinFormato
+			}
+			if (tipo == "credito") {
+				this.pagoRedCCredito = this.totalSinFormato
+			}
+			if (tipo == "debito") {
+				this.pagoRedCDebito = this.totalSinFormato
+			}
+		},
+		hundredMouseOver(tipo){
+			$("."+tipo).toggle()
+		},
+		hundredMouseNonOver(tipo){
+			$("."+tipo).toggle()
+		},
+		clearInput(){
+		this.nombreCliente = ''
+		$('.one').focus()
+		},
+		clearInputTwo(){
+		this.maniSelect = ''
+		$('.two').focus()
+		},
+		myFunctionServFast() {
+			var input, filter, table, tr, td, i, txtValue;
+			input = document.getElementById("myInputServFast");
+			filter = input.value.toUpperCase();
+			table = document.getElementById("myTableServFast");
+			tr = table.getElementsByTagName("tr");
+			for (i = 0; i < tr.length; i++) {
+			td = tr[i].getElementsByTagName("td")[0];
+			if (td) {
+				txtValue = td.textContent || td.innerText;
+				if (txtValue.toUpperCase().indexOf(filter) > -1) {
+				tr[i].style.display = "";
+				} else {
+				tr[i].style.display = "none";
+				}
+			}
+			}
+		},
+		presSelect(prestador, index){
+			if ($(".checkFirst").is(":checked") == false ) {
+				this.prestadoresSeleccionados = []
+			}
+			if ($("#"+index).prop("checked")!=true ) {
+				for (let i = 0; i < this.prestadoresSeleccionados.length; i++) {
+					if (this.prestadoresSeleccionados[i] == prestador ) {
+						this.prestadoresSeleccionados.splice(i, 1)
+						break
 					}
 				}
-			},
-		 },
-		 mounted() {
+			}
+			else{
+				let select = prestador
+				this.prestadoresSeleccionados.push(prestador)
+			}
+			console.log(this.prestadoresSeleccionados)
+		},
+		registroServicio(){
+			if (this.nombreServi == '' && this.precioServi == '' && this.tiempoServi == '') {
+				this.$swal({
+					type: 'error',
+					title: 'Llene todos los campos',
+					showConfirmButton: false,
+					timer: 1500
+				})
+			}else if(this.tiempoServi > 3){
+				this.$swal({
+					type: 'error',
+					title: 'El tiempo del servicio no puede ser mayor a 3 Horas',
+					showConfirmButton: false,
+					timer: 1500
+				})
+			}else{
+				if (this.prestadoresSeleccionados.length == 0) {
+					this.$swal({
+						type: 'error',
+						title: 'Seleccione almenos un prestador',
+						showConfirmButton: false,
+						timer: 1500
+					})
+				}else{
+					axios.post('servicios', {
+						nombreServicio: this.nombreServi,
+						precioServicio: this.precioServi,
+						tiempoServicio: this.tiempoServi,
+						prestadores: this.prestadoresSeleccionados
+
+					})
+					.then(res => {
+						if(res.data.status == 'Servicio creado'){
+							this.$swal({
+							type: 'success',
+							title: 'Servicio creado',
+							showConfirmButton: false,
+							timer: 1500
+							})
+							this.getManicuristas();
+							this.nombreServi = ''
+							this.precioServi = ''
+							this.tiempoServi = ''
+							this.prestadoresSeleccionados = []
+							$('.checkFirst').prop('checked', false)
+						}else{
+							this.$swal({
+							type: 'error',
+							title: 'El servicio ya existe',
+							showConfirmButton: false,
+							timer: 1500
+							})
+						}
+					})
+				}
+			}
+		},
+		},
+		mounted() {
 			EventBus.$on('reload-services', status => {
 				this.getManicuristas()
+			})
+			EventBus.$on('process', id => {
+				this.getDataToDate(id)
 			})
 		}
  }

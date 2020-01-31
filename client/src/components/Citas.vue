@@ -68,27 +68,20 @@
                   Seleccione un prestador y horario disponible
                   </div>
                   <select v-model="maniBloque" v-on:change="selectManic()" class="CMani m-1  p-2 w-75 text-white col-sm-6" name="manicuristas">
-                           
-                            <option v-if="sectionDeleteTwo" selected="true" >{{maniBloque}}</option>
-                            <option  v-for="(mani,index) in maniAzar" v-if="mani.restDay != new Date(fecha).getDay()"  :class="mani.class" :value="mani.nombre">
-                                {{mani.nombre}}
-                              </option>
-                          </select>
-                          <img class="imgMani ml-3" src="../assets/silueta-mujer.jpg" alt="">
+                    <option v-if="sectionDeleteTwo" selected="true" >{{maniBloque}}</option>
+                    <option  v-for="(mani,index) in maniAzar" v-if="mani.restDay != new Date(fecha).getDay()"  :class="mani.class" :value="mani.nombre">
+                      {{mani.nombre}}
+                    </option>
+                  </select>
+                  <img class="imgMani ml-3" src="../assets/silueta-mujer.jpg" alt="">
                 </div>
-                
-                
-                </div>
-              
+              </div>
               <div style="height:50vh;overflow:hidden;overflow-x: hidden;
 		          overflow-y:scroll;background-color: rgba(31, 86, 115, 0.707);border-radius:5px" class="scroll row horas" >
-  
                       <div class="col-sm-12">
                         <div class="row  mb-2">
                           <div class="col-sm-6">
-                            
                           </div>
-                          
                         </div> 
                             <div class="col-sm-12 Hdispone p-1 m-1">
                                 <h4>Horas Disponibles</h4>            
@@ -296,7 +289,7 @@
 		        </button>
 		      </div>
 		      <div class="modal-body letters">
-		        <p>Fecha: {{ selectedEvent.date }}</p>
+		        <p><strong>Fecha: {{ dateSplit(selectedEvent.start) }}</strong></p>
             <strong>Detalle de la cita:</strong><br><br>
             <ul class="list-group">
               <li class="list-group-item" style="background-color: transparent !important">Cliente: {{ selectedEvent.cliente }}</li>
@@ -304,12 +297,13 @@
               <li class="list-group-item"  style="background-color: transparent !important">Servicios:
                 <p v-for="service of selectedEvent.services"> - {{ service }} </p> 
               </li>
-              <li class="list-group-item" style="background-color: transparent !important">Hora de inicio: {{ selectedEvent.start }}</li>
-              <li class="list-group-item" style="background-color: transparent !important">Hora de finalización: {{ selectedEvent.end }}</li>
+              <li class="list-group-item" style="background-color: transparent !important">Hora de inicio: {{ dateSplitHours(selectedEvent.start) }}</li>
+              <li class="list-group-item" style="background-color: transparent !important">Hora de finalización: {{ dateSplitHours(selectedEvent.end) }}</li>
               
             </ul><br>
-            <button type="button" class="btn font-weight-bold btn-style" v-on:click="borrarCita(selectedEvent.id)">Borrar cita</button>
-		      </div>
+            <button type="button" class="btn font-weight-bold btn-style col-6" v-on:click="borrarCita(selectedEvent.id)">Borrar cita</button>
+            <button v-if="status == 1 || status == 2" type="button" class="btn font-weight-bold btn-style ml-3 col-5" v-on:click="processSale(selectedEvent.id, 'process')">Procesar venta</button>
+            </div>
 		    </div>
 		  </div>
 		</div>
@@ -339,6 +333,7 @@
   import 'vue-date-pick/dist/vueDatePick.css';
   import jwtDecode from 'jwt-decode'
   import Autocomplete from 'vuejs-auto-complete'
+  import EventBus from './eventBus'
 
 import router from '../router'
   class Event {
@@ -580,9 +575,7 @@ import router from '../router'
             .catch(err => {
               console.log(err)
             })
-
       },
-      
       getClients(){
         axios.get('citas/getClients')
         .then(res => {
@@ -591,9 +584,22 @@ import router from '../router'
           // this.arrayClient();
         })
       },
+      dateSplit(value){
+        if (value) {
+          const split = value.split(' ')
+          return split[0]
+        }
+      },
+      dateSplitHours(value){
+        if (value) {
+          const split = value.split(' ')
+          return split[1]
+        }
+      },
       MaysPrimera(string){
         return string.charAt(0).toUpperCase() + string.slice(1);
       },
+<<<<<<< HEAD
       editCliente(){
         const name = this.nombreClienteRegister.split(' ')
         var firstName, lastName, fullName
@@ -640,6 +646,21 @@ import router from '../router'
           })
         }
         
+=======
+      processSale(id, type){
+        if (type == 'process') {
+          this.Process(id)
+          $('#myModalCitasDescripcion').modal('hide')
+          setTimeout(() => {
+            $('#procesarVentas span').click()
+          }, 500);
+        }else{
+          console.log('pending')
+        }
+      },
+      Process(id){
+        EventBus.$emit('process', id)
+>>>>>>> 0fda1a623e41ac30e2d8fbcef0da992327f2dc13
       },
       ingresoCliente() {
         const name = this.nombreClienteRegister.split(' ')
