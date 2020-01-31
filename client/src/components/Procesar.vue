@@ -15,7 +15,7 @@
 							:results-display="formattedDisplay"
 							@selected="addDistributionGroup">
 							</autocomplete>
-							<span v-on:click="clearInput" style="position:absolute;top:20px;left:50px;background-color:#FBF5F3;">{{nombreCliente}}</span>
+							<span v-on:click="clearInput" style="position:absolute;top:10px;left:50px;background-color:#FBF5F3;">{{nombreCliente}}</span>
 						</div>
 
 
@@ -38,7 +38,7 @@
 							:results-display="formattedDisplayTwo"
 							@selected="addDistributionGroupTwo">
 							</autocomplete>
-							<span v-on:click="clearInputTwo" style="position:absolute;top:20px;left:50px;background-color:#FBF5F3;">{{maniSelect}}</span>
+							<span v-on:click="clearInputTwo" style="position:absolute;top:10px;left:50px;background-color:#FBF5F3;">{{maniSelect}}</span>
 						</div>
 					<!-- <autocomplete	
 						:search="search"
@@ -475,7 +475,8 @@ import Autocomplete from 'vuejs-auto-complete'
 			diseño:'',
 			resto: 0,
 			servicesProcess: [],
-			listServicesProcess: []
+			listServicesProcess: [],
+			subTotal: 0
 		 }
 	 },
 	 beforeCreate() {
@@ -543,6 +544,7 @@ import Autocomplete from 'vuejs-auto-complete'
 			this.inspector = true
 			setTimeout(() => {
 				this.maniSelect = group.display
+				this.elegirManicurista()
 			}, 100);
 			// access the autocomplete component methods from the parent
 			// this.$refs.autocomplete.clear()
@@ -668,6 +670,7 @@ import Autocomplete from 'vuejs-auto-complete'
 				this.documentoManicurista = res.data.documento
 				this.comision = res.data.porcentaje
 				this.nombreManicurista = this.maniSelect
+				console.log(this.documentoManicurista)
 			})
 			.catch(err => {
 				console.log(err)
@@ -687,6 +690,7 @@ import Autocomplete from 'vuejs-auto-complete'
 				$("#"+esto).text(conteoTotal)
 				const subTotal = parseFloat(this.totalSinFormato) - parseFloat(precio)
 				this.precio = "$"+this.formatPrice(subTotal)
+				this.subTotal = subTotal
 				this.totalSinFormato = subTotal
 				if(this.descuento == ""){
 					this.total = "$"+this.formatPrice(subTotal)
@@ -711,6 +715,8 @@ import Autocomplete from 'vuejs-auto-complete'
 				const descuento = parseFloat(this.descuento) / 100
 				const porcentaje = 1 - parseFloat(descuento)
 				const precioConDescuento = parseFloat(this.totalSinFormato) * parseFloat(porcentaje)
+				const submitConDescuento = parseFloat(this.subTotal) * parseFloat(porcentaje)
+				this.subTotal = submitConDescuento
 				this.total = "$"+ this.formatPrice(precioConDescuento)
 				this.totalSinFormato = precioConDescuento
 			}
@@ -721,6 +727,7 @@ import Autocomplete from 'vuejs-auto-complete'
 			const precioTotal = parseFloat(this.totalSinFormato) + parseFloat(precio)
 			console.log(parseFloat(this.precio))
 			this.precio = "$"+this.formatPrice(precioTotal)
+			this.subTotal = precioTotal
 			this.totalSinFormato = precioTotal
 			if(this.descuento === ''){
 				this.total = "$"+this.formatPrice(precioTotal)
@@ -836,6 +843,7 @@ import Autocomplete from 'vuejs-auto-complete'
 						fecha:this.fechaVenta,
 						total: this.totalSinFormato,
 						diseno: this.diseño,
+						totalSinDesign: this.subTotal,
 						documentoManicurista: this.documentoManicurista
 					})
 					.then(res => {

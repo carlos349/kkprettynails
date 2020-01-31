@@ -821,25 +821,29 @@ ventas.post('/procesar', (req, res) => {
     today = new Date(req.body.fecha)
   }
   const total = req.body.total
+  const totalParaComision = req.body.totalSinDesign
   const comision = '0.' + req.body.comision
   const comisionLocal = '0.' + (100 - req.body.comision)
-  const comisionFinal = parseFloat(total) * parseFloat(comision)
+  const comisionFinal = parseFloat(totalParaComision) * parseFloat(comision)
+  const totalComisionDesign = parseFloat(req.body.diseno) * 0.50
+  const comisionFinalfinal = parseFloat(comisionFinal) + parseFloat(totalComisionDesign)
   const comisionDosdecimales = comisionFinal.toFixed(2)
-  const gananciaLocal = parseFloat(total) * parseFloat(comisionLocal)
+  const gananciaLocal = parseFloat(totalParaComision) * parseFloat(comisionLocal)
+  const gananciaLocalTotal = parseFloat(gananciaLocal) + parseFloat(totalComisionDesign)
   const documentoManicurista = req.body.documentoManicurista
-
+  
   const venta = {
     cliente: req.body.cliente,
     manicurista: req.body.manicurista+"/"+documentoManicurista,
     servicios: req.body.servicios,
-    comision: comisionFinal,
+    comision: comisionFinalfinal,
     pagoEfectivo:req.body.pagoEfectivo,
     pagoOtros:req.body.pagoOtros,
     pagoRedCDebito:req.body.pagoRedCDebito,
     pagoRedCCredito:req.body.pagoRedCCredito,
     pagoTransf:req.body.pagoTransf,
     descuento:req.body.descuento,
-    ganancialocal: gananciaLocal,
+    ganancialocal: gananciaLocalTotal,
     design: req.body.diseno,
     status: true,
     total: total,
@@ -850,7 +854,7 @@ ventas.post('/procesar', (req, res) => {
     cliente: req.body.cliente,
     manicurista: req.body.manicurista,
     servicios: req.body.servicios,
-    comision: comisionFinal,
+    comision: comisionFinalfinal,
     pagoEfectivo:req.body.pagoEfectivo,
     pagoOtros:req.body.pagoOtros,
     pagoRedCDebito:req.body.pagoRedCDebito,
@@ -864,8 +868,7 @@ ventas.post('/procesar', (req, res) => {
     idTableSales: '',
     fecha: today
   }
-  console.log(venta)
-  console.log(ventaDia)
+  
   cashFunds.find()
   .then(have => {
     if (have.length > 0) {
@@ -877,6 +880,7 @@ ventas.post('/procesar', (req, res) => {
             $inc: {comision:ventas.comision}
           })
           .then(comision => {
+            console.log(comision)
             Cliente.updateOne({identidad: finalClient[1]},{
               $inc: {participacion: 1}
             })

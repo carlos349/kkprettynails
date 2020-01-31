@@ -282,10 +282,10 @@
     <div class="modal fade" id="myModalCitasDescripcion" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered" role="document">
 		    <div v-bind:style="{ 'background-color': '#ffffff'}" class="modal-content p-3">
-		      <div class="modal-header" v-bind:style="{ 'background-color': '#1F5673'}">
-		        <h5 class="modal-title text-white font-weight-bold" id="exampleModalCenterTitle">{{ selectedEvent.title }}</h5>
+		      <div class="modal-header" v-bind:class="selectedEvent.class">
+		        <h5 class="modal-title font-weight-bold" id="exampleModalCenterTitle">{{ selectedEvent.title }}</h5>
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-		          <span aria-hidden="true" class="text-white">&times;</span>
+		          <span aria-hidden="true" >&times;</span>
 		        </button>
 		      </div>
 		      <div class="modal-body letters">
@@ -301,8 +301,8 @@
               <li class="list-group-item" style="background-color: transparent !important">Hora de finalización: {{ dateSplitHours(selectedEvent.end) }}</li>
               
             </ul><br>
-            <button type="button" class="btn font-weight-bold btn-style col-6" v-on:click="borrarCita(selectedEvent.id)">Borrar cita</button>
-            <button v-if="status == 1 || status == 2" type="button" class="btn font-weight-bold btn-style ml-3 col-5" v-on:click="processSale(selectedEvent.id, 'process')">Procesar venta</button>
+            <button v-bind:class="selectedEvent.class" type="button" class="btn font-weight-bold btn-style col-6" v-on:click="borrarCita(selectedEvent.id)">Borrar cita</button>
+            <button v-bind:class="selectedEvent.class" v-if="status == 1 || status == 2" type="button" class="btn font-weight-bold btn-style ml-4 col-5" v-on:click="processSale(selectedEvent.id, 'process')">Procesar venta</button>
             </div>
 		    </div>
 		  </div>
@@ -531,6 +531,18 @@ import router from '../router'
         setTimeout(() => {
           this.recomend = group.display
         }, 100);
+      },
+      processSale(id, type){
+        if (type == 'process') {
+          this.Process(id)
+          $('#myModalCitasDescripcion').modal('hide')
+          setTimeout(() => {
+            $('#procesarVentas span').click()
+          }, 500);
+        }
+      },
+      Process(id){
+        EventBus.$emit('process', id)
       },
       clearInput(){
         
@@ -1727,6 +1739,9 @@ import router from '../router'
 		background-color:#1F5673;
 		color: azure;
 		transition: all 0.5s ease-out;
+    -webkit-box-shadow: 1px 1px 6px -1px rgba(0,0,0,1);
+		-moz-box-shadow: 1px 1px 6px -1px rgba(0,0,0,1);
+		box-shadow: 1px 1px 6px -1px rgba(0,0,0,1);
 		font-family: 'Roboto', sans-serif !important;
 		font-weight:600;
 		width: 100%;
@@ -1735,6 +1750,7 @@ import router from '../router'
 	}
 	.btn-style:hover{
 		background-color:#ccc;
+    border: none;
 		color:#001514;
 	}
   .generar{
