@@ -20,6 +20,11 @@ citas.get('/:employe', async (req, res) => {
   res.json(citasByEmploye)
 })
 
+citas.get('/getDataToDate/:id', async (req, res) => {
+  const citasById = await Citas.findById(req.params.id)
+  res.json(citasById)
+})
+
 // citas.get('/byId/:employe', async (req, res) => {
 //   console.log(req.params.employe)
 //   const citasByEmploye = await Citas.findById(req.params.employe)

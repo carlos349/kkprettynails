@@ -294,8 +294,7 @@
             </ul><br>
             <button type="button" class="btn font-weight-bold btn-style col-6" v-on:click="borrarCita(selectedEvent.id)">Borrar cita</button>
             <button v-if="status == 1 || status == 2" type="button" class="btn font-weight-bold btn-style ml-3 col-5" v-on:click="processSale(selectedEvent.id, 'process')">Procesar venta</button>
-            <button v-if="status == 3" type="button" class="btn font-weight-bold btn-style ml-3 col-5" v-on:click="processSale(selectedEvent.id, 'no-process')">Procesar venta</button>
-		      </div>
+            </div>
 		    </div>
 		  </div>
 		</div>
