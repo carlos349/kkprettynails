@@ -13,66 +13,10 @@
 			</div>
             <div class="col-md-12">
 				<div class="shadow">	
-					<v-client-table class="text-center"  :data="clients" :columns="columns" :options="optionsT">
+					<v-client-table class="text-center tablaClients"  :data="clients" :columns="columns" :options="optionsT">
 						<button slot="edit"  slot-scope="props" v-on:click="pasarDatosEdit(props.row.nombre, props.row.identidad, props.row.correoCliente, props.row.instagramCliente, props.row._id)" class=" btn btn-colorsEditClient w-100"><font-awesome-icon icon="edit" /></button>
-						<!-- <a slot="edit" slot-scope="props" class="fa fa-edit" :href="pasarDatosEdit(props.row.nombre, props.row.identidad, props.row.correoCliente, props.row.instagramCliente, props.row._id)">Hola </a> -->
 					</v-client-table>
-					<!-- <table  class="table" style="color:#fff !important; background-color: #1F5673" >
-						<thead>
-							<tr>
-								<th>
-									Nombre
-								</th>
-								<th style="width:30%;">
-									Instagram / Correo / Teléfono
-								</th>
-								<th>
-									Recomendación
-								</th>
-                                <th class="text-center">
-                                    Recomendaciones
-                                </th>
-                                <th>
-									Última atención
-								</th>
-                                <th>
-                                    Fecha
-                                </th>
-								<th class="text-center">
-									Editar
-								</th>
-							</tr>
-						</thead>
-					</table>
-					<div class="ListaPrestador tbl-content">
-						<table class="table table-light table-borderless table-striped" >
-							<tbody>
-                                <tr v-for="client in clients" v-bind:key="client._id">
-									<td class="font-weight-bold">
-										{{client.nombre}}
-									</td>
-									<td class="font-weight-bold" style="width:30%;">
-										{{client.identidad}} <br> {{client.instagramCliente}} <br> {{client.correoCliente}}
-									</td>
-									<td class="font-weight-bold">
-										{{client.recomendacion}}
-									</td>
-                                    <td class="font-weight-bold text-center">
-										{{client.recomendaciones}}
-									</td>
-                                    <td class="font-weight-bold">
-										{{formatDate(client.ultimaFecha)}}
-									</td>
-                                    <td class="font-weight-bold">
-										{{formatDate(client.fecha)}}
-									</td>
-							   		<td class="font-weight-bold text-center">
-										<button style="width:30%;" v-on:click="pasarDatosEdit(client.nombre, client.identidad, client.correoCliente, client.instagramCliente, client._id)" class=" btn btn-colorsEdit"><font-awesome-icon icon="sort" /></button>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</div> -->
+					
 				</div>
 			</div>
 			<div class="col-md-4" style="margin-top:20px;">
@@ -87,9 +31,9 @@
 							Correos a clientes 
 						</button>
 					</div>
-					<div class="shadow col-12">
-						<table  class="table table-dark" style="color:#fff !important; background-color: #1F5673" >
-							<thead>
+					<div class="shadow tablaClients col-12">
+						<table  class="table tablaClients table-dark" style="color:#fff !important; background-color: #1F5673 !important" >
+							<thead class="theadClients">
 								<tr>
 									<th>
 										Cliente
@@ -136,7 +80,7 @@
 		        <form v-on:submit.prevent="registroCliente">
 					<div class="form-group">
 						<label for="name">Nombre del cliente <span style="color:red;">*</span></label>
-						<input v-model="nombreCliente" type="text" class="form-control inputs" placeholder="Nombre del prestador" requerid>
+						<input v-model="nombreCliente" type="text" class="form-control inputs" placeholder="Nombre y apellido" requerid>
 					</div>
 					<div class="form-group">
 						<label for="identidad">Teléfono del cliente <span style="color:red;">*</span></label>
@@ -152,13 +96,6 @@
 					</div>
                     <div class="form-group">
                         <label for="recomendacion">Registre recomendador</label>
-                        <!-- <autocomplete	
-                            :search="searchClientOnClient"
-                            placeholder="Buscar cliente"
-                            aria-label="Buscar cliente"
-                            @submit="handleSubmitClientOnClient"
-                            class="auto autoClient w-100">
-                        </autocomplete> -->
 						<div v-on:click="clearInput">
 							<autocomplete
 							ref="autocomplete"
@@ -169,7 +106,7 @@
 							:results-display="formattedDisplay"
 							@selected="addDistributionGroup">
 							</autocomplete>
-							<span v-on:click="clearInput" style="position:absolute;top:400px;left:50px;background-color:#FBF5F3;">{{recomendador}}</span>
+							<span v-on:click="clearInput" style="position:absolute;top:410px;left:50px;background-color:#FBF5F3;">{{recomendador}}</span>
 						</div>
 						
                     </div>
@@ -799,8 +736,8 @@ export default {
   display:none;
 }
 
-thead {
-		background-color: #1f5673;
+.tablaClients thead {
+		background-color: #1f5673 !important;
 		color: #fff;
 		text-align: center
 	}

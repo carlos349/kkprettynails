@@ -146,61 +146,13 @@
                           </div>
                         </div> 
                       </div>
-                     
-                      
-                      <!-- <div class="timeline col-sm-6"> 
-                        <div v-for="(bloqueHora ,index) of bloquesHora">
-                          <div v-if="index%2 == 0" class="lineCont left" v-on:click="selectTime(index,bloqueHora.Horario)">
-                          <div :id="'t'+index" class="content">
-                                   
-                            <h4 style="color:black"></h4>                          
-                          </div>
-                        </div>
-                        <div  v-else class="lineCont right" v-on:click="selectTime(index,bloqueHora.Horario)" >
-                          <div :id="'t'+index" class="content">
-                            <div class="row">
-                              <div class="col-sm-8 p-3 text-left">
-                                <div class="col-sm-12"><h6>{{manicuristaFinal}}</h6></div>
-                                <div class="col-sm-12"><h4>{{bloqueHora.Horario}}</h4></div>
-                              </div>
-                              <div class="col-sm-4 p-1">
-                                <img :id="'mani'+index" class="imgMani float-right" src="../assets/silueta-mujer.jpg" alt="">
-                                </div>
-                            </div>                          
-                          </div>
-                        </div>
-                        </div>        
-                      </div>       -->
               </div>
             </div>
-            <!-- <div class="col-md-12 p-3 processPerso">
-              <div class="col-md-12 text-center p-2" style="font-size:1.2em;color:#9e9e9e">Elija un personal</div>
-              <div style="height:40vh;overflow:hidden;overflow-x: hidden;
-		          overflow-y:scroll;background-color: rgba(31, 86, 115, 0.707);border-radius:5px" class="scroll row horas" >      
-                <div class="col-sm-12 text-center"><h2>Personal disponible</h2></div>
-                <div class="col-md-4">
-                  <div class="p-3 col-md-12">
-                    
-                      <div style="cursor:pointer;" v-on:click="selectAzar()" class="fotoMani col-md-12 text-center"><img class="imgMani" src="../assets/silueta-mujer.jpg" alt=""></div>
-                      <div  class="col-md-12 text-center text-white">Elegir automáticamente</div>
-                    
-                  </div>
-                </div> 
-                <div class="col-md-4" v-for="(manicurista,index) of manicuristaCita">
-                  <div v-for="(mani,index) of manicuristas" class="p-3 col-md-12" v-if="mani._id === manicurista && mani.restDay != new Date(fecha).getDay()">
-                    
-                      <div style="cursor:pointer;" v-on:click="selectManic(mani.nombre,mani.class,mani.restTime,index)" class="fotoMani col-md-12 text-center"><img :id="'mani'+index" class="imgMani" src="../assets/silueta-mujer.jpg" alt=""></div>
-                      <div  class="col-md-12 text-center text-white"> {{mani.nombre}}</div>
-                    
-                  </div>
-                </div>   
-              </div>
-            </div> -->
             <div class="col-md-12 p-3 processTwo">
-              <div class="col-md-12 text-center p-2" style="font-size:1.2em;color:#9e9e9e">Selecciona un cliente, fecha y hora de entrada</div>
+              <div class="col-md-12 text-center p-2" style="font-size:1.2em;color:#9e9e9e">Selecciona un cliente y una fecha para la cita</div>
               <div class="container">
                 <div class="mx-auto">
-                <div style="height:40vh" class="row">
+                <div  class="row">
                   <div class=" mx-auto col-sm-12">
                     
                   </div>
@@ -209,36 +161,98 @@
                       <div class="col-sm-6">
                         <div class="row">
                           <div class="col-3">
-                            <button class="btn btn-date p-1" v-on:click="modalCliente()">
-                             <font-awesome-icon style="font-size:2em" icon="user-plus"/>
-                            </button>
                           </div>
-                          
-                          <!-- <autocomplete	
-                            ref="autocomplete"
-                            :search="searchClient"
-                            placeholder="Buscar cliente"
-                            aria-label="Buscar cliente"
-                            @submit="handleSubmitClient"
-                            class="clientB botonClient col-9">
-                         </autocomplete> -->
-                          <div v-on:click="clearInput" class="col-9">
+                          <div v-on:click="clearInput" class="col-12 completeCitas">
                             <autocomplete
                               ref="autocomplete"
                               placeholder="Buscar cliente"
                               :source="clients"
-                              input-class="form-control esteqlq"
+                              input-class=" w-100 one autocompleteCitas"
                               results-property="data"
                               :results-display="formattedDisplay"
-                              @selected="addDistributionGroup">
+                              @selected="addDistributionGroup"
+                              @nothingSelected="noresult"
+                              :showNoResults="false"
+                              >
                             </autocomplete>
-                            <span v-on:click="clearInput" style="position:absolute;top:8px;left:50px;background-color:#FBF5F3;">{{clientsSelect}}</span>
+                            <span v-on:click="clearInput" style="position:absolute;top:8px;left:40px;background-color:#FBF5F3;">{{clientsSelect}}</span>
+                          </div>
+                          <div style="display:none" class="mt-4 formUser col-sm-12">
+                            <form>
+                              <div class="form-group">
+                                <div class="row mt-2">
+                                  <div class="col-sm-4">
+                                    <label for="name">Nombre del cliente <span style="color:red;">*</span></label>
+                                    </div>
+                                    <div class="col-sm-8">
+                                      <input v-model="nombreClienteRegister" type="text" class=" w-100 inputsCrear" placeholder="" required>
+                                    </div>
+                                </div>
+                                
+                                
+                              </div>
+                              <div class="form-group">
+                                <div class="row">
+                                  <div class="col-sm-4">
+                                    <label for="identidad">Teléfono del cliente <span style="color:red;">*</span></label>
+                                  </div>
+                                  <div class="col-sm-8">
+                                    <input v-model="identidadCliente" type="text" class="inputsCrear w-100" requerid>
+                                  </div>
+                                </div>
+                                
+                                
+                              </div>
+                              <div class="form-group">
+                                <div class="row mt-2">
+                                  <div class="col-sm-4">
+                                    <label for="identidad">Correo del <br> cliente <span style="color:blue;">+</span></label>
+                                  </div>
+                                  <div class="col-sm-8">
+                                    <input v-model="correoCliente" type="text" class="inputsCrear w-100"  >
+                                  </div>
+                                </div>
+                                
+                                
+                              </div>
+                              <div class="form-group">
+                                <div class="row mt-2">
+                                  <div class="col-sm-4">
+                                    <label for="identidad">Instagram del cliente <span style="color:blue;">+</span></label>
+                                  </div>
+                                  <div class="col-sm-8">
+                                    <input v-model="instagramCliente" type="text" class="inputsCrear w-100" >
+                                  </div>
+                                </div>
+                                
+                                
+                              </div>
+                              <div style="display:none" class="recomendador">
+                                 <label for="recomendacion">Registre recomendador</label>
+                                  <div v-on:click="clearInputTwo" class="col-12">
+                                    <autocomplete
+                                      ref="autocomplete"
+                                      placeholder="Buscar cliente"
+                                      :source="clients"
+                                      input-class=" w-100 two autocompleteCitas"
+                                      results-property="data"
+                                      :results-display="formattedDisplayTwo"
+                                      @selected="addDistributionGroupTwo">
+                                    </autocomplete>
+                                    <span v-on:click="clearInputTwo" style="position:absolute;top:8px;left:40px;background-color:#FBF5F3;">{{recomend}}</span>
+                                  </div>
+                              </div>
+                                 
+                              <button v-on:click="editCliente" style="display:none" class="btn w-100 mt-2 add ag">Editar cliente</button>
+                              <button v-on:click="ingresoCliente" style="display:none" class="btn w-100 mt-2 add del">Agregar cliente</button>
+                            </form>
                           </div>
                         </div>
                         
                       </div>
                       <div  class="col-sm-6">
-                        <div class="row">                         
+                        <div class="row">
+                                                   
                           <date-pick
                               v-model="fecha"
                               :hasInputElement="false"
@@ -263,20 +277,15 @@
                 <div class="col-md-8 mx-auto text-center"> 
                   <button id="redo" class="botonW " v-on:click="redo()"><font-awesome-icon style="color:#fff" icon="redo"/>
                   </button>
-                
-                  
-                  </div>
-                  
+                  </div> 
                 <div class="col-md-2 text-right"><button v-on:click="nextOne()" disabled class="botonW Sig">Siguiente</button></div>
               </div>
             </div>
           </div>
-        </div>
-        
+        </div>  
       </div>
       </div>
     </div>
-
     <div class="modal fade" id="myModalCitasDescripcion" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered" role="document">
 		    <div v-bind:style="{ 'background-color': '#ffffff'}" class="modal-content p-3">
@@ -304,98 +313,7 @@
 		    </div>
 		  </div>
 		</div>
-    <div class="modal fade" id="myModalRegisterClient" tabindex="-1"  role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-		  <div class="modal-dialog modal-dialog-centered"  >
-		    <div class="modal-content p-3" v-bind:style="{ 'background-color': '#ffffff'}">
-		      <div class="modal-header" v-bind:style="{ 'background-color': '#1F5673'}">
-		        <h5 class="modal-title text-white font-weight-bold" id="exampleModalCenterTitle">Registrar cliente</h5>
-		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-		          <span aria-hidden="true" class="text-white" v-bind:style="{ 'font-size': '1.5em'}">&times;</span>
-		        </button>
-		      </div>
-		      <div  class="modal-body">
-		        <form v-on:submit.prevent="ingresoCliente">
-					<div class="form-group">
-						<label for="name">Nombre del cliente <span style="color:red;">*</span></label>
-						<input v-model="nombreClienteRegister" type="text" class="form-control inputs" placeholder="Nombre del prestador" requerid>
-					</div>
-					<div class="form-group">
-						<label for="identidad">Teléfono del cliente <span style="color:red;">*</span></label>
-						<input v-model="identidadCliente" type="text" class="form-control inputs" placeholder="Registre numero telefónico" requerid>
-					</div>
-					<div class="form-group">
-						<label for="identidad">Correo del cliente <span style="color:blue;">+</span></label>
-						<input v-model="correoCliente" type="text" class="form-control inputs" placeholder="Registre correo" >
-					</div>
-					<div class="form-group">
-						<label for="identidad">Instagram del cliente <span style="color:blue;">+</span></label>
-						<input v-model="instagramCliente" type="text" class="form-control inputs" placeholder="Registre instagram" >
-					</div>
-          <div class="form-group">
-              <label for="recomendacion">Registre recomendador</label>
-              <vue-bootstrap-typeahead 
-                v-model="nombreCliente"
-                :data="arregloClient"
-                placeholder="Buscar clientes"
-              />
-          </div>
-                    <!-- <div class="form-group">
-                        <label for="recomendacion">Registre recomendador</label>
-                        <autocomplete	
-                            :search="searchClientOnClient"
-                            placeholder="Buscar cliente"
-                            aria-label="Buscar cliente"
-                            @submit="handleSubmitClientOnClient"
-                            class="auto autoClient w-100">
-                        </autocomplete>
-                    </div> -->
-					<button class="btn w-100 add">Agregar cliente</button>
-				</form>
-		      </div>
-		    </div>
-		  </div>
-		</div>
-    <!-- <div class="modal fade" id="myModalRegisterClient" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-		  <div class="modal-dialog modal-dialog-centered" role="document">
-		    <div class="modal-content">
-		      <div class="modal-header " v-bind:style="{ 'background-color': '#1F5673'}">
-		        <h5 class="modal-title font-weight-bold text-white" id="exampleModalCenterTitle">Registro cliente</h5>
-		        
-		      </div>
-		      <div class="modal-body">
-            <form v-on:submit.prevent="ingresoCliente">
-              <div class="form-group">
-                <label for="name">Nombre del cliente <span style="color:red;">*</span></label>
-                <input v-model="nombreClienteRegister" type="text" class="form-control inputs" placeholder="Nombre del prestador" requerid>
-              </div>
-              <div class="form-group">
-                <label for="identidad">Teléfono del cliente <span style="color:red;">*</span></label>
-                <input v-model="identidadCliente" type="text" class="form-control inputs" placeholder="Registre numero telefónico" requerid>
-              </div>
-              <div class="form-group">
-                <label for="identidad">Correo del cliente <span style="color:blue;">+</span></label>
-                <input v-model="correoCliente" type="text" class="form-control inputs" placeholder="Registre correo" >
-              </div>
-              <div class="form-group">
-                <label for="identidad">Instagram del cliente <span style="color:blue;">+</span></label>
-                <input v-model="instagramCliente" type="text" class="form-control inputs" placeholder="Registre instagram" >
-              </div>
-              <div class="form-group">
-                  <label for="recomendacion">Registre recomendador</label>
-                  <autocomplete	    
-                    :search="searchClient"
-                    placeholder="Buscar cliente"
-                    aria-label="Buscar cliente"
-                    @submit="handleSubmitClient"
-                    class="clientB botonClient col-9">
-                  </autocomplete>
-              </div>
-              <button class="btn w-100 add">Agregar cliente</button>
-            </form>
-		      </div>
-		    </div>
-		  </div>
-		</div> -->
+   
     <div class="boxDates">
       <button class="CierreDia btn-whiteDates btn-animation-1" v-on:click="daySaleClose">
         <font-awesome-icon icon="cloud-upload-alt" />
@@ -521,7 +439,9 @@ import router from '../router'
         instagramCliente: '',
         identidadCliente:'',
         sectionDelete: true,
-        sectionDeleteTwo: true
+        sectionDeleteTwo: true,
+        recomend:'',
+        clienteID:''
       }
     },
     beforeCreate() {
@@ -577,14 +497,69 @@ import router from '../router'
         console.log(result)
         return result.nombre+'-'+result.identidad
       },
+      noresult(result){
+        $(".formUser").show()
+        $(".del").show()
+        $(".recomendador").show()
+        this.nombreClienteRegister = result
+      },
       addDistributionGroup (group) {
+        $(".formUser").show()
+        $(".ag").show()
         setTimeout(() => {
           this.clientsSelect = group.display
         }, 100);
+        const sp = group.display.split("-")
+        console.log(sp)
+        for (let f = 0; f < this.clients.length; f++) {
+          console.log(this.clients[f].identidad)
+          
+          if (this.clients[f].identidad == sp[1]) {
+            this.nombreClienteRegister = this.clients[f].nombre
+            this.identidadCliente = this.clients[f].identidad
+            this.correoCliente = this.clients[f].correoCliente
+            this.instagramCliente = this.clients[f].instagramCliente
+            this.clienteID = this.clients[f]._id
+            break
+          }
+          
+          
+        }
+       
+        
+      },
+      formattedDisplayTwo (result) {
+        console.log(result)
+        return result.nombre+'-'+result.identidad
+      },
+      addDistributionGroupTwo (group) {
+        setTimeout(() => {
+          this.recomend = group.display
+        }, 100);
       },
       clearInput(){
+        
         this.clientsSelect = ''
-        $('.esteqlq').focus()
+        $('.one').focus()
+        setTimeout(() => {
+          if (this.clientsSelect == '') {
+            $(".formUser").hide()
+            $(".del").hide()
+            $(".ag").hide()
+             $(".recomendador").hide()
+            this.nombreClienteRegister = ''
+            this.identidadCliente = ''
+            this.correoCliente = ''
+            this.instagramCliente = ''
+            this.clienteID = ''
+          }
+        },500
+        )
+        
+      },
+      clearInputTwo(){
+        this.recomend = ''
+        $('.two').focus()
       },
       insertDate(){
         
@@ -619,6 +594,53 @@ import router from '../router'
       MaysPrimera(string){
         return string.charAt(0).toUpperCase() + string.slice(1);
       },
+      editCliente(){
+        const name = this.nombreClienteRegister.split(' ')
+        var firstName, lastName, fullName
+        if (name[1]) {
+          firstName = this.MaysPrimera(name[0])
+          lastName = this.MaysPrimera(name[1])
+          fullName = firstName+' '+lastName
+        }else{
+          fullName = this.MaysPrimera(name[0])
+        }
+
+        if (this.nombreClienteRegister != '' &&  this.identidadCliente != '') {
+          axios.put('clients/'+this.clienteID, {
+            nombreClienteEditar: fullName,
+            identidadClienteEditar: this.identidadCliente,
+            correoClienteEditar: this.correoCliente,
+            instagramClienteEditar: this.instagramCliente
+          })
+          .then(res => {
+            if (res.data.status == 'Servicio actualizado') {
+              this.$swal({
+                type: 'success',
+                title: 'Cliente actualizado',
+                showConfirmButton: false,
+                timer: 1500
+              })
+              this.getClients();
+              this.clearInput()
+            }else{
+              this.$swal({
+                type: 'error',
+                title: 'Cliente ya registrado',
+                showConfirmButton: false,
+                timer: 1500
+              })
+            }
+          })
+        }else{
+          this.$swal({
+            type: 'error',
+            title: 'Llene los datos',
+            showConfirmButton: false,
+            timer: 1500
+          })
+        }
+        
+      },
       ingresoCliente() {
         const name = this.nombreClienteRegister.split(' ')
         var firstName, lastName, fullName
@@ -633,7 +655,7 @@ import router from '../router'
 				axios.post('clients', {
 					nombre:fullName,
 					identidad:this.identidadCliente,
-					recomendador:this.clientsSelect,
+					recomendador:this.recomend,
 					correoCliente:this.correoCliente,
 					instagramCliente:this.instagramCliente
 				})
@@ -1532,6 +1554,7 @@ import router from '../router'
   }
   .processTwo{
     display:none;
+    height: 62vh;
   }
   .processThree{
     display: none;
@@ -2189,25 +2212,25 @@ import router from '../router'
 .manis{
   display: none;
 }
-.autocomplete__box{
+.completeCitas .autocomplete__box{
 		background-color: transparent !important;
 		-webkit-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
 		-moz-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
 		box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
 		border: none !important;
 		border-radius: 5px;
-		padding: 10px;
+		padding: 2px;
 		width: 50% ;
 		color: black !important;
 		width: 100%;
 		outline: none !important;
 	}
-	.esteqlq{
+	.autocompleteCitas{
 		outline: none !important;
 		background-color: transparent !important;
 		border: none !important;
 		border-radius: 5px;
-		padding: 10px;
+		padding: 5px;
 		width: 50% ;
 		color: black !important;
 		width: 100%;
@@ -2226,7 +2249,19 @@ import router from '../router'
 }
 .autocomplete__results__item{
 	outline: none !important;
-	padding: 13px !important;
+	padding: 10px !important;
+}
+.inputsCrear{
+  background-color: transparent !important;
+  -webkit-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+  -moz-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+  box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+  border: none !important;
+  border-radius: 5px;
+  padding: 10px;
+  width: 64% ;
+  color: black !important;
+  outline: none !important;
 }
 
 </style>
