@@ -60,85 +60,8 @@
             </button>
           </div>
         </div>
-        <!-- <div class="col-md-2 mb-2">
-          <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getMonthPerMonthSelected(1)">
-            Enero  
-          </button> 
-        </div>
-        <div class="col-md-2 mb-2">
-          <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getMonthPerMonthSelected(2)">
-            Febrero  
-          </button> 
-        </div>
-        <div class="col-md-2 mb-2">
-          <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getMonthPerMonthSelected(3)">
-            Marzo  
-          </button> 
-        </div>
-        <div class="col-md-2 mb-2">
-          <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getMonthPerMonthSelected(4)">
-            Abril  
-          </button> 
-        </div>
-        <div class="col-md-2">
-          <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getMonthPerMonthSelected(5)">
-            Mayo  
-          </button> 
-        </div>
-        <div class="col-md-2 mb-2">
-          <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getMonthPerMonthSelected(6)">
-            Junio  
-          </button> 
-        </div>
-        <div class="col-md-2 mb-2">
-          <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getMonthPerMonthSelected(7)">
-            Julio  
-          </button> 
-        </div>
-        <div class="col-md-2 mb-2">
-          <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getMonthPerMonthSelected(8)">
-            Agosto  
-          </button> 
-        </div>
-        <div class="col-md-2 mb-2">
-          <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getMonthPerMonthSelected(9)">
-            Septiembre  
-          </button> 
-        </div>
-        <div class="col-md-2 mb-2">
-          <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getMonthPerMonthSelected(10)">
-            Octubre  
-          </button> 
-        </div>
-        <div class="col-md-2 mb-2">
-          <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getMonthPerMonthSelected(11)">
-            Noviembre  
-          </button> 
-        </div>
-        <div class="col-md-2 mb-2">
-          <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getMonthPerMonthSelected(12)">
-            Diciembre  
-          </button> 
-        </div>  -->
       </div>
-      <!-- <div class="row BotonesDespliegue">
-        <div class="col-md-6">
-          <button class="btn btn-primary  w-100" type="button" data-toggle="collapse" data-target="#collapseTable" aria-expanded="false" aria-controls="collapseTable">
-          Desplegar tabla de ventas
-          </button>
-        </div>
-        <div class="col-md-6">
-          <button class="btn btn-primary w-100" type="button" data-toggle="collapse" data-target="#collapseChart" aria-expanded="false" aria-controls="collapseChart">
-          Gráfica de ventas
-          </button>
-        </div>
-      </div>
-      <div class="collapse" id="collapseChart">
-        <div class="small">
-					<line-chart v-if="loaded" :chartdata="chartdata" :options="options" :styles="myStyles"/>
-				</div>
-      </div> -->
-      
+
         <div class="row">
 					<div class="col-md-12">
             <div class="shadow">	
@@ -147,93 +70,24 @@
                   <button v-if="props.row.status" style="width:100%;" v-on:click="reporteVenta(props.row._id)" class=" btn btn-colorsPrint"><font-awesome-icon icon="copy" /></button>
                   <button v-else style="width:100%;" v-on:click="reporteVenta(props.row._id)" class=" btn btn-danger"><font-awesome-icon icon="copy" /></button>
                 </div>
-                
+                <div slot="servicios" slot-scope="props">
+                  <button class="btn btn btn-colorsPrint" type="button" data-toggle="collapse" :data-target="'#servi'+props.index" aria-expanded="false" aria-controls="multiCollapseExample2">Mostrar Servivios</button>
+                  <div class="collapse multi-collapse" :id="'servi'+props.index">
+                    <div class="card card-body">
+                    {{props.row.servicios}}
+                    </div>
+                  </div>
+                  
+                </div>
                 <p slot="lender" slot-scope="props">{{justName(props.row.manicurista)}}</p>
                 <p slot="descuentoo" slot-scope="props">{{props.row.descuento}}%</p>
                 <p slot="comisionn" slot-scope="props">{{formatPrice(props.row.comision)}}</p>
                 <p slot="locall" slot-scope="props">{{formatPrice(props.row.ganancialocal)}}</p>
                 <p slot="totall" slot-scope="props">{{formatPrice(props.row.total)}}</p>
-                <!-- <a slot="edit" slot-scope="props" class="fa fa-edit" :href="pasarDatosEdit(props.row.nombre, props.row.identidad, props.row.correoCliente, props.row.instagramCliente, props.row._id)">Hola </a> -->
               </v-client-table>
             </div>
           </div>
 				</div>
-
-        <!-- <table class="table tableVenta" >
-          <thead class="thead-light">
-            <tr class="respons">
-              <th class="text-center">
-                Fecha
-              </th>
-              <th style="width: 16.6% !important;" class="text-center">
-                Servicios
-              </th>
-              <th class="text-center">
-                Cliente
-              </th>
-              <th class="text-center">
-                Manicurista
-              </th>
-              <th style="width: 6.7% !important;" class="text-center">
-                Descuento
-              </th>
-              <th class="text-center">
-                Comision
-              </th>
-              <th class="text-center">
-                Local
-              </th>
-              <th class="text-center">
-                Ganancia
-              </th>
-              <th class="text-center">
-                Total 
-              </th>
-              
-            </tr>
-          </thead>
-        </table>
-      <div class="Listas">
-        <table style="font-size:.8em" class="table table-striped" id="myTableVentas">
-          <tbody >
-            <tr v-for="(venta, indexOne) of ventas" class="respons fix">
-              <td class="  text-center">
-                 <font-awesome-icon style="margin-right:4%" v-if="venta.pago === 'tarjeta'" icon="credit-card" />
-                 <font-awesome-icon style="margin-right:4%;margin-top:5%;" v-else-if="venta.pago === 'efectivo'" icon="dollar-sign" />{{formatDate(venta.fecha)}}
-              </td>
-              <td style="width: 75% !important;" class=" text-left">
-                <div  v-for="(servicio,indexTwo) of venta.servicios">
-                  {{servicio.servicio}}
-                </div>
-              </td>
-              <td  class="  text-left">
-                {{venta.cliente}}
-              </td>
-              <td class="  text-left">
-                <input hidden :value="venta.manicurista" type="text">
-                <div v-on:click="editarTabla()">{{venta.manicurista}}</div>
-              </td>
-              <td style="width: 30% !important;" class="text-center">
-                {{venta.descuento}}%
-              </td>
-              <td class="  text-right">
-                {{formatPrice(venta.comision)}}
-              </td>
-              <td class="  text-right">
-                {{formatPrice(venta.ganancialocal)}}
-              </td>
-              <td class="  text-right">
-                {{formatPrice(venta.ganancianeta)}}
-              </td>
-              <td class="text-center">
-                {{formatPrice(venta.total)}}
-                <font-awesome-icon v-on:click="reporteVenta(venta._id)" style="float:right; font-size:20px;cursor:pointer;" icon="copy" />
-              </td>
-              
-            </tr>
-          </tbody>
-        </table>
-      </div> -->
 
       <div class="modal fade" id="modalDetalleSale" tabindex="-1"  role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered "  >
@@ -625,6 +479,9 @@ export default {
                 timer: 1500
             })
         }
+    },
+    verte(nojoda){
+      console.log(nojoda)
     },
     formatPrice(value) {
         let val = (value/1).toFixed(2).replace('.', ',')

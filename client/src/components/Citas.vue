@@ -599,7 +599,6 @@ import router from '../router'
       MaysPrimera(string){
         return string.charAt(0).toUpperCase() + string.slice(1);
       },
-<<<<<<< HEAD
       editCliente(){
         const name = this.nombreClienteRegister.split(' ')
         var firstName, lastName, fullName
@@ -646,21 +645,6 @@ import router from '../router'
           })
         }
         
-=======
-      processSale(id, type){
-        if (type == 'process') {
-          this.Process(id)
-          $('#myModalCitasDescripcion').modal('hide')
-          setTimeout(() => {
-            $('#procesarVentas span').click()
-          }, 500);
-        }else{
-          console.log('pending')
-        }
-      },
-      Process(id){
-        EventBus.$emit('process', id)
->>>>>>> 0fda1a623e41ac30e2d8fbcef0da992327f2dc13
       },
       ingresoCliente() {
         const name = this.nombreClienteRegister.split(' ')
