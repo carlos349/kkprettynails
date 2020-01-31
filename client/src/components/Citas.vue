@@ -282,10 +282,10 @@
     <div class="modal fade" id="myModalCitasDescripcion" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered" role="document">
 		    <div v-bind:style="{ 'background-color': '#ffffff'}" class="modal-content p-3">
-		      <div class="modal-header" v-bind:style="{ 'background-color': '#1F5673'}">
-		        <h5 class="modal-title text-white font-weight-bold" id="exampleModalCenterTitle">{{ selectedEvent.title }}</h5>
+		      <div class="modal-header" v-bind:class="selectedEvent.class">
+		        <h5 class="modal-title font-weight-bold" id="exampleModalCenterTitle">{{ selectedEvent.title }}</h5>
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-		          <span aria-hidden="true" class="text-white">&times;</span>
+		          <span aria-hidden="true" >&times;</span>
 		        </button>
 		      </div>
 		      <div class="modal-body letters">
@@ -301,8 +301,8 @@
               <li class="list-group-item" style="background-color: transparent !important">Hora de finalización: {{ dateSplitHours(selectedEvent.end) }}</li>
               
             </ul><br>
-            <button type="button" class="btn font-weight-bold btn-style col-6" v-on:click="borrarCita(selectedEvent.id)">Borrar cita</button>
-            <button v-if="status == 1 || status == 2" type="button" class="btn font-weight-bold btn-style ml-3 col-5" v-on:click="processSale(selectedEvent.id, 'process')">Procesar venta</button>
+            <button v-bind:class="selectedEvent.class" type="button" class="btn font-weight-bold btn-style col-6" v-on:click="borrarCita(selectedEvent.id)">Borrar cita</button>
+            <button v-bind:class="selectedEvent.class" v-if="status == 1 || status == 2" type="button" class="btn font-weight-bold btn-style ml-4 col-5" v-on:click="processSale(selectedEvent.id, 'process')">Procesar venta</button>
             </div>
 		    </div>
 		  </div>
@@ -531,6 +531,18 @@ import router from '../router'
         setTimeout(() => {
           this.recomend = group.display
         }, 100);
+      },
+      processSale(id, type){
+        if (type == 'process') {
+          this.Process(id)
+          $('#myModalCitasDescripcion').modal('hide')
+          setTimeout(() => {
+            $('#procesarVentas span').click()
+          }, 500);
+        }
+      },
+      Process(id){
+        EventBus.$emit('process', id)
       },
       clearInput(){
         
@@ -1727,6 +1739,9 @@ import router from '../router'
 		background-color:#1F5673;
 		color: azure;
 		transition: all 0.5s ease-out;
+    -webkit-box-shadow: 1px 1px 6px -1px rgba(0,0,0,1);
+		-moz-box-shadow: 1px 1px 6px -1px rgba(0,0,0,1);
+		box-shadow: 1px 1px 6px -1px rgba(0,0,0,1);
 		font-family: 'Roboto', sans-serif !important;
 		font-weight:600;
 		width: 100%;
@@ -1735,6 +1750,7 @@ import router from '../router'
 	}
 	.btn-style:hover{
 		background-color:#ccc;
+    border: none;
 		color:#001514;
 	}
   .generar{
@@ -2014,130 +2030,161 @@ import router from '../router'
   color: #fff
 }
 .class1 {
-  background:#3a508c;
-  border: 1px solid #3a508c;
-  color: #fff;
+  background:#BCBCBC;
+  border: 1px solid #BCBCBC;
+  color: #343633;
 }
 .class2 {
-  background:#4490c3;
-  border: 1px solid #4490c3;
-  color: #fff;
+  background:#BCD1FF;
+  border: 1px solid #BCD1FF;
+  color: #343633;
 }
 .class3 {
-  background:#40b396;
-  border: 1px solid #40b396;
-  color: #fff;
+  background:#DDEFBD;
+  border: 1px solid #DDEFBD;
+  color: #343633;
 }
 .class4 {
-  background:#0a0094;
-  border: 1px solid #0a0094;
-  color: #fff;
+  background:#CDF2E2;
+  border: 1px solid #CDF2E2;
+  color: #343633;
 }
 .class5 {
-  background:#264e00;
-  border: 1px solid #264e00;
-  color: #fff;
+  background:#B7E8CD;
+  border: 1px solid #B7E8CD;
+  color: #343633;
 }
 .class6 {
-  background:#803509;
-  border: 1px solid #803509;
-  color: #fff;
+  background:#C0E5DD;
+  border: 1px solid #C0E5DD;
+  color: #343633;
 }
 .class7 {
-  background:#860022;
-  border: 1px solid #860022;
-  color: #fff;
+  background:#F2E6E6;
+  border: 1px solid #F2E6E6;
+  color: #343633;
 }
 .class8 {
-  background:#1a264e;
-  border: 1px solid #1a264e;
-  color: #fff;
+  background:#FFD6D6;
+  border: 1px solid #FFD6D6;
+  color: #343633;
 }
 .class9 {
-  background:#142247;
-  border: 1px solid #142247;
-  color: #fff;
+  background:#FFD1BA;
+  border: 1px solid #FFD1BA;
+  color: #343633;
 }
 .class10 {
-  background:#314c5e;
-  border: 1px solid #314c5e;
-  color: #fff;
+  background:#FFF3B5;
+  border: 1px solid #FFF3B5;
+  color: #343633;
 }
 .class11 {
-  background:#758016;
-  border: 1px solid #758016;
-  color: #fff;
+  background:#EFEBD0;
+  border: 1px solid #EFEBD0;
+  color: #343633;
 }
 .class12 {
-  background:#090731;
-  border: 1px solid #090731;
-  color: #fff;
+  background:#FFE5E5;
+  border: 1px solid #FFE5E5;
+  color: #343633;
 }
 .class13 {
-  background:#830172;
-  border: 1px solid #830172;
-  color: #fff;
+  background:#A2CEA1;
+  border: 1px solid #A2CEA1;
+  color: #343633;
 }
 .class14 {
-  background:#411b05;
-  border: 1px solid #411b05;
-  color: #fff;
+  background:#9EC189;
+  border: 1px solid #9EC189;
+  color: #343633;
 }
 .class15 {
-  background:#e24f74;
-  border: 1px solid #e24f74;
+  background:#ADC9D8;
+  border: 1px solid #ADC9D8;
   color: black;
 }
 .class16 {
-  background:#1a040b;
-  border: 1px solid #1a040b;
-  color: #fff;
+  background:#B0E098;
+  border: 1px solid #B0E098;
+  color: #343633;
 }
 .class17 {
-  background:#151a2a;
-  border: 1px solid #151a2a;
-  color: #fff;
+  background:#E8FCCF;
+  border: 1px solid #E8FCCF;
+  color: #343633;
 }
 .class18 {
-  background:#4186b4;
-  border: 1px solid #4186b4;
-  color: #fff;
+  background:#BBCCEA;
+  border: 1px solid #BBCCEA;
+  color: #343633;
 }
 .class19 {
-  background:#318671;
-  border: 1px solid #318671;
-  color: #fff;
+  background:#A2BFF2;
+  border: 1px solid #A2BFF2;
+  color: #343633;
 }
 .class20 {
-  background:#070066;
-  border: 1px solid #070066;
-  color: #fff;
+  background:#D6FFDF;
+  border: 1px solid #D6FFDF;
+  color: #343633;
 }
 .class21 {
-  background:#005851;
-  border: 1px solid #005851;
-  color: #fff;
+  background:#C2C8E8;
+  border: 1px solid #C2C8E8;
+  color: #343633;
 }
 .class22 {
-  background:#552002;
-  border: 1px solid #552002;
-  color: #fff;
+  background:#EBD4CB;
+  border: 1px solid #EBD4CB;
+  color: #343633;
 }
 .class23 {
-  background:#410413;
-  border: 1px solid #410413;
-  color: #fff;
+  background:#EAC5BE;
+  border: 1px solid #EAC5BE;
+  color: #343633;
 }
 .class24 {
-  background:#014e34;
-  border: 1px solid #014e34;
-  color: #fff;
+  background:#A4D6CA;
+  border: 1px solid #A4D6CA;
+  color: #343633;
 }
 .class25 {
-  background:#29375f;
-  border: 1px solid #263662;
-  color: #fff;
+  background:#CAF7E2;
+  border: 1px solid #CAF7E2;
+  color: #343633;
 }
+.class26 {
+  background:#CAF7E2;
+  border: 1px solid #CAF7E2;
+  color: #343633;
+}
+.class27 {
+  background:#6EA08B;
+  border: 1px solid #6EA08B;
+  color: #343633;
+}
+.class28 {
+  background:#EBD8D0;
+  border: 1px solid #EBD8D0;
+  color: #343633;
+}
+.class28 {
+  background:#EAC9C1;
+  border: 1px solid #EAC9C1;
+  color: #343633;
+}
+.class29 {
+  background:#D3AB9E;
+  border: 1px solid #D3AB9E;
+  color: #343633;
+}
+.class30 {
+  background:#CAF7E2;
+  border: 1px solid #CAF7E2;
+  color: #343633;
+}
+
 
 .horaPred{
   border-bottom: 1px solid rgba(0, 0, 0, 0.281);

@@ -53,7 +53,8 @@ manicurista.post('/', (req, res) => {
     restDay: req.body.restDay,
     comision: 0,
     advancement:0,
-    class: ''
+    class: '',
+    date: new Date()
   }
 
   Manicurista.findOne({
@@ -64,9 +65,10 @@ manicurista.post('/', (req, res) => {
       Manicurista.find()
       .then(mani => {
         if (mani.length > 0) {
-          Manicurista.find().sort({class: -1})
+          Manicurista.find().sort({date: -1})
           .then(records => {
             let position = records[0].class.split('s')
+            console.log(position)
             dataManicurista.class = 'class'+ (parseFloat(position[2]) + 1) 
             Manicurista.create(dataManicurista)
             .then(manicurista => {

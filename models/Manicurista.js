@@ -25,6 +25,10 @@ const manicuristaSchema = new Schema({
   },
   class: {
     type:String
+  },
+  date: {
+    type: Date,
+		default: Date.now
   }
 })
 
