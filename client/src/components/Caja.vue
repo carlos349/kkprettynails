@@ -1,6 +1,6 @@
 <template>
     <div class="container-fluid">
-        <div class="col-md-12 row sectionMetricss">
+        <div class="col-md-12 row sectionMetricss mb-3">
             <div class="col-md-3 col-sm-12 metricss first">
                 <div>
                     <p class="text-center">Apertura Efectivo</p>
@@ -20,68 +20,7 @@
                 </div>
             </div>
         </div>
-        <div class="row mt-3">
-            <div class="col-md-2 mb-2">
-                <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getPerMonthSelected(0)">
-                    Enero  
-                </button> 
-            </div>
-            <div class="col-md-2 mb-2">
-                <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getPerMonthSelected(1)">
-                    Febrero  
-                </button> 
-            </div>
-            <div class="col-md-2 mb-2">
-                <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getPerMonthSelected(2)">
-                    Marzo  
-                </button> 
-            </div>
-            <div class="col-md-2 mb-2">
-                <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getPerMonthSelected(3)">
-                    Abril  
-                </button> 
-            </div>
-            <div class="col-md-2">
-                <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getPerMonthSelected(4)">
-                    Mayo  
-                </button> 
-            </div>
-            <div class="col-md-2 mb-2">
-                <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getPerMonthSelected(5)">
-                    Junio  
-                </button> 
-            </div>
-            <div class="col-md-2 mb-2">
-                <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getPerMonthSelected(6)">
-                    Julio  
-                </button> 
-            </div>
-            <div class="col-md-2 mb-2">
-                <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getPerMonthSelected(7)">
-                    Agosto  
-                </button> 
-            </div>
-            <div class="col-md-2 mb-2">
-                <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getPerMonthSelected(8)">
-                    Septiembre  
-                </button> 
-            </div>
-            <div class="col-md-2 mb-2">
-                <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getPerMonthSelected(9)">
-                    Octubre  
-                </button> 
-            </div>
-            <div class="col-md-2 mb-2">
-                <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getPerMonthSelected(10)">
-                    Noviembre  
-                </button> 
-            </div>
-            <div class="col-md-2 mb-2">
-                <button class="btn w-100 BotonesFiltro" type="button" v-on:click="getPerMonthSelected(11)">
-                    Diciembre  
-                </button> 
-            </div> 
-        </div>
+        
         <div class="row">
             <div class="shadow">
                 <v-client-table class="text-center"  :data="cierres" :columns="columns" :options="optionsT">
@@ -90,80 +29,8 @@
                     <!-- <a slot="edit" slot-scope="props" class="fa fa-edit" :href="pasarDatosEdit(props.row.nombre, props.row.identidad, props.row.correoCliente, props.row.instagramCliente, props.row._id)">Hola </a> -->
                 </v-client-table>
             </div>
-            <!-- <table class="table tableVenta" >
-            <thead class="thead-light">
-                <tr class="respons">
-                <th class="text-center">
-                    Fecha
-                </th>
-                <th class="text-center">
-                    Apertura Efectivo
-                </th>
-                <th class="text-center">
-                    Apertura Banco
-                </th>
-                <th class="text-center">
-                    Total Apertura
-                </th>
-                <th class="text-center">
-                    Cierre Efectivo
-                </th>
-                <th class="text-center">
-                    Cierre Banco
-                </th>
-                <th class="text-center">
-                    Total Cierre
-                </th>
-                <th class="text-center">
-                    Total
-                </th>
-                <th class="text-center">
-                    Gastos
-                </th>
-                <th class="text-center">
-                    Reportes
-                </th>
-                </tr>
-            </thead>
-            </table>
-        <div class="Listas">
-            <table style="font-size:.8em" class="table table-striped" id="myTable">
-            <tbody >
-                <tr v-for="(cierre, indexOne) of cierres" class="respons fix">
-                <td class="text-left">
-                    {{formatDate(cierre.fecha)}}
-                </td>
-                <td class="text-right">
-                    {{formatPrice(cierre.aperturaEfectivo)}}
-                </td>
-                <td  class="text-right">
-                    {{formatPrice(cierre.aperturaBanco)}}
-                </td>
-                <td class="text-right">
-                    {{formatPrice(cierre.totalApertura)}}
-                </td>
-                <td class="text-right">
-                    {{formatPrice(cierre.cierreEfectivo)}}
-                </td>
-                <td class="text-right">
-                    {{formatPrice(cierre.cierreBanco)}}
-                </td>
-                <td class="text-right">
-                    {{formatPrice(cierre.totalCierre - cierre.gastos)}}
-                </td>
-                <td class="text-right">
-                    {{formatPrice(cierre.total)}}
-                </td>
-                <td class="text-right">
-                    {{formatPrice(cierre.gastos)}}
-                </td>
-                <td class="text-right">
-                    <font-awesome-icon icon="copy" class="report" v-on:click="sacarReporte(cierre._id)"/>
-                </td>
-                </tr>
-            </tbody>
-            </table>
-        </div> -->
+           
+            
       </div>
     </div>
 </template>
@@ -221,18 +88,8 @@ export default {
         getClosing(){
             axios.get('ventas/Closing')
             .then(res => {
+                
                 this.cierres = res.data
-
-                let fechaBien = ''
-                const dateNow = new Date()
-                for (let index = 0; index < res.data.length; index++) {
-                    let fech = new Date(res.data[index].fecha)
-                    if (fech.getMonth() === dateNow.getMonth() && fech.getDate() === dateNow.getDate()) {
-                        this.efectivo = res.data[index].aperturaEfectivo
-                        this.banco = res.data[index].aperturaBanco
-                        this.total = res.data[index].totalApertura
-                    }
-                }
                 for (let i = 0; i < this.cierres.length; i++) {
 					this.cierres[i].fecha = this.formatDate(this.cierres[i].fecha)
 				}

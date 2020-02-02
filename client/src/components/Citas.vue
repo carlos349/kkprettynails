@@ -1248,6 +1248,7 @@ import router from '../router'
         axios.get('ventas/getFund')
         .then(res => {
           const fondo = res.data[0].amount
+          const egresoSistema = res.data[0].amount
           axios.get('ventas/getClosingDay')
           .then(res => {
             if (res.data.status === 'bad') {
@@ -1264,149 +1265,151 @@ import router from '../router'
               const transferencia = res.data.transferencia
               const otros = res.data.otros
               const total = res.data.total
-              
               this.$swal({
-                title: 'Verificación de ventas',
-                html: `
-                  <form>
-                    <div class="row">
-                      <div class="form-group col-6" style="width:100%;">
-                        <label style="float:left;">Fondo de la caja</label>
-                        <input type="number" class="form-control classFondo" value="${fondo}" onlyread requerid>
-                      </div>
-                      <div class="form-group col-6" style="width:100%;">
-                        <label style="float:left;">Efectivo</label>
-                        <input type="number" class="form-control classEfectivo" placeholder="Monto en caja de efectivo" requerid>
-                      </div>
-                      <div class="form-group col-6" style="width:100%;">
-                        <label style="float:left;">Redcompra débito</label>
-                        <input type="number" class="form-control classRedcompreD" placeholder="Monto en caja de Redcompre débito" requerid>
-                      </div>
-                      <div class="form-group col-6" style="width:100%;">
-                        <label style="float:left;">Redcompra crédito</label>
-                        <input type="number" class="form-control classRedcompreC" placeholder="Monto en caja de Redcompre crédito" requerid>
-                      </div>
-                      <div class="form-group col-6" style="width:100%;">
-                        <label style="float:left;">Transferencias</label>
-                        <input type="number" class="form-control classTransferencia" placeholder="Monto en caja de Transferencias" requerid>
-                      </div>
-                      <div class="form-group col-6" style="width:100%;">
-                        <label style="float:left;">Otros</label>
-                        <input type="number" class="form-control classOtros" placeholder="Monto en caja de Otros" requerid>
-                      </div>
-                      <div class="form-group col-12" style="width:100%;">
-                        <label>Monto total de ventas</label>
-                        <input style="width:70%;margin-left:16%;" type="number" class="form-control classTotal" placeholder="Monto total en caja de ventas" requerid>
-                      </div>
-                    </div>
-                  </form>
-                `,
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Confirmar',
-                cancelButtonText: 'Cerrar',
+                title: 'Por favor, registre el monto egresado de la caja',
+                input: 'number',
+                inputPlaceholder: 'Monto egreso',
                 showCloseButton: true,
-                showLoaderOnConfirm: true
               })
-              .then((result) => {
-                  if(result.value) {
-                    const fondoManual = $('.classFondo').val()
-                    const efectivoManual = $('.classEfectivo').val()
-                    const redCompreDManual = $('.classRedcompreD').val()
-                    const redCompreCManual = $('.classRedcompreC').val()
-                    const transferenciaManual = $('.classTransferencia').val()
-                    const otrosManual = $('.classOtros').val()
-                    const totalManual = $('.classTotal').val()
-                    if (fondoManual == '' || efectivoManual == '' || redCompreDManual == '' || redCompreCManual == '' || otrosManual == '' || totalManual == '' || transferenciaManual == '') {
+              .then(result => {
+                  const egresoManual = result.value 
+                  
+                  this.$swal({
+                  title: 'Verificación de ventas',
+                  html: `
+                    <form>
+                      <div class="row">
+                        <div class="form-group col-6" style="width:100%;">
+                          <label style="float:left;">Fondo de la caja</label>
+                          <input type="number" class="form-control classFondo" value="${fondo}" readonly requerid>
+                        </div>
+                        <div class="form-group col-6" style="width:100%;">
+                          <label style="float:left;">Efectivo</label>
+                          <input type="number" class="form-control classEfectivo" placeholder="$ 0" requerid>
+                        </div>
+                        <div class="form-group col-6" style="width:100%;">
+                          <label style="float:left;">Débito</label>
+                          <input type="number" class="form-control classRedcompreD" placeholder="$ 0" requerid>
+                        </div>
+                        <div class="form-group col-6" style="width:100%;">
+                          <label style="float:left;">Crédito</label>
+                          <input type="number" class="form-control classRedcompreC" placeholder="$ 0" requerid>
+                        </div>
+                        <div class="form-group col-6" style="width:100%;">
+                          <label style="float:left;">Transferencias</label>
+                          <input type="number" class="form-control classTransferencia" placeholder="$ 0" requerid>
+                        </div>
+                        <div class="form-group col-6" style="width:100%;">
+                          <label style="float:left;">Otros</label>
+                          <input type="number" class="form-control classOtros" placeholder="$ 0" requerid>
+                        </div>
+                      </div>
+                    </form>
+                  `,
+                  type: 'warning',
+                  showCancelButton: true,
+                  confirmButtonText: 'Confirmar',
+                  cancelButtonText: 'Cerrar',
+                  showCloseButton: true,
+                  showLoaderOnConfirm: true
+                })
+                .then((result) => {
+                    if(result.value) {
+                      const fondoManual = $('.classFondo').val()
+                      const efectivoManual = $('.classEfectivo').val()
+                      const redCompreDManual = $('.classRedcompreD').val()
+                      const redCompreCManual = $('.classRedcompreC').val()
+                      const transferenciaManual = $('.classTransferencia').val()
+                      const otrosManual = $('.classOtros').val()
+                      const totalManual = parseFloat(efectivoManual) + parseFloat(redCompreDManual) + parseFloat(redCompreCManual) + parseFloat(transferenciaManual) + parseFloat(otrosManual)
+                      console.log(totalManual)
+                      if (fondoManual == '' || efectivoManual == '' || redCompreDManual == '' || redCompreCManual == '' || otrosManual == '' || totalManual == '' || transferenciaManual == '') {
+                        this.$swal({
+                          type: 'error',
+                          title: 'Complete todos los campos',
+                          showConfirmButton: false,
+                          timer: 1500
+                        })
+                      }else{
+                        this.$swal({
+                          title: 'Por favor, escriba su nombre ^^',
+                          input: 'text',
+                          inputPlaceholder: 'Escriba su nombre aquí',
+                          showCloseButton: true,
+                        })
+                        .then(result => {
+                          if (result.value == '') {
+                            this.$swal({
+                              type: 'error',
+                              title: 'Debe escribir su nombre',
+                              showConfirmButton: false,
+                              timer: 1500
+                            })
+                          }else if(result.dismiss){
+                            this.$swal({
+                              type: 'info',
+                              title: 'Aborto cierre',
+                              showConfirmButton: false,
+                              timer: 1500
+                            })
+                          }else{
+                            var totalEfectivoSistema = parseFloat(fondo) + parseFloat(efectivo) - parseFloat(egresoManual)
+                            var totalEfectivoManual = parseFloat(fondoManual) + parseFloat(efectivoManual) - parseFloat(egresoManual)
+                      
+                            const identificacionCierre = result.value
+                            axios.post('ventas/closeDay/'+identificacionCierre, {
+                              efectivoSistema: parseFloat(efectivo),
+                              redCompraDebitoSistema: parseFloat(redCompraDebito),
+                              redCompraCreditoSistema: parseFloat(redCompraCredito),
+                              transferenciaSistema: parseFloat(transferencia),
+                              otrosSistema: parseFloat(otros),
+                              totalSistema: parseFloat(total),
+                              fondoSistema: parseFloat(fondo),
+                              egresoSistema: parseFloat(egresoManual),
+                              totalEfectivoSistema: parseFloat(totalEfectivoSistema),
+                              
+                              totalEfectivoManual: parseFloat(totalEfectivoManual),
+                              fondoManual: parseFloat(fondoManual),
+                              egresoManual: parseFloat(egresoManual),
+                              efectivoManual: parseFloat(efectivoManual),
+                              redCompreDManual: parseFloat(redCompreDManual),
+                              redCompreCManual: parseFloat(redCompreCManual),
+                              transferenciaManual: parseFloat(transferenciaManual),
+                              otrosManual: parseFloat(otrosManual),
+                              totalManual: parseFloat(totalManual)
+                            })
+                            .then(res => {
+                              if (res.data.status == 'ok') {
+                                  this.$swal({
+                                    type: 'success',
+                                    title: 'Cierre hecho correctamente',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                  })
+                              }
+                            })
+                            .catch(err => {
+                              console.log(err)
+                            })
+                          }
+                        })
+                      }
+                    }else{
                       this.$swal({
-                        type: 'error',
-                        title: 'Complete todos los campos',
+                        type: 'info',
+                        title: 'Aborto cierre',
                         showConfirmButton: false,
                         timer: 1500
                       })
-                    }else{
-                      this.$swal({
-                        title: 'Por favor, escriba su nombre ^^',
-                        input: 'text',
-                        inputPlaceholder: 'Escriba su nombre aquí',
-                        showCloseButton: true,
-                      })
-                      .then(result => {
-                        if (result.value == '') {
-                          this.$swal({
-                            type: 'error',
-                            title: 'Debe escribir su nombre',
-                            showConfirmButton: false,
-                            timer: 1500
-                          })
-                        }else if(result.dismiss){
-                          this.$swal({
-                            type: 'info',
-                            title: 'Aborto cierre',
-                            showConfirmButton: false,
-                            timer: 1500
-                          })
-                        }else{
-                          var totalEfectivoSistema = 0
-                          var totalEfectivoManual = 0
-                          if (fondo > efectivo) {
-                            totalEfectivoSistema = fondo - efectivo
-                          }else{
-                            totalEfectivoSistema = efectivo - fondo
-                          }
-                          if (fondoManual > efectivoManual) {
-                            totalEfectivoManual = fondoManual - efectivoManual
-                          }else{
-                            totalEfectivoManual = efectivoManual - fondoManual
-                          }
-                          const identificacionCierre = result.value
-                          axios.post('ventas/closeDay/'+identificacionCierre, {
-                            efectivoSistema: parseFloat(efectivo),
-                            redCompraDebitoSistema: parseFloat(redCompraDebito),
-                            redCompraCreditoSistema: parseFloat(redCompraCredito),
-                            transferenciaSistema: parseFloat(transferencia),
-                            otrosSistema: parseFloat(otros),
-                            totalSistema: parseFloat(total),
-                            fondoSistema: parseFloat(fondo),
-                            totalEfectivoSistema: parseFloat(totalEfectivoSistema),
-                            
-                            totalEfectivoManual: parseFloat(totalEfectivoManual),
-                            fondoManual: parseFloat(fondoManual),
-                            efectivoManual: parseFloat(efectivoManual),
-                            redCompreDManual: parseFloat(redCompreDManual),
-                            redCompreCManual: parseFloat(redCompreCManual),
-                            transferenciaManual: parseFloat(transferenciaManual),
-                            otrosManual: parseFloat(otrosManual),
-                            totalManual: parseFloat(totalManual)
-                          })
-                          .then(res => {
-                            if (res.data.status == 'ok') {
-                                this.$swal({
-                                  type: 'success',
-                                  title: 'Cierre hecho correctamente',
-                                  showConfirmButton: false,
-                                  timer: 1500
-                                })
-                            }
-                          })
-                          .catch(err => {
-                            console.log(err)
-                          })
-                        }
-                      })
                     }
-                  }else{
-                    this.$swal({
-                      type: 'info',
-                      title: 'Aborto cierre',
-                      showConfirmButton: false,
-                      timer: 1500
-                    })
-                  }
+                })
               })
             }
           })
         })
+      },
+      pruebaKey(){
+        console.log('hola')
       },
       formatPrice(value) {
 				let val = (value/1).toFixed(2).replace('.', ',')
