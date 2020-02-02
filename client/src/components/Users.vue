@@ -6,39 +6,39 @@
 			<form v-on:submit.prevent="register">
 				<div class="form-group">
 					<label for="name">Nombre del usuario <span style="color:red;">*</span></label>
-					<input type="text" v-model="first_name" class="form-control inputs" placeholder="Nombre del usuario">
+					<input type="text" v-model="first_name" class="inputsClientes w-100" placeholder="Nombre del usuario">
 				</div>
 				<div class="form-group">
 					<label for="name">Apellido del usuario <span style="color:red;">*</span></label>
-					<input type="text" v-model="last_name" class="form-control inputs" placeholder="Apellido del usuario">
+					<input type="text" v-model="last_name" class="inputsClientes w-100" placeholder="Apellido del usuario">
 				</div>
 				<div class="form-group">
 					<label for="name">Imagen de perfil</label>
-					<input type="file" id="file" ref="file" v-on:change="handleFileUpload()" class="form-control inputs" >
+					<input type="file" id="file" ref="file" v-on:change="handleFileUpload()" class="inputsClientes w-100" >
 				</div>
 				<div class="form-group">
 					<label for="name">Correo del usuario <span style="color:red;">*</span></label>
-					<input type="email" v-model="email" class="form-control inputs" placeholder="Correo del usuario">
+					<input type="email" v-model="email" class="inputsClientes w-100" placeholder="Correo del usuario">
 				</div>
-				<div v-if="emailValidator" class="form-group">
+				<div v-if="emailValidator" v-on:keyup="validadorIgualE()" class="form-group">
 					<label for="name">Confirme correo <span style="color:red;">*</span></label>
-					<input type="email" v-model="emailConfirm" class="form-control inputs" placeholder="Correo del usuario">
+					<input type="email" v-model="emailConfirm" class="inputsClientes w-100" placeholder="Correo del usuario">
 				</div>
-				<div v-else class="form-group">
+				<div v-else v-on:keyup="validadorIgualE()" class="form-group">
 					<label for="name">Confirme correo <span style="color:red;">*</span></label>
-					<input type="email" v-model="emailConfirm" class="form-control inputs badPass" placeholder="Correo del usuario">
+					<input type="email" v-model="emailConfirm" class="inputsClientes w-100 badPass" placeholder="Correo del usuario">
 				</div>
 				<div class="form-group">
 					<label for="name">Contraseña <span style="color:red;">*</span></label>
-					<input type="password" v-model="password" class="form-control inputs" placeholder="Contraseña">
+					<input type="password" v-model="password" class="inputsClientes w-100" placeholder="Contraseña">
 				</div>
-				<div v-if="passwordValidator" class="form-group">
+				<div v-if="passwordValidator" v-on:keyup="validadorIgualP()" class="form-group">
 					<label for="name">Confirme contraseña <span style="color:red;">*</span></label>
-					<input type="password" v-model="passwordConfirm" class="form-control inputs" placeholder="Contraseña">
+					<input type="password" v-model="passwordConfirm" class="inputsClientes w-100" placeholder="Contraseña">
 				</div>
-				<div v-else class="form-group">
+				<div v-else v-on:keyup="validadorIgualP()" class="form-group">
 					<label for="name">Confirme contraseña <span style="color:red;">*</span></label>
-					<input type="password" v-model="passwordConfirm" class="form-control inputs badPass" placeholder="Contraseña">
+					<input type="password" v-model="passwordConfirm" class="inputsClientes w-100 badPass" placeholder="Contraseña">
 				</div>
 				<button type="submit" class="btn w-100 add">Agregar</button>
 			</form>
@@ -51,7 +51,7 @@
 					<p slot="nombres"  slot-scope="props">{{props.row.first_name }} {{props.row.last_name }}</p>
 					<p slot="last"  slot-scope="props">{{formatDate(props.row.LastAccess)}}</p>
 					<div slot="edit" slot-scope="props">
-						<div class="dropleft" v-if="props.row.status == 1">
+						<div class="dropdown" v-if="props.row.status == 1">
 							<button class="btn btn-success font-weight-bold w-100 dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 								Gerencia
 							</button>
@@ -61,7 +61,7 @@
 								<a class="dropdown-item" v-on:click="editarEstado(props.row._id, 3, 'prestador')">Prestadora</a>
 							</div>
 						</div>
-						<div class="dropleft" v-if="props.row.status == 2">
+						<div class="dropdown" v-if="props.row.status == 2">
 							<button class="btn btn-warning font-weight-bold w-100 dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 								Personal de caja
 							</button>
@@ -71,7 +71,7 @@
 								<a class="dropdown-item" v-on:click="editarEstado(props.row._id, 3, 'prestador')">Prestadora</a>
 							</div>
 						</div>
-						<div class="dropleft" v-if="props.row.status == 3">
+						<div class="dropdown" v-if="props.row.status == 3">
 							<button class="btn btn-warning font-weight-bold w-100 dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 								Prestadora
 							</button>
@@ -90,56 +90,6 @@
 						
 					</div>
 				</v-client-table>	
-				<!-- <table  class="table" style="color:#fff !important" v-bind:style="{ 'background-color': '#1f5673'}" >
-					<thead>
-						<tr>
-							<th>
-								Nombre y Apellido
-							</th>
-							<th>
-								Correo
-							</th>
-							<th>
-								Ultimo acceso
-							</th>
-							<th>
-								Estado
-							</th>	
-							<th>
-								Borrar
-							</th>
-						</tr>
-					</thead>
-				</table>	
-				<div class="ListaUsers tbl-content">
-					<table class="table table-light table-borderless table-striped text-left" style="font-size:.8em">
-						<tbody>
-							<tr v-for="user in users" v-bind:key="user._id">
-								<td>
-									{{user.first_name}} {{user.last_name}}
-								</td>
-								<td>
-									{{user.email}}
-								</td>
-								<td>
-									{{formatDate(user.LastAccess)}}
-								</td>
-								<td >
-									<button class="btn btn-success font-weight-bold" v-if="user.admin" v-on:click="editarEstado(user._id, user.admin)">Admin</button>
-									<button class="btn btn-warning font-weight-bold" v-else v-on:click="editarEstado(user._id, user.admin)">Normal</button>
-								</td>
-								<td>
-									<button  class="btn w-25 btn-inactive" v-if="user.admin" v-on:click="eliminarUsuario(user._id, user.admin)">
-									<font-awesome-icon icon="trash" />
-									</button>
-									<button class="btn w-25 btn-inactive" v-else v-on:click="eliminarUsuario(user._id, user.admin)">
-									<font-awesome-icon icon="trash"  />
-									</button>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				</div> -->
 			</div>
 		</div>
 		<div class="modal fade" id="ModalLinkLender" tabindex="-1"  role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -155,13 +105,6 @@
 						<div class="form-group row">
 							<div class="form-group w-100">
 								<label for="recomendacion">Vincule el prestador</label>
-								<!-- <autocomplete	
-									:search="searchPrestador"
-									placeholder="Buscar prestador"
-									aria-label="Buscar prestador"
-									@submit="handleSubmitPrestador"
-									class="auto autoClient w-100">
-								</autocomplete> -->
 								<div v-on:click="clearInput">
 									<autocomplete
 										ref="autocomplete"
@@ -266,12 +209,6 @@
 				router.push({name: 'Login'})
 			})
 		},
-		// arrayUsers(){
-		// 	for (let index = 0; index < this.manicuristas.length; index++) {
-		// 		this.arregloManicuristas.push(this.manicuristas[index].nombre+"/"+this.manicuristas[index].documento)
-
-		// 	} 
-		// },
 		formattedDisplay (result) {
 			console.log(result)
 			return result.nombre+"/"+result.documento
@@ -280,9 +217,6 @@
 			setTimeout(() => {
 				this.prestador = group.display
 			}, 100);
-			// access the autocomplete component methods from the parent
-			// this.$refs.autocomplete.clear()
-			// $('.esteqlq').val(group.display)
 			
 		},
 		clearInput(){
@@ -293,20 +227,9 @@
 			axios.get('manicuristas')
 			.then(res => {
 				this.arregloManicuristas = res.data
-				// this.arrayUsers()
-				// console.log(this.arregloManicuristas)
 			})
 		},
-		// searchPrestador(input){
-		// 	if (input.length < 1) { return [] }
-		// 		return this.arregloManicuristas.filter(manicurista => {
-		// 			return manicurista.toLowerCase()
-		// 			.startsWith(input.toLowerCase())
-		// 	})
-		// },
-		// handleSubmitPrestador(result){	
-		// 	this.prestador = result
-		// },
+
 		editarEstado(id, status, type){
 			console.log(type)
 			if (type == 'prestador') {
@@ -410,6 +333,24 @@
 						router.push({name: 'Login'})
 					})
 				}
+			}
+		},
+		validadorIgualE(){
+			console.log("y entonc?")
+			if (this.emailConfirm != this.email) {
+				this.emailValidator = false
+			}
+			else{
+				this.emailValidator = true
+			}
+		},
+		validadorIgualP(){
+			console.log("y entonc?")
+			if (this.passwordConfirm != this.password) {
+				this.passwordValidator = false
+			}
+			else{
+				this.passwordValidator = true
 			}
 		},
 		formatDate(date) {
@@ -563,8 +504,9 @@
   content: "-";
 }
 .badPass{
-	border-bottom: solid 2px red !important;
-	border-right: solid 2px red !important;
+	-webkit-box-shadow: inset 0px 0px 20px 4px rgba(250, 4, 4, 0.315) !important;
+		-moz-box-shadow: inset 0px 0px 20px 4px rgba(250, 4, 4, 0.315)  !important;
+		box-shadow: inset 0px 0px 20px 4px rgba(250, 4, 4, 0.315)  !important;
 }
 
 [v-cloak] {
@@ -618,4 +560,15 @@ thead {
 	outline: none !important;
 	padding: 13px !important;
 }
+.inputsClientes{
+		background-color: transparent !important;
+		-webkit-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+		-moz-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+		box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+		border: none !important;
+		border-radius: 5px;
+		padding: 10px;
+		width: 50% ;
+		color: black !important;
+	}
 </style>
