@@ -812,6 +812,7 @@ ventas.put('/:id', async (req, res, next) => {
 })
 
 ventas.post('/procesar', (req, res) => {
+  console.log(req.body.servicios)
   let clientEdit = req.body.cliente
   const finalClient = clientEdit.split("-")
   let today = ''

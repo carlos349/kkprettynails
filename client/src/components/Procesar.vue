@@ -72,13 +72,13 @@
 						<tbody>
 							<tr v-for="(servicio, index) in servicios" v-bind:key="servicio._id">
 								<td v-if="servicio.active" class="font-weight-bold">
-									<button v-if="!inspector" type="button" class="w-75 btn procesar text-left" v-on:click="conteoServicio(servicio._id,servicio.nombre, servicio.precio)" disabled>
+									<button v-if="!inspector" type="button" class="w-75 btn procesar text-left" v-on:click="conteoServicio(servicio._id,servicio.nombre, servicio.precio, servicio.comision)" disabled>
 									  {{servicio.nombre}} <span class="badge badge-light conteoServ mt-1 float-right" v-bind:class="formatClass(servicio.nombre)" v-bind:id="servicio._id">0</span>
 									</button>
 									<button v-if="!inspector" type="button" class="w-20 btn btn-back  text-left"  disabled>
 									  <font-awesome-icon icon="times"/>
 									</button>
-									<button v-else type="button" class="w-75 btn procesar  text-left" v-on:click="conteoServicio(servicio._id ,servicio.nombre, servicio.precio)">
+									<button v-else type="button" class="w-75 btn procesar  text-left" v-on:click="conteoServicio(servicio._id ,servicio.nombre, servicio.precio, servicio.comision)">
 									  {{servicio.nombre}} <span class="badge badge-light conteoServ mt-1 float-right" v-bind:class="formatClass(servicio.nombre)" v-bind:id="servicio._id">0</span>
 									</button>
 									<button v-if="inspector" type="button" class="w-20 btn btn-back  text-left" v-on:click="borrarServicio(servicio.nombre,index,servicio._id,servicio.precio)">
@@ -404,9 +404,9 @@ import router from '../router'
 import EventBus from './eventBus'
 import Autocomplete from 'vuejs-auto-complete'
 	class Manicurista{
-		constructor(nombre, comision) {
+		constructor(nombre) {
 			this.nombre = nombre;
-			this.comision = comision;
+			
 		}
 	}
 	class ArregloManicuristas{
@@ -668,7 +668,6 @@ import Autocomplete from 'vuejs-auto-complete'
 			axios.get('manicuristas/justone/' + this.maniSelect)
 			.then(res => {
 				this.documentoManicurista = res.data.documento
-				this.comision = res.data.porcentaje
 				this.nombreManicurista = this.maniSelect
 				console.log(this.documentoManicurista)
 			})
@@ -721,7 +720,7 @@ import Autocomplete from 'vuejs-auto-complete'
 				this.totalSinFormato = precioConDescuento
 			}
 		},
-		conteoServicio(esto, servicio, precio){
+		conteoServicio(esto, servicio, precio, comision){
 			const descuento = parseFloat(this.descuento) / 100
 			const porcentaje = 1 - parseFloat(descuento)
 			const precioTotal = parseFloat(this.totalSinFormato) + parseFloat(precio)
@@ -740,7 +739,7 @@ import Autocomplete from 'vuejs-auto-complete'
 			const conteo = $("#"+esto).text()
 			const conteoTotal = parseFloat(conteo) + 1
 			$("#"+esto).text(conteoTotal)
-			const servicios = {'servicio': servicio}
+			const servicios = {'servicio': servicio, 'comision': comision, 'precio': precio}
 			this.serviciosSelecionados.push(servicios)
 			
 			axios.put('ventas/updateServicesMonth/' + servicio)
@@ -833,7 +832,6 @@ import Autocomplete from 'vuejs-auto-complete'
 						cliente: this.nombreCliente,
 						manicurista: this.maniSelect,
 						servicios: this.serviciosSelecionados,
-						comision: this.comision,
 						pagoEfectivo:this.pagoEfectivo,
 						pagoOtros:this.pagoOtros,
 						pagoRedCDebito:this.pagoRedCDebito,

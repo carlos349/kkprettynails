@@ -1,9 +1,9 @@
 <template>
 <div>
-	<div  v-on:click="marcarNav()" v-bind:style="{ 'background-image': 'linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),url(' + require('../assets/sidebarTwo.jpg') + ')' , 'background-size': 'cover', 'height': '100vh', 'position': 'fixed', 'z-index' : '1000' }"  class=" pl-2 menuVer navS" v-on:mouseenter="mouseOver()" v-on:mouseleave="mouseLeave()">
+	<div  v-on:click="marcarNav()" v-bind:style="{ 'background-color': '#EEEEEE', 'height': '100vh', 'position': 'fixed', 'z-index' : '1000', 'color': 'black !important' }"  class=" pl-2 menuVer navS" v-on:mouseenter="mouseOver()" v-on:mouseleave="mouseLeave()">
 		<div style="border-bottom:1.5px solid  rgba(91, 91, 90, .5);" class="p-3  text-center col-md-12"><img src="../assets/logoNew.png" class="logoNonHover"  alt=""></div>
 
-			<div style="border-bottom:1.5px solid  rgba(91, 91, 90, .5);" class="text-white p-2 pb-1 pt-1 mx-auto col-md-12 paddingName">
+			<div style="border-bottom:1.5px solid  rgba(91, 91, 90, .5);color:black" class=" p-2 pb-1 pt-1 mx-auto col-md-12 paddingName">
 				<div v-on:click="moverFU()" data-toggle="collapse" href="#collapseUser" class="col-md-12 usuarioP ">
 					<div class="row">
 						<div class="col-sm-3">
@@ -19,17 +19,17 @@
 					</div>
 				</div>
 				<div class="collapse" id="collapseUser">
-					<ul class="listaMenu">
-						<router-link class="text-white menuText" to="/profile"> <li><font-awesome-icon class="icons mr-3" icon="edit" />Editar perfil</li> </router-link>
-						<router-link class="text-white menuText" to="/"><li v-on:click="logout"><font-awesome-icon class="icons mr-3" icon="sign-out-alt" />Cerrar Sesión</li> </router-link>
+					<ul style="color:black !important" class="listaMenu">
+						<router-link style="text-decoration: none !important;" class="menuText" to="/profile"> <li><font-awesome-icon class="icons mr-3" icon="edit" />Editar perfil</li> </router-link>
+						<router-link style="text-decoration: none !important;" class="menuText" to="/"><li v-on:click="logout"><font-awesome-icon class="icons mr-3" icon="sign-out-alt" />Cerrar Sesión</li> </router-link>
 					</ul>
 				</div>
 				
 			</div>
 			<div v-if="auth == 1"  style="border-bottom:1.5px solid  rgba(91, 91, 90, .5);">
-				<div v-on:click="moverF('user')" data-toggle="collapse" href="#collapseExample" style="text-decoration:none !important" class="user usuarioP text-white" role="button" >
+				<div v-on:click="moverF('user')" data-toggle="collapse" href="#collapseExample" style="text-decoration:none !important" class="user usuarioP " role="button" >
 					
-					<div style="color: rgba(250, 248, 248, .8);" class=" user nav-item"><font-awesome-icon class="ml-3" style="margin-right:4%;font-size:1.5em;margin-left:5.5%;" icon="users" /><span class="menuText nonHover">Usuarios 
+					<div style="color: black;" class=" user nav-item"><font-awesome-icon class="ml-3" style="margin-right:4%;font-size:1.5em;margin-left:5.5%;" icon="users" /><span class="menuText nonHover">Usuarios 
 					
 					<font-awesome-icon icon="caret-down" class="fOne  nonHover" style="float:right;font-size:1em;margin:auto;margin-top:3%" />
 
@@ -37,15 +37,15 @@
 					 
 					</div>
 				</div>
-				<div class="collapse" id="collapseExample">
+				<div style="color: black;" class="collapse" id="collapseExample">
 					<ul class="listaMenu menuText">
-						<router-link class="text-white align-middle" to="/Usuarios"> <li><font-awesome-icon class="icons" icon="user-lock" /> Usuarios</li> </router-link>
+						<router-link style="text-decoration: none !important;" class="align-middle" to="/Usuarios"> <li><font-awesome-icon class="icons" icon="user-lock" /> Usuarios</li> </router-link>
 					</ul>
 				</div>
 			</div>
 			<div id="procesarVentas" v-if="auth == 1 || auth == 2 " class="col-sm-12">
 				
-				<span style="cursor:pointer;" v-on:click="processOpen" class="text-white" to="/caja">
+				<span style="cursor:pointer;color: black !important;" v-on:click="processOpen" to="/caja">
 						<div class="listaMenu row p-3">
 							<div class="col-sm-1">
 								<font-awesome-icon class="icone" icon="tags" />
@@ -57,7 +57,7 @@
 			</div>
 			<div id="Ventas" v-on:click="marcarNav('Ventas')" v-if="auth== 1 || auth == 2" class="col-sm-12">
 				
-				<router-link  class=" text-white" to="/verventas">
+				<router-link style="text-decoration: none !important;"  class=" " to="/verventas">
 						<div class="listaMenu row p-3">
 							<div class="col-sm-1">
 								<font-awesome-icon class="icone" icon="clipboard-check" />
@@ -69,7 +69,7 @@
 			</div>
 			<div id="Servicios" v-on:click="marcarNav('Servicios')" v-if="auth == 1" class="col-sm-12">
 				
-				<router-link  class=" text-white" to="/servicios">
+				<router-link style="text-decoration: none !important;"  class=" " to="/servicios">
 						<div class="listaMenu row p-3">
 							<div class="col-sm-1">
 								<font-awesome-icon class="icone" icon="poll-h" />
@@ -81,7 +81,7 @@
 			</div>
 			<div id="Empleadas" v-on:click="marcarNav('Empleadas')" v-if="auth == 1" class="col-sm-12">
 				
-				<router-link  class=" text-white" to="/empleadas">
+				<router-link style="text-decoration: none !important;" class=" " to="/empleadas">
 						<div class="listaMenu row p-3">
 							<div class="col-sm-1">
 								<font-awesome-icon class="icone" icon="user-tag" />
@@ -93,7 +93,7 @@
 			</div>
 			<div id="Clientes" v-on:click="marcarNav('Clientes')" v-if="auth == 1" class="col-sm-12">
 				
-				<router-link  class=" text-white" to="/clientes">
+				<router-link style="text-decoration: none !important;" class=" " to="/clientes">
 						<div class="listaMenu row p-3">
 							<div class="col-sm-1">
 								<font-awesome-icon class="icone" icon="address-book" />
@@ -105,7 +105,7 @@
 			</div>
 			<div id="Inventario" v-on:click="marcarNav('Inventario')" v-if="auth == 1" class="col-sm-12">
 				
-				<router-link  class=" text-white" to="/inventario">
+				<router-link style="text-decoration: none !important;" class=" " to="/inventario">
 						<div class="listaMenu row p-3">
 							<div class="col-sm-1">
 								<font-awesome-icon class="icone" icon="box-open" />
@@ -117,7 +117,7 @@
 			</div>
 			<div id="Gastos" v-on:click="marcarNav('Gastos')" v-if="auth == 1" class="col-sm-12">
 				
-				<router-link  class=" text-white" to="/gastos">
+				<router-link style="text-decoration: none !important;" class=" " to="/gastos">
 						<div class="listaMenu row p-3">
 							<div class="col-sm-1">
 								<font-awesome-icon class="icone" icon="search-dollar" />
@@ -129,7 +129,7 @@
 			</div>
 			<div id="Citas" v-on:click="marcarNav('Citas')" v-if="auth == 1 || auth == 2 || auth == 3 " class="col-sm-12">
 				
-				<router-link  class=" text-white" to="/citas">
+				<router-link style="text-decoration: none !important;" class=" " to="/citas">
 						<div class="listaMenu row p-3">
 							<div class="col-sm-1">
 								<font-awesome-icon class="icone" icon="tasks" />
@@ -141,7 +141,7 @@
 			</div>
 			<div id="Metricas" v-on:click="marcarNav('Metricas')" v-if="auth == 1" class="col-sm-12">
 				
-				<router-link  class=" text-white" to="/metricas">
+				<router-link style="text-decoration: none !important;" class=" " to="/metricas">
 						<div class="listaMenu row p-3">
 							<div class="col-sm-1">
 								<font-awesome-icon class="icone" icon="chart-line" />
@@ -153,7 +153,7 @@
 			</div>
 			<div id="Caja" v-on:click="marcarNav('Caja')" v-if="auth== 1" class="col-sm-12">
 				
-				<router-link  class=" text-white" to="/caja">
+				<router-link style="text-decoration: none !important;" class=" " to="/caja">
 						<div class="listaMenu row p-3">
 							<div class="col-sm-1">
 								<font-awesome-icon class="icone" icon="cash-register" />
@@ -172,12 +172,12 @@
 				  <img src="" alt="">
 				  <div class=" text-center p-0 col-md-12">
 					  <img src="../assets/logokk.png" class="logoVenta"  alt="">
-					   <b style="font-size:1.5em" class="text-white">KKPrettyNails</b>
+					   <b style="font-size:1.5em" class="">KKPrettyNails</b>
 					  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true" class="text-white">&times;</span>
+						<span aria-hidden="true" class="">&times;</span>
 					  </button>
 				  </div>
-		        <!-- <h5 class="modal-title text-white" id="exampleModalCenterTitle">Procesar venta</h5> -->
+		        <!-- <h5 class="modal-title " id="exampleModalCenterTitle">Procesar venta</h5> -->
 		        
 		      </div>
 		      <div class="modal-body pb-0">
@@ -320,6 +320,7 @@ export default {
 <style media="screen">
 	.menuText{
 		display: none;
+		color: black !important;
 	}
 	.all{
 		font-weight: 300;
@@ -347,14 +348,14 @@ export default {
     margin-left:-15%;
     height:5vh;
 	transition: all 0.5s ease-out;
-	color: rgba(250, 248, 248, .8);
+	color: black !important;
   }
   .act{
-	  background-color: rgba(91, 91, 90, .5);
+	  background-color: #6BB2E5;
 	
   }
   .listaMenu li:hover{
-    background-color: rgba(91, 91, 90, .5);
+    background-color: #6BB2E5;
 	transition: all 0.5s ease-out;
   }
   .rout{
@@ -370,29 +371,29 @@ export default {
   }
   
   .listaMenu:hover{
-    background-color: rgba(91, 91, 90, .5);
+    background-color: #6BB2E5;
 	transition: all 0.5s ease-out;
   }
-  .text-white{
+  .{
 	  text-decoration: none !important;
   }
   
   .usuarioP{
-	  border-radius: 5px;
+	  
 	  cursor: pointer;
 	  padding: 10px;
 	  
 	  transition: all 0.5s ease-out;
   }
   .usuarioP:hover{
-	  background-color: rgba(91, 91, 90, .5);
+	  background-color:#6BB2E5;
 	  transition: all 0.5s ease-out;
 	  
   }
   .icone{
 	  font-size: 1.5em;
 	  transition: all 0.5s ease-out;
-	  color: rgba(152, 152, 152, 1)
+	  color: black
   }
  
   span{
@@ -440,5 +441,10 @@ export default {
 	width: 80%;
 	padding: 10px;
 }
+
+font-awesome-icon{
+	color: black !important;
+}
+
 </style>
 

@@ -13,7 +13,7 @@
 			</div>
 			<div class="col-md-12">
 				<div class="shadow">	
-					<v-client-table class="text-center" :data="manicuristas" :columns="columns" :options="optionsT">
+					<v-client-table class="text-center tablePresta" :data="manicuristas" :columns="columns" :options="optionsT">
 						
 						<p slot="porcentaje"  slot-scope="props">{{props.row.porcentaje }}%</p>
 						<p slot="comision"  slot-scope="props">{{formatPrice(props.row.comision)}}</p>
@@ -22,66 +22,7 @@
 						<button slot="edit"  slot-scope="props" style="width:100%;" v-on:click="pasarDatosEdit(props.row.nombre,props.row.documento,props.row.porcentaje, props.row.restTime, props.row.restDay, props.row._id)" class=" btn btn-colorsEditLender"><font-awesome-icon icon="edit" /></button>
 						<button slot="delete" style="width:100%;"  slot-scope="props" v-on:click="deletePrestador(props.row._id)" class=" btn btn-colorsTrashLender"><font-awesome-icon icon="trash" /></button>
 						<button slot="report" style="width:100%;"  slot-scope="props" v-on:click="sacarReporte(props.row._id)" class=" btn btn-colorsPrintLender"><font-awesome-icon icon="copy" /></button>
-						<!-- <a slot="edit" slot-scope="props" class="fa fa-edit" :href="pasarDatosEdit(props.row.nombre, props.row.identidad, props.row.correoCliente, props.row.instagramCliente, props.row._id)">Hola </a> -->
 					</v-client-table>
-					<!-- <table  class="table table-dark" style="color:#fff !important; background-color: #1F5673" >
-						<thead>
-							<tr>
-								<th>
-									Nombre
-								</th>
-								<th>
-									Porcentaje
-								</th>
-								<th>
-									Identificación
-								</th>
-								<th>
-									Comision mensual
-								</th>
-								<th>
-									Adelantos o bonos
-								</th>
-								<th>
-									Total pago
-								</th>
-								<th class="text-center">
-									Funciones
-								</th>	
-							</tr>
-						</thead>
-					</table>
-					<div class="ListaPrestador tbl-content">
-						<table class="table table-light table-borderless table-striped">
-							<tbody>
-								<tr v-for="manicurista of manicuristas">
-									<td class="font-weight-bold">
-										{{manicurista.nombre}}
-									</td>
-									<td class="font-weight-bold">
-										{{manicurista.porcentaje}}
-									</td>
-									<td class="font-weight-bold">
-										{{manicurista.documento}}
-									</td>
-									<td class="font-weight-bold">
-										{{formatPrice(manicurista.comision)}}
-									</td>
-									<td class="font-weight-bold">
-										{{formatPrice(manicurista.advancement)}}
-									</td>
-									<td class="font-weight-bold">
-										{{formatPrice(manicurista.comision - manicurista.advancement)}}
-									</td>
-									<td class="font-weight-bold text-center">
-										<button style="width:30%;" v-on:click="deletePrestador(manicurista._id)" class=" btn btn-colorsTrash"><font-awesome-icon icon="trash" /></button>
-										<button style="width:30%;" v-on:click="pasarDatosEdit(manicurista.nombre, manicurista.documento, manicurista.porcentaje, manicurista._id)" class=" btn btn-colorsEdit"><font-awesome-icon icon="edit" /></button>
-										<button style="width:30%;" v-on:click="sacarReporte(manicurista._id)" class=" btn btn-colorsPrint"><font-awesome-icon icon="copy" /></button>
-									</td>
-								</tr>
-							</tbody>
-						</table> -->
-					<!-- </div> -->
 				</div>
 			</div>
 			<div class="col-md-4" style="margin-top:20px;">
@@ -91,7 +32,7 @@
 					</button>
 				</div>
 				<div class="shadow">
-					<table  class="table table-dark" style="color:#fff !important; background-color: #1F5673" >
+					<table  class="table table-dark" style="color:black !important; background-color: rgba(238, 238, 238, 0.623)" >
 						<thead>
 							<tr>
 								<th>
@@ -127,9 +68,9 @@
 		</div>
 		<div class="modal fade" id="ModalEditPrestador" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered" role="document">
-		    <div v-bind:style="{ 'background-color': '#ffffff'}" class="modal-content p-3">
-		      <div class="modal-header" v-bind:style="{ 'background-color': '#1F5673'}">
-		        <h5 class="modal-title text-white font-weight-bold" id="exampleModalCenterTitle">Editar Prestador</h5>
+		    <div v-bind:style="{ 'background-color': '#6BB2E5'}" class="modal-content p-3">
+		      <div class="modal-header" v-bind:style="{ 'background-color': 'rgba(238, 238, 238, 0.623)'}">
+		        <h5 class="modal-title font-weight-bold" id="exampleModalCenterTitle">Editar Prestador</h5>
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 		          <span aria-hidden="true" class="text-white">&times;</span>
 		        </button>
@@ -205,10 +146,6 @@
 						<label for="name">Documento de identificación</label>
 						<input v-model="documento" type="text" class="form-control inputs" placeholder="Identificación" v-on:change="changeRut()" v-on:click="changeTo()">
 					</div>
-					<div class="form-group">
-						<label for="name">Porcentaje de ganancia</label>
-						<input v-model="porcentaje" type="text" class="form-control inputs" placeholder="Porcentaje">
-					</div>
 					<div class="form-group row">
 						<label for="name" class="col-12">Horario de descanso</label>
 						<select class="form-control col-6" v-model="restTime" >
@@ -279,7 +216,7 @@ export default {
 	},
 	data(){
 		return {
-			columns:['nombre' , 'documento' , 'porcentaje' , 'comision' , 'advancement', 'rest', 'edit', 'delete', 'report'],
+			columns:['nombre' , 'documento' , 'comision' , 'advancement', 'rest', 'edit', 'delete', 'report'],
 			optionsT: {
 				filterByColumn: true,
 				texts: {
@@ -290,7 +227,6 @@ export default {
 				headings: {
 					nombre: 'Nombre',
 					documento: 'Identidad',
-					porcentaje: 'Porcentaje',
 					comision: 'Comisión',
 					advancement: 'Avances',
 					rest: 'Total',
@@ -395,8 +331,7 @@ export default {
           else{
             
           }
-        })
-			
+        })	
 		},
 		emitMethod() {
 			EventBus.$emit('reload-services', 'updated')
@@ -616,7 +551,7 @@ export default {
 		height: auto;
 		background-color: #fff;
 		margin:20px;
-		color:#fff;
+		color:#001514 !important;
 		padding: 10px;
 		padding-right: 15px;
 		box-shadow: 0 0.46875rem 2.1875rem rgba(4,9,20,0.03), 0 0.9375rem 1.40625rem rgba(4,9,20,0.03), 0 0.25rem 0.53125rem rgba(4,9,20,0.05), 0 0.125rem 0.1875rem rgba(4,9,20,0.03);
@@ -637,10 +572,11 @@ export default {
 	}
 	
 	.first{
-		background:#1F5673; /* fallback for old browsers */
+		background:rgba(238, 238, 238, 0.623); /* fallback for old browsers */
+		color: #001514 !important;
 	}
 	.second{
-		background:rgb(38, 91, 119); /* fallback for old browsers */
+		background:rgba(238, 238, 238, 0.623); /* fallback for old browsers */
 	}
 	.formsPrestadores{
 		background-color:#fff;
@@ -745,7 +681,7 @@ export default {
 		-webkit-transition: all 0.5s ease-out;
 	}
 	.btn-colorsEditLender{
-		background-color:#28a745;
+		background-color:#7ec365;
 		color:#fff;
 		-webkit-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
 		-moz-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
@@ -771,8 +707,9 @@ export default {
 	.btn-white{
 		padding: 5px;
 		width: 100%;
-		margin-bottom: 5px;
-		background-color: #28a745;
+		margin-bottom: 10px;
+		border-radius: 5px;
+		background-color: #7ec365;
 		color: #fff;
 		border: none;
 		font-size: 1.3em;
@@ -836,9 +773,24 @@ export default {
   display:none;
 }
 
-thead {
-		background-color: #1f5673;
-		color: #fff;
-		text-align: center
-	}
+.tablePresta thead {
+	background-color: rgba(238, 238, 238, 0.623);
+	color: black;
+	text-align: center;
+	border-radius: 15px !important;
+}
+.tablePresta tbody{
+	background-color:white;
+	border-radius: 15px !important;
+}
+.table-bordered {
+	border-radius: 5px !important; 
+}
+.page-link{
+	color: black;
+	background-color: rgba(238, 238, 238, 0.623) !important;
+}
+.modal{
+	background-color: rgba(107, 178, 229, 0.2)
+}
 </style>

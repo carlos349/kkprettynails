@@ -20,62 +20,15 @@
 					<v-client-table class="text-center"  :data="servicios" :columns="columns" :options="optionsT">
 						<p slot="prestadoress"  slot-scope="props">{{props.row.prestadores.length}}</p>
 						<p slot="precio"  slot-scope="props">{{formatPrice(props.row.precio)}}</p>
+						<p slot="comision"  slot-scope="props">{{props.row.comision}}%</p>
 						<p slot="tiempoo"  slot-scope="props">{{props.row.tiempo}} min</p>
 						<div slot="activee"  slot-scope="props">
 							<button v-on:click="desactivarServicio(props.row._id)" v-if="props.row.active" class=" btn btn-success w-100">Activo</button>
 							<button v-on:click="desactivarServicio(props.row._id)" v-if="!props.row.active" class=" btn btn-inactive w-100">Inactivo</button>
 						</div>
-						<button slot="edit"  slot-scope="props"  v-on:click="pasarDatosEdit(props.row.nombre, props.row.tiempo, props.row.precio, props.row.prestadores, props.row._id)" class="btn add w-100"><font-awesome-icon icon="edit" /></button>
+						<button slot="edit"  slot-scope="props"  v-on:click="pasarDatosEdit(props.row.nombre, props.row.tiempo, props.row.precio, props.row.prestadores, props.row._id, props.row.comision)" class="btn add w-100"><font-awesome-icon icon="edit" /></button>
 						<!-- <a slot="edit" slot-scope="props" class="fa fa-edit" :href="pasarDatosEdit(props.row.nombre, props.row.identidad, props.row.correoCliente, props.row.instagramCliente, props.row._id)">Hola </a> -->
 					</v-client-table>
-					<!-- <table  class="table " style="color:#fff !important; background-color: #1F5673" >
-						<thead>
-							<tr>
-								<th>
-									Nombre
-								</th>
-								<th>
-									Tiempo
-								</th>
-								<th>
-									Precio
-								</th>
-								<th>
-									Prestadores
-								</th>
-								<th class="text-center">
-									Funciones
-								</th>
-								
-							</tr>
-						</thead>
-					</table>
-				
-					<div class="Lista tbl-content">
-						<table class="table table-light table-borderless table-striped">
-							<tbody>
-								<tr v-for="servicio of servicios">
-									<td class="font-weight-bold">
-										{{servicio.nombre}}
-									</td>
-									<td class="font-weight-bold">
-										{{servicio.tiempo}} Minutos
-									</td>
-									<td class="font-weight-bold">
-										{{formatPrice(servicio.precio)}}
-									</td>
-									<td class="font-weight-bold">
-										{{servicio.prestadores.length}}
-									</td>
-									<td class="font-weight-bold text-center">
-										<button style="width:40%;" v-on:click="desactivarServicio(servicio._id)" v-if="servicio.active" class=" btn btn-success">Activo</button>
-										<button style="width:40%;" v-on:click="desactivarServicio(servicio._id)" v-if="!servicio.active" class=" btn btn-inactive">Inactivo</button>
-										<button style="width:40%;" v-on:click="pasarDatosEdit(servicio.nombre, servicio.tiempo, servicio.precio, servicio.prestadores, servicio._id)" class="btn add"><font-awesome-icon icon="edit" /></button>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</div> -->
 				</div>
 			</div>
 			<div class="col-md-4" style="margin-top:20px;">
@@ -132,11 +85,11 @@
 		        <form v-on:submit.prevent="actualizacionServicios">
 					<div class="form-group row">
 						<label for="nombre">Nombre del servicio</label>
-						<input type="text" v-model="nombreServicio" class="form-control inputs" name="nombreServicio" placeholder="Nombre del servicio" >
+						<input type="text" v-model="nombreServicio" class="inputServi w-100" name="nombreServicio" placeholder="Nombre del servicio" >
 					</div>
 					<div class="form-group row">
 						<label for="nombre">Tiempo</label>
-						<select class="form-control" v-model="tiempoServicio">
+						<select class="inputServi w-100" v-model="tiempoServicio">
 							<option style="color:black;" value="Seleccione el tiempo" selected>Seleccione el tiempo</option>
 							<option style="color:black;" value="15">15 Minutos</option>
 							<option style="color:black;" value="30">30 Minutos</option>
@@ -152,10 +105,14 @@
 					</div>
 					<div class="form-group row">
 						<label for="nombre">Precio del servicio</label>
-						<input type="text" v-model="precioServicio" class="form-control inputs" name="nombreServicio" placeholder="Precio del servicio" >
+						<input type="text" v-model="precioServicio" class="inputServi w-100" name="nombreServicio" placeholder="Precio del servicio" >
 					</div>
-					<div class="form-group row" style="margin-top:-15px;">
-						<input type="text" id="myInputServEdit" v-on:keyup="myFunctionServEdit()" class="form-control buscar inputs" placeholder="Buscar prestadores"/>
+					<div class="form-group row">
+							<label for="name">Comisión</label>
+							<input v-model="comisionServicio" type="text" class="inputServi w-100" placeholder="Comisión">
+						</div>
+					<div class="form-group row mt-4">
+						<input type="text" id="myInputServEdit" v-on:keyup="myFunctionServEdit()" class="inputServi w-100 buscar" placeholder="Buscar prestadores"/>
 						<div class="ListaProcesar maxHeightEdit">
 							<table class="table table-light table-borderless table-striped" id="myTableServEdit">
 								<tbody>
@@ -193,11 +150,11 @@
 		        <form v-on:submit.prevent="registroServicio">
 						<div class="form-group row">
 							<label for="name">Nombre del servicio</label>
-							<input v-model="nombreServi" type="text" class="form-control inputs" placeholder="Nombre servicio">
+							<input v-model="nombreServi" type="text" class="inputServi w-100" placeholder="Nombre servicio">
 						</div>
 						<div class="form-group row">
 							<label for="nombre">Tiempo</label>
-							<select class="form-control" v-model="tiempoServi">
+							<select class="inputServi w-100" v-model="tiempoServi">
 								<option style="color:black;" selected value="Seleccione el tiempo">Seleccione el tiempo</option>
 								<option style="color:black;" value="15">15 Minutos</option>
 								<option style="color:black;" value="30">30 Minutos</option>
@@ -213,11 +170,15 @@
 						</div>
 						<div class="form-group row">
 							<label for="name">Precio</label>
-							<input v-model="precioServi" type="text" class="form-control inputs" placeholder="Precio">
+							<input v-model="precioServi" type="text" class="inputServi w-100" placeholder="Precio">
+						</div>
+						<div class="form-group row">
+							<label for="name">Comisión</label>
+							<input v-model="comisionServicio" type="text" class="inputServi w-100" placeholder="Comisión">
 						</div>
 						<div class="form-group row" style="margin-top:-15px;">
 							<div class="w-100">
-							<input type="text" id="myInputServ" v-on:keyup="myFunctionServ()" class="form-control buscar inputs mb-1 w-100" placeholder="Buscar prestadores"/>
+							<input type="text" id="myInputServ" v-on:keyup="myFunctionServ()" class="inputServi buscar mt-4 mb-1 w-100" placeholder="Buscar prestadores"/>
 							<font-awesome-icon class="lupa-modalServices" icon="search"/></div>
 							<div class="ListaProcesar maxHeight">
 								<table class="table table-light table-borderless table-striped" id="myTableServ">
@@ -295,7 +256,7 @@
 		},
 		data() {
 			return {
-				columns:['nombre' , 'precio' , 'tiempoo' , 'prestadoress' , 'activee' , 'edit'],
+				columns:['nombre' , 'precio' , 'comision', 'tiempoo' , 'prestadoress' , 'activee' , 'edit'],
 				optionsT: {
 					filterByColumn: true,
 					texts: {
@@ -306,6 +267,7 @@
 					headings: {
 						nombre: 'Nombre ',
 						precio: 'Costo ',
+						comision: 'Comisión',
 						tiempoo: 'Tiempo ',
 						prestadoress: 'Prestadores ',
 						activee: 'Activación ',
@@ -347,7 +309,8 @@
 				},
 				TotalServicios:'0',
 				TotalCantidadServicios:'0',
-				TotalPrestadores: '0'
+				TotalPrestadores: '0',
+				comisionServicio: 0
 			}
 		},
 		beforeCreate() {
@@ -418,6 +381,7 @@
 						axios.post('servicios', {
 							nombreServicio: this.nombreServi,
 							precioServicio: this.precioServi,
+							comisionServicio: this.comisionServicio,
 							tiempoServicio: this.tiempoServi,
 							prestadores: this.prestadoresSeleccionados
 
@@ -521,6 +485,7 @@
 						nombreServicio: this.nombreServicio,
 						tiempoServicio: this.tiempoServicio,
 						precioServicio: this.precioServicio,
+						comisionServicio: this.comisionServicio,
 						prestadores: this.prestadoresSeleccionadosTwos,
 					})
 					.then(res => {
@@ -548,13 +513,14 @@
 					})
 				}
 			},
-			pasarDatosEdit(nombre,tiempo, precio, prestadores, id){
+			pasarDatosEdit(nombre,tiempo, precio, prestadores, id, comision){
 				
 				this.prestadoresSeleccionadosTwos = []
 				$(".desMarc").prop("checked", false)
 				this.nombreServicio = nombre
 				this.tiempoServicio = tiempo
 				this.precioServicio = precio
+				this.comisionServicio = comision
 				this.prestadoresEdit = prestadores
 				this.idServicioEditar = id
 				for (let i = 0; i < this.prestadoresEdit.length; i++) {
@@ -897,7 +863,7 @@
 	.lupa-modalServices{
 		position:absolute;
 		right:8%;
-		top:51%;
+		top:61%;
 		font-size:1.4em
 	}
 	
@@ -955,5 +921,17 @@
 	.VuePagination {
 		text-align: center;
 		display:block !important;
+	}
+	.inputServi{
+		background-color: transparent !important;
+		-webkit-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+		-moz-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+		box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+		border: none !important;
+		border-radius: 5px;
+		padding: 10px;
+		width: 50% ;
+		color: black !important;
+		outline: none !important;
 	}
 </style>
