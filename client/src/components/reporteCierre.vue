@@ -1,82 +1,168 @@
 <template>
     <div class="container">
-        <div class="recuadro mt-4" v-bind:style="{ 'background-image': 'linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8)),url(' + require('../assets/sidebarTwo.jpg') + ')' , 'background-size': 'cover', 'position': '50% 40%' }" >
-            <h1 class="text-center ">Cierre de caja</h1>
-            <h2>Fecha: {{fecha}}</h2>
-            <h3>Codigo de operación: {{codigo}}</h3>
-            <h3>Encargado/a del cierre: {{identificacionCierre}}</h3>
+        <div class="col-md-12 row sectionMetricReporte mb-5">
+            <div class="col-md-3 col-sm-12 metricsReporte mb-5">
+                <div>
+                    <p class="text-center">Fecha</p>
+                    <h4 class="text-center">{{fecha}}</h4>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-12 metricsReporte mb-5">
+                <div>
+                    <p class="text-center">Código de operación</p>
+                    <h4 class="text-center">{{codigo}}</h4>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-12 metricsReporte mb-5">
+                <div>
+                    <p class="text-center">Encargado</p>
+                    <h4 class="text-center">{{identificacionCierre}}</h4>
+                </div>
+            </div>
         </div>
-        <div class="datos mt-4 col-12" v-bind:style="{ 'background-image': 'linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8)),url(' + require('../assets/sidebarTwo.jpg') + ')' , 'background-size': 'cover', 'position': '50% 40%' }">
-            <table class="table table-striped">
-                <thead class="thead-info">
+        <!-- <div class="recuadro mt-4 row" style="background-color:transparent;" >
+           
+            
+            <h2 class="col-3">Fecha: {{fecha}}</h2>
+            <h3 class="col-6">Codigo de operación: {{codigo}}</h3>
+            <h3 class="col-3">Encargado/a : {{identificacionCierre}}</h3>
+        </div> -->
+        <div class="datos mt-5 col-12 row" style="background-color:transparent">
+            <table class="table col-4 mr-5 table-striped" style="padding:0 !important;">
+                <thead style="background-color: rgba(238,238,238, 0.6);">
                     <tr>
-                        <th>Ingresos manuales</th>
-                        <th class="text-right">Montos</th>
-                        <th>Ingresos sistema</th>
-                        <th class="text-right">Montos</th>
+                        <th style="font-size:1.3em">Ingresos manuales</th>
+                        <th style="font-size:1.3em" class="text-right">Montos</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody style="background-color: #fff;">
                     <tr>
                         <td style="font-size:1.3em">Fondo de caja</td>
-                        <td class="text-right" style="font-size:1.3em">{{formatPrice(ingresoFondoManual)}}</td>
-                        <td style="font-size:1.3em">Fondo de caja</td>
-                        <td class="text-right" style="font-size:1.3em">{{formatPrice(ingresoFondoSistema)}}</td>
+                        <td class="text-right" style="font-size:1.3em">$ {{formatPrice(ingresoFondoManual)}}</td>
                     </tr>
                     <tr>
                         <td style="font-size:1.3em">Efectivo</td>
-                        <td class="text-right" style="font-size:1.3em">{{formatPrice(efectivoManual)}}</td>
+                        <td class="text-right" style="font-size:1.3em">$ {{formatPrice(efectivoManual)}}</td>
+                    </tr>
+                    <tr>
+                        <td style="font-size:1.3em">Egreso de caja</td>
+                        <td class="text-right" style="font-size:1.3em">$ {{formatPrice(egresoManual)}}</td>
+                    </tr>
+                    <tr>
+                        <td style="font-size:1.3em">Total efectivo</td>
+                        <td class="text-right" style="font-size:1.3em">$ {{formatPrice(totalEfectivoManual)}}</td>
+                    </tr>
+                    <tr>
+                        <td style="font-size:1.3em">Crédito</td>
+                        <td class="text-right" style="font-size:1.3em">$ {{formatPrice(creditoManual)}}</td>
+                    </tr>
+                    <tr>
+                        <td style="font-size:1.3em">Débito</td>
+                        <td class="text-right" style="font-size:1.3em">$ {{formatPrice(debitoManual)}}</td>
+                    </tr>
+                    <tr>
+                        <td style="font-size:1.3em">Tranferencia</td>
+                        <td class="text-right" style="font-size:1.3em">$ {{formatPrice(transferenciaManual)}}</td>
+                    </tr>
+                    <tr>
+                        <td style="font-size:1.3em">Otros</td>
+                        <td class="text-right" style="font-size:1.3em">$ {{formatPrice(otrosManual)}}</td>
+                    </tr>
+                    <tr>
+                        <td style="font-size:1.6em"><strong>Total</strong> </td>
+                        <td class="text-right" style="font-size:1.6em"><strong>$ {{formatPrice(totalManual)}}</strong> </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table col-4 ml-5 mr-5 table-striped" style="padding:0 !important;">
+                <thead style="background-color: rgba(238,238,238, 0.6);">
+                    <tr>
+                        <th style="font-size:1.3em">Ingresos sistema</th>
+                        <th style="font-size:1.3em" class="text-right">Montos</th>
+                    </tr>
+                </thead>
+                <tbody style="background-color: #fff;">
+                    <tr>
+                        <td style="font-size:1.3em">Fondo de caja</td>
+                        <td class="text-right" style="font-size:1.3em">$ {{formatPrice(ingresoFondoSistema)}}</td>
+                        <!-- <td class="text-right" style="font-size:1.3em">{{formatPrice(ingresoFondoSistema - ingresoFondoSistema)}}</td> -->
+                    </tr>
+                    <tr>
                         <td style="font-size:1.3em">Efectivo</td>
-                        <td class="text-right" style="font-size:1.3em">{{formatPrice(efectivoSistema)}}</td>
+                        <td class="text-right" style="font-size:1.3em">$ {{formatPrice(efectivoSistema)}}</td>
+                        <!-- <td class="text-right" style="font-size:1.3em">{{formatPrice(efectivoManual - efectivoSistema)}}</td> -->
+                    </tr>
+                    <tr>
+                        <td style="font-size:1.3em">Egreso de caja</td>
+                        <td class="text-right" style="font-size:1.3em">$ {{formatPrice(egresoSistema)}}</td>
+                        <!-- <td class="text-right" style="font-size:1.3em">{{formatPrice(egresoManual - egresoSistema)}}</td> -->
                     </tr>
                     <tr>
                         <td style="font-size:1.3em">Total efectivo</td>
-                        <td class="text-right" style="font-size:1.3em">{{formatPrice(totalEfectivoManual)}}</td>
-                        <td style="font-size:1.3em">Total efectivo</td>
-                        <td class="text-right" style="font-size:1.3em">{{formatPrice(totalEfectivoSistema)}}</td>
+                        <td class="text-right" style="font-size:1.3em">$ {{formatPrice(totalEfectivoSistema)}}</td>
+                        <!-- <td class="text-right" style="font-size:1.3em">{{formatPrice(totalEfectivoManual - totalEfectivoSistema)}}</td> -->
                     </tr>
                     <tr>
-                        <td style="font-size:1.3em">RedCompre Crédito</td>
-                        <td class="text-right" style="font-size:1.3em">{{formatPrice(creditoManual)}}</td>
-                        <td style="font-size:1.3em">RedCompre Crédito</td>
-                        <td class="text-right" style="font-size:1.3em">{{formatPrice(creditoSistema)}}</td>
+                        <td style="font-size:1.3em">Crédito</td>
+                        <td class="text-right" style="font-size:1.3em">$ {{formatPrice(creditoSistema)}}</td>
+                        <!-- <td class="text-right" style="font-size:1.3em">{{formatPrice(creditoManual - creditoSistema)}}</td> -->
                     </tr>
                     <tr>
-                        <td style="font-size:1.3em">RedCompre Débito</td>
-                        <td class="text-right" style="font-size:1.3em">{{formatPrice(debitoManual)}}</td>
-                        <td style="font-size:1.3em">RedCompre Débito</td>
-                        <td class="text-right" style="font-size:1.3em">{{formatPrice(debitoSistema)}}</td>
+                        <td style="font-size:1.3em">Débito</td>
+                        <td class="text-right" style="font-size:1.3em">$ {{formatPrice(debitoSistema)}}</td>
+                        <!-- <td class="text-right" style="font-size:1.3em">{{formatPrice(debitoManual - debitoSistema)}}</td> -->
                     </tr>
                     <tr>
                         <td style="font-size:1.3em">Tranferencia</td>
-                        <td class="text-right" style="font-size:1.3em">{{formatPrice(transferenciaManual)}}</td>
-                        <td style="font-size:1.3em">Tranferencia</td>
-                        <td class="text-right" style="font-size:1.3em">{{formatPrice(transferenciaSistema)}}</td>
+                        <td class="text-right" style="font-size:1.3em">$ {{formatPrice(transferenciaSistema)}}</td>
+                        <!-- <td class="text-right" style="font-size:1.3em">{{formatPrice(transferenciaManual - transferenciaSistema)}}</td> -->
                     </tr>
                     <tr>
                         <td style="font-size:1.3em">Otros</td>
-                        <td class="text-right" style="font-size:1.3em">{{formatPrice(otrosManual)}}</td>
-                        <td style="font-size:1.3em">Otros</td>
-                        <td class="text-right" style="font-size:1.3em">{{formatPrice(otrosSistema)}}</td>
+                        <td class="text-right" style="font-size:1.3em">$ {{formatPrice(otrosSistema)}}</td>
+                        <!-- <td class="text-right" style="font-size:1.3em">{{formatPrice(otrosManual - otrosSistema)}}</td> -->
                     </tr>
                     <tr>
-                        <td style="font-size:1.3em">Total</td>
-                        <td class="text-right" style="font-size:1.3em">{{formatPrice(totalManual)}}</td>
-                        <td style="font-size:1.3em">Total</td>
-                        <td class="text-right" style="font-size:1.3em">{{formatPrice(totalSistema)}}</td>
+                        <td style="font-size:1.6em"><strong>Total</strong> </td>
+                        <td class="text-right" style="font-size:1.6em"><strong>$ {{formatPrice(totalSistema)}}</strong> </td>
+                        <!-- <td class="text-right" style="font-size:1.3em">{{formatPrice(totalManual - totalSistema)}}</td> -->
                     </tr>
-                    <!-- <tr v-if="cuenta === 0">
-                        <td style="font-size:1.3em">Cuenta del cierres</td>
-                        <td class="text-right" style="font-size:1.3em">
-                            <button class="btn btn-success">
-                                <font-awesome-icon icon="check-square" class="report"/>
-                            </button>
-                        </td>
+                </tbody>
+            </table>
+            <table class="table col-2 ml-5 table-striped" style="padding:0 !important;">
+                <thead style="background-color: rgba(238,238,238, 0.6);">
+                    <tr>
+                        <th style="font-size:1.3em" class="text-center">Diferencia</th>
                     </tr>
-                    <tr v-else>
-                        <td style="font-size:1.3em">Cuenta del cierre</td>
-                        <td class="text-right" style="font-size:1.3em">{{formatPrice(cuenta)}}</td>
-                    </tr> -->
+                </thead>
+                <tbody style="background-color: #fff;">
+                    <tr>
+                        <td class="text-center" style="font-size:1.3em">$ {{formatPrice(ingresoFondoSistema - ingresoFondoSistema)}}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center" style="font-size:1.3em">$ {{formatPrice(efectivoManual - efectivoSistema)}}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center" style="font-size:1.3em">$ {{formatPrice(egresoManual - egresoSistema)}}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center" style="font-size:1.3em">$ {{formatPrice(totalEfectivoManual - totalEfectivoSistema)}}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center" style="font-size:1.3em">$ {{formatPrice(creditoManual - creditoSistema)}}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center" style="font-size:1.3em">$ {{formatPrice(debitoManual - debitoSistema)}}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center" style="font-size:1.3em">$ {{formatPrice(transferenciaManual - transferenciaSistema)}}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center" style="font-size:1.3em">$ {{formatPrice(otrosManual - otrosSistema)}}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center" style="font-size:1.6em"><strong>$ {{formatPrice(totalManual - totalSistema)}}</strong> </td>
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -107,7 +193,10 @@
                 otrosSistema: 0,
                 totalSistema: 0,
                 fecha: '',
-                identificacionCierre:''
+                identificacionCierre:'',
+                egresoManual: 0,
+                egresoSistema: 0,
+                codigo: ''
             }
         },
         beforeCreate() {
@@ -137,6 +226,7 @@
                     this.transferenciaManual = res.data.manual.transferencia
                     this.otrosManual = res.data.manual.otros
                     this.totalManual = res.data.manual.total
+                    this.egresoManual = res.data.manual.egreso
 
                     this.ingresoFondoSistema = res.data.sistema.ingresoFondo
                     this.efectivoSistema = res.data.sistema.efectivo
@@ -146,7 +236,10 @@
                     this.transferenciaSistema = res.data.sistema.transferencia
                     this.otrosSistema = res.data.sistema.otros
                     this.totalSistema = res.data.sistema.total
+                    this.egresoSistema = res.data.sistema.egreso
                     const date = new Date(res.data.fecha)
+                    this.identificacionCierre = res.data.identificacionCierre
+                    this.codigo = res.data._id
                     this.fecha = date.getDate()+"-"+(date.getMonth() + 1)+"-"+date.getFullYear()
                 })
             },
@@ -158,7 +251,7 @@
             },
             formatPrice(value) {
                 let val = (value/1).toFixed(2).replace('.', ',')
-                return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+                return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
             }
         }
     }
@@ -167,13 +260,28 @@
     .recuadro{
         border: solid 2px #262626;
         padding: 20px;
-        color:azure
+        color:#262626
     }
     .datos{
-        border: solid 2px #262626;
-        padding: 20px;
+        width: 90%;
+        margin: auto;
     }
     .datos table{
-        color:azure
+        color:#000;
+        box-shadow: 0 0.46875rem 2.1875rem rgba(4,9,20,0.03), 0 0.9375rem 1.40625rem rgba(4,9,20,0.03), 0 0.25rem 0.53125rem rgba(4,9,20,0.05), 0 0.125rem 0.1875rem rgba(4,9,20,0.03);
     }
+    .metricsReporte{
+        height: auto;
+        padding: auto;
+        margin-left:30px;
+        margin-top: 20px;
+        color:#000;
+        box-shadow: 0 0.46875rem 2.1875rem rgba(4,9,20,0.03), 0 0.9375rem 1.40625rem rgba(4,9,20,0.03), 0 0.25rem 0.53125rem rgba(4,9,20,0.05), 0 0.125rem 0.1875rem rgba(4,9,20,0.03);
+        border-radius:5px;
+        background-color: rgba(238,238,238, 0.6);
+    }
+	.metricsReporte p{
+		font-size: 1.3em;
+		margin-top: 10px;
+	}
 </style>

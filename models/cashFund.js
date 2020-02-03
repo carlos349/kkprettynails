@@ -9,6 +9,9 @@ const cashFundSchema = new Schema({
     amount: {
         type: Number
     },
+    amountEgress: {
+        type: Number
+    },
     quantity: {
         type: Number
     },

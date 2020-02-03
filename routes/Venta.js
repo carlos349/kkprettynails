@@ -340,6 +340,7 @@ ventas.post('/closeDay/:name', async (req, res) => {
     manual: {
       ingresoFondo: req.body.fondoManual,
       efectivo: req.body.efectivoManual,
+      egreso: req.body.egresoManual,
       totalEfectivo: req.body.totalEfectivoManual,
       debito: req.body.redCompreDManual,
       credito: req.body.redCompreCManual,
@@ -350,6 +351,7 @@ ventas.post('/closeDay/:name', async (req, res) => {
     sistema: {
       ingresoFondo: req.body.fondoSistema,
       efectivo: req.body.efectivoSistema,
+      egreso: req.body.egresoSistema,
       totalEfectivo: req.body.totalEfectivoSistema,
       debito: req.body.redCompraDebitoSistema,
       credito: req.body.redCompraCreditoSistema,
@@ -371,6 +373,7 @@ ventas.post('/closeDay/:name', async (req, res) => {
           $set: {
             userRegister: '',
             amount: 0, 
+            amountEgress: 0,
             validator: false
           }
         })
@@ -821,6 +824,7 @@ ventas.post('/procesar', (req, res) => {
   }else{
     today = new Date(req.body.fecha)
   }
+  
   const total = req.body.total
   const totalParaComision = req.body.totalSinDesign
   const comision = '0.' + req.body.comision
@@ -920,6 +924,7 @@ ventas.post('/procesar', (req, res) => {
       cashFunds.create({
         userRegister:'',
         amount:0,
+        amountEgress:0,
         quantity:0,
         validator: false
       }).then(createCash => {
@@ -936,6 +941,7 @@ ventas.post('/registerFund', async (req, res) => {
       $set: {
         userRegister: req.body.userRegister,
         amount: req.body.amount,
+        amountEgress: 0,
         validator: true
       }
     })
