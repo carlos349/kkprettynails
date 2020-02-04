@@ -476,7 +476,8 @@ import Autocomplete from 'vuejs-auto-complete'
 			resto: 0,
 			servicesProcess: [],
 			listServicesProcess: [],
-			subTotal: 0
+			subTotal: 0,
+			ifProcess: ''
 		 }
 	 },
 	 beforeCreate() {
@@ -778,7 +779,7 @@ import Autocomplete from 'vuejs-auto-complete'
 			this.inspector = true
 			this.servicesProcess = []
 			this.serviciosSelecionados = []
-
+			this.ifProcess = id
 			axios.get('citas/getDataToDate/'+id)
 			.then(res => {
 				this.nombreCliente = res.data.client
@@ -789,9 +790,9 @@ import Autocomplete from 'vuejs-auto-complete'
 				.then(res => {
 					var subTotal = 0
 					for (let index = 0; index < this.servicesProcess.length; index++) {
-						this.serviciosSelecionados.push({servicio: this.servicesProcess[index]})
+						this.serviciosSelecionados.push({servicio: this.servicesProcess[index].servicio, comision: this.servicesProcess[index].comision, precio: this.servicesProcess[index].precio})
 						for (let indexTwo = 0; indexTwo < res.data.length; indexTwo++) {
-							if (this.servicesProcess[index] == res.data[indexTwo].nombre) {
+							if (this.servicesProcess[index].servicio == res.data[indexTwo].nombre) {
 								subTotal = subTotal + parseFloat(res.data[indexTwo].precio)
 								let valSpan = $(`#${res.data[indexTwo]._id}`).text()
 								let sumaVal = parseFloat(valSpan) + 1
@@ -824,6 +825,9 @@ import Autocomplete from 'vuejs-auto-complete'
 			if (this.descuento == '') {
 				this.descuento = 0
 			}
+			if (this.diseño == '') {
+				this.diseño = 0
+			}
 			const totalFormadePago = parseFloat(this.pagoEfectivo) + parseFloat(this.pagoOtros) + parseFloat(this.pagoRedCDebito) + parseFloat(this.pagoRedCCredito) + parseFloat(this.pagoTransf)
 			
 			if (this.nombreCliente != '' && this.maniSelect != '') {
@@ -842,10 +846,11 @@ import Autocomplete from 'vuejs-auto-complete'
 						total: this.totalSinFormato,
 						diseno: this.diseño,
 						totalSinDesign: this.subTotal,
-						documentoManicurista: this.documentoManicurista
+						documentoManicurista: this.documentoManicurista,
+						ifProcess: this.ifProcess
 					})
 					.then(res => {
-						
+						console.log(res)
 						if (res.data.status == "Venta registrada") {
 							this.$swal({
 								type: 'success',
@@ -854,6 +859,7 @@ import Autocomplete from 'vuejs-auto-complete'
 								timer: 1500
 							})
 							this.borrarServicios()
+							EventBus.$emit('reloadCitas', 'reload')
 						}else if(res.data.status == "no-cash"){
 							this.$swal({
 								type: 'error',
@@ -864,6 +870,7 @@ import Autocomplete from 'vuejs-auto-complete'
 							$('#myModalRegisterFund').modal('show')
 						}
 					}).catch(err => {
+						console.log(err)
 						this.$swal({
 							type: 'error',
 							title: 'experimentamos problemas :(',

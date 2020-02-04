@@ -22,6 +22,7 @@ const October = require('../models/October')
 const November = require('../models/November')
 const December = require('../models/December')
 const cashFunds = require('../models/cashFund')
+const Citas = require('../models/Citas')
 ventas.use(cors())
 
 ventas.put('/updateServicesMonth/:service', (req, res) => {
@@ -815,7 +816,9 @@ ventas.put('/:id', async (req, res, next) => {
 })
 
 ventas.post('/procesar', (req, res) => {
-  console.log(req.body.servicios)
+  const ifProcess = req.body.ifProcess
+  console.log(ifProcess)
+  const services = req.body.servicios
   let clientEdit = req.body.cliente
   const finalClient = clientEdit.split("-")
   let today = ''
@@ -824,31 +827,34 @@ ventas.post('/procesar', (req, res) => {
   }else{
     today = new Date(req.body.fecha)
   }
+  const descuento = 100 - req.body.descuento
+  var comisionTotal = 0
+  for (let index = 0; index < services.length; index++) {
+    let comisionPerAmount = 0
+    let comisionDescuento = parseFloat(services[index].precio) * parseFloat('0.'+descuento)
+    comisionPerAmount = comisionDescuento * parseFloat('0.'+req.body.servicios[index].comision)
+    comisionTotal = comisionTotal + comisionPerAmount
+  }
   
   const total = req.body.total
   const totalParaComision = req.body.totalSinDesign
-  const comision = '0.' + req.body.comision
-  const comisionLocal = '0.' + (100 - req.body.comision)
-  const comisionFinal = parseFloat(totalParaComision) * parseFloat(comision)
+  const gananciaTotal = parseFloat(totalParaComision) - parseFloat(comisionTotal) 
   const totalComisionDesign = parseFloat(req.body.diseno) * 0.50
-  const comisionFinalfinal = parseFloat(comisionFinal) + parseFloat(totalComisionDesign)
-  const comisionDosdecimales = comisionFinal.toFixed(2)
-  const gananciaLocal = parseFloat(totalParaComision) * parseFloat(comisionLocal)
-  const gananciaLocalTotal = parseFloat(gananciaLocal) + parseFloat(totalComisionDesign)
+  const comision = parseFloat(comisionTotal) + parseFloat(totalComisionDesign)
   const documentoManicurista = req.body.documentoManicurista
-  
+  console.log(comision)
   const venta = {
     cliente: req.body.cliente,
     manicurista: req.body.manicurista+"/"+documentoManicurista,
     servicios: req.body.servicios,
-    comision: comisionFinalfinal,
+    comision: comision,
     pagoEfectivo:req.body.pagoEfectivo,
     pagoOtros:req.body.pagoOtros,
     pagoRedCDebito:req.body.pagoRedCDebito,
     pagoRedCCredito:req.body.pagoRedCCredito,
     pagoTransf:req.body.pagoTransf,
     descuento:req.body.descuento,
-    ganancialocal: gananciaLocalTotal,
+    ganancialocal: gananciaTotal,
     design: req.body.diseno,
     status: true,
     total: total,
@@ -859,14 +865,14 @@ ventas.post('/procesar', (req, res) => {
     cliente: req.body.cliente,
     manicurista: req.body.manicurista,
     servicios: req.body.servicios,
-    comision: comisionFinalfinal,
+    comision: comision,
     pagoEfectivo:req.body.pagoEfectivo,
     pagoOtros:req.body.pagoOtros,
     pagoRedCDebito:req.body.pagoRedCDebito,
     pagoRedCCredito:req.body.pagoRedCCredito,
     pagoTransf:req.body.pagoTransf,
     descuento:req.body.descuento,
-    ganancialocal: gananciaLocal,
+    ganancialocal: gananciaTotal,
     design: req.body.diseno,
     status: true,
     total: total,
@@ -896,7 +902,23 @@ ventas.post('/procesar', (req, res) => {
               .then(lasDate => {
                 VentaDia.create(ventaDia)
                 .then(venta => {
-                  res.json({status: 'Venta registrada'})
+                  console.log(ifProcess)
+                  if (ifProcess != '') {
+                    Citas.findByIdAndUpdate(ifProcess, {
+                      $set: {
+                        process: false
+                      }
+                    })
+                    .then(process => {
+                      
+                      res.json({status: 'Venta registrada'})
+                    })
+                    .catch(err => {
+                      res.send('Error:' + err)
+                    })
+                  }else{
+                    res.json({status: 'Venta registrada'})
+                  }
                 })
                 .catch(err => {
                   res.send('Error:' + err)

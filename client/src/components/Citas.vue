@@ -51,7 +51,7 @@
               <div class="col-md-12 text-center p-2" style="font-size:1.2em;color:#1f5673">Selecciona los servicios a utlizar</div>
               <div style="height:40vh;overflow:hidden;overflow-x: hidden;overflow-y:scroll;background-color: rgba(31, 86, 115, 0.707);border-radius:5px;" class="scroll row p-3" >
                 <div class="col-md-6" v-for="(servicio,index) of servicios">
-                  <div class="p-2 servPretty" v-on:click="marcarServicio(servicio.prestadores,servicio.nombre,servicio.tiempo,index)">
+                  <div class="p-2 servPretty" v-on:click="marcarServicio(servicio.prestadores,servicio.nombre,servicio.tiempo,servicio.comision,servicio.precio,index)">
                     <div class="row">
                       <div class="serviInfo col-md-2"><font-awesome-icon icon="user-check" class="mr-2"/>{{servicio.prestadores.length}}</div>
                       <div class="serviInfo col-md-7">{{servicio.nombre}}</div>
@@ -295,14 +295,16 @@
               <li class="list-group-item" style="background-color: transparent !important">Cliente: {{ selectedEvent.cliente }}</li>
               <li class="list-group-item" style="background-color: transparent !important">Manicurista: {{ selectedEvent.empleada }}</li>
               <li class="list-group-item"  style="background-color: transparent !important">Servicios:
-                <p v-for="service of selectedEvent.services"> - {{ service }} </p> 
+                <p style="margin-bottom:-6px;" v-for="service of selectedEvent.services" v-bind:key = "service"> - {{ service.servicio }} </p> 
               </li>
               <li class="list-group-item" style="background-color: transparent !important">Hora de inicio: {{ dateSplitHours(selectedEvent.start) }}</li>
               <li class="list-group-item" style="background-color: transparent !important">Hora de finalización: {{ dateSplitHours(selectedEvent.end) }}</li>
-              
+
             </ul><br>
-            <button v-bind:class="selectedEvent.class" type="button" class="btn font-weight-bold btn-style col-6" v-on:click="borrarCita(selectedEvent.id)">Borrar cita</button>
-            <button v-bind:class="selectedEvent.class" v-if="status == 1 || status == 2" type="button" class="btn font-weight-bold btn-style ml-4 col-5" v-on:click="processSale(selectedEvent.id, 'process')">Procesar venta</button>
+            <button v-bind:class="selectedEvent.class" v-if="selectedEvent.process == true || status == 3" type="button" class="btn font-weight-bold btn-style col-6" v-on:click="borrarCita(selectedEvent.id)">Borrar cita</button>
+            <button v-bind:class="selectedEvent.class" v-else type="button" class="btn font-weight-bold btn-style col-12" v-on:click="borrarCita(selectedEvent.id)">Borrar cita</button>
+            <button v-bind:class="selectedEvent.class" v-if="selectedEvent.process == true || status == 3" type="button" class="btn font-weight-bold btn-style ml-4 col-5" v-on:click="processSale(selectedEvent.id, 'process')">Procesar venta</button>
+            
             </div>
 		    </div>
 		  </div>
@@ -709,6 +711,7 @@ import router from '../router'
           this.events = []
           axios.get('citas/' + this.lender)
           .then(res => {
+            console.log(res.data)
             for (let index = 0; index < res.data.length; index++) {
               let dateNow = new Date(res.data[index].date)
               let formatDate = ''
@@ -734,13 +737,14 @@ import router from '../router'
               let arrayEvents = {
                 start: formatDate,
                 end: formatDateTwo,
-                title: res.data[index].services[0]+" - "+res.data[index].employe,
+                title: res.data[index].services[0].servicio+" - "+res.data[index].employe,
                 content: res.data[index].client,
                 class: res.data[index].class,
                 cliente: res.data[index].client,
                 services: res.data[index].services,
                 empleada: res.data[index].employe,
-                id:res.data[index]._id
+                id:res.data[index]._id,
+                process: res.data[index].process
               }
               this.events.push(arrayEvents)
             }
@@ -774,13 +778,14 @@ import router from '../router'
               let arrayEvents = {
                 start: formatDate,
                 end: formatDateTwo,
-                title: res.data[index].services[0]+" - "+res.data[index].employe,
+                title: res.data[index].services[0].servicio+" - "+res.data[index].employe,
                 content: res.data[index].client,
                 class:res.data[index].class,
                 cliente: res.data[index].client,
                 services: res.data[index].services,
                 empleada: res.data[index].employe,
-                id:res.data[index]._id
+                id:res.data[index]._id,
+                process: res.data[index].process
               }
               this.events.push(arrayEvents)
             }
@@ -845,10 +850,10 @@ import router from '../router'
 					this.servicios = res.data
 				})
 			},
-      marcarServicio(prestadores,nombre,tiempo,index){
+      marcarServicio(prestadores,nombre,tiempo, comision, precio,index){
         console.log(prestadores)
         if (this.servicioCita == '') {
-          this.servicioCita.push(nombre)
+          this.servicioCita.push({'servicio': nombre, 'comision': comision, 'precio': precio})
           for (let index = 0; index < prestadores.length; index++) {
             this.manicuristaCita.push(prestadores[index])
           }
@@ -858,16 +863,16 @@ import router from '../router'
           var inspector = true
           var inspector2 = false
           
-          for (let index = 0; index < this.servicioCita.length; index++) {
-            if (this.servicioCita[index] == nombre || this.servicioCita[index] == nombre + "("+ counter +")" ) {
-              this.servicioCita.splice(index,1)
-              this.servicioCita.push(nombre+ "(" + (parseFloat(counter) +1) + ")")
-              inspector = false
-              break  
-            }
-          }
+          // for (let index = 0; index < this.servicioCita.length; index++) {
+          //   if (this.servicioCita[index] == nombre || this.servicioCita[index] == nombre + "("+ counter +")" ) {
+          //     this.servicioCita.splice(index,1)
+          //     this.servicioCita.push(nombre+ "(" + (parseFloat(counter) +1) + ")")
+          //     inspector = false
+          //     break  
+          //   }
+          // }
           if (inspector == true) {
-            this.servicioCita.push(nombre)
+            this.servicioCita.push({'servicio': nombre, 'comision': comision, 'precio': precio})
           }  
           
             for (let c = 0; c < prestadores.length; c++) {
@@ -884,6 +889,7 @@ import router from '../router'
             } 
              
         }
+        console.log(this.servicioCita)
         this.duracion = parseFloat(this.duracion) + parseFloat(tiempo)
         $("#redo").show()
         $(".Sig").addClass("marcar")
@@ -952,7 +958,7 @@ import router from '../router'
           this.$swal({
           title: 'Confirma tu cita',
           type: 'success',
-          html: `<h6>Servicio(s): ${this.servicioCita}</h6> <h6>Diseño: ${this.design}</h6> <h6>Cliente: ${this.clientsSelect}</h6> <h6>Fecha: ${this.fecha}</h6> <h6>Personal: ${this.manicuristaFinal}</h6><h6>Entrada: ${this.hora}</h6> <h6>Salida: ${this.salida}</h6>`,
+          html: `<h6>Servicio: ${this.servicioCita[0].servicio}</h6> <h6>Diseño: ${this.design}</h6> <h6>Cliente: ${this.clientsSelect}</h6> <h6>Fecha: ${this.fecha}</h6> <h6>Personal: ${this.manicuristaFinal}</h6><h6>Entrada: ${this.hora}</h6> <h6>Salida: ${this.salida}</h6>`,
           showCancelButton: true,
           confirmButtonText: 'Si',
           cancelButtonText: 'No',
@@ -1415,6 +1421,12 @@ import router from '../router'
 				let val = (value/1).toFixed(2).replace('.', ',')
 				return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
 			}
+    },
+    mounted(){
+      EventBus.$on('reloadCitas', status => {
+        this.getCitas()
+        console.log(status)
+      })
     }
   }
 
