@@ -1,8 +1,8 @@
 <template>
   <div class="container-fluid row pt-5">
     <div class="col-md-4">
-		<div class="formsUsers" v-bind:style="{ 'background-color': '#fff'}">
-			<h2 class="p-3" v-bind:style="{ 'background-color': '#1f5673'}">Registrar usuario</h2>
+		<h2 class="p-3 m-0" v-bind:style="{ 'background-color': 'rgba(238, 238, 238, 0.623)', 'color':'#1C1C1C', 'border-radius':'5px 5px 0 0'}">Registrar usuario</h2>
+		<div class="formsUsers m-0" v-bind:style="{ 'background-color': '#fff'}">
 			<form v-on:submit.prevent="register">
 				<div class="form-group">
 					<label for="name">Nombre del usuario <span style="color:red;">*</span></label>
@@ -46,13 +46,13 @@
 	</div>
     <div class="col-md-8">
 			<div class="shadow">
-				<v-client-table class="text-center" :data="users" :columns="columns" :options="optionsT">
+				<v-client-table class="text-center tableUsers" :data="users" :columns="columns" :options="optionsT">
 					
 					<p slot="nombres"  slot-scope="props">{{props.row.first_name }} {{props.row.last_name }}</p>
 					<p slot="last"  slot-scope="props">{{formatDate(props.row.LastAccess)}}</p>
 					<div slot="edit" slot-scope="props">
 						<div class="dropdown" v-if="props.row.status == 1">
-							<button class="btn btn-success font-weight-bold w-100 dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<button style="background-color:#7ec365" class="btn text-white font-weight-bold w-100 dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 								Gerencia
 							</button>
 							<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -62,7 +62,7 @@
 							</div>
 						</div>
 						<div class="dropdown" v-if="props.row.status == 2">
-							<button class="btn btn-warning font-weight-bold w-100 dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<button style="background-color:#F0F2A6" class="btn font-weight-bold w-100 dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 								Personal de caja
 							</button>
 							<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -72,7 +72,7 @@
 							</div>
 						</div>
 						<div class="dropdown" v-if="props.row.status == 3">
-							<button class="btn btn-warning font-weight-bold w-100 dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<button style="background-color:#FED766" class="btn font-weight-bold w-100 dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 								Prestadora
 							</button>
 							<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -141,7 +141,7 @@
       return {
 		columns:['nombres' , 'email' , 'last' , 'edit' , 'delete'],
 		optionsT: {
-			filterByColumn: true,
+			filterByColumn: false,
 			texts: {
 				filter: "Filtrar:",
 				filterBy: 'Filtrar por {column}',
@@ -401,7 +401,7 @@
 		overflow-y:scroll;
 		max-height: 90vh;
 		height:auto;
-		border-radius:5px;
+		border-radius:0 0 5px 5px;
 	}
 	.formsUsers::-webkit-scrollbar {
 		width: 8px;     /* Tamaño del scroll en vertical */
@@ -409,7 +409,7 @@
 		display: none;  /* Ocultar scroll */
 	}
   .add{
-		background-color:#1F5673;
+		background-color:#353535;
 		color: azure;
 		transition: all 0.5s ease-out;
 		font-family: 'Roboto', sans-serif !important;
@@ -512,38 +512,56 @@
 [v-cloak] {
   display:none;
 }
+/* Tabla css Start */
+.tableUsers th{
+	border:none !important;
+}
+.table-bordered tbody{
+	background-color: white;
+}
+.tableUsers table{
 
-thead {
-		background-color: #1f5673;
-		color: #fff;
+ 
+}
+.table-bordered {
+	
+	border-radius: 10px !important; 
+}
+.tableUsers thead {
+		background-color: rgba(238, 238, 238, 0.623);
+		color: #353535;
 		text-align: center
-	}
-	.dropdown-item{
-		cursor: pointer !important;
-	}
-	.autocomplete__box{
-		background-color: transparent !important;
-		-webkit-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
-		-moz-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
-		box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
-		border: none !important;
-		border-radius: 5px;
-		padding: 10px;
-		width: 50% ;
-		color: black !important;
-		width: 100%;
-		outline: none !important;
-	}
-	.esteqlq{
-		outline: none !important;
-		background-color: transparent !important;
-		border: none !important;
-		border-radius: 5px;
-		padding: 10px;
-		width: 50% ;
-		color: black !important;
-		width: 100%;
-	}
+}
+.tableUsers thead th {
+		border-left: 1px black !important;
+}
+/* Tabla css end */
+.dropdown-item{
+	cursor: pointer !important;
+}
+.autocomplete__box{
+	background-color: transparent !important;
+	-webkit-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+	-moz-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+	box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+	border: none !important;
+	border-radius: 5px;
+	padding: 10px;
+	width: 50% ;
+	color: black !important;
+	width: 100%;
+	outline: none !important;
+}
+.esteqlq{
+	outline: none !important;
+	background-color: transparent !important;
+	border: none !important;
+	border-radius: 5px;
+	padding: 10px;
+	width: 50% ;
+	color: black !important;
+	width: 100%;
+}
 .autocomplete__results{
 	outline: none !important;
 	overflow: hidden !important;
