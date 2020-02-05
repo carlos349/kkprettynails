@@ -707,20 +707,18 @@ export default {
 	.btn-white{
 		padding: 5px;
 		width: 100%;
-		margin-bottom: 10px;
-		border-radius: 5px;
-		background-color: #7ec365;
-		color: #fff;
+		margin-bottom: 5px;
+		background-color: #E6E6EA;
+		color: #618B25;
 		border: none;
+		border:3px solid #7ec365;
 		font-size: 1.3em;
-		outline: none !important;
-		-webkit-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
-		-moz-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
-		box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+		box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
 		-webkit-transition: all 0.5s ease-out;
+		outline: none !important;
 	}
 	.btn-white:hover{
-		background-color: #218838;
+		border:3px solid #618B25;
 	}
 	.btn-white:focus{
 		outline: none !important;

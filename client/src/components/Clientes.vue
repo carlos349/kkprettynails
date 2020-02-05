@@ -6,13 +6,13 @@
 					<p>Total clientes</p>
 					<h1>{{clients.length}}</h1>
 				</div>
-				<div class="col-md-5 metrics second">
+				<div class="col-md-5 metrics first">
 					<p>Mejor cliente</p>
 					<h1>{{top}}</h1>
 				</div>
 			</div>
             <div class="col-md-12">
-				<div class="shadow">	
+				<div class="">	
 					<v-client-table class="text-center tablaClients"  :data="clients" :columns="columns" :options="optionsT">
 						<button slot="edit"  slot-scope="props" v-on:click="pasarDatosEdit(props.row.nombre, props.row.identidad, props.row.correoCliente, props.row.instagramCliente, props.row._id)" class=" btn btn-colorsEditClient w-100"><font-awesome-icon icon="edit" /></button>
 					</v-client-table>
@@ -31,8 +31,8 @@
 							Correos a clientes 
 						</button>
 					</div>
-					<div class="shadow tablaClients col-12">
-						<table  class="table tablaClients table-dark" style="color:#fff !important; background-color: #1F5673 !important" >
+					<div class="tablaClients col-12">
+						<table  class="table tablaClients table-dark shadow" style="color:#fff !important;border-radius:5px; background-color: rgba(238, 238, 238, 0.623) !important" >
 							<thead class="theadClients">
 								<tr>
 									<th>
@@ -225,7 +225,7 @@ export default {
         return {
 			columns:['nombre' , 'identidad' , 'recomendacion' , 'recomendaciones' , 'ultimaFecha' , 'fecha' , 'edit'],
 			optionsT: {
-				filterByColumn: true,
+				filterByColumn: false,
 				texts: {
 					filter: "Filtrar:",
 					filterBy: 'Filtrar por {column}',
@@ -649,7 +649,8 @@ export default {
 		display: none;  /* Ocultar scroll */
 	}
 	.first{
-		background:#1F5673; /* fallback for old browsers */
+		background:rgba(238, 238, 238, 0.623); /* fallback for old browsers */
+		color:#353535;
 	}
 	.second{
 		background:rgb(38, 91, 119); /* fallback for old browsers */
@@ -670,22 +671,19 @@ export default {
 		padding: 5px;
 		width: 100%;
 		margin-bottom: 5px;
-		background-color: #28a745;
-		color: #fff;
+		background-color: #E6E6EA;
+		color: #618B25;
 		border: none;
+		border:3px solid #7ec365;
 		font-size: 1.3em;
-		outline: none !important;
-		-webkit-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
-		-moz-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
-		box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+		box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
 		-webkit-transition: all 0.5s ease-out;
+		outline: none !important;
 	}
 	.btn-white:hover{
 		background-color: #218838;
 	}
-	.Second{
-		background-color: #2f880c;
-	}
+	
 	.btn-white:focus{
 		outline: none !important;
 	}
@@ -735,12 +733,30 @@ export default {
 [v-cloak] {
   display:none;
 }
-
-.tablaClients thead {
-		background-color: #1f5673 !important;
-		color: #fff;
-		text-align: center
+.tablaClients th{
+	border:none !important;
 	}
+	.table-bordered tbody{
+		background-color: white;
+	}
+	.tablaClients table{
+
+	
+	}
+	.table-bordered {
+		box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+		border-radius: 10px !important; 
+	}
+	.tablaClients thead {
+			background-color: rgba(238, 238, 238, 0.623);
+			color: #353535;
+			text-align: center
+	}
+	.tablaClients thead th {
+			border-left: 1px black !important;
+	}
+
+
 
 .autocomplete__box{
 		background-color: transparent !important;

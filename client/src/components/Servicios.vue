@@ -16,7 +16,7 @@
 				</div>
 			</div>
 			<div class="col-md-12 ">
-				<div class="shadow">
+				<div class="">
 					<v-client-table class="text-center tableServis"  :data="servicios" :columns="columns" :options="optionsT">
 						<p slot="prestadoress"  slot-scope="props">{{props.row.prestadores.length}}</p>
 						<p slot="precio"  slot-scope="props">{{formatPrice(props.row.precio)}}</p>
@@ -623,6 +623,9 @@
 		box-shadow: 0 0.46875rem 2.1875rem rgba(4,9,20,0.03), 0 0.9375rem 1.40625rem rgba(4,9,20,0.03), 0 0.25rem 0.53125rem rgba(4,9,20,0.05), 0 0.125rem 0.1875rem rgba(4,9,20,0.03);
 		border-radius:5px;
 	}
+	.shadoww table{
+		box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+	}
 	.metricsServices p{
 		font-size: 1em;
 		margin-top: 10px;
@@ -847,9 +850,7 @@
 		border: none;
 		border:3px solid #7ec365;
 		font-size: 1.3em;
-		-webkit-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
-		-moz-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
-		box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+		box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
 		-webkit-transition: all 0.5s ease-out;
 		outline: none !important;
 	}
@@ -857,8 +858,8 @@
 		outline: none !important;
 	}
 	.btn-white:hover{
+		border:3px solid #618B25;
 		
-		background-color: #218838;
 	}
 	.lupa-modalServices{
 		position:absolute;
@@ -914,7 +915,7 @@
 	
 	}
 	.table-bordered {
-		
+		box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
 		border-radius: 10px !important; 
 	}
 	.tableServis thead {

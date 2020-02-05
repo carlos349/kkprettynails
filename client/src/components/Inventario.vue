@@ -2,9 +2,10 @@
 	<div class="container-fluid">
 		<div class="col-12 row pt-5">
 			<div class="col-md-4">
-				<div class="forms">
+				<h2 class="p-3 m-0" v-bind:style="{ 'background-color': 'rgba(238, 238, 238, 0.623)', 'color':'#1C1C1C', 'border-radius':'5px 5px 0 0'}">Registrar producto</h2>
+				<div class="forms m-0">
 
-					<h2 class="p-3" v-bind:style="{ 'background-color': '#1f5673'}">Registrar producto</h2>
+					
 					<form v-on:submit.prevent="addProduct">
 						<div class="form-group">
 							<label for="name">Nombre del producto</label>
@@ -60,95 +61,15 @@
 				</div>
 			
 			<div class="col-md-8">
-				<div class="shadow">	
-					<v-client-table class="text-center"  :data="arrayProducts" :columns="columns" :options="optionsT">
+				<div class="">	
+					<v-client-table class="text-center tableInventario"  :data="arrayProducts" :columns="columns" :options="optionsT">
 						<p slot="gramoss"  slot-scope="props"> {{props.row.gramos}}Gr.</p>
 						<p slot="montoo"  slot-scope="props"> {{formatPrice(props.row.monto)}}</p>
 						<p slot="montoTotall"  slot-scope="props"> {{formatPrice(props.row.montoTotal)}}</p>
 						<p slot="servicioss"  slot-scope="props"> {{props.row.servicios.length}}</p>
 						<button slot="edit"  slot-scope="props" v-on:click="pasarDatosEdit(props.row.monto, props.row.cantidad, props.row.gramos, props.row.marca, props.row.producto, props.row.servicios, props.row.serviciosId, props.row._id)" class="btn btn-success w-100"><font-awesome-icon icon="edit" /></button>
-						<!-- <button slot="edit"  slot-scope="props" style="width:30%;" v-on:click="pasarDatosEdit(props.row.nombre, props.row.tiempo, props.row.precio, props.row.prestadores, props.row._id)" class="btn add"><font-awesome-icon icon="edit" /></button> -->
-						<!-- <a slot="edit" slot-scope="props" class="fa fa-edit" :href="pasarDatosEdit(props.row.nombre, props.row.identidad, props.row.correoCliente, props.row.instagramCliente, props.row._id)">Hola </a> -->
 					</v-client-table>
-					<!-- <table  class="table table-dark" style="color:#fff !important" >  -->
-					<!-- <table  class="table" style="color:#fff !important" v-bind:style="{ 'background-color': '#1f5673'}" >
-
-						<thead>
-							<tr>
-								<th>
-										Producto
-								</th>
-								<th>
-									Marca
-								</th>
-								<th>
-									Gramos
-								</th>
-								<th>
-									Cantidad
-								</th>
-								<th>
-									Monto
-								</th>
-								<th>
-									Monto total
-								</th>
-								<th>
-									Servicios
-								</th>
-								<th>
-									Fecha
-								</th>
-								<th class="text-center">
-									Funciones
-								</th>
-							</tr>
-						</thead>
-					</table>	
-					<div class="Lista tbl-content">
-						
-					<div class="ListaInventario tbl-content">
-						<table class="table table-light table-borderless table-striped text-left" style="font-size:.8em">
-							<tbody>
-								<tr v-for="(arrayProduct, index) of arrayProducts">
-									<td>
-										{{arrayProduct.producto}}
-									</td>
-									<td>
-										{{arrayProduct.marca}}
-									</td>
-									<td>
-										{{arrayProduct.gramos}}Gr.
-									</td>
-									<td>
-										{{arrayProduct.cantidad}}
-									</td>
-									<td>
-										{{formatPrice(arrayProduct.monto)}}
-									</td>
-									<td>
-										{{formatPrice(arrayProduct.montoTotal)}}
-									</td>
-									<td>
-										 <div  v-for="(service,indexTwo) of arrayProduct.servicios">
-											- {{service}}
-										</div> 
-										{{arrayProduct.servicios.length}}
-									</td>
-									<td>
-										{{fechas[index]}}
-									</td>
-									<td class="text-center">
-										<button style="width:50%;" v-on:click="pasarDatosEdit(arrayProduct.monto,arrayProduct.cantidad,arrayProduct.gramos,arrayProduct.marca,arrayProduct.producto,arrayProduct.servicios,arrayProduct.serviciosId, arrayProduct._id)" class="btn btn-colorsEdit">
-											<font-awesome-icon icon="edit" />
-										</button>
-
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-				</div> -->
+					
 			</div>
 		</div>
 		<div class="modal fade" id="myModal2" tabindex="-1"  role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -220,7 +141,7 @@ export default {
 		return {
 			columns:['producto', 'fecha'  , 'marca' , 'gramoss' , 'cantidad' , 'montoo' , 'montoTotall', 'servicioss', 'edit'],
 			optionsT: {
-				filterByColumn: true,
+				filterByColumn: false,
 				texts: {
 					filter: "Filtrar:",
 					filterBy: 'Filtrar por {column}',
@@ -528,9 +449,7 @@ export default {
 		overflow-y:scroll;
 		max-height: 90vh;
 		height:auto;
-		border-radius:5px;
-
-		border-radius:5px;
+		border-radius:0 0 5px 5px;
 	}
 	.forms::-webkit-scrollbar {
 		width: 8px;     /* Tamaño del scroll en vertical */
@@ -538,7 +457,7 @@ export default {
 		display: none;  /* Ocultar scroll */
 	}
 	.add{
-		background-color:#1F5673;
+		background-color:#353535;
 		color:#fff;
 		transition: all 0.5s ease-out;
 		font-family: 'Raleway', sans-serif;
@@ -769,12 +688,30 @@ export default {
 	[v-cloak] {
 	display:none;
 	}
-
-	thead {
-		background-color: #1f5673;
-		color: #fff;
-		text-align: center
+	.tableInventario th{
+	border:none !important;
 	}
+	.table-bordered tbody{
+		background-color: white;
+	}
+	.tableInventario table{
+
+	
+	}
+	.table-bordered {
+		box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+		border-radius: 10px !important; 
+	}
+	.tableInventario thead {
+			background-color: rgba(238, 238, 238, 0.623);
+			color: #353535;
+			text-align: center
+	}
+	.tableInventario thead th {
+			border-left: 1px black !important;
+	}
+
+	
 	.VueTables--client .row{
 		display:none
 	}
