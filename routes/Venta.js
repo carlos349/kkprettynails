@@ -837,9 +837,9 @@ ventas.post('/procesar', (req, res) => {
   }
   
   const total = req.body.total
-  const totalParaComision = req.body.totalSinDesign
-  const gananciaTotal = parseFloat(totalParaComision) - parseFloat(comisionTotal) 
   const totalComisionDesign = parseFloat(req.body.diseno) * 0.50
+  const totalParaComision = req.body.totalSinDesign + totalComisionDesign
+  const gananciaTotal = totalParaComision - parseFloat(comisionTotal) 
   const comision = parseFloat(comisionTotal) + parseFloat(totalComisionDesign)
   const documentoManicurista = req.body.documentoManicurista
   console.log(comision)
