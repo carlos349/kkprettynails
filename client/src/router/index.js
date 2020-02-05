@@ -18,6 +18,7 @@ import Caja from '@/components/Caja'
 import Clientes from '@/components/Clientes'
 import reporteVenta from '@/components/reporteVenta'
 import emailBuild from '@/components/emailBuild'
+import inicio from '@/components/inicio'
 
 Vue.use(Router)
 
@@ -25,6 +26,11 @@ export default new Router({
   routes: [
     {
       path: '/',
+      name: 'Inicio',
+      component: inicio
+    },
+    {
+      path: '/administracion',
       name: 'Login',
       component: Login
     },

@@ -1,6 +1,6 @@
 <template>
 <div>
-	<div  v-on:click="marcarNav()" v-bind:style="{ 'background-color': '#EEEEEE', 'height': '100vh', 'position': 'fixed', 'z-index' : '1000', 'color': 'black !important' }"  class=" pl-2 menuVer navS" v-on:mouseenter="mouseOver()" v-on:mouseleave="mouseLeave()">
+	<div v-if="showNav"  v-on:click="marcarNav()" v-bind:style="{ 'background-color': '#EEEEEE', 'height': '100vh', 'position': 'fixed', 'z-index' : '1000', 'color': 'black !important' }"  class=" pl-2 menuVer navS" v-on:mouseenter="mouseOver()" v-on:mouseleave="mouseLeave()">
 		<div style="border-bottom:1.5px solid  rgba(91, 91, 90, .5);" class="p-3  text-center col-md-12"><img src="../assets/logoNew.png" class="logoNonHover"  alt=""></div>
 
 			<div style="border-bottom:1.5px solid  rgba(91, 91, 90, .5);color:black" class=" p-2 pb-1 pt-1 mx-auto col-md-12 paddingName">
@@ -219,7 +219,8 @@ export default {
 			nombre:localStorage.nombre,
 			apellido: localStorage.apellido,
 			image:'http://localhost:4200/static/users/'+localStorage.imageUser,
-			authTwo: true
+			authTwo: true,
+			showNav: true
 		}
 	},
 	created(){
@@ -304,11 +305,16 @@ export default {
 			this.nombre = localStorage.nombre
 			this.apellido = localStorage.apellido
 			this.image = 'http://localhost:4200/static/users/'+localStorage.getItem('imageUser')
+			this.showNav = true
 		})
 		EventBus.$on('ChangeImage', status => {
 			this.image = 'http://localhost:4200/static/users/'+status
 			console.log(status)
 			console.log(this.image)
+		})
+		EventBus.$on('logged-out', status => {
+			this.showNav = status
+			console.log(status)
 		})
 		const User = localStorage.getItem('logged-in')
 		this.auth = User

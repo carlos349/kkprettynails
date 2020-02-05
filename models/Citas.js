@@ -25,6 +25,9 @@ const citasSchema = new Schema ({
   },
   class: {
     type: String
+  },
+  process: {
+    type: Boolean
   }
 })
 

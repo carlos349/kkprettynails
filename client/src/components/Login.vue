@@ -46,7 +46,7 @@
 			this.apellido = ''
 			this.image = ''
 			this.email = ''
-			$(".menuVer").hide()
+			EventBus.$emit('logged-out', false)
 		},
 		created(){
 			localStorage.setItem('logged-in', 'no-logged')
@@ -88,7 +88,6 @@
 						})
 					}else{
 						localStorage.setItem('userToken', res.data.token)
-						$(".menuVer").show()
 						this.email = ''
 						this.password = ''
 						const token = localStorage.userToken
@@ -96,6 +95,7 @@
 						localStorage.setItem('nombre', decoded.first_name)
 						localStorage.setItem('apellido', decoded.last_name)
 						localStorage.setItem('imageUser', decoded.userImage)
+						localStorage.setItem('showNav', true)
 						localStorage.setItem('_id', decoded._id)
 						router.push({name: 'Citas'})
 						this.emitMethod(decoded.status)
