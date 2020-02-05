@@ -167,12 +167,12 @@
         </div>
 		<div class="modal fade bd-example-modal-xl" id="myModalThree" tabindex="-1"  aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-lg " role="document">
-		    <div v-bind:style="{ 'background-color': '#fff'}"  class="modal-content p-0">
-		      <div class="modal-header" v-bind:style="{ 'background-color': '#1F5673'}">
+		    <div v-bind:style="{ 'background-color': '#6BB2E5'}"  class="modal-content p-0">
+		      <div class="modal-header" v-bind:style="{ 'background-color': 'rgba(238, 238, 238, 0.623)'}">
 				  <img src="" alt="">
 				  <div class=" text-center p-0 col-md-12">
 					  <img src="../assets/logokk.png" class="logoVenta"  alt="">
-					   <b style="font-size:1.5em" class="">KKPrettyNails</b>
+					   <b style="font-size:1.5em;color:#353535" class="">KKPrettyNails</b>
 					  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true" class="">&times;</span>
 					  </button>
