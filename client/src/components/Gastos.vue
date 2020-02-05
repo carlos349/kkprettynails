@@ -22,21 +22,21 @@
 		</div> -->
 
 		<div class="row pt-2 pl-5">
-			<div class="col-md-4 mb-3">
-				<div class="formsExpense" >
-					<h2 class="p-3" v-bind:style="{ 'background-color': '#1f5673'}">Registrar gasto</h2>
-					<form v-on:submit.prevent="registerExpense">
+			<div class="col-md-4 mb-2">
+				<h2 class="p-3 m-0" v-bind:style="{ 'background-color': 'rgba(238, 238, 238, 0.623)', 'color':'#1C1C1C', 'border-radius':'5px 5px 0 0'}">Registrar gasto</h2>
+				<div class="formsExpense" v-bind:style="{ 'background-color': '#fff'}">
+					<form v-on:submit.prevent="registerExpense" >
 						<div class="form-group">
 							<label for="name">Razón del gasto</label>
-							<input v-model="reason" type="text" class="form-control inputs" placeholder="Escriba la razón">
+							<input v-model="reason" type="text" class="form-control w-100 inputsExpense" placeholder="Escriba la razón">
 						</div>
 						<div class="form-group">
 							<label for="name">Monto</label>
-							<input v-model="amount" type="number" class="form-control inputs" placeholder="Escriba el monto">
+							<input v-model="amount" type="number" class="form-control w-100 inputsExpense" placeholder="Escriba el monto">
 						</div>
 						<div class="form-group">
 							<label for="name">Fecha</label>
-							<date-pick class="form-control inputss"
+							<date-pick class="form-control w-100 inputsExpense"
 								v-model="date"
 							    :weekdays=Days
 								:months=months
@@ -55,8 +55,8 @@
 				</div>
 			</div>
 			<div class="col-12">
-				<div class="shadow">
-					<v-client-table class="text-center"  :data="expenses" :columns="columns" :options="optionsT">
+				<div>
+					<v-client-table class="text-center tableExpenses"  :data="expenses" :columns="columns" :options="optionsT">
 						<p slot="datee"  slot-scope="props">{{formatDate(props.row.date)}}</p>
 						<div slot="typee"  slot-scope="props">
 							<p v-if="props.row.type == 'Advancement'">
@@ -324,7 +324,7 @@
 		padding: 20px;
 		max-height: 80vh;
 		height:auto;
-		border-radius:5px;
+		border-radius:0 0 5px 5px;
 	}
 	
 	.formsExpense::-webkit-scrollbar {
@@ -333,31 +333,34 @@
 		display: none;  /* Ocultar scroll */
 	}
 	.add{
-		background-color:#1F5673;
+		background-color:#353535;
 		color: azure;
 		transition: all 0.5s ease-out;
 		font-family: 'Roboto', sans-serif !important;
 		font-weight:600;
 		letter-spacing: 1px;
 		border-radius:5px;
-    }
+	}
 	.add:hover{
 		background-color:#ccc;
 		color:#001514;
-    }
-	.inputs{
-		border:none !important;
-		border-radius:0px !important;
-		border-bottom:2px solid #001514 !important;
-		background-color:transparent !important;
-		color:#001514 !important;
-		font-family: 'Roboto', sans-serif !important;
 	}
-	.inputss input{
+	.inputsExpense{
+		background-color: transparent !important;
+		-webkit-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+		-moz-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+		box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+		border: none !important;
+		border-radius: 5px;
+		padding: 10px;
+		width: 50% ;
+		color: black !important;
+	}
+	.inputsExpense input{
 		width: 100%;
 		border:none !important;
 		border-radius:0px !important;
-		border-bottom:2px solid #001514 !important;
+		
 		background-color:transparent !important;
 		color:#001514 !important;
 		font-family: 'Roboto', sans-serif !important;
@@ -378,18 +381,7 @@
 	.vdpArrowPrev:after{
 		border-right-color:rgb(31, 86, 115) !important;
 	}
-	.formGastos input{
-		width: 40%;
-		padding: 10px;
-		border:none;
-		background: transparent;
-		border-bottom:solid 2px #213b45;
-		outline: none;
-		color:#102229 !important;
-		font-family: 'Raleway', sans-serif;
-		font-weight:600;
-		transition: all 0.3s ease-out;
-	}
+	
 	.formGastos{
 		margin-top: 1%;
 	}
@@ -438,11 +430,7 @@
 	display:none;
 	}
 
-	thead {
-		background-color: #1f5673;
-		color: #fff;
-		text-align: center
-	}
+	
 	.VueTables--client .row{
 		display:none
 	}
@@ -455,5 +443,27 @@
 	.VuePagination {
 		text-align: center;
 		display:block !important;
+	}
+	.tableExpenses th{
+	border:none !important;
+	}
+	.table-bordered tbody{
+		background-color: white;
+	}
+	.tableExpenses table{
+
+	
+	}
+	.table-bordered {
+		box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+		border-radius: 10px !important; 
+	}
+	.tableExpenses thead {
+			background-color: rgba(238, 238, 238, 0.623);
+			color: #353535;
+			text-align: center
+	}
+	.tableExpenses thead th {
+			border-left: 1px black !important;
 	}
 </style>

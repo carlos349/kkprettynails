@@ -12,7 +12,7 @@
 				</div>
 			</div>
 			<div class="col-md-12">
-				<div class="shadow">	
+				<div>	
 					<v-client-table class="text-center tablePresta" :data="manicuristas" :columns="columns" :options="optionsT">
 						
 						<p slot="porcentaje"  slot-scope="props">{{props.row.porcentaje }}%</p>
@@ -31,7 +31,7 @@
 						Registrar prestador
 					</button>
 				</div>
-				<div class="shadow">
+				<div>
 					<table  class="table table-dark" style="color:black !important; background-color: rgba(238, 238, 238, 0.623)" >
 						<thead>
 							<tr>
@@ -770,20 +770,29 @@ export default {
 [v-cloak] {
   display:none;
 }
+.tablePresta th{
+	border:none !important;
+	}
+	.table-bordered tbody{
+		background-color: white;
+	}
+	.tablePresta table{
 
-.tablePresta thead {
-	background-color: rgba(238, 238, 238, 0.623);
-	color: black;
-	text-align: center;
-	border-radius: 15px !important;
-}
-.tablePresta tbody{
-	background-color:white;
-	border-radius: 15px !important;
-}
-.table-bordered {
-	border-radius: 5px !important; 
-}
+	
+	}
+	.table-bordered {
+		box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+		border-radius: 10px !important; 
+	}
+	.tablePresta thead {
+			background-color: rgba(238, 238, 238, 0.623);
+			color: #353535;
+			text-align: center
+	}
+	.tablePresta thead th {
+			border-left: 1px black !important;
+	}
+
 .page-link{
 	color: black;
 	background-color: rgba(238, 238, 238, 0.623) !important;
