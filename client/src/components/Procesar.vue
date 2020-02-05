@@ -3,7 +3,7 @@
 	<div class="contenedor">
 		<div class="row">
 			<div class="col-md-12">
-				<div class="row mb-4 autoProce">
+				<div class="row mb-4 inputProce">
 					<div class="input-group col-sm-6">
 						<div class="w-100 " v-on:click="clearInput">
 							<autocomplete
@@ -54,14 +54,14 @@
 					<input type="text" id="myInput" v-on:keyup="myFunction()" class="form-control buscar inputs" placeholder="Filtrar servicios"/>
 					
 				</div> -->
-				<table class="table" v-bind:style="{ 'background-color': 'rgba(238, 238, 238, 0.623)', 'border-radius' : '15px', 'border': 'none !important'}" >
+				<table class="table" v-bind:style="{ 'background-color': '#6BB2E5', 'border-radius' : '15px', 'border':'none !important'}" >
 					<thead>
 						<tr>
 							<th style="border-radius:15px !important;border:none" class="text-left pl-4 text-white">
 								
-								<input autocomplete="off" style="color:white !important;outline:none !important" type="text" id="myInput" v-on:keyup="myFunction()" class="form-control buscar inputsVenta w-75 text-white" placeholder="Filtrar servicios"/>
+								<input autocomplete="off" style="color:white !important;outline:none !important;background-color:white !important" type="text" id="myInput" v-on:keyup="myFunction()" class="form-control buscar inputsVenta w-75 text-white" placeholder="Filtrar servicios"/>
 							</th>
-							<th style="border-radius:15px !important; border:none;color:#353535" class="text-center pl-5 pb-3 ">
+							<th style="color:white;border:none" class="text-center pl-5 pb-3">
 								Precio 
 							</th>
 						</tr>
@@ -70,23 +70,23 @@
 				<div class="ListaProcesar">
 					<table class="table  tableBg" id="myTable">
 						<tbody>
-							<tr  v-for="(servicio, index) in servicios" v-bind:key="servicio._id">
-								<td style="border:none !important" v-if="servicio.active" class="font-weight-bold">
+							<tr v-for="(servicio, index) in servicios" v-bind:key="servicio._id">
+								<td style="border:none" v-if="servicio.active" class="font-weight-bold">
 									<button v-if="!inspector" type="button" class="w-75 btn procesar text-left" v-on:click="conteoServicio(servicio._id,servicio.nombre, servicio.precio, servicio.comision)" disabled>
 									  {{servicio.nombre}} <span class="badge badge-light conteoServ mt-1 float-right" v-bind:class="formatClass(servicio.nombre)" v-bind:id="servicio._id">0</span>
 									</button>
-									<button v-if="!inspector" type="button" class="w-20 btn btn-back  text-left"  disabled>
+									<button  v-if="!inspector" type="button" class="w-20 btn btn-back  text-left"  disabled>
 									  <font-awesome-icon icon="times"/>
 									</button>
-									<button v-else type="button" class="w-75 btn procesar  text-left" v-on:click="conteoServicio(servicio._id ,servicio.nombre, servicio.precio, servicio.comision)">
+									<button style="background-color:#6BB2E5" v-else type="button" class="w-75 btn procesar  text-left" v-on:click="conteoServicio(servicio._id ,servicio.nombre, servicio.precio, servicio.comision)">
 									  {{servicio.nombre}} <span class="badge badge-light conteoServ mt-1 float-right" v-bind:class="formatClass(servicio.nombre)" v-bind:id="servicio._id">0</span>
 									</button>
-									<button v-if="inspector" type="button" class="w-20 btn btn-back  text-left" v-on:click="borrarServicio(servicio.nombre,index,servicio._id,servicio.precio)">
+									<button style="background-color:#6BB2E5" v-if="inspector" type="button" class="w-20 btn btn-back  text-left" v-on:click="borrarServicio(servicio.nombre,index,servicio._id,servicio.precio)">
 									  <font-awesome-icon icon="times"/>
 									</button>
 
 								</td>
-								<td style="border:none !important" v-if="servicio.active" class=" font-weight-bold  text-center">
+								<td style="border:none" v-if="servicio.active" class=" font-weight-bold  text-center">
 									{{formatPrice(servicio.precio)}}
 								</td>
 							</tr>
@@ -106,12 +106,12 @@
 					<div class="col-sm-3">
 						<div class="input-group input-group-lg mb-2 ">
 							<div class="input-group-prepend w-25 inputsVenta">
-								<font-awesome-icon style="font-size:1.5em;color:#353535" icon="tag"/>
+								<font-awesome-icon style="font-size:1.5em;color:#6BB2E5" icon="tag"/>
 								
 							</div>
 							<input type="text" selectionEnd="%" inputmode="numeric" placeholder="0" v-model="descuento"  v-on:change="descuentoFunc" class="form-control manicuristaFocu inputsVenta text-center" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
 							<div class="input-group-prepend w-25 inputsVenta">
-								<font-awesome-icon style="font-size:1.5em;color: #353535 !important;" icon="percent"/>
+								<font-awesome-icon style="font-size:1.5em;color:#6BB2E5" icon="percent"/>
 								
 							</div>
 						</div>
@@ -131,7 +131,7 @@
 				</div>
 				
 				
-					<span class="spanInputs w-100 font-weight-bold text-center input-group-text text-center" style="background-color: rgba(238, 238, 238, 0.623) !important; color:#353535 !important; border:none !important;padding-top:10px;border-radius:10px !important" ><h5 class="text-center w-100">Medios de pago</h5> </span>
+					<span class="spanInputs w-100 font-weight-bold text-center text-white input-group-text text-center" style="background-color: #6BB2E5 !important; color:white !important; border:none !important;padding-top:10px;border-radius:10px !important" ><h5 class="text-center w-100">Medios de pago</h5> </span>
 					<div class="input-group-prepend w-25 text-center">
 						
 					</div>
@@ -141,7 +141,7 @@
 								<div v-on:click="hundredPorcent('efectivo')" v-on:mouseenter="hundredMouseOver('efectivo')" v-on:mouseleave="hundredMouseNonOver('efectivo')" class="input-group-prepend text-center w-25 hundred">
 									<span class="inputsVenta  w-100  text-white input-group-text" id="inputGroup-sizing-lg">
 										<b class="efectivo" style="font-size:0.6em;display:none">100%</b>
-									<font-awesome-icon  class="efectivo" style="font-size:1em; color:#353535" icon="money-bill-wave"/>	
+									<font-awesome-icon  class="efectivo" style="font-size:1em; color:#6BB2E5" icon="money-bill-wave"/>	
 									</span>
 									
 								</div>
@@ -153,7 +153,7 @@
 							<div v-on:click="hundredPorcent('transferencia')" v-on:mouseenter="hundredMouseOver('transferencia')" v-on:mouseleave="hundredMouseNonOver('transferencia')" class="input-group-prepend hundred w-25 text-center">
 								<span class="inputsVenta w-100  text-white input-group-text" id="inputGroup-sizing-lg">
 									<b class="transferencia" style="font-size:0.6em;display:none">100%</b>
-									<font-awesome-icon class="transferencia" style="font-size:1em; color:#353535" icon="money-check-alt"/>
+									<font-awesome-icon class="transferencia" style="font-size:1em; color:#6BB2E5" icon="money-check-alt"/>
 								</span>
 							</div>
 							<input type="text" class="form-control text-center manicuristaFocus inputsVenta" v-model="pagoTransf" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="Transferencia">
@@ -164,7 +164,7 @@
 							<div v-on:click="hundredPorcent('otros')" v-on:mouseenter="hundredMouseOver('otros')" v-on:mouseleave="hundredMouseNonOver('otros')" class="input-group-prepend w-25 hundred">
 								<span class="input-group-text bg-light w-100  text-white inputsVenta" id="inputGroup-sizing-lg">
 									<b class="otros" style="font-size:0.6em;display:none">100%</b>
-									<font-awesome-icon class="otros" style="font-size:1em; color:#353535" icon="hand-holding-usd"/>
+									<font-awesome-icon class="otros" style="font-size:1em; color:#6BB2E5" icon="hand-holding-usd"/>
 								</span>
 								
 							</div>
@@ -223,9 +223,9 @@
 						<div class="col-sm-6">
 						<div style="width:120%" class="input-group input-group-lg">
 							<div style="width:26%" class="input-group-prepend text-center">
-								<span style="font-size:2.3em" class="inputsVentaTotal2  w-100 text-white input-group-text text-center" id="inputGroup-sizing-lg"><b>Total:</b> </span>
+								<span style="color:#5a5a5a !important;font-size:2.3em" class="inputsVentaTotal2  w-100 text-white input-group-text text-center" id="inputGroup-sizing-lg"><b>Total:</b> </span>
 							</div>
-							<input  style="width:100%;font-size:2.3em;" v-model="total"  readonly type="text" disabled class="inputsVentaTotal2 text-white font-weight-bold text-center mr-5 w-100 form-control manicuristaFocus"  aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+							<input  style="color:#5a5a5a !important;width:100%;font-size:2.3em;" v-model="total"  readonly type="text" disabled class="inputsVentaTotal2 font-weight-bold text-center mr-5 w-100 form-control manicuristaFocus"  aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
 
 							
 						</div>
@@ -368,7 +368,7 @@ box-shadow: 0px 0px 22px 5px rgba(31,86,115,1);">
 		<div v-bind:style="{  'height': '5vh', 'z-index' : '1000' }" v-on:click="verificacionCliente"  class="p-2 menuVerVentas navSVenta" v-on:mouseenter="mouseOverVenta('textOne',0)" v-on:mouseleave="mouseLeaveVenta('textOne',0)">
 			<div class="row">
 				<div class="col-sm-2">
-					<font-awesome-icon class="icons" style="color:#1f5673;font-size:1.6em" icon="user-plus" />
+					<font-awesome-icon class="icons" style="color:#6BB2E5;font-size:1.6em" icon="user-plus" />
 				</div>
 				<div  class="col-sm-10 pl-4 pt-1 textOne">
 					<b>Nuevo Cliente</b>	
@@ -378,7 +378,7 @@ box-shadow: 0px 0px 22px 5px rgba(31,86,115,1);">
 		<div v-bind:style="{  'height': '5vh', 'z-index' : '1000' }" v-on:click="addService" class="p-2 menuVerServi navSServi" v-on:mouseenter="mouseOverVenta('textTwo',1)" v-on:mouseleave="mouseLeaveVenta('textTwo',1)">
 			<div class="row">
 				<div class="col-sm-2">
-					<font-awesome-icon class="icons" style="color:#1f5673;font-size:2em" icon="folder-plus" />
+					<font-awesome-icon class="icons" style="color:#6BB2E5;font-size:2em" icon="folder-plus" />
 				</div>
 				<div  class="col-sm-10 pl-4 pt-1 textTwo">
 					<b>Nuevo Servicio</b>	
@@ -388,7 +388,7 @@ box-shadow: 0px 0px 22px 5px rgba(31,86,115,1);">
 		<div v-bind:style="{  'height': '5vh', 'z-index' : '1000' }" v-on:click="borrarServicios()" class="p-2 menuVerRedo navSRedo" v-on:mouseenter="mouseOverVenta('textThree',2)" v-on:mouseleave="mouseLeaveVenta('textThree',2)">
 			<div class="row">
 				<div class="col-sm-2">
-					<font-awesome-icon class="icons" style="color:#1f5673;font-size:2em" icon="redo" />
+					<font-awesome-icon class="icons" style="color:#6BB2E5;font-size:2em" icon="redo" />
 				</div>
 				<div  class="col-sm-10 pl-4 pt-1 textThree">
 					<b>Reiniciar Venta</b>	
@@ -476,8 +476,7 @@ import Autocomplete from 'vuejs-auto-complete'
 			resto: 0,
 			servicesProcess: [],
 			listServicesProcess: [],
-			subTotal: 0,
-			ifProcess: ''
+			subTotal: 0
 		 }
 	 },
 	 beforeCreate() {
@@ -779,7 +778,7 @@ import Autocomplete from 'vuejs-auto-complete'
 			this.inspector = true
 			this.servicesProcess = []
 			this.serviciosSelecionados = []
-			this.ifProcess = id
+
 			axios.get('citas/getDataToDate/'+id)
 			.then(res => {
 				this.nombreCliente = res.data.client
@@ -790,9 +789,9 @@ import Autocomplete from 'vuejs-auto-complete'
 				.then(res => {
 					var subTotal = 0
 					for (let index = 0; index < this.servicesProcess.length; index++) {
-						this.serviciosSelecionados.push({servicio: this.servicesProcess[index].servicio, comision: this.servicesProcess[index].comision, precio: this.servicesProcess[index].precio})
+						this.serviciosSelecionados.push({servicio: this.servicesProcess[index]})
 						for (let indexTwo = 0; indexTwo < res.data.length; indexTwo++) {
-							if (this.servicesProcess[index].servicio == res.data[indexTwo].nombre) {
+							if (this.servicesProcess[index] == res.data[indexTwo].nombre) {
 								subTotal = subTotal + parseFloat(res.data[indexTwo].precio)
 								let valSpan = $(`#${res.data[indexTwo]._id}`).text()
 								let sumaVal = parseFloat(valSpan) + 1
@@ -825,9 +824,6 @@ import Autocomplete from 'vuejs-auto-complete'
 			if (this.descuento == '') {
 				this.descuento = 0
 			}
-			if (this.diseño == '') {
-				this.diseño = 0
-			}
 			const totalFormadePago = parseFloat(this.pagoEfectivo) + parseFloat(this.pagoOtros) + parseFloat(this.pagoRedCDebito) + parseFloat(this.pagoRedCCredito) + parseFloat(this.pagoTransf)
 			
 			if (this.nombreCliente != '' && this.maniSelect != '') {
@@ -846,11 +842,10 @@ import Autocomplete from 'vuejs-auto-complete'
 						total: this.totalSinFormato,
 						diseno: this.diseño,
 						totalSinDesign: this.subTotal,
-						documentoManicurista: this.documentoManicurista,
-						ifProcess: this.ifProcess
+						documentoManicurista: this.documentoManicurista
 					})
 					.then(res => {
-						console.log(res)
+						
 						if (res.data.status == "Venta registrada") {
 							this.$swal({
 								type: 'success',
@@ -859,7 +854,6 @@ import Autocomplete from 'vuejs-auto-complete'
 								timer: 1500
 							})
 							this.borrarServicios()
-							EventBus.$emit('reloadCitas', 'reload')
 						}else if(res.data.status == "no-cash"){
 							this.$swal({
 								type: 'error',
@@ -870,7 +864,6 @@ import Autocomplete from 'vuejs-auto-complete'
 							$('#myModalRegisterFund').modal('show')
 						}
 					}).catch(err => {
-						console.log(err)
 						this.$swal({
 							type: 'error',
 							title: 'experimentamos problemas :(',
@@ -1279,7 +1272,7 @@ import Autocomplete from 'vuejs-auto-complete'
 	}
 	
 	.inputsVenta{
-		background-color: white !important;
+		background-color: transparent !important;
 		-webkit-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
 		-moz-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
 		box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
@@ -1533,7 +1526,6 @@ import Autocomplete from 'vuejs-auto-complete'
 
 .iconsProce{
 	padding-right: 5px;
-	color: #353535 !important;
 	border-right: 1px solid rgba(0, 0, 0, 0.404) ;
 }
 .textOne{
@@ -1554,8 +1546,8 @@ import Autocomplete from 'vuejs-auto-complete'
 	color: white !important;
 	border-radius: 5px;
 }
-.autoProce .autocomplete__box{
-		background-color: white !important;
+.inputProce .autocomplete__box{
+		background-color: transparent !important;
 		-webkit-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
 		-moz-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
 		box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
@@ -1567,7 +1559,7 @@ import Autocomplete from 'vuejs-auto-complete'
 		width: 100%;
 		outline: none !important;
 	}
-	.autoProce .esteqlq{
+	.inputProce .esteqlq{
 		outline: none !important;
 		background-color: transparent !important;
 		border: none !important;
@@ -1577,7 +1569,7 @@ import Autocomplete from 'vuejs-auto-complete'
 		color: black !important;
 		width: 100%;
 	}
-.autoProce .autocomplete__results{
+.inputProce .autocomplete__results{
 	outline: none !important;
 	overflow: hidden !important;
 	max-height: 100px !important;
@@ -1589,7 +1581,7 @@ import Autocomplete from 'vuejs-auto-complete'
 	border:none !important;
 	border-radius: 5px;
 }
-.autoProce .autocomplete__results__item{
+.inputProce .autocomplete__results__item{
 	outline: none !important;
 	padding: 13px !important;
 }

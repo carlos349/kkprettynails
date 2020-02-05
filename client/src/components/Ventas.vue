@@ -5,7 +5,7 @@
 					<p>Total de ventas</p>
 					<h2>{{ventas.length}}</h2>
 				</div>
-				<div class="col-md-3 col-sm-5 metricssSales second">
+				<div class="col-md-3 col-sm-5 metricssSales first">
           <div class="row metricTotalSales">
             <div class="col-sm-6 ant"><h6>Mes anterior</h6></div>
             <div class="col-sm-6 ant"><h5 class="text-right">{{localAnterior}} $</h5></div>
@@ -13,7 +13,7 @@
             <div class="col-sm-8"><h3 class="text-right mt-2">{{totalLocal}} $</h3></div> 
           </div>
 				</div>
-				<div class="col-md-3 col-sm-5 metricssSales three">
+				<div class="col-md-3 col-sm-5 metricssSales first">
           <div class="row metricTotalSales">
             <div class="col-sm-6 ant"><h6>Mes anterior</h6></div>
             <div class="col-sm-6 ant"><h5 class="text-right">{{netaAnterior}} $</h5></div>
@@ -21,7 +21,7 @@
             <div class="col-sm-8"><h3 class="text-right mt-2">{{gananciaNeta}} $</h3></div> 
           </div>
 				</div>
-        <div class="col-md-3 col-sm-5 metricssSales four">
+        <div class="col-md-3 col-sm-5 metricssSales first">
           <div class="row metricTotalSales">
             <div class="col-sm-6 ant"><h6>Mes anterior</h6></div>
             <div class="col-sm-6 ant"><h5 class="text-right">{{totalAnterior}} $</h5></div>
@@ -32,8 +32,8 @@
 			</div>
       <div class="row">
         <div class="col-md-3">
-          <div class="pt-3 pb-3" style="padding-left:20%;">
-            <datetime placeholder="filtar día" class="theme-blue SalesInputs"  v-model="justOneDay" :phrases="{ok: 'Elegir', cancel: 'Salir'}" :format="{ year: 'numeric', month: 'long', day: 'numeric'}" auto></datetime>
+          <div class="pt-3 pb-3 " style="padding-left:20%;">
+            <datetime placeholder="Filtrar día" class="theme-blue  SalesInputs"  v-model="justOneDay" :phrases="{ok: 'Elegir', cancel: 'Salir'}" :format="{ year: 'numeric', month: 'long', day: 'numeric'}" auto></datetime>
           </div>
         </div>
         <div class="col-md-2">
@@ -65,13 +65,13 @@
         <div class="row">
 					<div class="col-md-12">
             <div class="shadow">	
-              <v-client-table class="text-center"  :data="ventas" :columns="columns" :options="optionsT">
+              <v-client-table class="text-center tableVentas"  :data="ventas" :columns="columns" :options="optionsT">
                 <div slot="print"  slot-scope="props">
                   <button v-if="props.row.status" style="width:100%;" v-on:click="reporteVenta(props.row._id)" class=" btn btn-colorsPrint"><font-awesome-icon icon="copy" /></button>
                   <button v-else style="width:100%;" v-on:click="reporteVenta(props.row._id)" class=" btn btn-danger"><font-awesome-icon icon="copy" /></button>
                 </div>
                 <div slot="servicios" slot-scope="props">
-                  <button class="btn btn btn-colorsPrint" type="button" data-toggle="collapse" :data-target="'#servi'+props.index" aria-expanded="false" aria-controls="multiCollapseExample2">Mostrar Servivios</button>
+                  <button  class="btn btn btn-colorsPrint" type="button" data-toggle="collapse" :data-target="'#servi'+props.index" aria-expanded="false" aria-controls="multiCollapseExample2">Mostrar Servivios</button>
                   <div class="collapse multi-collapse" :id="'servi'+props.index">
                     <div class="card card-body">
                     {{props.row.servicios}}
@@ -636,7 +636,8 @@ export default {
 		display: none;  /* Ocultar scroll */
 	}
   .first{
-		background:#1F5673; /* fallback for old browsers */
+		background:rgba(238, 238, 238, 0.623); /* fallback for old browsers */
+    color: #353535 !important;
 	}
 	.second{
 		background:rgb(38, 91, 119); /* fallback for old browsers */
@@ -686,7 +687,7 @@ export default {
   .ant{
     opacity: .8;
   }
-  .inputsVentas{
+  .inputVentas{
 		border:none !important;
 		border-radius:0px !important;
 		border-bottom:2px solid #102229 !important;
@@ -697,15 +698,16 @@ export default {
 	}
   .SalesInputs .vdatetime-input{
     width:100%;
-    padding: 20px;
-    background-color: transparent;
+    padding: 10px;
+    background-color: white;
     border:none;
-    border: solid 3px #1F5673;
+    
+    border-radius: 5px;
     font-size: 1.4em;
   }
   .findSales{
-    background-color: #1F5673;
-    color: #fff;
+    background-color: #353535;
+    color: white;
     -webkit-transition: all 0.5s ease-out;
     transition: all 0.5s ease-out;
     font-family: 'Roboto', sans-serif !important;
@@ -713,18 +715,18 @@ export default {
     font-size: 1.5em;
     letter-spacing: 1px;
     border-radius: 5px;
-    padding: 20px;
+    padding: 5px;
     -webkit-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
 -moz-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
 box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
-    border-bottom: solid 3px #1F5673;
+    
   }
   .findSales:hover{
 		background-color: rgb(8, 65, 95);
     color: #fff;
 	}
   .btn-colorsPrint{
-		background-color:#495057;
+		background-color:#353535;
 		color:#fff;
     -webkit-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
     -moz-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
@@ -778,10 +780,28 @@ box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
 [v-cloak] {
   display:none;
 }
+.tableVentas th{
+	border:none !important;
+}
+.table-bordered tbody{
+	background-color: white;
+}
+.tableVentas table{
 
-thead {
-		background-color: #1f5673;
-		color: #fff;
+ 
+}
+.table-bordered {
+	
+	border-radius: 10px !important; 
+}
+.tableVentas thead {
+		background-color: rgba(238, 238, 238, 0.623);
+		color: #353535;
 		text-align: center
-	}
+}
+.tableVentas thead th {
+		border-left: 1px black !important;
+}
+
+
 </style>

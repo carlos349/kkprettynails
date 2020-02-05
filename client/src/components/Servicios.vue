@@ -6,27 +6,27 @@
 					<p>Total Servicios</p>
 					<h1>{{TotalServicios}}</h1>
 				</div>
-				<div class="col-md-3 metricsServices second">
+				<div class="col-md-3 metricsServices first">
 					<p>Servicios mensuales</p>
 					<h1>{{TotalCantidadServicios}}</h1>
 				</div>
-				<div class="col-md-3 metricsServices three">
+				<div class="col-md-3 metricsServices first">
 					<p>Prestadores</p>
 					<h1>{{TotalPrestadores}}</h1>
 				</div>
 			</div>
 			<div class="col-md-12 ">
 				<div class="shadow">
-					<v-client-table class="text-center"  :data="servicios" :columns="columns" :options="optionsT">
+					<v-client-table class="text-center tableServis"  :data="servicios" :columns="columns" :options="optionsT">
 						<p slot="prestadoress"  slot-scope="props">{{props.row.prestadores.length}}</p>
 						<p slot="precio"  slot-scope="props">{{formatPrice(props.row.precio)}}</p>
 						<p slot="comision"  slot-scope="props">{{props.row.comision}}%</p>
 						<p slot="tiempoo"  slot-scope="props">{{props.row.tiempo}} min</p>
 						<div slot="activee"  slot-scope="props">
-							<button v-on:click="desactivarServicio(props.row._id)" v-if="props.row.active" class=" btn btn-success w-100">Activo</button>
-							<button v-on:click="desactivarServicio(props.row._id)" v-if="!props.row.active" class=" btn btn-inactive w-100">Inactivo</button>
+							<button style="background-color:#E6E6EA;color:#618B25" v-on:click="desactivarServicio(props.row._id)" v-if="props.row.active" class="font-weight-bold btn btn-success w-100">Activo</button>
+							<button v-on:click="desactivarServicio(props.row._id)" v-if="!props.row.active" class="font-weight-bold btn btn-inactive w-100">Inactivo</button>
 						</div>
-						<button slot="edit"  slot-scope="props"  v-on:click="pasarDatosEdit(props.row.nombre, props.row.tiempo, props.row.precio, props.row.prestadores, props.row._id, props.row.comision)" class="btn add w-100"><font-awesome-icon icon="edit" /></button>
+						<button style="background-color:#353535;color:white" slot="edit"  slot-scope="props"  v-on:click="pasarDatosEdit(props.row.nombre, props.row.tiempo, props.row.precio, props.row.prestadores, props.row._id, props.row.comision)" class="btn add w-100"><font-awesome-icon icon="edit" /></button>
 						<!-- <a slot="edit" slot-scope="props" class="fa fa-edit" :href="pasarDatosEdit(props.row.nombre, props.row.identidad, props.row.correoCliente, props.row.instagramCliente, props.row._id)">Hola </a> -->
 					</v-client-table>
 				</div>
@@ -38,7 +38,7 @@
 					</button>
 				</div>
 				<div class="shadow">
-					<table  class="table" style="color:#fff !important; background-color: #1F5673" >
+					<table  class="table" style="color:#353535 !important; background-color: rgba(238, 238, 238, 0.623)" >
 						<thead>
 							<tr>
 								<th>
@@ -258,7 +258,7 @@
 			return {
 				columns:['nombre' , 'precio' , 'comision', 'tiempoo' , 'prestadoress' , 'activee' , 'edit'],
 				optionsT: {
-					filterByColumn: true,
+					filterByColumn: false,
 					texts: {
 						filter: "Filtrar:",
 						filterBy: 'Filtrar por {column}',
@@ -687,12 +687,10 @@
     -webkit-transition: all 0.5s ease-out;
 	}
 	.btn-inactive{
-		background-color: #FC7753;
-		color:#fff;
-		-webkit-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
-    -moz-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
-    box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
-    -webkit-transition: all 0.5s ease-out;
+		border: 3px solid #FE4A49;
+		background-color: #E6E6EA;
+		color:#FE4A49;
+		
 	}
 	.btn-active{
 		background-color: #18FF6D;
@@ -725,10 +723,8 @@
 		border-bottom:2px solid #102229 !important;
 	}
 	.btn-success {
-		-webkit-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
-    -moz-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
-    box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
-    -webkit-transition: all 0.5s ease-out;
+		border: 3px solid #7ec365;
+		
 	}
 	.add{
 		background-color:#1F5673;
@@ -815,7 +811,8 @@
 		transform: rotate(45deg);
 	}
 	.first{
-		background:#1F5673; /* fallback for old browsers */
+		background:rgba(238, 238, 238, 0.623); /* fallback for old browsers */
+		color:#353535;
 	}
 	.second{
 		background:rgb(38, 91, 119); /* fallback for old browsers */
@@ -841,12 +838,14 @@
 	
 
 	.btn-white{
+		
 		padding: 5px;
 		width: 100%;
 		margin-bottom: 5px;
-		background-color: #28a745;
-		color: #fff;
+		background-color: #E6E6EA;
+		color: #618B25;
 		border: none;
+		border:3px solid #7ec365;
 		font-size: 1.3em;
 		-webkit-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
 		-moz-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
@@ -858,6 +857,7 @@
 		outline: none !important;
 	}
 	.btn-white:hover{
+		
 		background-color: #218838;
 	}
 	.lupa-modalServices{
@@ -903,12 +903,30 @@
 	[v-cloak] {
 	display:none;
 	}
-
-	thead {
-		background-color: #1f5673;
-		color: #fff;
-		text-align: center
+	.tableServis th{
+	border:none !important;
 	}
+	.table-bordered tbody{
+		background-color: white;
+	}
+	.tableServis table{
+
+	
+	}
+	.table-bordered {
+		
+		border-radius: 10px !important; 
+	}
+	.tableServis thead {
+			background-color: rgba(238, 238, 238, 0.623);
+			color: #353535;
+			text-align: center
+	}
+	.tableServis thead th {
+			border-left: 1px black !important;
+	}
+
+	
 	.VueTables--client .row{
 		display:none
 	}
