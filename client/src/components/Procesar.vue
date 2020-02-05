@@ -582,7 +582,8 @@ import Autocomplete from 'vuejs-auto-complete'
 				this.total = "$" + this.formatPrice(this.totalSinFormato)
 				this.resto = this.diseño
 				}
-				
+				console.log(this.resto)
+				console.log()
 		},
 		getManicuristas(){
 			axios.get('manicuristas')
@@ -917,6 +918,7 @@ import Autocomplete from 'vuejs-auto-complete'
 			this.pagoTransf = ''
 			this.maniSelect = ''
 			this.nombreCliente = ''
+			this.resto  = 0
 		},
 		mouseOverVenta(clase,num){
 		setTimeout(() => {
