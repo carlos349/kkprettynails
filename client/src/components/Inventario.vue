@@ -9,31 +9,31 @@
 					<form v-on:submit.prevent="addProduct">
 						<div class="form-group">
 							<label for="name">Nombre del producto</label>
-							<input v-model="product" type="text" class="form-control inputs" placeholder="Nombre del producto">
+							<input v-model="product" type="text" class="inputsInventario w-100" placeholder="Nombre del producto">
 						</div>
 						<div class="form-group">
 							<label for="name">Marca</label>
-							<input v-model="brand" type="numbre" class="form-control inputs" placeholder="Marca del producto">
+							<input v-model="brand" type="numbre" class="inputsInventario w-100" placeholder="Marca del producto">
 						</div>
 						<div class="form-group">
 							<label for="name">Gramos</label>
-							<input v-model="grams" type="text" class="form-control inputs" placeholder="Gramos del producto">
+							<input v-model="grams" type="text" class="inputsInventario w-100" placeholder="Gramos del producto">
 						</div>
 						<div class="form-group">
 							<label for="name">Cantidad</label>
-							<input v-model="quantity" type="text" class="form-control inputs" placeholder="Cantidad">
+							<input v-model="quantity" type="text" class="inputsInventario w-100" placeholder="Cantidad">
 
 						</div>
 						<div class="form-group">
 							<label for="name">Monto</label>
-							<input v-model="amount" type="text" class="form-control inputs" placeholder="Precio">
+							<input v-model="amount" type="text" class="inputsInventario w-100" placeholder="Precio">
 						</div>
 
 						<label for="name">Servicios</label>
 						
 						<div class="form-group" style="margin-top:-15px;">
 							<div>
-								<input type="text" id="myInputInvent" v-on:keyup="myFunctionInvent()" class="form-control buscar inputs" placeholder="Buscar servicios"/>
+								<input type="text" id="myInputInvent" v-on:keyup="myFunctionInvent()" class="inputsInventario mt-2 w-100 buscar " placeholder="Buscar servicios"/>
 							<font-awesome-icon class="lupa-modal" icon="search"/>
 							</div>
 							</div>
@@ -54,7 +54,7 @@
 									</tbody>
 								</table>
 							</div>
-							<button class="btn w-100 add">Agregar</button>
+							<button class="btn w-100 addInventario">Agregar</button>
 							</form>
 						</div>
 				
@@ -456,12 +456,24 @@ export default {
 		height: 8px;    /* Tamaño del scroll en horizontal */
 		display: none;  /* Ocultar scroll */
 	}
-	.add{
+	.addInventario{
 		background-color:#353535;
 		color:#fff;
 		transition: all 0.5s ease-out;
 		font-family: 'Raleway', sans-serif;
 		font-weight:600;
+	}
+	.inputsInventario{
+		outline: none;
+		background-color: transparent !important;
+		-webkit-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+		-moz-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+		box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+		border: none !important;
+		border-radius: 5px;
+		padding: 10px;
+		width: 50% ;
+		color: black !important;
 	}
 	.add:hover{
 		background-color:#ccc;
@@ -552,7 +564,7 @@ export default {
 
 		background-color: #eee;
 
-		background-color: #1F5673;
+		background-color: #353535;
 
 	}
 
@@ -645,9 +657,9 @@ export default {
 	}
 	.lupa-modal{
 		position:absolute;
-		color:black;
+		color:#353535;
 		right:8%;
-		top:67%;
+		top:69.5%;
 		font-size:1.4em
 	}
 	

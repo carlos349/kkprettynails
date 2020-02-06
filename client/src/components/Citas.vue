@@ -36,20 +36,20 @@
 
     <div class="modal fade genCita bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-xl">
-      <div  class="modal-content armarCita p-3" style="background-color:#1f5673">
-        <div  class="container p-4" style="background-color:white">
+      <div  class="modal-content armarCita p-3" style="background-color:#6BB2E5;border-radius:5px">
+        <div  class="container p-4" style="background-color:rgba(238, 238, 238, 0.623);border-radius:5px;">
           <div class="row">
             <div style="font-size:1.5em;color:#011627;" class="col-md-12 text-center p-3">Arma tu cita </div>
-            <div style="background-color:rgba(31, 86, 115, 0.707);color:azure;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14)" class="col-md-12 font-weight-bold px-3">
+            <div style="background-color:rgba(107, 178, 229,0.5);color:azure;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14)" class="col-md-12 font-weight-bold px-3">
               <div style="margin:auto" class="row text-center">
-                <div class="wOne p-3 mx-auto col-md-3 marc">Servicio</div>
-                <div class="wTwo p-3 mx-auto col-md-3">Información</div>
-                <div class="wThree p-3 mx-auto col-md-3">Disponibilidad</div>
+                <div style="color:gray" class="wOne p-3 mx-auto col-md-3 marc">Servicio</div>
+                <div style="color:gray" class="wTwo p-3 mx-auto col-md-3">Información</div>
+                <div style="color:gray" class="wThree p-3 mx-auto col-md-3">Disponibilidad</div>
               </div>
             </div>
             <div class="col-md-12 p-3 processOne">
-              <div class="col-md-12 text-center p-2" style="font-size:1.2em;color:#1f5673">Selecciona los servicios a utlizar</div>
-              <div style="height:40vh;overflow:hidden;overflow-x: hidden;overflow-y:scroll;background-color: rgba(31, 86, 115, 0.707);border-radius:5px;" class="scroll row p-3" >
+              <div class="col-md-12 text-center p-2" style="font-size:1.2em;color:#353535">Selecciona los servicios a utlizar</div>
+              <div style="height:40vh;overflow:hidden;overflow-x: hidden;overflow-y:scroll;background-color:#6BB2E5;border-radius:5px;border:2px solid #353535" class="scroll row p-3" >
                 <div class="col-md-6" v-for="(servicio,index) of servicios">
                   <div class="p-2 servPretty" v-on:click="marcarServicio(servicio.prestadores,servicio.nombre,servicio.tiempo,servicio.comision,servicio.precio,index)">
                     <div class="row">
@@ -64,10 +64,10 @@
             <div class="col-md-12 p-3 processThree">
               <div class="col-md-12 text-center p-2" >
                 <div class="row">
-                  <div style="font-size:1.2em;color:#9e9e9e" class="col-sm-4">
+                  <div style="font-size:1.2em;color:#353535" class="col-sm-4">
                   Seleccione un prestador y horario disponible
                   </div>
-                  <select v-model="maniBloque" v-on:change="selectManic()" class="CMani m-1  p-2 w-75 text-white col-sm-6" name="manicuristas">
+                  <select v-model="maniBloque" v-on:change="selectManic()" class="CMani m-1  p-2 w-75 col-sm-6" name="manicuristas">
                     <option v-if="sectionDeleteTwo" selected="true" >{{maniBloque}}</option>
                     <option  v-for="(mani,index) in maniAzar" v-if="mani.restDay != new Date(fecha).getDay()"  :class="mani.class" :value="mani.nombre">
                       {{mani.nombre}}
@@ -77,7 +77,7 @@
                 </div>
               </div>
               <div style="height:50vh;overflow:hidden;overflow-x: hidden;
-		          overflow-y:scroll;background-color: rgba(31, 86, 115, 0.707);border-radius:5px" class="scroll row horas" >
+		          overflow-y:scroll;background-color: #6BB2E5;border-radius:5px;border:2px solid #353535" class="scroll row horas" >
                       <div class="col-sm-12">
                         <div class="row  mb-2">
                           <div class="col-sm-6">
@@ -142,7 +142,7 @@
               </div>
             </div>
             <div class="col-md-12 p-3 processTwo">
-              <div class="col-md-12 text-center p-2" style="font-size:1.2em;color:#9e9e9e">Selecciona un cliente y una fecha para la cita</div>
+              <div class="col-md-12 text-center p-2" style="font-size:1.2em;color:#353535">Selecciona un cliente y una fecha para la cita</div>
               <div class="container">
                 <div class="mx-auto">
                 <div  class="row">
@@ -236,8 +236,8 @@
                                   </div>
                               </div>
                                  
-                              <button v-on:click="editCliente" style="display:none" class="btn w-100 mt-2 add ag">Editar cliente</button>
-                              <button v-on:click="ingresoCliente" style="display:none" class="btn w-100 mt-2 add del">Agregar cliente</button>
+                              <button  v-on:click="editCliente" style="display:none;background-color:#353535;color:white" class="btn w-100 mt-2 ag">Editar cliente</button>
+                              <button  v-on:click="ingresoCliente" style="display:none;background-color:#353535;color:white" class="btn w-100 mt-2 add del">Agregar cliente</button>
                             </form>
                           </div>
                         </div>
@@ -1438,13 +1438,16 @@ import router from '../router'
     color: #0a0a0a !important
   }
   
-  .vuecal__menu {background-color: transparent;border: none; }
+  .vuecal__menu {background-color:transparent;border: none !important;border-radius: 5px 5px 0 0; }
   .vuecal__menu button{background-color:rgba(7, 7, 7, 0.116);outline: none}
   .vuecal__menu li {border-bottom-color: #fff;color: #fff;}
   .vuecal__menu li.active {background-color: rgba(255, 255, 255, 0.15);}
-  .vuecal__title-bar {background-color: #1F5673;color: #fff !important}
+  .vuecal__title-bar {background-color: #353535;color: #fff !important}
   .vuecal__title button{
     color: white !important
+  }
+  .vuecal__body{
+    background-color:white;
   }
   .vuecal__time-column .vuecal__time-cell{color:white;height:1vh;}
   .vuecal__event{color:#fff;font-weight:bold;cursor:pointer;}
@@ -1464,8 +1467,8 @@ import router from '../router'
   .vuecal__cell-content {
     height: 100px;
   }
-
-  .vuecal__cell.today, .vuecal__cell.current {background-color: rgba(240, 240, 255, 0.4);}
+  .vuecal__header{background-color: rgba(238, 238, 238, 0.623);border-radius: 5px 5px 0 0;}
+  .vuecal__cell.today, .vuecal__cell.current {background-color: transparent}
   .vuecal:not(.vuecal--day-view) .vuecal__cell.selected {background-color: rgba(235, 255, 245, 0.4);}
   .vuecal__cell.selected:before {border-color: rgba(66, 185, 131, 0.5);}
   .vuecal__cell-date{color:#000;font-family: 'Raleway', sans-serif;
@@ -1541,15 +1544,17 @@ import router from '../router'
     font-weight: 300 !important;
   }
   .marc{
-    background-color: #1F5673;
-    border:solid 1px azure;
+    background-color: #6BB2E5;
+    border:solid 1px #353535;
     border-radius: 5px;
-    color: azure;
+    color: #353535 !important;
     box-shadow: 0 2px 5px 0 rgba(0,0,0,.14)
   }
   .servPretty{
-    background-color: #1F5673;
+    background-color: #353535;
     color:#fff;
+    border-radius: 5px;
+    margin: 1px;
     cursor: pointer;
     box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);
     border:4px solid transparent;
@@ -1559,14 +1564,14 @@ import router from '../router'
     border-right: 1px solid #fff;
   }
   .serviInfoPrestadores{
-    background-color: #011627;
+    background-color: #6BB2E5;
     padding: 3px;
     padding-left: 8px;
     padding-right: 8px;
     border-radius: 50%;
   }
   option{
-    color:azure;  
+    color:#353535;  
     padding: 10px;
   }
   .botonW{
@@ -1578,7 +1583,7 @@ import router from '../router'
     outline: none !important;
   }
   .marcar{
-    background-color: #011627;
+    background-color: #353535;
     color:#fff;
   }
   #redo{
@@ -1770,7 +1775,7 @@ import router from '../router'
 	}
   .generar{
     padding: 10px;
-     background-color: #1F5673;
+     background-color: #353535;
      border:none;
      color: azure;
      margin-bottom: 1%;
@@ -1779,20 +1784,20 @@ import router from '../router'
      -webkit-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
 		-moz-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
 		box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
-		-webkit-transition: all 0.5s ease-out;
+		
     font-family: 'Roboto', sans-serif !important;
     font-size: 1.4em;
   }
   .generar:hover{
-    background-color: #ccc;
+    background-color: white;
     color:#001514;
   }
   .Two{
     padding-bottom: 15px;
   }
   .Two:hover{
-    background-color: #1F5673;
-    color: azure;
+    background-color: white;
+    color: #353535 !important;
   }
   .botonHora{
     background-color:#011627 ;
@@ -1970,20 +1975,20 @@ import router from '../router'
 	}
 
   .vdpCell.selected .vdpCellContent{
-		background-color: rgb(31, 86, 115) !important;
+		background-color: #353535 !important;
 		
 	}
 	.vdpCell:hover .vdpCellContent{
-		background-color: rgb(31, 86, 115) !important;
+		background-color: #353535 !important;
 	}
 	.vdpCell.today{
 		color:rgb(31, 86, 115) !important;
 	}
 	.vdpArrowNext:after{
-		border-left-color:rgb(31, 86, 115) !important;
+		border-left-color:#353535 !important;
 	}
 	.vdpArrowPrev:after{
-		border-right-color:rgb(31, 86, 115) !important;
+		border-right-color:#353535 !important;
 	}
   /* end timeline  */
 
@@ -2002,7 +2007,7 @@ import router from '../router'
   .btn-date:hover{
     transition: all 1s ease-out;
     border: 2px solid #1f5673;
-    background-color: #1f5673;
+    background-color: white;
     width: 100%;
     color: #fff !important;
     padding: 10px;
@@ -2227,7 +2232,7 @@ import router from '../router'
  border-bottom: 1px solid rgba(0, 0, 0, 0.281);
   height: 4vh;
   text-align: center;
-  background-color:#1F5673;
+  background-color:#7ec365;
   border-radius: 5px;
   color: azure;
   font-size: 1.5em;
@@ -2263,15 +2268,16 @@ import router from '../router'
 }
 
 .Hdispone{
-  border: 1px solid white;
+  color: #353535;
   border-radius: 5px; 
-  background-color: #1f5673;
+  background-color: rgba(238, 238, 238, 0.623);
   text-align: center
 }
 
 .CMani{ 
   border-radius: 5px; 
-  background-color: #1f5673;
+  background-color: #353535;
+  color: white;
   cursor: pointer;
   font-size: 1.5em;
 }
@@ -2280,7 +2286,7 @@ import router from '../router'
   display: none;
 }
 .completeCitas .autocomplete__box{
-		background-color: transparent !important;
+		background-color: white !important;
 		-webkit-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
 		-moz-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
 		box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
@@ -2294,7 +2300,7 @@ import router from '../router'
 	}
 	.autocompleteCitas{
 		outline: none !important;
-		background-color: transparent !important;
+		background-color:transparent!important;
 		border: none !important;
 		border-radius: 5px;
 		padding: 5px;
@@ -2319,7 +2325,7 @@ import router from '../router'
 	padding: 10px !important;
 }
 .inputsCrear{
-  background-color: transparent !important;
+  background-color: white !important;
   -webkit-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
   -moz-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
   box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);

@@ -561,7 +561,7 @@ export default {
 		margin-left: 8%;
 	}
 	.btn-colorsEditClient{
-		background-color: #28a745;
+		background-color: #7ec365;
 		color:#fff;
 		-webkit-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
 		-moz-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
