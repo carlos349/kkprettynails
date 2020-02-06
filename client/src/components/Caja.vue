@@ -1,37 +1,57 @@
 <template>
     <div class="container-fluid">
-        <div class="col-md-12 row sectionMetricss mb-3">
-            <div class="col-md-3 col-sm-12 metricss first">
-                <div>
-                    <p class="text-center">Apertura Efectivo</p>
-                    <h4 class="text-center">{{formatPrice(efectivo)}}</h4>
+        <div class="col-md-12 row sectionMetricssExpense mb-3">
+            <div class="col-md-6 col-sm-12 ">
+                <div class="metricssExpense firstExpenses">
+                    <p class="text-center">Monto del fondo de caja</p>
+                    <h2 class="text-center">{{formatPrice(fund)}}</h2>
                 </div>
             </div>
-            <div class="col-md-3 col-sm-12 metricss second">
-                <div>
-                    <p class="text-center">Apertura Banco</p>
-                    <h4 class="text-center">{{formatPrice(banco)}}</h4>
-                </div>
-            </div>
-            <div class="col-md-4 col-sm-12 metricss three">
-                <div>
-                    <p class="text-center">Total Apertura</p>
-                    <h4 class="text-center">{{formatPrice(total)}}</h4>
+            <div class="col-md-6 col-sm-12">
+                <div class="metricssExpense firstExpenses">
+                    <p class="text-center">Nombre del cajero</p>
+                    <h2 class="text-center">{{checker}}</h2>
                 </div>
             </div>
         </div>
-        
+
         <div class="row">
-            <div class="shadow">
-                <v-client-table class="text-center"  :data="cierres" :columns="columns" :options="optionsT">
+            <div>
+                <v-client-table class="text-center tableCash"  :data="cierres" :columns="columns" :options="optionsT">
                     <p slot="totalCierre" slot-scope="props">{{formatPrice(props.row.sistema.total)}}</p>
-                    <button slot="edit"  slot-scope="props" style="width:30%;" v-on:click="sacarReporte(props.row._id)" class="btn btn-warning"><font-awesome-icon icon="copy" /></button>
-                    <!-- <a slot="edit" slot-scope="props" class="fa fa-edit" :href="pasarDatosEdit(props.row.nombre, props.row.identidad, props.row.correoCliente, props.row.instagramCliente, props.row._id)">Hola </a> -->
+                    <button slot="edit"  slot-scope="props" style="width:30%;" v-on:click="sacarReporte(props.row._id)" class="btn add"><font-awesome-icon icon="copy" /></button>
                 </v-client-table>
-            </div>
-           
-            
-      </div>
+            </div>  
+        </div>
+        <div v-if="inspector" class="boxDates">
+            <button class="CierreDia btn-whiteDates btn-animation-1" v-on:click="openFunds">
+                <font-awesome-icon icon="cash-register" />
+            </button>
+        </div>
+        <div class="modal fade" id="myModalRegisterFundss" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		  <div class="modal-dialog modal-dialog-centered" role="document">
+		    <div class="modal-content p-1" >
+		      <div class="modal-header"  v-bind:style="{ 'background-color': 'rgb(107, 178, 229)'}">
+		        <h5 class="modal-title text-white text-center font-weight-bold" id="exampleModalCenterTitle">Fondo de caja</h5>
+		      </div>
+		      <div class="modal-body mt-2">
+		        <form v-on:submit.prevent="registroFondo">
+					<div class="row">
+						<div class="form-group col-6">
+							<label for="name">Nombre del cajero</label>
+							<input v-model="nombreCaja" type="text" class="form-control inputsVenta w-100" placeholder="Ingrese su nombre">
+						</div>
+						<div class="form-group col-6">
+							<label for="name">Fondo de caja</label>
+							<input v-model="montoCaja" type="text" class="form-control inputsVenta w-100" placeholder="0 $">
+						</div>
+						<button class="btn w-75 add ml-5 mt-2">Ingresar</button>
+					</div>
+				</form>
+		      </div>
+		    </div>
+		  </div>
+		</div>
     </div>
 </template>
 <script>
@@ -65,9 +85,11 @@ export default {
             },
             cierres:[],
             fechas: [],
-            efectivo: 0,
-            banco: 0,
-            total: 0
+            fund: 0,
+            checker: '',
+            nombreCaja: '',
+            montoCaja: '',
+            inspector: false
         }
     }, 
     BeforeCreate(){
@@ -83,12 +105,12 @@ export default {
     },
     created(){
         this.getClosing();
+        this.getFunds()
     },
     methods: {
         getClosing(){
             axios.get('ventas/Closing')
             .then(res => {
-                
                 this.cierres = res.data
                 for (let i = 0; i < this.cierres.length; i++) {
 					this.cierres[i].fecha = this.formatDate(this.cierres[i].fecha)
@@ -100,35 +122,50 @@ export default {
             return dateFormat.getDate()+"-"+(dateFormat.getMonth() + 1)+"-"+dateFormat.getFullYear()
         },
         getPerMonthSelected(month){
-            axios.get('ventas/closingPerMonth/'+month)
+            axios.get('ventas/closingPerMonth') 
             .then(res => {
-                if (res.data.length == 0) {
-                    this.$swal({
-                        type: 'error',
-                        title: 'No hay cierres del mes seleccionado',
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
-                }else{
-                    this.cierres = res.data
-                    let fechaBien = ''
-                    for (let index = 0; index < res.data.length; index++) {
-                        let fech = new Date(res.data[index].fecha)
-                        let dateNow = new Date()
-                        if (fech.getMonth() === dateNow.getMonth() && fech.getDate() === dateNow.getDate()) {
-                            this.efectivo = res.data[index].aperturaEfectivo
-                            this.banco = res.data[index].aperturaBanco
-                            this.total = res.data[index].totalApertura
-                        }
-                        this.cierres[index].fecha = this.formatDate(this.cierres[index].fecha)
-                    }
+                this.cierres = res.data
+            })
+        },
+        getFunds(){
+            axios.get('ventas/getFund')
+            .then(res => {
+                this.fund = res.data[0].amount
+                this.checker = res.data[0].userRegister 
+                if (this.fund == 0 || this.checker == '') {
+                    this.inspector = true
+                    this.fund = 0
+                    this.checker = 'No hay cajero registrado'
                 }
             })
+        },
+        openFunds(){
+            $('#myModalRegisterFundss').modal('show')
         },
         formatPrice(value) {
             let val = (value/1).toFixed(2).replace('.', ',')
             return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
         },
+        registroFondo(){
+			axios.post('ventas/registerFund', {
+				userRegister: this.nombreCaja,
+				amount: this.montoCaja
+			}).then(res => {
+				if (res.data.status == 'ok') {
+					this.$swal({
+						type: 'success',
+						title: '¡Ya puede ingresar ventas!',
+						showConfirmButton: false,
+						timer: 1500
+					})
+                    $('#myModalRegisterFundss').modal('hide')
+                    this.montoCaja = ''
+                    this.nombreCaja= ''
+                    this.getFunds()
+                    this.inspector = false
+				}
+			})
+		},
         myFunction() {
             var input, filter, table, tr, td, i, txtValue;
             input = document.getElementById("myInput");
@@ -166,50 +203,23 @@ export default {
 		background:rgb(46, 93, 117);
     }
     
-    .metricss{
-        height: auto;
+    .metricssExpense{
         padding: auto;
-        margin-left:50px;
+        width: 70%;
+        margin: auto;
         margin-top: 20px;
+        padding-top: 10px;
+        padding-bottom: 10px;
         color:#fff;
         box-shadow: 0 0.46875rem 2.1875rem rgba(4,9,20,0.03), 0 0.9375rem 1.40625rem rgba(4,9,20,0.03), 0 0.25rem 0.53125rem rgba(4,9,20,0.05), 0 0.125rem 0.1875rem rgba(4,9,20,0.03);
         border-radius:5px;
     }
-	.metricss p{
+	.metricssExpense p{
 		font-size: 1.3em;
 		margin-top: 10px;
 	}
-    .BotonesFiltro{
-        width: 200px;
-        font-size: 16px;
-        font-weight: 600;
-        color: #fff;
-        cursor: pointer;
-        height: 55px;
-        text-align:center;
-        border: none;
-        background-size: 300% 100%;
-        background-image: linear-gradient(to right, #1F5673, rgb(78, 120, 141), rgb(38, 90, 117), rgb(66, 104, 124));
-        box-shadow: 0 4px 15px 0 rgba(45, 54, 65, 0.75);
-        moz-transition: all .4s ease-in-out;
-        -o-transition: all .4s ease-in-out;
-        -webkit-transition: all .4s ease-in-out;
-        transition: all .4s ease-in-out;
-    }
-    .BotonesFiltro:hover{
-        background-position: 100% 0;
-        color: #fff;
-        moz-transition: all .4s ease-in-out;
-        -o-transition: all .4s ease-in-out;
-        -webkit-transition: all .4s ease-in-out;
-        transition: all .4s ease-in-out;
-    }
-    .BotonesFiltro:focus {
-        outline: none;
-    }
     .table{
         table-layout: fixed;
-        border-collapse: separate ;
         border:none !important;
         box-shadow: 0 0.46875rem 2.1875rem rgba(4,9,20,0.03), 0 0.9375rem 1.40625rem rgba(4,9,20,0.03), 0 0.25rem 0.53125rem rgba(4,9,20,0.05), 0 0.125rem 0.1875rem rgba(4,9,20,0.03);
     }
@@ -275,12 +285,6 @@ export default {
 	[v-cloak] {
 	display:none;
 	}
-
-	thead {
-		background-color: #1f5673;
-		color: #fff;
-		text-align: center
-	}
 	.VueTables--client .row{
 		display:none
 	}
@@ -294,4 +298,127 @@ export default {
 		text-align: center;
 		display:block !important;
 	}
+    .add{
+		background-color:#353535;
+		color: azure;
+		transition: all 0.5s ease-out;
+		font-family: 'Roboto', sans-serif !important;
+		font-weight:600;
+		letter-spacing: 1px;
+		border-radius:5px;
+	}
+	.add:hover{
+		background-color:#ccc;
+		color:#001514;
+	}
+    .tableCash th{
+	border:none !important;
+	}
+	.table-bordered tbody{
+		background-color: white;
+	}
+	.tableCash table{
+
+	
+	}
+	.table-bordered {
+		box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+		border-radius: 10px !important; 
+	}
+	.tableCash thead {
+			background-color: rgba(238, 238, 238, 0.623);
+			color: #353535;
+			text-align: center
+	}
+	.tableCash thead th {
+			border-left: 1px black !important;
+	}
+
+    .firstExpenses{
+		background:rgba(238, 238, 238, 0.623); /* fallback for old browsers */
+		color:#353535;
+	} 
+
+    .boxDates{
+    position:fixed;
+		top:90%;
+		right:2%;
+    z-index: 1000;
+    transform : translate(-50% ,-50%);
+  }
+  .CierreDia:link,
+  .CierreDia:visited{
+    text-decoration: none;
+    text-transform:uppercase;
+    position:relative;
+    top:0;
+    left:0;
+    padding:20px 40px;
+    border-radius:100px;
+    display:inline-block;
+    transition: all .6s;
+  }
+
+  .btn-whiteDates{
+    padding: 15px;
+    border-radius:10px;
+    background-color:#fff;
+    color: #353535;
+    border:2px solid #353535;
+    font-size: 1em;
+    outline: none !important;
+  }
+  .btn-whiteDates:focus{
+    outline: none !important;
+  }
+
+  .CierreDia:hover{
+    box-shadow:0px 10px 10px #353535;
+    transform : translateY(-3px);
+  }
+
+  .CierreDia:active{
+    box-shadow:0px 5px 10px #353535;
+    transform:translateY(-1px);
+  }
+
+  .btn-bottom-animation-1{
+    animation:comeFromBottom 2s ease-out .8s;
+  }
+
+  .CierreDia::after{
+    content:"";
+    text-decoration: none;
+    text-transform:uppercase;
+    position:absolute;
+    width:100%;
+    height:100%;
+    top:0;
+    left:0;
+    border-radius:10px;
+    display:inline-block;
+    z-index:-1;
+    transition: all .5s;
+  }
+
+  .btn-whiteDates::after {
+      background:#353535;
+  }
+
+  .btn-animation-1:hover::after {
+      transform: scaleX(1.6) scaleY(1.8);
+      opacity: 0;
+  }
+
+  @keyframes comeFromBottom{
+    0%{
+      opacity:0;
+      transform:translateY(40px);
+    } 
+    100%{
+      opacity:1;
+      transform:translateY(0);
+    }
+  }
+
 </style>
