@@ -16,7 +16,6 @@ import CKEditor from '@ckeditor/ckeditor5-vue';
 require("../node_modules/bootstrap/dist/css/bootstrap.css")
 
 library.add(faRedo, faUserCheck, faTrash,faEdit,faCopy,faTimes,faSearch, faAngleRight, faAngleLeft, faCreditCard, faDollarSign, faCloudUploadAlt, faUsers, faUserLock, faPlus, faClipboardCheck, faTasks, faPollH, faUserTag, faBoxOpen, faSearchDollar, faChartLine, faCashRegister, faCaretDown, faCaretUp, faBoxes, faCheckSquare, faTags, faPlusSquare, faUserPlus, faAddressBook, faCalendarAlt, faSortUp, faSort, faSortDown,faMoneyBillWave, faMoneyCheckAlt, faHandHoldingUsd, faSignOutAlt, faFolderPlus, faTag, faPercent )
-
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.config.productionTip = false
 Vue.use(VueSweetalert2);

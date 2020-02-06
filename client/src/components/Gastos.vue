@@ -459,11 +459,11 @@
 		border-radius: 10px !important; 
 	}
 	.tableExpenses thead {
-			background-color: rgba(238, 238, 238, 0.623);
-			color: #353535;
-			text-align: center
+		background-color: rgba(238, 238, 238, 0.623);
+		color: #353535;
+		text-align: center
 	}
 	.tableExpenses thead th {
-			border-left: 1px black !important;
+		border-left: 1px black !important;
 	}
 </style>

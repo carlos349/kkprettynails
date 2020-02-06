@@ -772,6 +772,8 @@ import Autocomplete from 'vuejs-auto-complete'
 						timer: 1500
 					})
 					$('#myModalRegisterFund').modal('hide')
+					this.montoCaja = ''
+                    this.nombreCaja = ''
 				}
 			})
 		},

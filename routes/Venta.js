@@ -159,17 +159,10 @@ ventas.get('/findSalesByDay/:dates', async (req, res) => {
  
 })
 
-ventas.get('/closingPerMonth/:month', (req, res) => {
-  const monthSelect = parseFloat(req.params.month)
-  const closing = []
+ventas.get('/closingPerMonth', (req, res) => {
   Cierres.find()
   .then(cierres => {
-    for (let index = 0; index < cierres.length; index++) {
-      if (monthSelect === cierres[index].fecha.getMonth()) {
-        closing.push(cierres[index])
-      }
-    }
-    res.json(closing)
+    res.json(cierres)
   })
   .catch(err => {
     res.send(err)
