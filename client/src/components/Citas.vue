@@ -142,10 +142,10 @@
               </div>
             </div>
             <div class="col-md-12 p-3 processTwo">
-              <div class="col-md-12 text-center p-2" style="font-size:1.2em;color:#353535">Selecciona un cliente y una fecha para la cita</div>
+              <div class="col-md-12 text-center p-2" style="font-size:1.2em;color:#353535;">Selecciona un cliente y una fecha para la cita</div>
               <div class="container">
                 <div class="mx-auto">
-                <div  class="row">
+                <div class="row pt-0">
                   <div class=" mx-auto col-sm-12">
                     
                   </div>

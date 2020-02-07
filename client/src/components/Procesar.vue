@@ -249,10 +249,10 @@
 		</div>
 		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered" role="document">
-		    <div class="modal-content p-1" style="-webkit-box-shadow: 0px 0px 22px 5px rgba(31,86,115,1);
+		    <div class="modal-content" style="-webkit-box-shadow: 0px 0px 22px 5px rgba(31,86,115,1);
 -moz-box-shadow: 0px 0px 22px 5px rgba(31,86,115,1);
 box-shadow: 0px 0px 22px 5px rgba(31,86,115,1);">
-		      <div class="modal-header " v-bind:style="{ 'background-color': '#1F5673'}">
+		      <div class="modal-header " v-bind:style="{ 'background-color': '#6BB2E5'}">
 		        <h5 class="modal-title font-weight-bold text-white" id="exampleModalCenterTitle">Registro cliente</h5>
 		        
 		      </div>
@@ -333,7 +333,7 @@ box-shadow: 0px 0px 22px 5px rgba(31,86,115,1);">
 								</table>
 							</div>
 						</div>
-						<button class="btn w-100 add">Agregar</button>
+						<button class="btn w-100 addProce">Agregar</button>
 					</form>
 		      </div>
 		    </div>
@@ -963,22 +963,50 @@ import Autocomplete from 'vuejs-auto-complete'
 			return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
 		},
 		hundredPorcent(tipo){
-			if (tipo == "efectivo") {
+			let sumaDePagos = 0
+			if (this.pagoEfectivo != '') {
+					sumaDePagos = sumaDePagos + this.pagoEfectivo
+				}
+			if (this.pagoTransf != '') {
+				sumaDePagos = sumaDePagos + this.pagoTransf
+			}
+			if (this.pagoRedCCredito != '') {
+					sumaDePagos = sumaDePagos + this.pagoRedCCredito
+				}
+			if (this.pagoOtros != '') {
+				sumaDePagos = sumaDePagos + this.pagoOtros
+			}
+			if (this.pagoRedCDebito != '') {
+				sumaDePagos = sumaDePagos + this.pagoRedCDebito
+			}
+
+			if (sumaDePagos > 0) {
+				this.$swal({
+					type: 'error',
+					title: '¡El monto sobrepasa el total!',
+					showConfirmButton: false,
+					timer: 2000
+				})
+			}
+			else{
+				if (tipo == "efectivo") {
 				this.pagoEfectivo = this.totalSinFormato
-				
+				}
+				if (tipo == "transferencia") {
+					this.pagoTransf = this.totalSinFormato
+				}
+				if (tipo == "otros") {
+					this.pagoOtros = this.totalSinFormato
+				}
+				if (tipo == "credito") {
+					this.pagoRedCCredito = this.totalSinFormato
+				}
+				if (tipo == "debito") {
+					this.pagoRedCDebito = this.totalSinFormato
+				}
 			}
-			if (tipo == "transferencia") {
-				this.pagoTransf = this.totalSinFormato
-			}
-			if (tipo == "otros") {
-				this.pagoOtros = this.totalSinFormato
-			}
-			if (tipo == "credito") {
-				this.pagoRedCCredito = this.totalSinFormato
-			}
-			if (tipo == "debito") {
-				this.pagoRedCDebito = this.totalSinFormato
-			}
+
+			
 		},
 		hundredMouseOver(tipo){
 			$("."+tipo).toggle()
@@ -1199,8 +1227,8 @@ import Autocomplete from 'vuejs-auto-complete'
 	label{
 		color: black;
 	}
-	.add{
-		background-color: #1F5673;
+	.addProce{
+		background-color: #353535;
 		color: azure;
 		-webkit-transition: all 0.5s ease-out;
 		transition: all 0.5s ease-out;
