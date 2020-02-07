@@ -810,7 +810,6 @@ ventas.put('/:id', async (req, res, next) => {
 
 ventas.post('/procesar', (req, res) => {
   const ifProcess = req.body.ifProcess
-  console.log(ifProcess)
   const services = req.body.servicios
   let clientEdit = req.body.cliente
   const finalClient = clientEdit.split("-")
@@ -820,13 +819,20 @@ ventas.post('/procesar', (req, res) => {
   }else{
     today = new Date(req.body.fecha)
   }
-  const descuento = 100 - req.body.descuento
+
+  var descuento = 100 - req.body.descuento
   var comisionTotal = 0
   for (let index = 0; index < services.length; index++) {
     let comisionPerAmount = 0
-    let comisionDescuento = parseFloat(services[index].precio) * parseFloat('0.'+descuento)
+    let comisionDescuento = 0
+    if (descuento == 100) {
+      comisionDescuento = parseFloat(services[index].precio)
+    }else{
+      comisionDescuento = parseFloat(services[index].precio) * parseFloat('0.'+descuento)
+    }
     comisionPerAmount = comisionDescuento * parseFloat('0.'+req.body.servicios[index].comision)
     comisionTotal = comisionTotal + comisionPerAmount
+    
   }
   
   const total = req.body.total
