@@ -2276,10 +2276,11 @@ import router from '../router'
 
 .CMani{ 
   border-radius: 5px; 
-  background-color: #353535;
-  color: white;
+  background-color: white;
+  color: #353535;
   cursor: pointer;
   font-size: 1.5em;
+  outline: none;
 }
 
 .manis{
