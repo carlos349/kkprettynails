@@ -15,7 +15,7 @@
 							:results-display="formattedDisplay"
 							@selected="addDistributionGroup">
 							</autocomplete>
-							<span v-on:click="clearInput" style="position:absolute;top:20px;left:50px;background-color:white;">{{nombreCliente}}</span>
+							<span v-on:click="clearInput" style="position:absolute;top:20px;left:50px;background-color:white;width:100px;">{{nombreCliente}}</span>
 						</div>
 
 
@@ -28,7 +28,7 @@
 					</autocomplete> -->
 				</div>
 				<div class="input-group input-group-lg col-sm-6">
-					<div class="w-100 " v-on:click="clearInputTwo">
+						<div class="w-100 " v-on:click="clearInputTwo">
 							<autocomplete
 							ref="autocomplete"
 							placeholder="Buscar Prestador"
@@ -38,7 +38,7 @@
 							:results-display="formattedDisplayTwo"
 							@selected="addDistributionGroupTwo">
 							</autocomplete>
-							<span v-on:click="clearInputTwo" style="position:absolute;top:20px;left:50px;background-color:white;">{{maniSelect}}</span>
+							<span v-on:click="clearInputTwo" style="position:absolute;top:20px;left:50px;background-color:white;width:70%;">{{maniSelect}}</span>
 						</div>
 					<!-- <autocomplete	
 						:search="search"
@@ -249,32 +249,45 @@
 		</div>
 		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered" role="document">
-		    <div class="modal-content p-1" style="-webkit-box-shadow: 0px 0px 22px 5px rgba(31,86,115,1);
--moz-box-shadow: 0px 0px 22px 5px rgba(31,86,115,1);
-box-shadow: 0px 0px 22px 5px rgba(31,86,115,1);">
-		      <div class="modal-header " v-bind:style="{ 'background-color': '#1F5673'}">
+		    <div class="modal-content p-1" style="-webkit-box-shadow: 0px 0px 22px 5px rgba(65,67,97,1);
+-moz-box-shadow: 0px 0px 22px 5px rgba(65,67,97,1);
+box-shadow: 0px 0px 22px 5px rgba(65,67,97,1);">
+		      <div class="modal-header " v-bind:style="{ 'background-color': 'rgb(107, 178, 229)'}">
 		        <h5 class="modal-title font-weight-bold text-white" id="exampleModalCenterTitle">Registro cliente</h5>
 		        
 		      </div>
 		      <div class="modal-body">
 				  <form v-on:submit.prevent="ingresoCliente">
 					<div class="form-group">
-						<label for="name">Nombre del cliente</label>
+						<label for="name">Nombre del cliente <span style="color:red;">*</span></label>
 						<input v-model="nombreClienteRegister" type="text" class="form-control w-100 inputsVenta" placeholder="Nombre del prestador">
 					</div>
 					<div class="form-group">
-						<label for="identidad">Instagram o Correo del cliente</label>
-						<input v-model="instagramCliente" type="text" class="form-control w-100 inputsVenta" placeholder="Registre instagram o correo">
+						<label for="identidad">Teléfono del cliente <span style="color:red;">*</span></label>
+						<input v-model="telefonoCliente" type="number" class="form-control w-100 inputsVenta" placeholder="Telefono">
 					</div>
-                    <div class="form-group">
-                        <label for="recomendacion">Registre recomendador</label>
-                        <!-- <autocomplete	
-                            :search="searchClient"
-                            placeholder="Buscar cliente"
-                            aria-label="Buscar cliente"
-                            @submit="handleSubmitClient"
-                            class="autoProcess">
-                        </autocomplete> -->
+					<div class="form-group">
+						<label for="identidad">Correo del cliente <span style="color:blue;">+</span></label>
+						<input v-model="correoCliente" type="email" class="form-control w-100 inputsVenta" placeholder="Correo">
+					</div>
+					<div class="form-group">
+						<label for="identidad">Instagram del cliente <span style="color:blue;">+</span></label>
+						<input v-model="instagramCliente" type="text" class="form-control w-100 inputsVenta" placeholder="Instagram">
+					</div>
+                    <div class="form-group inputProce">
+                        <label for="recomendacion">Registre recomendador <span style="color:blue;">+</span></label>
+                        <div class="w-100 " v-on:click="clearInputThree">
+							<autocomplete
+							ref="autocomplete"
+							placeholder="Buscar recomendador"
+							:source="clients"
+							input-class="esteqlq Three"
+							results-property="data"
+							:results-display="formattedDisplayThree"
+							@selected="addDistributionGroupThree">
+							</autocomplete>
+							<span v-on:click="clearInputThree" style="position:absolute;top:410px;left:50px;background-color:white;width:70%;">{{recomendSelect}}</span>
+						</div>
                     </div>
 					<button class="btn w-100 add">Agregar cliente</button>
 				</form>
@@ -285,10 +298,10 @@ box-shadow: 0px 0px 22px 5px rgba(31,86,115,1);">
 		</div>
 		<div class="modal fade" id="myModalAddServiceFast" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered" role="document">
-		    <div class="modal-content p-1" style="-webkit-box-shadow: 0px 0px 22px 5px rgba(31,86,115,1);
--moz-box-shadow: 0px 0px 22px 5px rgba(31,86,115,1);
-box-shadow: 0px 0px 22px 5px rgba(31,86,115,1);">
-		      <div class="modal-header"  v-bind:style="{ 'background-color': '#1F5673'}">
+		    <div class="modal-content p-1" style="-webkit-box-shadow: 0px 0px 22px 5px rgba(65,67,97,1);
+-moz-box-shadow: 0px 0px 22px 5px rgba(65,67,97,1);
+box-shadow: 0px 0px 22px 5px rgba(65,67,97,1);">
+		      <div class="modal-header"  v-bind:style="{ 'background-color': 'rgb(107, 178, 229)'}">
 		        <h5 class="modal-title text-white font-weight-bold" id="exampleModalCenterTitle">Registrar servicio</h5>
 		      </div>
 		      <div class="modal-body">
@@ -341,10 +354,10 @@ box-shadow: 0px 0px 22px 5px rgba(31,86,115,1);">
 		</div>
 		<div class="modal fade" id="myModalRegisterFund" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered" role="document">
-		    <div class="modal-content p-1" style="-webkit-box-shadow: 0px 0px 22px 5px rgba(31,86,115,1);
--moz-box-shadow: 0px 0px 22px 5px rgba(31,86,115,1);
-box-shadow: 0px 0px 22px 5px rgba(31,86,115,1);">
-		      <div class="modal-header"  v-bind:style="{ 'background-color': '#1F5673'}">
+		    <div class="modal-content p-1" style="-webkit-box-shadow: 0px 0px 22px 5px rgba(65,67,97,1);
+-moz-box-shadow: 0px 0px 22px 5px rgba(65,67,97,1);
+box-shadow: 0px 0px 22px 5px rgba(65,67,97,1);">
+		      <div class="modal-header"  v-bind:style="{ 'background-color': 'rgb(107, 178, 229)'}">
 		        <h5 class="modal-title text-white font-weight-bold" id="exampleModalCenterTitle">Registre un fondo de caja</h5>
 		      </div>
 		      <div class="modal-body">
@@ -451,7 +464,6 @@ import Autocomplete from 'vuejs-auto-complete'
 			pagoTransf: '',
 			nombreCliente: '',
 			nombreClienteRegister:'',
-			instagramCliente: '',
 			precio: '0',
 			fechaVenta:'fecha',
 			total:'0',
@@ -477,7 +489,11 @@ import Autocomplete from 'vuejs-auto-complete'
 			servicesProcess: [],
 			listServicesProcess: [],
 			subTotal: 0,
-			idProcess: ''
+			idProcess: '',
+			recomendSelect: '',
+			telefonoCliente: '',
+			correoCliente: '',
+			instagramCliente: '',
 		 }
 	 },
 	 beforeCreate() {
@@ -552,6 +568,18 @@ import Autocomplete from 'vuejs-auto-complete'
 			// $('.esteqlq').val(group.display)
 			
 		},
+		formattedDisplayThree (result) {
+			return result.nombre+'-'+result.identidad
+		},
+		addDistributionGroupThree (group) {
+			setTimeout(() => {
+				this.recomendSelect = group.display
+			}, 100);
+			// access the autocomplete component methods from the parent
+			// this.$refs.autocomplete.clear()
+			// $('.esteqlq').val(group.display)
+			
+		},
 		handleSubmitClient(result){
 			console.log(result)
 			this.nombreCliente = result
@@ -592,17 +620,17 @@ import Autocomplete from 'vuejs-auto-complete'
 				this.arregloManicuristas = []
 				this.manicuristas = res.data
 				this.arrayMani()
+				axios.get('users/clientes')
+				.then(res => {
+					this.arregloClients = []
+					this.clients = res.data
+					this.arrayUsers()
+					axios.get('servicios')
+					.then(res => {
+						this.servicios = res.data
+					})
+				})
 			}),
-			axios.get('users/clientes')
-			.then(res => {
-				this.arregloClients = []
-				this.clients = res.data
-				this.arrayUsers()
-			})
-			axios.get('servicios')
-			.then(res => {
-				this.servicios = res.data
-			})
 			this.precio = 0
 			this.indentidadCliente = ""
 			this.inspector = false
@@ -641,30 +669,41 @@ import Autocomplete from 'vuejs-auto-complete'
 			$('#myModal').modal('show')	
 		},
 		ingresoCliente() {
-			axios.post('clients', {
-				nombre:this.nombreClienteRegister,
-				identidad:this.instagramCliente,
-				recomendador:this.nombreCliente
-			})
-			.then(res => {
-				if (res.data.status == 'Registrado') {
-					this.$swal({
-						type: 'success',
-						title: 'Cliente registrado',
-						showConfirmButton: false,
-						timer: 1500
-					})
-					this.getManicuristas()
-					$('#myModal').modal('hide')
-				}else{
-					this.$swal({
-						type: 'error',
-						title: 'El cliente ya existe',
-						showConfirmButton: false,
-						timer: 1500
-					})
-				}
-			})
+			if (this.nombreClienteRegister == '' || this.telefonoCliente == '') {
+				this.$swal({
+					type: 'error',
+					title: 'Llene los campos requeridos',
+					showConfirmButton: false,
+					timer: 1500
+				})
+			}else{
+				axios.post('clients', {
+					nombre:this.nombreClienteRegister,
+					identidad:this.telefonoCliente,
+					correoCliente: this.correoCliente,
+					instagramCliente: this.instagramCliente,
+					recomendador:this.recomendSelect
+				})
+				.then(res => {
+					if (res.data.status == 'Registrado') {
+						this.$swal({
+							type: 'success',
+							title: 'Cliente registrado',
+							showConfirmButton: false,
+							timer: 1500
+						})
+						this.getManicuristas()
+						$('#myModal').modal('hide')
+					}else{
+						this.$swal({
+							type: 'error',
+							title: 'El cliente ya existe',
+							showConfirmButton: false,
+							timer: 1500
+						})
+					}
+				})
+			}	
 		},
 		elegirManicurista(){
 			axios.get('manicuristas/justone/' + this.maniSelect)
@@ -994,6 +1033,10 @@ import Autocomplete from 'vuejs-auto-complete'
 		this.maniSelect = ''
 		$('.two').focus()
 		},
+		clearInputThree(){
+		this.recomendSelect = ''
+		$('.Three').focus()
+		},
 		myFunctionServFast() {
 			var input, filter, table, tr, td, i, txtValue;
 			input = document.getElementById("myInputServFast");
@@ -1200,18 +1243,17 @@ import Autocomplete from 'vuejs-auto-complete'
 		color: black;
 	}
 	.add{
-		background-color: #1F5673;
+		background-color:#353535;
 		color: azure;
-		-webkit-transition: all 0.5s ease-out;
 		transition: all 0.5s ease-out;
 		font-family: 'Roboto', sans-serif !important;
-		font-weight: 600;
+		font-weight:600;
 		letter-spacing: 1px;
-		border-radius: 5px;
+		border-radius:5px;
 	}
 	.add:hover{
-		background-color: #ccc;
-		color:black;
+		background-color:#ccc;
+		color:#001514;
 	}
 	.addProc{
 		background-color:#28a745;
