@@ -6,16 +6,16 @@
 					<form v-on:submit.prevent="login">
 						<img style="width:20%;margin-left:40%;margin-bottom:4%" src="../assets/logoNew.png" alt="">
 						<!-- <span class="logoLetra">Syswa</span> -->
-						<h1 class="h3 font-weight-normal">Iniciar sesión</h1>
+						
 						<div class="form-group">
 							<label for="email">Dirección de correo</label>
-							<input type="email" v-model="email" class="inputLogin" name="email" placeholder="Ingrese su correo">
+							<input type="email" v-model="email" class="inputLogin w-100" name="email" placeholder="Ingrese su correo">
 						</div>
 						<div class="form-group">
 							<label for="password">Contraseña</label>
-							<input type="password" v-model="password" class="inputLogin" name="password" placeholder="Ingrese su contraseña">
+							<input type="password" v-model="password" class="inputLogin w-100" name="password" placeholder="Ingrese su contraseña">
 						</div>
-						<button class="btn btn-lg btn-block botonLogin" type="submit">Ingresar</button>
+						<button class="btn btn-lg btn-block botonLogin" type="submit">Iniciar sesión</button>
 					</form>
 				</div>
 			</div>
@@ -121,23 +121,12 @@
 		padding:20px;
 		font-family: 'Roboto', sans-serif;
 		font-weight:600;
-		background-color:#fff;
+		background-color:rgba(238, 238, 238, 0.623);
 		color:black;
 		width:30%;
 		-webkit-box-shadow: 0px 14px 30px 4px rgba(0,0,0,0.75);
 		-moz-box-shadow: 0px 14px 30px 4px rgba(0,0,0,0.75);
 		box-shadow: 0px 14px 30px 4px rgba(0,0,0,0.75);
-	}
-
-	.inputLogin{
-		width:100%;
-		padding:5px;
-		border:none;
-		border-bottom: 2px solid #213b45;
-		background-color:transparent;
-		font-family: 'Roboto', sans-serif;
-		outline:none;
-		transition: all 0.5s ease-out;
 	}
 	.logoLetra{
 		/* font-family: 'Beth Ellen', cursive; */
@@ -149,7 +138,7 @@
 		transition: all 0.5s ease-out;
 	}
 	.botonLogin{
-		background-color:#1F5673;
+		background-color:#353535;
 		color: azure;
 		transition: all 0.5s ease-out;
 		font-family: 'Roboto', sans-serif !important;
@@ -166,6 +155,17 @@
 		color:#102229;
 		transition: all 0.5s ease-out;
 	}
-	
+	.inputLogin{
+		background-color: white !important;
+		-webkit-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+		-moz-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+		box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+		border: none !important;
+		border-radius: 5px;
+		padding: 10px;
+		width: 50% ;
+		color: black !important;
+		outline: none !important;
+	}
 
 </style>

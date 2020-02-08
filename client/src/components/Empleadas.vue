@@ -32,20 +32,20 @@
 					</button>
 				</div>
 				<div>
-					<table  class="table table-dark" style="color:black !important; background-color: rgba(238, 238, 238, 0.623)" >
+					<table  class="table mb-0" style="color:black !important; background-color: rgba(238, 238, 238, 0.623);border-radius:5px 5px 0 0 !important;border:none !important" >
 						<thead>
 							<tr>
-								<th>
+								<th style="border:none !important">
 									Prestador
 								</th>
-								<th class="text-right">
+								<th  style="border:none !important" class="text-right">
 									Cantidad de servicios
 								</th>				
 							</tr>
 						</thead>
 					</table>
-					<div class="ListaPrestadorTwo">
-						<table class="table table-light table-borderless table-striped">
+					<div class="ListaPrestadorTwo mt-0">
+						<table class="table table-light table-striped">
 							<tbody>
 								<tr v-for="PrestadorQuantityPerMonth of PrestadorQuantityPerMonths">
 									<td class="font-weight-bold">

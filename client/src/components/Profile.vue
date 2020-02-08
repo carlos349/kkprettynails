@@ -1,29 +1,138 @@
 <template>
-	<div v-bind:style="{ 'background-color': '#fff'}" class="infoBasic container-fluid m-5 p-3">
+	<div  class=" container-fluid p-3">
 		<div class="row">
-			<div  class="col-sm-3 ">
-				<div v-bind:style="{ 'background-color': '#1f5673'}" class="col-sm-12 m-1 text-white p-3 text-center infoBasic">
-					<h2>{{first_name}} {{last_name}}</h2>
-				</div>
-				<div v-bind:style="{ 'background-color': '#ded22f'}" class="col-sm-12 m-1  p-3 text-center infoBasic">
-					<h2 v-if="status == 1">Gerencia</h2>
-					<h2 v-if="status == 2">Personal de caja</h2>
-					<h2 v-if="status == 3">Prestador</h2>
-				</div>
-				<div v-bind:style="{ 'background-color': '#f0eeeb'}" class="col-sm-12 m-1  p-3 text-center infoBasic">
-					<h2>Ultima conexión</h2>
-					<h4>{{formatDate(access)}}</h4>
-				</div>
 			
+			<div style="background-color:rgba(238, 238, 238, 0.623);height:93vh;border-radius:5px" class="col-sm-3 m-3 mt-0">
+				<center>
+					<img class="infoBasic" style="width: 60%;height:30vh;" :src="image" alt="">
+				</center>
+				
+				<!-- <input type="file" id="file" ref="file" v-on:change="handleFileUpload" class="btn m-1 w-75 ml-2 addPerfil pb-1" style="cursor:pointer;">
+				<button class="btn m-1 w-75 ml-2 addPerfil" v-on:click="editImage">Editar foto de perfil</button> -->
+				<div  class="col-sm-12 m-1 p-1 text-left infoBasic">
+				<h1><b>{{first_name}} {{last_name}}</b></h1>
+				<h5>{{email}}</h5>
+				</div>
+				<div  class="col-sm-12 m-1 p-1  text-left infoBasic">
+					<h4 v-if="status == 1"> <b>Cargo:</b>  Gerencia</h4>
+					<h4 v-if="status == 2"> <b>Cargo:</b>  Personal de caja</h4>
+					<h4 v-if="status == 3"> <b>Cargo:</b>  Prestador</h4>
+				</div>
+				<div  class="col-sm-12 m-1  p-1 text-left infoBasic">
+					<h4><b>Última conexión:</b>  {{formatDate(access)}}</h4>
+					
+				</div>
 			</div>
-			<div class="col-sm-3">
-				<img class="infoBasic" style="width: 80%;height:30vh;" :src="image" alt="">
-				<input type="file" id="file" ref="file" v-on:change="handleFileUpload" class="btn m-1 w-75 ml-2 add pb-1" style="cursor:pointer;">
-				<button class="btn m-1 w-75 ml-2 add" v-on:click="editImage">Editar foto de perfil</button>
-			</div>
-			<div v-bind:style="{ 'background-color': '#fff'}" class="col-md-6 infoBasic p-3">
-				<h2 style="color:#1f5673" class="text-center" >Información Básica</h2>
-				<table class="table mx-auto">
+			<div style="height:93vh;" class="col-md-8 mt-3 mx-auto infoBasic p-3">
+				
+				<div class="">
+					<div v-if="link != ''" class="col-sm-12">
+						<div  class="row pl-1">
+					<div class="col-sm-4 ">
+						<div class="first metricss">
+							<p><b>Total de ventas</b> </p>
+							<h3>{{ventas.length}}</h3>
+						</div>
+					
+					</div>	
+					<div class="col-sm-4">
+						<div class="metricss first">
+							<p><b>Comision total</b> </p>
+							<h3>$ {{formatPrice(yourComision)}}</h3>
+						</div>
+						
+					</div>
+					<div class="col-sm-4 ">
+						<div class="metricss first">
+							<p><b>Adelantos</b> </p>
+						<h3>Adelanto</h3>
+						</div>
+						
+					</div>
+				</div>
+							<v-client-table v-if="link != ''" class="text-center tablePerfilVenta"  :data="ventas" :columns="columns" :options="optionsT">
+							<div slot="print"  slot-scope="props">
+							<button v-if="props.row.status" style="width:100%;" v-on:click="reporteVenta(props.row._id)" class=" btn btn-colorsPrint"><font-awesome-icon icon="copy" /></button>
+							<button v-else style="width:100%;" v-on:click="reporteVenta(props.row._id)" class=" btn btn-danger"><font-awesome-icon icon="copy" /></button>
+							</div>
+							
+							
+							<p slot="descuentoo" slot-scope="props">{{props.row.descuento}}%</p>
+							<p slot="clientNombre" slot-scope="props">{{justName(props.row.cliente)}}</p>
+							<p slot="comisionn" slot-scope="props">{{formatPrice(props.row.comision)}}</p>
+							<p slot="locall" slot-scope="props">{{formatPrice(props.row.ganancialocal)}}</p>
+							<p slot="totall" slot-scope="props">{{formatPrice(props.row.total)}}</p>
+							<!-- <a slot="edit" slot-scope="props" class="fa fa-edit" :href="pasarDatosEdit(props.row.nombre, props.row.identidad, props.row.correoCliente, props.row.instagramCliente, props.row._id)">Hola </a> -->
+						</v-client-table>
+					</div>
+				
+				<div v-else class="col-sm-12">
+					<div class="row sectionmetricsInMetricsPerfil">
+						<div class="col-md-12">
+							<h1 class="text-center ml-5">Control de ventas</h1>
+							<div class="metricsInMetricsPerfil ">
+							<p class="text-center"> <b>Diarias</b> </p>
+							<div class="row">
+								<div class="col-sm-4 text-center">
+									<h2>Ventas</h2>
+									<p>0</p>
+								</div>
+								<div class="col-sm-4 text-center">
+									<h2>Servicios</h2>
+									<p>0</p>
+								</div>
+								<div class="col-sm-4 text-center">
+									<h2>Gastos</h2>
+									<p>0</p>
+								</div>
+							</div>
+							
+							</div> 
+						</div>
+						<div class="col-md-12">
+							<div class="metricsInMetricsPerfil ">
+							<p class="text-center"><b>Semanales</b> </p>
+							<div class="row">
+								<div class="col-sm-4 text-center">
+									<h2>Ventas</h2>
+									<p>0</p>
+								</div>
+								<div class="col-sm-4 text-center">
+									<h2>Servicios</h2>
+									<p>0</p>
+								</div>
+								<div class="col-sm-4 text-center">
+									<h2>Gastos</h2>
+									<p>0</p>
+								</div>
+							</div>
+							</div>
+						</div>
+						<div class="col-md-12">
+							<div class="metricsInMetricsPerfil">
+							<p class="text-center"><b>Mensuales</b> </p>
+							<div class="row">
+								<div class="col-sm-4 text-center">
+									<h2>Ventas</h2>
+									<p>0</p>
+								</div>
+								<div class="col-sm-4 text-center">
+									<h2>Servicios</h2>
+									<p>0</p>
+								</div>
+								<div class="col-sm-4 text-center">
+									<h2>Gastos</h2>
+									<p>0</p>
+								</div>
+							</div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+              
+            </div>
+				<!-- <table style="background-color:rgba(238, 238, 238, 0.623);border-radius:5px;" class="table mx-auto tablePerfil">
 					<tbody>
 						<tr>
 							<td>Nombre</td>
@@ -32,7 +141,7 @@
 								<input v-else type="text" class="form-control w-75" v-model="first_name">
 							</td>
 							<td>
-								<button v-if="changeFirst" class="btn w-75 add" v-on:click="change('first')">Editar</button>
+								<button v-if="changeFirst" class="btn w-75 addPerfil" v-on:click="change('first')">Editar</button>
 								<button v-else class="btn w-75 btn-success" v-on:click="EditDataFirst()">Editar</button>
 							</td>
 						</tr>
@@ -43,14 +152,14 @@
 								<input v-else type="text" class="form-control w-75" v-model="last_name">
 							</td>
 							<td>
-								<button v-if="changeLast" class="btn w-75 add" v-on:click="change('last')">Editar</button>
+								<button v-if="changeLast" class="btn w-75 addPerfil" v-on:click="change('last')">Editar</button>
 								<button v-else class="btn w-75 btn-success" v-on:click="EditDataLast()">Editar</button>
 							</td>
 						</tr>
 						<tr>
 							<td>Contraseña</td>
 							<td>**********</td>
-							<td><button class="btn w-75 add" v-on:click="openModal">Editar</button></td>
+							<td><button class="btn w-75 addPerfil" v-on:click="openModal">Editar</button></td>
 						</tr>
 						<tr>
 							<td>Correo</td>
@@ -59,14 +168,16 @@
 								<input v-else type="text" class="form-control w-75" v-model="email">
 							</td>
 							<td>
-								<button v-if="changeEmail" class="btn w-75 add" v-on:click="change('email')">Editar</button>
+								<button v-if="changeEmail" class="btn w-75 addPerfil" v-on:click="change('email')">Editar</button>
 								<button v-else class="btn w-75 btn-success" v-on:click="EditDataEmail()">Editar</button>
 							</td>
 						</tr>
 					</tbody>
-				</table>
+				</table> -->
 				</div>
+
 			</div>
+			
 		
 			<div class="container">
 				<div class="row p-5">
@@ -98,35 +209,7 @@
 		    </div>
 		  </div>
 		</div>
-		<div class="col-md-12">
-            <div class="shadow pl-5">
-				<div v-if="link != ''" class="row pl-3">
-					<div class="col-md-2 col-sm-5 metricss first">
-					<p>Total de ventas</p>
-					<h2>{{ventas.length}}</h2>
-					</div>	
-					<div class="col-md-2 col-sm-5 metricss second">
-						<p>Comision total</p>
-						<h2>{{formatPrice(yourComision)}}</h2>
-					</div>
-				</div>
-				
-              <v-client-table v-if="link != ''" class="text-center"  :data="ventas" :columns="columns" :options="optionsT">
-                <div slot="print"  slot-scope="props">
-                  <button v-if="props.row.status" style="width:100%;" v-on:click="reporteVenta(props.row._id)" class=" btn btn-colorsPrint"><font-awesome-icon icon="copy" /></button>
-                  <button v-else style="width:100%;" v-on:click="reporteVenta(props.row._id)" class=" btn btn-danger"><font-awesome-icon icon="copy" /></button>
-                </div>
-                
-                
-                <p slot="descuentoo" slot-scope="props">{{props.row.descuento}}%</p>
-				<p slot="clientNombre" slot-scope="props">{{justName(props.row.cliente)}}</p>
-                <p slot="comisionn" slot-scope="props">{{formatPrice(props.row.comision)}}</p>
-                <p slot="locall" slot-scope="props">{{formatPrice(props.row.ganancialocal)}}</p>
-                <p slot="totall" slot-scope="props">{{formatPrice(props.row.total)}}</p>
-                <!-- <a slot="edit" slot-scope="props" class="fa fa-edit" :href="pasarDatosEdit(props.row.nombre, props.row.identidad, props.row.correoCliente, props.row.instagramCliente, props.row._id)">Hola </a> -->
-              </v-client-table>
-            </div>
-          </div>
+
 	</div>
 </template>
 
@@ -148,7 +231,7 @@
 			return {
 				columns:['fecha' , 'servicios' , 'clientNombre' , 'descuentoo' , 'comisionn' , 'totall', 'print'],
 				optionsT: {
-					filterByColumn: true,
+					filterByColumn: false,
 					texts: {
 						filter: "Filtrar:",
 						filterBy: 'Filtrar por {column}',
@@ -434,11 +517,12 @@
 </script>
 <style>
 	.infoBasic{
-		box-shadow: 0 0.46875rem 2.1875rem rgba(4,9,20,0.03), 0 0.9375rem 1.40625rem rgba(4,9,20,0.03), 0 0.25rem 0.53125rem rgba(4,9,20,0.05), 0 0.125rem 0.1875rem rgba(4,9,20,0.03);
+		color: #353535;
+		font-size: 2em;
 		border-radius: 5px;
 	}
-	.add{
-		background-color:#1F5673;
+	.addPerfil{
+		background-color:#353535;
 		color: azure;
 		transition: all 0.5s ease-out;
 		font-family: 'Roboto', sans-serif !important;
@@ -446,7 +530,7 @@
 		letter-spacing: 1px;
 		border-radius:5px;
     }
-	.add:hover{
+	.addPerfil:hover{
 		background-color:#ccc;
 		color:#001514;
     }
@@ -498,30 +582,63 @@
 [v-cloak] {
   display:none;
 }
-
-thead {
-		background-color: #1f5673;
-		color: #fff;
-		text-align: center
+	.tablePerfilVenta th{
+	border:none !important;
 	}
+	.table-bordered tbody{
+		background-color: white;
+	}
+	.tablePerfilVenta table{
+		font-size: 0.5em;
+	
+	}
+	.table-bordered {
+		box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+		border-radius: 10px !important; 
+	}
+	.tablePerfilVenta thead {
+			background-color: rgba(238, 238, 238, 0.623);
+			color: #353535;
+			text-align: center
+	}
+	.tablePerfilVenta thead th {
+			border-left: 1px black !important;
+	}
+
 	.metricss{
-		height: auto;
-		margin:10px;
-    padding: auto;
-    margin-top: 20px;
-		color:#fff;
+		padding-left: 15px;
+		color:#353535;
 		box-shadow: 0 0.46875rem 2.1875rem rgba(4,9,20,0.03), 0 0.9375rem 1.40625rem rgba(4,9,20,0.03), 0 0.25rem 0.53125rem rgba(4,9,20,0.05), 0 0.125rem 0.1875rem rgba(4,9,20,0.03);
 		border-radius:5px;
 	}
 	.metricss p{
-		font-size: 1.3em;
+		font-size: 1em;
 		margin-top: 10px;
 		
 	}
+
+	.tablePerfil  td{
+		border: none !important;
+	}
 	.first{
-		background:#1F5673; /* fallback for old browsers */
+	  background-color: rgba(238, 238, 238, 0.623)
 	}
-	.second{
-		background:#1F5673; /* fallback for old browsers */
+	.metricsInMetricsPerfil{
+		height: auto;
+		color:#fff;
+		box-shadow: 0 0.46875rem 2.1875rem rgba(4,9,20,0.03), 0 0.9375rem 1.40625rem rgba(4,9,20,0.03), 0 0.25rem 0.53125rem rgba(4,9,20,0.05), 0 0.125rem 0.1875rem rgba(4,9,20,0.03);
+		border-radius:5px;
+		padding: 15px;
+		width: 104%;
+		margin: auto;
+		margin-top: 50px;
+		background:rgba(238, 238, 238, 0.623); /* fallback for old browsers */
+    	color: #353535 !important;
 	}
+	.metricsInMetricsPerfil p{
+		font-size: 0.8em;
+		margin-top: 10px;
+		
+	}
+	
 </style>

@@ -15,7 +15,7 @@
 							:results-display="formattedDisplay"
 							@selected="addDistributionGroup">
 							</autocomplete>
-							<span v-on:click="clearInput" style="position:absolute;top:20px;left:50px;background-color:white;width:100px;">{{nombreCliente}}</span>
+							<span v-on:click="clearInput" style="position:absolute;top:20px;left:50px;background-color:white;width:75%;">{{nombreCliente}}</span>
 						</div>
 
 
@@ -38,7 +38,7 @@
 							:results-display="formattedDisplayTwo"
 							@selected="addDistributionGroupTwo">
 							</autocomplete>
-							<span v-on:click="clearInputTwo" style="position:absolute;top:20px;left:50px;background-color:white;width:70%;">{{maniSelect}}</span>
+							<span v-on:click="clearInputTwo" style="position:absolute;top:20px;left:50px;background-color:white;width:75%;">{{maniSelect}}</span>
 						</div>
 					<!-- <autocomplete	
 						:search="search"
@@ -87,7 +87,7 @@
 
 								</td>
 								<td style="border:none" v-if="servicio.active" class=" font-weight-bold  text-center">
-									{{formatPrice(servicio.precio)}}
+									$ {{formatPrice(servicio.precio)}}
 								</td>
 							</tr>
 							
@@ -194,29 +194,8 @@
 						</div>
 					</div>
 					
-						<!-- <label v-on:click="elegirManicurista()" class="contRadio mx-auto">Efectivo
-							<input type="radio" id="efectivo" checked="checked" name="radio"  v-model="pagoTipo">
-							<span class="checkRadio mt-1"></span>
-						</label>
-						<label v-on:click="elegirManicurista()" class="contRadio mx-auto">Tarjeta
-							<input type="radio" id="tarjeta" name="radio"  v-model="pagoTipo">
-							<span class="checkRadio mt-1"></span>
-						</label> -->
+
 					</div>
-					
-					
-					<!-- <select class="form-control selectPago" v-model="pagoTipo" v-on:change="elegirManicurista()">
-						<option value="">Seleccione</option>
-						<option value="tarjeta" >Tarjeta</option>
-						<option value="efectivo">Efectivo</option>
-					</select> -->
-				
-				
-				<!-- <button v-if="!inspector" type="button" class="font-weight-bold btn procesar w-100" v-on:click="procesar" disabled>Procesar
-				</button>
-				
-				<button v-else type="button" class="font-weight-bold mb-3 btn procesar w-100" v-on:click="procesar">Procesar
-				</button> -->
 			</div>
 				<div class="col-sm-12 p-2 mt-2">
 					<div class="row p-0">
@@ -232,8 +211,6 @@
 						
 					</div>
 					<div style="height:40%" class="col-sm-6">
-						<!-- <button v-if="!inspector" type="button" class="font-weight-bold btn m-0 procesar w-100" v-on:click="procesar" disabled>Procesar
-					</button> -->
 						<div v-if="!inspector" style="font-size:2em"  class="procesarFinale p-2 text-center w-100">
 							 <b>Procesar</b>
 						</div>
@@ -249,7 +226,7 @@
 		</div>
 		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered" role="document">
-		    <div class="modal-content p-1" style="-webkit-box-shadow: 0px 0px 22px 5px rgba(65,67,97,1);
+		    <div class="modal-content" style="-webkit-box-shadow: 0px 0px 22px 5px rgba(65,67,97,1);
 -moz-box-shadow: 0px 0px 22px 5px rgba(65,67,97,1);
 box-shadow: 0px 0px 22px 5px rgba(65,67,97,1);">
 		      <div class="modal-header " v-bind:style="{ 'background-color': 'rgb(107, 178, 229)'}">
@@ -289,7 +266,7 @@ box-shadow: 0px 0px 22px 5px rgba(65,67,97,1);">
 							<span v-on:click="clearInputThree" style="position:absolute;top:410px;left:50px;background-color:white;width:70%;">{{recomendSelect}}</span>
 						</div>
                     </div>
-					<button class="btn w-100 add">Agregar cliente</button>
+					<button class="btn w-100 addProce">Agregar cliente</button>
 				</form>
 		      </div>
 		    </div>
@@ -298,7 +275,7 @@ box-shadow: 0px 0px 22px 5px rgba(65,67,97,1);">
 		</div>
 		<div class="modal fade" id="myModalAddServiceFast" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered" role="document">
-		    <div class="modal-content p-1" style="-webkit-box-shadow: 0px 0px 22px 5px rgba(65,67,97,1);
+		    <div class="modal-content" style="-webkit-box-shadow: 0px 0px 22px 5px rgba(65,67,97,1);
 -moz-box-shadow: 0px 0px 22px 5px rgba(65,67,97,1);
 box-shadow: 0px 0px 22px 5px rgba(65,67,97,1);">
 		      <div class="modal-header"  v-bind:style="{ 'background-color': 'rgb(107, 178, 229)'}">
@@ -312,7 +289,7 @@ box-shadow: 0px 0px 22px 5px rgba(65,67,97,1);">
 						</div>
 						<div class="form-group">
 							<label for="nombre">Tiempo</label>
-							<select class="form-control inputsVenta" v-model="tiempoServi">
+							<select class="form-control inputsVenta w-100" v-model="tiempoServi">
 								<option style="color:black;" selected value="Seleccione el tiempo">Seleccione el tiempo</option>
 								<option style="color:black;" value="15">15 Minutos</option>
 								<option style="color:black;" value="30">30 Minutos</option>
@@ -324,7 +301,7 @@ box-shadow: 0px 0px 22px 5px rgba(65,67,97,1);">
 						</div>
 						<div class="form-group">
 							<label for="name">Precio</label>
-							<input v-model="precioServi" type="text" class="form-control inputsVenta" placeholder="Precio">
+							<input v-model="precioServi" type="text" class="form-control w-100 inputsVenta" placeholder="Precio">
 						</div>
 						<div class="form-group row" style="margin-top:-15px;">
 							<input type="text" id="myInputServFast" v-on:keyup="myFunctionServFast()" class="form-control buscar inputsVenta w-100 mt-2" placeholder="Buscar prestadores"/>
@@ -371,7 +348,7 @@ box-shadow: 0px 0px 22px 5px rgba(65,67,97,1);">
 							<label for="name">Fondo de caja</label>
 							<input v-model="montoCaja" type="text" class="form-control inputsVenta w-100" placeholder="Ingrese el fondo de la caja">
 						</div>
-						<button class="btn w-100 add">Ingresar</button>
+						<button class="btn w-100 addProce">Ingresar</button>
 					</div>
 				</form>
 		      </div>
@@ -968,6 +945,7 @@ import Autocomplete from 'vuejs-auto-complete'
 			this.maniSelect = ''
 			this.nombreCliente = ''
 			this.resto  = 0
+			this.inspector = false
 		},
 		mouseOverVenta(clase,num){
 		setTimeout(() => {

@@ -38,7 +38,7 @@
         </div>
         <div class="col-md-2">
           <div class="pt-3 pb-3">
-            <button class="btn findSales w-75" v-on:click="findSalesByDay">
+            <button class="btn findSales w-100" v-on:click="findSalesByDay">
               Filtrar día
             </button>
           </div>
@@ -91,49 +91,61 @@
 
       <div class="modal fade" id="modalDetalleSale" tabindex="-1"  role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered "  >
-          <div class="modal-content p-3" style="background-color:#fff;">
-            <div class="modal-header" v-bind:style="{ 'background-color': '#1F5673'}">
-              <h3 class="modal-title font-weight-bold text-white" id="exampleModalCenterTitle">Detalle de la venta</h3>
+          <div class="modal-content" style="background-color:#fff;">
+            <div class="modal-header text-center" v-bind:style="{ 'background-color': '#6BB2E5'}">
+              <center>
+                <h3 class="modal-title font-weight-bold text-center text-white" id="exampleModalCenterTitle">Detalle de la venta</h3>
+              </center>
+              
               <button type="button" class="close" data-dismiss="modal" aria-label="Close" >
                 <span aria-hidden="true" class="text-white" v-bind:style="{ 'font-size': '1.5em'}">&times;</span>
               </button>
             </div>
-            <div  class="modal-body row">
-              <div class="form-group col-md-6">
-                <label for="name">Fecha</label>
-                <h4>{{formatDate(arreglo.fecha)}}</h4>
+            <div  class="modal-body row p-3">
+              <div class="form-group col-md-12">
+                <h4> <b>Prestador: </b> {{justName(arreglo.manicurista)}}</h4>
+                <h4> <b>Cliente:</b>  {{justNameTwo(arreglo.cliente)}}</h4>
+                <h4><b>Contacto: </b>{{justNameThree(arreglo.cliente)}}</h4>
+                <br>
+                <div class="row text-center">
+                  <div class="col-sm-6"> <h4> <b>Fecha:</b>  {{formatDate(arreglo.fecha)}}</h4></div>
+                  <div class="col-sm-6"> <h4><b> Hora:</b>  {{formatDateHora(arreglo.fecha)}}</h4> </div>
+                </div>
+                
               </div>
-              <div class="form-group col-md-6">
-                <label for="name">Nombre del cliente</label>
-                <h4>{{justNameTwo(arreglo.cliente)}} <br> {{justNameThree(arreglo.cliente)}}</h4>
+              <div class="form-group col-md-12">
+                <h3 class="text-center"><b>Métodos de pago</b></h3>
               </div>
-              <div class="form-group col-md-6">
-                <label for="name">Nombre del prestador</label>
-                <h4>{{justName(arreglo.manicurista)}}</h4>
-              </div>
-              <div class="form-group col-md-6">
-                <label for="name">Métodos de pago</label>
-                <label v-if="arreglo.pagoEfectivo > 0">Efectivo: {{formatPrice(arreglo.pagoEfectivo)}}</label>
-                <label v-if="arreglo.pagoRedCDebito > 0">RedCompra Debito: {{formatPrice(arreglo.pagoRedCDebito)}}</label>
-                <label v-if="arreglo.pagoRedCCredito > 0">RedCompra Credito: {{formatPrice(arreglo.pagoRedCCredito)}}</label>
-                <label v-if="arreglo.pagoTransf > 0">Transferencia: {{formatPrice(arreglo.pagoTransf)}}</label>
-                <label v-if="arreglo.pagoOtros > 0">Otros: {{formatPrice(arreglo.pagoOtros)}}</label>
-              </div>
+
               <ul class="list-group mb-2 " style="width:100%;">
-                <li class="list-group-item"  style="background-color: transparent !important">Servicios:
-                  <span v-for="(service, index) of arreglo.servicios" :key="service._id" style="margin-bottom:-5px"> 
+                <li class="list-group-item" style="background-color: transparent !important">
+                  <h5 v-if="arreglo.pagoTransf > 0"><b>Transferencia:</b> <span class="float-right">$ {{formatPrice(arreglo.pagoTransf)}}</span> </h5> 
+                  <h5 v-if="arreglo.pagoEfectivo > 0"><b>Efectivo:</b> <span class="float-right">$ {{formatPrice(arreglo.pagoEfectivo)}}</span> </h5>
+                  <h5 v-if="arreglo.pagoRedCCredito > 0"><b>Crédito:</b> <span class="float-right">$ {{formatPrice(arreglo.pagoRedCCredito)}}</span> </h5> 
+                  <h5 v-if="arreglo.pagoRedCDebito > 0"><b>Débito:</b> <span class="float-right">$ {{formatPrice(arreglo.pagoRedCDebito)}}</span>  </h5> 
+                  <h5 v-if="arreglo.pagoOtros > 0"><b>Otros:</b> <span class="float-right">$ {{formatPrice(arreglo.pagoOtros)}}</span> </h5>
+                </li>
+              
+             
+                <li class="list-group-item"  style="background-color: transparent !important">
+                  <h3 class="text-center"><b>Servicios</b> </h3> 
+                  <span v-for="(service, index) of arreglo.servicios" :key="service._id" style="margin-bottom:-5px;font-size:1.25em"> 
                     <span v-if="index == 0"> {{service.servicio}}</span>
                     <span v-else> / {{service.servicio}}</span>
                   </span> 
                 </li>
-                <li class="list-group-item" style="background-color: transparent !important"><h5>Comisión: <span style="float:right;"> {{ formatPrice(arreglo.comision) }}</span></h5></li>
-                <li class="list-group-item" style="background-color: transparent !important"><h5>Ganancia del local:<span style="float:right;"> {{ formatPrice(arreglo.ganancialocal) }}</span></h5></li>
-                <li class="list-group-item" style="background-color: transparent !important"><h5>Descuento: <span style="float:right;"> {{arreglo.descuento }}% </span></h5></li>
-                <li v-if="arreglo.design" class="list-group-item" style="background-color: transparent !important"><h5>Diseño: <span style="float:right;"> {{ formatPrice(arreglo.design) }}</span></h5></li>
-                <li class="list-group-item" style="background-color: transparent !important"><h5>Total:<span style="float:right;"> {{ formatPrice(arreglo.total) }}</span></h5></li>
+                
+                <li class="list-group-item" style="background-color: transparent !important">
+                  <h3 class="text-center"><b>Detalle</b> </h3>
+                  <h5>Descuento: <span style="float:right;">  {{arreglo.descuento }}% </span></h5>
+                  <h5>Comisión: <span style="float:right;">$  {{ formatPrice(arreglo.comision) }}</span></h5>
+                  <h5>Diseño: <span style="float:right;"> {{ formatPrice(arreglo.design) }}</span></h5>
+                  <h5>Local:<span style="float:right;"> $ {{ formatPrice(arreglo.ganancialocal) }}</span></h5>
+                  <h5> <b>Total:</b> <span style="float:right;"><b>$ {{ formatPrice(arreglo.total) }}</b> </span></h5>
+                  </li>
               </ul>
               
-              <button v-if="arreglo.status" class="btn w-100 add" v-on:click="cancelSale(arreglo._id)">Anular venta</button>
+              <button v-if="arreglo.status" class="btn w-75 mx-auto addVentas" v-on:click="cancelSale(arreglo._id)">Anular venta</button>
             </div>
           </div>
         </div>
@@ -174,7 +186,7 @@ export default {
     return {
       columns:['fecha' , 'servicios' , 'cliente' , 'lender' , 'descuentoo' , 'comisionn' , 'locall', 'totall', 'print'],
 			optionsT: {
-				filterByColumn: true,
+				filterByColumn: false,
 				texts: {
 					filter: "Filtrar:",
 					filterBy: 'Filtrar por {column}',
@@ -489,7 +501,11 @@ export default {
     },
     formatDate(date) {
 				let dateFormat = new Date(date)
-				return dateFormat.getDate()+"-"+(dateFormat.getMonth() + 1)+"-"+dateFormat.getFullYear()+" "+" ("+ dateFormat.getHours()+":"+ dateFormat.getMinutes()+")"
+				return dateFormat.getDate()+"-"+(dateFormat.getMonth() + 1)+"-"+dateFormat.getFullYear()
+    },
+    formatDateHora(date) {
+				let dateFormat = new Date(date)
+				return dateFormat.getHours()+":"+ dateFormat.getMinutes()
     },
     arreglarServicios(value, index, indexTwo){
       var conteo = 0
@@ -716,6 +732,7 @@ export default {
     letter-spacing: 1px;
     border-radius: 5px;
     padding: 5px;
+    width: 20%;
     -webkit-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
 -moz-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
 box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
@@ -803,5 +820,8 @@ box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
 		border-left: 1px black !important;
 }
 
-
+.addVentas{
+  background-color: #353535;
+  color: white;
+}
 </style>
