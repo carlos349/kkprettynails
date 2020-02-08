@@ -74,15 +74,15 @@
 		</div>
 		<div class="modal fade" id="myModal2" tabindex="-1"  role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered"  >
-		    <div class="modal-content p-3" v-bind:style="{ 'background-color': '#ffffff'}">
-		      <div class="modal-header"  v-bind:style="{ 'background-color': '#1F5673'}">
+		    <div class="modal-content " v-bind:style="{ 'background-color': '#ffffff'}">
+		      <div class="modal-header"  v-bind:style="{ 'background-color': 'rgb(107, 178, 229)'}">
 		        <h5 class="modal-title text-white font-weight-bold" id="exampleModalCenterTitle">Actualizar servicio</h5>
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 		          <span aria-hidden="true" class="text-white" v-bind:style="{ 'font-size': '1.5em'}">&times;</span>
 		        </button>
 		      </div>
-		      <div  class="modal-body">
-		        <form v-on:submit.prevent="actualizacionServicios">
+		      <div  class="modal-body ">
+		        <form v-on:submit.prevent="actualizacionServicios" class="p-3">
 					<div class="form-group row">
 						<label for="nombre">Nombre del servicio</label>
 						<input type="text" v-model="nombreServicio" class="inputServi w-100" name="nombreServicio" placeholder="Nombre del servicio" >
@@ -113,7 +113,7 @@
 						</div>
 					<div class="form-group row mt-4">
 						<input type="text" id="myInputServEdit" v-on:keyup="myFunctionServEdit()" class="inputServi w-100 buscar" placeholder="Buscar prestadores"/>
-						<div class="ListaProcesar maxHeightEdit">
+						<div class="ListaProcesar maxHeightEdit w-100">
 							<table class="table table-light table-borderless table-striped" id="myTableServEdit">
 								<tbody>
 									<tr v-for="(manicurista, index) of manicuristas" >
@@ -131,7 +131,7 @@
 							</table>
 						</div>
 					</div>
-					<button class="btn btn-lg add btn-block" type="submit">Actualizar servicio</button>
+					<button class="btn add btn-block" type="submit">Actualizar servicio</button>
 		        </form>
 		      </div>
 		    </div>
@@ -139,15 +139,15 @@
 		</div>
 		<div class="modal fade" id="ModalCreateService" tabindex="-1"  role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered"  >
-		    <div class="modal-content p-3" v-bind:style="{ 'background-color': '#ffffff'}">
-		      <div class="modal-header" v-bind:style="{ 'background-color': '#1F5673'}">
+		    <div class="modal-content" v-bind:style="{ 'background-color': '#ffffff'}">
+		      <div class="modal-header" v-bind:style="{ 'background-color': 'rgb(107, 178, 229)'}">
 		        <h3 class="modal-title font-weight-bold text-white" id="exampleModalCenterTitle">Registro de servicio</h3>
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close" >
 		          <span aria-hidden="true" class="text-white" v-bind:style="{ 'font-size': '1.5em'}">&times;</span>
 		        </button>
 		      </div>
-		      <div  class="modal-body">
-		        <form v-on:submit.prevent="registroServicio">
+		      <div  class="modal-body ">
+		        <form v-on:submit.prevent="registroServicio" class="p-3">
 						<div class="form-group row">
 							<label for="name">Nombre del servicio</label>
 							<input v-model="nombreServi" type="text" class="inputServi w-100" placeholder="Nombre servicio">
@@ -730,15 +730,11 @@
 		
 	}
 	.add{
-		background-color:#1F5673;
+		background-color: #353535;
 		color: azure;
 		transition: all 0.5s ease-out;
 		font-family: 'Roboto', sans-serif !important;
 		font-weight:600;
-		-webkit-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
-    -moz-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
-    box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
-    -webkit-transition: all 0.5s ease-out;
 		letter-spacing: 1px;
 		border-radius:5px;
 	}
@@ -776,17 +772,17 @@
 		left: 0;
 		height: 25px;
 		width: 25px;
-		background-color: #1F5673;
+		background-color: #353535 ;
 	}
 
 	/* On mouse-over, add a grey background color */
 	.conCheck:hover input ~ .checkmark {
-		background-color: #1F5673;
+		background-color: rgb(107, 178, 229);
 	}
 
 	/* When the checkbox is checked, add a blue background */
 	.conCheck input:checked ~ .checkmark {
-		background-color: #102229;
+		background-color: rgb(107, 178, 229);
 	}
 
 	/* Create the checkmark/indicator (hidden when not checked) */
@@ -817,12 +813,6 @@
 		background:rgba(238, 238, 238, 0.623); /* fallback for old browsers */
 		color:#353535;
 	}
-	.second{
-		background:rgb(38, 91, 119); /* fallback for old browsers */
-	}
-	.three{
-		background:rgb(46, 93, 117);
-  	}
 	.forms h2{
 		font-family: 'Raleway', sans-serif;
 	}

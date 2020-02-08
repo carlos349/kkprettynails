@@ -561,23 +561,17 @@ export default {
 		left: 0;
 		height: 25px;
 		width: 25px;
-
-		background-color: #eee;
-
-		background-color: #353535;
-
+		background-color: #353535 ;
 	}
 
 	/* On mouse-over, add a grey background color */
-
 	.conCheck:hover input ~ .checkmark {
-		background-color: #ccc;
+		background-color: rgb(107, 178, 229);
 	}
 
 	/* When the checkbox is checked, add a blue background */
-
 	.conCheck input:checked ~ .checkmark {
-		background-color: #102229;
+		background-color: rgb(107, 178, 229);
 	}
 
 	/* Create the checkmark/indicator (hidden when not checked) */

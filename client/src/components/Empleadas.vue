@@ -68,30 +68,30 @@
 		</div>
 		<div class="modal fade" id="ModalEditPrestador" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered" role="document">
-		    <div v-bind:style="{ 'background-color': '#6BB2E5'}" class="modal-content p-3">
-		      <div class="modal-header" v-bind:style="{ 'background-color': 'rgba(238, 238, 238, 0.623)'}">
-		        <h5 class="modal-title font-weight-bold" id="exampleModalCenterTitle">Editar Prestador</h5>
+		    <div  class="modal-content ">
+		      <div class="modal-header" v-bind:style="{ 'background-color': 'rgb(107, 178, 229)'}">
+		        <h5 class="modal-title font-weight-bold text-white" id="exampleModalCenterTitle">Editar Prestador</h5>
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 		          <span aria-hidden="true" class="text-white">&times;</span>
 		        </button>
 		      </div>
 		      <div class="modal-body letters">
-				<form v-on:submit.prevent="actualizarPrestador">
+				<form v-on:submit.prevent="actualizarPrestador" class="p-3">
 					<div class="form-group">
 						<label for="name">Nombre del prestador</label>
-						<input v-model="nombrePrestadorEdit" type="text" class="form-control inputs" placeholder="Nombre del prestador">
+						<input v-model="nombrePrestadorEdit" type="text" class="form-control inputsLender w-100" placeholder="Nombre del prestador">
 					</div>
 					<div class="form-group">
 						<label for="name">Documento de identificación</label>
-						<input v-model="documentoPrestadorEdit" type="numbre" class="form-control inputs" placeholder="Identificación" v-on:change="changeRutEdit()" v-on:click="changeToEdit()">
+						<input v-model="documentoPrestadorEdit" type="numbre" class="form-control inputsLender w-100" placeholder="Identificación" v-on:change="changeRutEdit()" v-on:click="changeToEdit()">
 					</div>
 					<div class="form-group">
 						<label for="name">Porcentaje de ganancia</label>
-						<input v-model="porcentajePrestadorEdit" type="text" class="form-control inputs" placeholder="Porcentaje">
+						<input v-model="porcentajePrestadorEdit" type="text" class="form-control inputsLender w-100" placeholder="Porcentaje">
 					</div>
 					<div class="form-group row">
 						<label for="name" class="col-12">Horario de descanso</label>
-						<select class="form-control col-6" v-model="restTimeEdit" >
+						<select class="form-control col-5 ml-3 inputsLender" v-model="restTimeEdit" >
 							<option style="color:black;" selected value="Seleccione el tiempo">Seleccione el tiempo</option>
 							<option style="color:black;" value="12:00">12:00</option>
 							<option style="color:black;" value="12:30">12:30</option>
@@ -99,7 +99,7 @@
 							<option style="color:black;" value="13:30">13:30</option>
 							<option style="color:black;" value="14:00">14:00</option>
 						</select>
-						<select class="form-control col-6" v-model="restTimeEndEdit" >
+						<select class="form-control col-6 ml-1 inputsLender" v-model="restTimeEndEdit" >
 							<option style="color:black;" selected value="Seleccione el tiempo">Seleccione el tiempo</option>
 							<option style="color:black;" value="12:30">12:30</option>
 							<option style="color:black;" value="13:00">13:00</option>
@@ -110,7 +110,7 @@
 					</div>
 					<div class="form-group">
 						<label>Día libre</label>
-						<select class="form-control" v-model="restDayEdit" >
+						<select class="form-control inputsLender w-100" v-model="restDayEdit" >
 							<option style="color:black;" selected value="Seleccione el dia">Seleccione el dia</option>
 							<option style="color:black;" value="1">Lunes</option>
 							<option style="color:black;" value="2">Martes</option>
@@ -129,26 +129,26 @@
 		</div>
 		<div class="modal fade" id="ModalCreateEmploye" tabindex="-1"  role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered"  >
-		    <div class="modal-content p-3" v-bind:style="{ 'background-color': '#ffffff'}">
-		      <div class="modal-header" v-bind:style="{ 'background-color': '#1F5673'}">
+		    <div class="modal-content " v-bind:style="{ 'background-color': '#ffffff'}">
+		      <div class="modal-header" v-bind:style="{ 'background-color': 'rgb(107, 178, 229)'}">
 		        <h5 class="modal-title text-white font-weight-bold" id="exampleModalCenterTitle">Registrar prestador</h5>
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 		          <span aria-hidden="true" class="text-white">&times;</span>
 		        </button>
 		      </div>
 		      <div  class="modal-body">
-		        <form v-on:submit.prevent="registroPrestador">
+		        <form v-on:submit.prevent="registroPrestador" class="p-3">
 					<div class="form-group">
 						<label for="name">Nombre del prestador</label>
-						<input v-model="nombrePrestador" type="text" class="form-control inputs" placeholder="Nombre del prestador">
+						<input v-model="nombrePrestador" type="text" class="form-control inputsLender w-100" placeholder="Nombre del prestador">
 					</div>
 					<div class="form-group">
 						<label for="name">Documento de identificación</label>
-						<input v-model="documento" type="text" class="form-control inputs" placeholder="Identificación" v-on:change="changeRut()" v-on:click="changeTo()">
+						<input v-model="documento" type="text" class="form-control inputsLender w-100" placeholder="Identificación" v-on:change="changeRut()" v-on:click="changeTo()">
 					</div>
 					<div class="form-group row">
 						<label for="name" class="col-12">Horario de descanso</label>
-						<select class="form-control col-6" v-model="restTime" >
+						<select class="form-control col-5 ml-3 inputsLender" v-model="restTime" >
 							<option style="color:black;" selected value="Seleccione el tiempo">Seleccione el tiempo</option>
 							<option style="color:black;" value="12:00">12:00</option>
 							<option style="color:black;" value="12:30">12:30</option>
@@ -156,7 +156,7 @@
 							<option style="color:black;" value="13:30">13:30</option>
 							<option style="color:black;" value="14:00">14:00</option>
 						</select>
-						<select class="form-control col-6" v-model="restTimeEnd" >
+						<select class="form-control col-6 ml-2 inputsLender" v-model="restTimeEnd" >
 							<option style="color:black;" selected value="Seleccione el tiempo">Seleccione el tiempo</option>
 							<option style="color:black;" value="12:30">12:30</option>
 							<option style="color:black;" value="13:00">13:00</option>
@@ -167,7 +167,7 @@
 					</div>
 					<div class="form-group">
 						<label>Día libre</label>
-						<select class="form-control" v-model="restDay" >
+						<select class="form-control inputsLender w-100" v-model="restDay" >
 							<option style="color:black;" selected value="Seleccione el dia">Seleccione el día</option>
 							<option style="color:black;" value="1">Lunes</option>
 							<option style="color:black;" value="2">Martes</option>
@@ -175,7 +175,6 @@
 							<option style="color:black;" value="4">Jueves</option>
 							<option style="color:black;" value="5">Viernes</option>
 							<option style="color:black;" value="6">Sábado</option>
-							<option style="color:black;" value="0">Domingo</option>
 						</select>
 					</div>
 					<button class="btn w-100 add">Agregar prestador</button>
@@ -601,24 +600,24 @@ export default {
 	.formsPrestadores h2{
 		font-family: 'Raleway', sans-serif;
 	}
-	.inputs{
-		border:none !important;
-		border-radius:0px !important;
-		border-bottom:2px solid #001514 !important;
-		background-color:transparent !important;
-		color:#001514 !important;
-		font-family: 'Roboto', sans-serif !important;
+	.inputsLender{
+		background-color: transparent !important;
+		-webkit-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+		-moz-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+		box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+		border: none !important;
+		border-radius: 5px;
+		padding: 10px;
+		width: 50% ;
+		color: black !important;
+		outline: none !important;
 	}
 	.add{
-		background-color:#1F5673;
+		background-color: #353535;
 		color: azure;
-		
+		transition: all 0.5s ease-out;
 		font-family: 'Roboto', sans-serif !important;
 		font-weight:600;
-		-webkit-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
-		-moz-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
-		box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
-		-webkit-transition: all 0.5s ease-out;
 		letter-spacing: 1px;
 		border-radius:5px;
 	}

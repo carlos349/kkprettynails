@@ -115,7 +115,7 @@
 										:results-display="formattedDisplay"
 										@selected="addDistributionGroup">
 									</autocomplete>
-									<span v-on:click="clearInput" style="position:absolute;top:55px;left:35px;background-color:#FBF5F3;">{{prestador}}</span>
+									<span v-on:click="clearInput" style="position:absolute;top:65px;left:35px;background-color:#FBF5F3;">{{prestador}}</span>
 								</div>
 							</div>
 							<button class="btn w-100 add" v-on:click="editarEstado(idSelect, 3, 'no-prestador')">Vincular</button>
