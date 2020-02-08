@@ -30,12 +30,12 @@
 						<!-- <a slot="edit" slot-scope="props" class="fa fa-edit" :href="pasarDatosEdit(props.row.nombre, props.row.identidad, props.row.correoCliente, props.row.instagramCliente, props.row._id)">Hola </a> -->
 					</v-client-table>
 				</div>
-			</div>
+			</div><button class="btn-white" v-on:click="openModalCreateServices">
+						 Crear Servicio
+					</button>
 			<div class="col-md-4" style="margin-top:20px;">
 				<div class="box">
-					<button class="btn-white" v-on:click="openModalCreateServices">
-						 Crear servicio
-					</button>
+					
 				</div>
 				<div class="shadow">
 					<table  class="table" style="color:#353535 !important; background-color: rgba(238, 238, 238, 0.623)" >
@@ -76,7 +76,7 @@
 		  <div class="modal-dialog modal-dialog-centered"  >
 		    <div class="modal-content " v-bind:style="{ 'background-color': '#ffffff'}">
 		      <div class="modal-header"  v-bind:style="{ 'background-color': 'rgb(107, 178, 229)'}">
-		        <h5 class="modal-title text-white font-weight-bold" id="exampleModalCenterTitle">Actualizar servicio</h5>
+		        <h4 class="modal-title text-white font-weight-bold" id="exampleModalCenterTitle">Actualizar servicio</h4>
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 		          <span aria-hidden="true" class="text-white" v-bind:style="{ 'font-size': '1.5em'}">&times;</span>
 		        </button>
@@ -131,7 +131,7 @@
 							</table>
 						</div>
 					</div>
-					<button class="btn add btn-block" type="submit">Actualizar servicio</button>
+					<button class="btn mx-auto add btn-block w-75" type="submit">Actualizar servicio</button>
 		        </form>
 		      </div>
 		    </div>
@@ -831,14 +831,15 @@
 	
 
 	.btn-white{
-		
+		position: absolute;
+		top: 65.7%;
+		right: 1%;
 		padding: 5px;
-		width: 100%;
-		margin-bottom: 5px;
-		background-color: #E6E6EA;
-		color: #618B25;
+		width: 21.9%;
+		background-color: #353535;
+		color: white;
 		border: none;
-		border:3px solid #7ec365;
+		border-radius: 5px;
 		font-size: 1.3em;
 		box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
 		-webkit-transition: all 0.5s ease-out;
@@ -848,7 +849,7 @@
 		outline: none !important;
 	}
 	.btn-white:hover{
-		border:3px solid #618B25;
+		
 		
 	}
 	.lupa-modalServices{

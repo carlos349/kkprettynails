@@ -2,13 +2,17 @@
     <div class="container-fluid">
         <div class="row pb-2">
             <div class="col-md-12 row sectionMetricsPrestador">
-				<div class="col-md-5 metrics first">
+				<div class="col-md-3 metrics first">
 					<p>Total clientes</p>
-					<h1>{{clients.length}}</h1>
+					<h3>{{clients.length}}</h3>
 				</div>
-				<div class="col-md-5 metrics first">
+				<div class="col-md-3 metrics first">
 					<p>Mejor cliente</p>
-					<h1>{{top}}</h1>
+					<h3>{{top}}</h3>
+				</div>
+				<div class="col-md-3 metrics first">
+					<p>Recomendaciones</p>
+					<h3>Nombre Apellido</h3>
 				</div>
 			</div>
             <div class="col-md-12">
