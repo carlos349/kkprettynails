@@ -193,16 +193,6 @@ export default {
 }
 </script>
 <style >
-    .first{
-		background:#1F5673; /* fallback for old browsers */
-	}
-	.second{
-		background:rgb(37, 88, 114); /* fallback for old browsers */
-	}
-	.three{
-		background:rgb(46, 93, 117);
-    }
-    
     .metricssExpense{
         padding: auto;
         width: 70%;

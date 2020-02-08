@@ -145,8 +145,9 @@
 									</span>
 									
 								</div>
-								<input type="text" class="inputsVenta form-control text-center manicuristaFocus" v-model="pagoEfectivo" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="Efectivo">
+								<input type="text" class="inputsVenta form-control text-center manicuristaFocus" v-model="pagoEfectivo" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="Efectivo" v-on:change="formato('pagoEfectivo')" v-on:click="erasedFormat('pagoEfectivo')">
 							</div>
+							<input type="hidden" class="form-control text-center manicuristaFocus inputsVenta p-1" v-model="pagoEfectivoSinformato" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="Débito" >
 						</div>
 						<div class="col-sm-4">
 						<div class="input-group input-group-lg mb-2 ">
@@ -156,8 +157,9 @@
 									<font-awesome-icon class="transferencia" style="font-size:1em; color:#6BB2E5" icon="money-check-alt"/>
 								</span>
 							</div>
-							<input type="text" class="form-control text-center manicuristaFocus inputsVenta" v-model="pagoTransf" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="Transferencia">
+							<input type="text" class="form-control text-center manicuristaFocus inputsVenta" v-model="pagoTransf" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="Transferencia" v-on:change="formato('pagoTransf')" v-on:click="erasedFormat('pagoTransf')">
 						</div>
+						<input type="hidden" class="form-control text-center manicuristaFocus inputsVenta p-1" v-model="pagoTransfSinformato" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="Débito" >
 					</div>
 					<div class="col-sm-4">
 						<div class="input-group input-group-lg mb-2 ">
@@ -168,8 +170,9 @@
 								</span>
 								
 							</div>
-							<input type="text" v-model="pagoOtros"  class="form-control text-center manicuristaFocu inputsVenta" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="Otros">
+							<input type="text" v-model="pagoOtros"  class="form-control text-center manicuristaFocu inputsVenta" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="Otros" v-on:change="formato('pagoOtros')" v-on:click="erasedFormat('pagoOtros')"> 
 						</div>
+						<input type="hidden" class="form-control text-center manicuristaFocus inputsVenta p-1" v-model="pagoOtrosSinformato" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="Débito" >
 					</div>
 					<div class="col-sm-4 mx-auto">
 						<div class="input-group input-group-lg mb-2 ">
@@ -179,8 +182,9 @@
 									<img style="width:98%;padding-left:1px" class="credito"  src="../assets/trans1.png" alt=""></span>
 							</div>
 							
-							<input type="text" class="form-control text-center manicuristaFocus inputsVenta p-1" v-model="pagoRedCCredito" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="Crédito">
+							<input type="text" class="form-control text-center manicuristaFocus inputsVenta p-1" v-model="pagoRedCCredito" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="Crédito" v-on:change="formato('pagoRedCCredito')" v-on:click="erasedFormat('pagoRedCCredito')">
 						</div>
+						<input type="hidden" class="form-control text-center manicuristaFocus inputsVenta p-1" v-model="pagoRedCCreditoSinformato" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="Débito" >
 					</div>
 					<div class="col-sm-4 mx-auto">
 						<div class="input-group input-group-lg mb-2 ">
@@ -189,9 +193,11 @@
 									<b class="debito pl-3" style="font-size:0.6em;display:none">100%</b>
 									<img class="debito" style="width:98%;padding-left:1px"  src="../assets/trans1.png" alt=""></span>
 							</div>
-							<input type="text" class="form-control text-center manicuristaFocus inputsVenta p-1" v-model="pagoRedCDebito" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="Débito">
+							<input type="text" class="form-control text-center manicuristaFocus inputsVenta p-1" v-model="pagoRedCDebito" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="Débito" v-on:change="formato('pagoRedCDebito')" v-on:click="erasedFormat('pagoRedCDebito')">
 							
+
 						</div>
+						<input type="hidden" class="form-control text-center manicuristaFocus inputsVenta p-1" v-model="pagoRedCDebitoSinformato" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="Débito" >
 					</div>
 					
 
@@ -440,6 +446,11 @@ import Autocomplete from 'vuejs-auto-complete'
 			pagoRedCCredito: '',
 			pagoTransf: '',
 			nombreCliente: '',
+			pagoEfectivoSinformato: '',
+			pagoOtrosSinformato: '',
+			pagoRedCDebitoSinformato: '',
+			pagoRedCCreditoSinformato: '',
+			pagoTransfSinformato: '',
 			nombreClienteRegister:'',
 			precio: '0',
 			fechaVenta:'fecha',
@@ -827,21 +838,98 @@ import Autocomplete from 'vuejs-auto-complete'
 				})
 			})
 		},
+		hundredPorcent(tipo){
+			if (this.pagoEfectivo != '' || this.pagoTransf != '' || this.pagoRedCCredito != '' || this.pagoRedCDebito != '' || this.pagoOtros != '' ) {
+				this.$swal({
+					type: 'error',
+					title: '¡El monto sobrepasa el total!',
+					showConfirmButton: false,
+					timer: 2000
+				})
+			}
+			else{
+				if (tipo == "efectivo") {
+					this.pagoEfectivoSinformato = this.totalSinFormato
+					this.pagoEfectivo = '$ '+this.formatPrice(this.totalSinFormato)
+				}
+				if (tipo == "transferencia") {
+					this.pagoTransfSinformato = this.totalSinFormato
+					this.pagoTransf = '$ '+this.formatPrice(this.totalSinFormato)
+				}
+				if (tipo == "otros") {
+					this.pagoOtrosSinformato = this.totalSinFormato
+					this.pagoOtros = '$ '+this.formatPrice(this.totalSinFormato)
+				}
+				if (tipo == "credito") {
+					this.pagoRedCCreditoSinformato = this.totalSinFormato
+					this.pagoRedCCredito = '$ '+this.formatPrice(this.totalSinFormato)
+				}
+				if (tipo == "debito") {
+					this.pagoRedCDebitoSinformato = this.totalSinFormato
+					this.pagoRedCDebito = '$ '+this.formatPrice(this.totalSinFormato)
+				}
+			}
+		},
+		erasedFormat(type){
+			if(type == 'pagoEfectivo'){
+				this.pagoEfectivoSinformato = ''
+				this.pagoEfectivo = ''
+			}
+			if(type == 'pagoOtros'){
+				this.pagoOtrosSinformato =''
+				this.pagoOtros = ''
+			}
+			if(type == 'pagoTransf'){
+				this.pagoTransfSinformato = ''
+				this.pagoTransf = ''
+			}
+			if(type == 'pagoRedCDebito'){
+				this.pagoRedCDebitoSinformato = ''
+				this.pagoRedCDebito = ''
+			}
+			if(type == 'pagoRedCCredito'){
+				this.pagoRedCCreditoSinformato = ''
+				this.pagoRedCCredito = ''
+			}
+		},
+		formato(type){
+			if(type == 'pagoEfectivo'){
+				this.pagoEfectivoSinformato = this.pagoEfectivo
+				this.pagoEfectivo = '$ '+this.formatPrice(this.pagoEfectivo)
+			}
+			if(type == 'pagoOtros'){
+				this.pagoOtrosSinformato = this.pagoOtros
+				this.pagoOtros = '$ '+this.formatPrice(this.pagoOtros)
+			}
+			if(type == 'pagoTransf'){
+				this.pagoTransfSinformato = this.pagoTransf
+				this.pagoTransf = '$ '+this.formatPrice(this.pagoTransf)
+			}
+			if(type == 'pagoRedCDebito'){
+				this.pagoRedCDebitoSinformato = this.pagoRedCDebito
+				this.pagoRedCDebito = '$ '+this.formatPrice(this.pagoRedCDebito)
+			}
+			if(type == 'pagoRedCCredito'){
+				this.pagoRedCCreditoSinformato = this.pagoRedCCredito
+				this.pagoRedCCredito ='$ '+ this.formatPrice(this.pagoRedCCredito)
+			}
+			
+		},
 		procesar() {
-			if (this.pagoEfectivo == '') {
-				this.pagoEfectivo = 0
+			if (this.pagoEfectivoSinformato == '') {
+				this.pagoEfectivoSinformato = 0
 			}
-			if (this.pagoOtros == '') {
-				this.pagoOtros = 0
+			if (this.pagoOtrosSinformato == '') {
+				this.pagoOtrosSinformato = 0
 			}
-			if (this.pagoRedCDebito == '') {
-				this.pagoRedCDebito = 0
+			if (this.pagoTransfSinformato == '') {
+				this.pagoTransfSinformato = 0
 			}
-			if (this.pagoRedCCredito == '') {
-				this.pagoRedCCredito = 0
+			if (this.pagoRedCDebitoSinformato == '') {
+				this.pagoRedCDebitoSinformato = 0
 			}
-			if (this.pagoTransf == '') {
-				this.pagoTransf = 0
+			if (this.pagoRedCCreditoSinformato == '') {
+				this.pagoRedCCreditoSinformato = 0
 			}
 			if (this.descuento == '') {
 				this.descuento = 0
@@ -849,19 +937,19 @@ import Autocomplete from 'vuejs-auto-complete'
 			if (this.diseño == '') {
 				this.diseño = 0
 			}
-			const totalFormadePago = parseFloat(this.pagoEfectivo) + parseFloat(this.pagoOtros) + parseFloat(this.pagoRedCDebito) + parseFloat(this.pagoRedCCredito) + parseFloat(this.pagoTransf)
-			
+			const totalFormadePago = parseFloat(this.pagoEfectivoSinformato) + parseFloat(this.pagoOtrosSinformato) + parseFloat(this.pagoTransfSinformato) + parseFloat(this.pagoRedCDebitoSinformato) + parseFloat(this.pagoRedCCreditoSinformato)
+			console.log(totalFormadePago)
 			if (this.nombreCliente != '' && this.maniSelect != '') {
 				if (this.totalSinFormato == totalFormadePago ) {
 					axios.post('ventas/procesar', {
 						cliente: this.nombreCliente,
 						manicurista: this.maniSelect,
 						servicios: this.serviciosSelecionados,
-						pagoEfectivo:this.pagoEfectivo,
-						pagoOtros:this.pagoOtros,
-						pagoRedCDebito:this.pagoRedCDebito,
-						pagoRedCCredito:this.pagoRedCCredito,
-						pagoTransf:this.pagoTransf,
+						pagoEfectivo:this.pagoEfectivoSinformato,
+						pagoOtros:this.pagoOtrosSinformato,
+						pagoRedCDebito:this.pagoRedCDebitoSinformato,
+						pagoRedCCredito:this.pagoRedCCreditoSinformato,
+						pagoTransf:this.pagoTransfSinformato,
 						descuento:this.descuento,
 						fecha:this.fechaVenta,
 						total: this.totalSinFormato,
@@ -942,6 +1030,11 @@ import Autocomplete from 'vuejs-auto-complete'
 			this.pagoRedCDebito = ''
 			this.pagoRedCCredito = ''
 			this.pagoTransf = ''
+			this.pagoEfectivoSinformato = ''
+			this.pagoOtrosSinformato = ''
+			this.pagoRedCDebitoSinformato = ''
+			this.pagoRedCCreditoSinformato = ''
+			this.pagoTransfSinformato = ''
 			this.maniSelect = ''
 			this.nombreCliente = ''
 			this.resto  = 0
@@ -979,52 +1072,15 @@ import Autocomplete from 'vuejs-auto-complete'
 			let val = (value/1).toFixed(2).replace('.', ',')
 			return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
 		},
-		hundredPorcent(tipo){
-			let sumaDePagos = 0
-			if (this.pagoEfectivo != '') {
-					sumaDePagos = sumaDePagos + this.pagoEfectivo
-				}
-			if (this.pagoTransf != '') {
-				sumaDePagos = sumaDePagos + this.pagoTransf
-			}
-			if (this.pagoRedCCredito != '') {
-					sumaDePagos = sumaDePagos + this.pagoRedCCredito
-				}
-			if (this.pagoOtros != '') {
-				sumaDePagos = sumaDePagos + this.pagoOtros
-			}
-			if (this.pagoRedCDebito != '') {
-				sumaDePagos = sumaDePagos + this.pagoRedCDebito
-			}
-
-			if (sumaDePagos > 0) {
-				this.$swal({
-					type: 'error',
-					title: '¡El monto sobrepasa el total!',
-					showConfirmButton: false,
-					timer: 2000
-				})
-			}
-			else{
-				if (tipo == "efectivo") {
-				this.pagoEfectivo = this.totalSinFormato
-				}
-				if (tipo == "transferencia") {
-					this.pagoTransf = this.totalSinFormato
-				}
-				if (tipo == "otros") {
-					this.pagoOtros = this.totalSinFormato
-				}
-				if (tipo == "credito") {
-					this.pagoRedCCredito = this.totalSinFormato
-				}
-				if (tipo == "debito") {
-					this.pagoRedCDebito = this.totalSinFormato
-				}
-			}
-
+		disFormat(value){
+			let valor = parseFloat(value)
+			let val = (valor).replace(',', '.')
+			console.log(val.toFixed(0))
+			console.log(val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ""))
+			return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "")
 			
 		},
+		
 		hundredMouseOver(tipo){
 			$("."+tipo).toggle()
 		},
@@ -1079,6 +1135,7 @@ import Autocomplete from 'vuejs-auto-complete'
 			}
 			console.log(this.prestadoresSeleccionados)
 		},
+		
 		registroServicio(){
 			if (this.nombreServi == '' && this.precioServi == '' && this.tiempoServi == '') {
 				this.$swal({
