@@ -30,7 +30,7 @@
 <script>
 	import axios from 'axios'
 	import router from '../router'
-	import EventBus from './eventBus'
+	import EventBus from './EventBus'
 
 	export default {
 		data(){

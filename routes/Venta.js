@@ -955,6 +955,116 @@ ventas.post('/procesar', (req, res) => {
   })
 })
 
+ventas.get('/dataChecker', (req, res) => {
+  const dateDaily = new Date()
+  const dateDailyToday = dateDaily.getFullYear() +"-"+(dateDaily.getMonth() + 1)+"-"+dateDaily.getDate()
+
+  dateDaily.setDate(dateDaily.getDate() + 1)
+  const dailyTomorrow = dateDaily.getFullYear() +"-"+(dateDaily.getMonth() + 1)+"-"+dateDaily.getDate()
+  Venta.find({fecha: { $gte: dateDailyToday, $lte: dailyTomorrow }})
+  .then(dataSales => {
+    res.json(dataSales)
+  })
+  .catch(err => {
+    res.send(err)
+  })
+})
+
+ventas.get('/dataSectionManagement', (req, res) => {
+  const dateDaily = new Date()
+  console.log(dateDaily)
+  const dateDailyToday = dateDaily.getFullYear() +"-"+(dateDaily.getMonth() + 1)+"-"+dateDaily.getDate()
+
+  dateDaily.setDate(dateDaily.getDate() + 1)
+  const dailyTomorrow = dateDaily.getFullYear() +"-"+(dateDaily.getMonth() + 1)+"-"+dateDaily.getDate()
+  
+  const dateWeekly = new Date()
+  const dateWeeklyUntil = dateWeekly.getFullYear() +"-"+(dateWeekly.getMonth() + 1)+"-"+(dateWeekly.getDate() + 1)
+  dateWeekly.setDate(dateDaily.getDate() - dateDaily.getDay())
+  const dateWeeklySince = dateWeekly.getFullYear() +"-"+(dateWeekly.getMonth() + 1)+"-"+dateWeekly.getDate()
+ 
+  const dateMonthly = new Date((dateDaily.getMonth() + 1)+'-01-'+dateDaily.getFullYear())
+  const dateMonthlySince = dateMonthly.getFullYear() +"-"+(dateMonthly.getMonth() + 1)+"-"+(dateMonthly.getDate() + 1)
+  dateMonthly.setMonth(dateMonthly.getMonth() + 1)
+  const dateMonthlyUntil = dateMonthly.getFullYear() +"-"+(dateMonthly.getMonth() + 1)+"-"+dateMonthly.getDate()
+  
+  var dailyData = {
+    Sale: 0,
+    Services: 0,
+    Expenses: 0
+  }
+  var weeklyData = {
+    Sale: 0,
+    Services: 0,
+    Expenses: 0
+  }
+  var monthlyData = {
+    Sale: 0,
+    Services: 0,
+    Expenses: 0
+  }
+
+  Venta.find({fecha: { $gte: dateDailyToday, $lte: dailyTomorrow }})
+  .then(Sales => {
+    for (let index = 0; index < Sales.length; index++) {
+      dailyData.Sale = dailyData.Sale + Sales[index].total
+      dailyData.Services = dailyData.Services + Sales[index].servicios.length
+    }
+    Expenses.find({date: { $gte: dateDailyToday, $lte: dailyTomorrow }})
+    .then(Dailyexpense => {
+      for (let indexTwo = 0; indexTwo < Dailyexpense.length; indexTwo++) {
+        dailyData.Expenses = dailyData.Expenses + Dailyexpense[indexTwo].figure
+      }
+      Venta.find({fecha: { $gte: dateWeeklySince, $lte: dateWeeklyUntil}})
+      .then(weeklySales => {
+        for (let indexThree = 0; indexThree < weeklySales.length; indexThree++) {
+          weeklyData.Sale = weeklyData.Sale + weeklySales[indexThree].total
+          weeklyData.Services = weeklyData.Services + weeklySales[indexThree].servicios.length
+        }
+        Expenses.find({date: { $gte: dateWeeklySince, $lte: dateWeeklyUntil }})
+        .then(weeklyExpense => {
+          for (let indexFour = 0; indexFour < weeklyExpense.length; indexFour++) {
+            weeklyData.Expenses = weeklyData.Expenses + weeklyExpense[indexFour].figure
+          }
+          Venta.find({fecha: { $gte: dateMonthlySince, $lte: dateMonthlyUntil}})
+          .then(monthlySales => {
+            for (let indexFive = 0; indexFive < monthlySales.length; indexFive++) {
+              monthlyData.Sale = monthlyData.Sale + monthlySales[indexFive].total
+              monthlyData.Services = monthlyData.Services + monthlySales[indexFive].servicios.length
+            }
+            Expenses.find({date: { $gte: dateMonthlySince, $lte: dateMonthlyUntil }})
+            .then(monthlyExpense => {
+              for (let indexSix = 0; indexSix < monthlyExpense.length; indexSix++) {
+                monthlyData.Expenses = monthlyData.Expenses + monthlyExpense[indexSix].figure
+              }
+              res.json({Daily: dailyData, Weekly: weeklyData, Monthly: monthlyData})
+            })
+            .catch(err => {
+              res.send(err)
+            })
+          })
+          .catch(err => {
+            res.send(err)
+          })
+        })
+        .catch(err => {
+          res.send(err)
+        })
+      })
+      .catch(err => {
+        res.send(err)
+      })
+    })
+    .catch(err => {
+      res.send(err)
+    })
+  })
+  .catch(err => {
+    res.send(err)
+  })
+  
+})
+
 ventas.post('/registerFund', async (req, res) => {
   const find = await cashFunds.find()
   if (find) {

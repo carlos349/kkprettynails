@@ -32,7 +32,9 @@
 						</div>
 						<div class="form-group">
 							<label for="name">Monto</label>
-							<input v-model="amount" type="number" class="form-control w-100 inputsExpense" placeholder="Escriba el monto">
+							<input v-model="amount" type="text" class="form-control w-100 inputsExpense" placeholder="Escriba el monto" v-on:change="format()" v-on:click="reloadAmount">
+							<input v-model="amountSinformato" type="hidden" class="form-control w-100 inputsExpense" placeholder="Escriba el monto">
+						
 						</div>
 						<div class="form-group">
 							<label for="name">Fecha</label>
@@ -40,6 +42,7 @@
 								v-model="date"
 							    :weekdays=Days
 								:months=months
+								:placeholder="'a ver'"
 								:nextMonthCaption="'Siguiente mes'"
 								:prevMonthCaption="'Mes anterior'"
 							  ></date-pick>
@@ -167,7 +170,8 @@
 				expenses: [],
 				reason: '',
 				amount: '',
-				date:'Click para elegir fecha',
+				amountSinformato: '',
+				date:'',
 				options: {
 					responsive: true,
 					maintainAspectRatio: false
@@ -203,7 +207,7 @@
 				if (this.reason != '' && this.amount != '' && this.date != '') {
 					axios.post('expenses', {
 						reason: this.reason,
-						amount: this.amount,
+						amount: this.amountSinformato,
 						dateSelect: this.date
 					})
 					.then(res => {
@@ -216,7 +220,8 @@
 							})
 							this.reason = ''
 							this.amount = ''
-							this.date = ''
+							this.date = 'Click para seleccionar fecha'
+							this.amountSinformato = ''
 							this.getExpenses()
 						}else{
 							this.$swal({
@@ -246,6 +251,15 @@
 						timer: 1500
 					})
 				}
+			},
+			format(){
+				console.log('que coño')
+				this.amountSinformato = this.amount
+				this.amount = '$ '+this.formatPrice(this.amount)
+			},
+			reloadAmount(){
+				this.amountSinformato = ''
+				this.amount = ''
 			},
 			getExpenses(){
 				axios.get('expenses')

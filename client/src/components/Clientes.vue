@@ -20,7 +20,6 @@
 					<v-client-table class="text-center tablaClients"  :data="clients" :columns="columns" :options="optionsT">
 						<button slot="edit"  slot-scope="props" v-on:click="pasarDatosEdit(props.row.nombre, props.row.identidad, props.row.correoCliente, props.row.instagramCliente, props.row._id)" class=" btn btn-colorsEditClient w-100"><font-awesome-icon icon="edit" /></button>
 					</v-client-table>
-					
 				</div>
 			</div>
 			<div class="col-md-4" style="margin-top:20px;">
@@ -73,30 +72,30 @@
         </div>
         <div class="modal fade" id="ModalCreateClient" tabindex="-1"  role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered"  >
-		    <div class="modal-content p-3" v-bind:style="{ 'background-color': '#ffffff'}">
-		      <div class="modal-header" v-bind:style="{ 'background-color': '#1F5673'}">
+		    <div class="modal-content" v-bind:style="{ 'background-color': '#ffffff'}">
+		      <div class="modal-header" v-bind:style="{ 'background-color': 'rgb(107, 178, 229)'}">
 		        <h5 class="modal-title text-white font-weight-bold" id="exampleModalCenterTitle">Registrar cliente</h5>
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 		          <span aria-hidden="true" class="text-white" v-bind:style="{ 'font-size': '1.5em'}">&times;</span>
 		        </button>
 		      </div>
 		      <div  class="modal-body">
-		        <form v-on:submit.prevent="registroCliente">
+		        <form v-on:submit.prevent="registroCliente" class="p-3">
 					<div class="form-group">
 						<label for="name">Nombre del cliente <span style="color:red;">*</span></label>
-						<input v-model="nombreCliente" type="text" class="form-control inputs" placeholder="Nombre y apellido" requerid>
+						<input v-model="nombreCliente" type="text" class="form-control inputsClient w-100" placeholder="Nombre y apellido" requerid>
 					</div>
 					<div class="form-group">
 						<label for="identidad">Teléfono del cliente <span style="color:red;">*</span></label>
-						<input v-model="identidadCliente" type="text" class="form-control inputs" placeholder="Registre numero telefónico" requerid>
+						<input v-model="identidadCliente" type="text" class="form-control inputsClient w-100" placeholder="Registre numero telefónico" requerid>
 					</div>
 					<div class="form-group">
 						<label for="identidad">Correo del cliente <span style="color:blue;">+</span></label>
-						<input v-model="correoCliente" type="text" class="form-control inputs" placeholder="Registre correo" >
+						<input v-model="correoCliente" type="text" class="form-control inputsClient w-100" placeholder="Registre correo" >
 					</div>
 					<div class="form-group">
 						<label for="identidad">Instagram del cliente <span style="color:blue;">+</span></label>
-						<input v-model="instagramCliente" type="text" class="form-control inputs" placeholder="Registre instagram" >
+						<input v-model="instagramCliente" type="text" class="form-control inputsClient w-100" placeholder="Registre instagram" >
 					</div>
                     <div class="form-group">
                         <label for="recomendacion">Registre recomendador</label>
@@ -122,30 +121,30 @@
 		</div>
 		<div class="modal fade" id="ModalEditClient" tabindex="-1"  role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered"  >
-		    <div class="modal-content p-3" v-bind:style="{ 'background-color': '#ffffff'}">
-		      <div class="modal-header" v-bind:style="{ 'background-color': '#1F5673'}">
+		    <div class="modal-content" v-bind:style="{ 'background-color': '#ffffff'}">
+		      <div class="modal-header" v-bind:style="{ 'background-color': 'rgb(107, 178, 229)'}">
 		        <h5 class="modal-title text-white font-weight-bold" id="exampleModalCenterTitle">Editar cliente</h5>
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 		          <span aria-hidden="true" class="text-white" v-bind:style="{ 'font-size': '1.5em'}">&times;</span>
 		        </button>
 		      </div>
 		      <div  class="modal-body">
-		        <form v-on:submit.prevent="EditarCliente">
+		        <form v-on:submit.prevent="EditarCliente" class="p-3">
 					<div class="form-group">
 						<label for="name">Nombre del cliente <span style="color:red;">*</span></label>
-						<input v-model="nombreClienteEditar" type="text" class="form-control inputs" placeholder="Nombre del prestador">
+						<input v-model="nombreClienteEditar" type="text" class="form-control inputsClient w-100" placeholder="Nombre del prestador">
 					</div>
 					<div class="form-group">
 						<label for="identidad">Teléfono del cliente <span style="color:red;">*</span></label>
-						<input v-model="identidadClienteEditar" type="text" class="form-control inputs" placeholder="Registre numero telefónico">
+						<input v-model="identidadClienteEditar" type="text" class="form-control inputsClient w-100" placeholder="Registre numero telefónico">
 					</div>
 					<div class="form-group">
 						<label for="identidad">Correo del cliente <span style="color:blue;">+</span></label>
-						<input v-model="correoClienteEditar" type="text" class="form-control inputs" placeholder="Registre correo">
+						<input v-model="correoClienteEditar" type="text" class="form-control inputsClient w-100" placeholder="Registre correo">
 					</div>
 					<div class="form-group">
 						<label for="identidad">Instagram del cliente <span style="color:blue;">+</span></label>
-						<input v-model="instagramClienteEditar" type="text" class="form-control inputs" placeholder="Registre instagram">
+						<input v-model="instagramClienteEditar" type="text" class="form-control inputsClient w-100" placeholder="Registre instagram">
 					</div>
                     <!-- <div class="form-group">
                         <label for="recomendacion">Registre recomendador</label>
@@ -165,15 +164,15 @@
 		</div>
 		<div class="modal fade" id="modalShowTemplates" tabindex="-1"  role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-xl modal-dialog-centered"  >
-		    <div class="modal-content p-3" v-bind:style="{ 'background-color': '#ffffff'}">
-		      <div class="modal-header" v-bind:style="{ 'background-color': '#1F5673'}">
-		        <h5 class="modal-title text-white font-weight-bold" id="exampleModalCenterTitle">Elige una plantilla para tu correo</h5>
+		    <div class="modal-content " v-bind:style="{ 'background-color': '#ffffff'}">
+		      <div class="modal-header" v-bind:style="{ 'background-color': 'rgb(107, 178, 229)'}">
+		        <h5 class="modal-title text-white font-weight-bold" id="exampleModalCenterTitle">ELIJE UNA PLANTILLA PARA TU CORREO</h5>
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 		          <span aria-hidden="true" class="text-white" v-bind:style="{ 'font-size': '1.5em'}">&times;</span>
 		        </button>
 		      </div>
 		      <div  class="modal-body">
-		        <div class="row">
+		        <div class="row p-3">
 					<div class="col-2 p-1">
 						<div class="template" v-on:click="selectTemplate(1)">
 							<img src="../assets/template-1.png" style="width:100%;" alt="">
@@ -217,7 +216,7 @@ import jwtDecode from 'jwt-decode'
 import router from '../router'
 // import Autocomplete from '@trevoreyre/autocomplete-vue'
 import LineChart from '../plugins/LineChart.js'
-import EventBus from './eventBus'
+import EventBus from './EventBus'
 import Autocomplete from 'vuejs-auto-complete'
 
 export default {
@@ -621,15 +620,11 @@ export default {
 		border-radius:5px;
 	}
 	.add{
-		background-color:#1F5673;
+		background-color: #353535;
 		color: azure;
 		transition: all 0.5s ease-out;
 		font-family: 'Roboto', sans-serif !important;
 		font-weight:600;
-		-webkit-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
-		-moz-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
-		box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
-		-webkit-transition: all 0.5s ease-out;
 		letter-spacing: 1px;
 		border-radius:5px;
 	}
@@ -638,14 +633,17 @@ export default {
 		color:#001514;
 	}
 	
-	.inputs {
-		border: none !important;
-		border-radius: 0px !important;
-		border-bottom: 2px solid #1F5673 !important;
+	.inputsClient {
 		background-color: transparent !important;
+		-webkit-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+		-moz-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+		box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+		border: none !important;
+		border-radius: 5px;
+		padding: 10px;
+		width: 50% ;
 		color: black !important;
-		font-family: 'Roboto', sans-serif !important;
-		letter-spacing: .09em;
+		outline: none !important;
 	}
 	.ListaPrestadorTwo::-webkit-scrollbar {
 		width: 8px;     /* Tamaño del scroll en vertical */

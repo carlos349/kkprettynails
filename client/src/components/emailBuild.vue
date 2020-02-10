@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid">
         <div class="row">
-            <div v-if="template == 1" style="border:5px solid #ecebea;height:99vh" class="col-sm-7">
+            <div v-if="template == 1" style="border:5px solid #ecebea;height:99vh; background-color:#fff;" class="col-sm-7">
                 <div class="container">
                     <picture-input 
                     ref="pictureInput"
@@ -35,7 +35,7 @@
                 </div>
                 
             </div>
-            <div v-if="template == 2" style="border:5px solid #ecebea;height:99vh" class="col-sm-7">
+            <div v-if="template == 2" style="border:5px solid #ecebea;height:99vh;background-color:#fff;" class="col-sm-7">
                 <div class="container">
                     
                     <div v-html="textareaOne" style="max-height:90vh;overflow:hidden" v-on:click="editarTextarea(textareaOne,1)"  class="m-3 p-3 textarea">
@@ -50,7 +50,7 @@
                 </div>
                 
             </div>
-            <div v-if="template == 3" style="border:5px solid #ecebea;height:99vh" class="col-sm-7">
+            <div v-if="template == 3" style="border:5px solid #ecebea;height:99vh;background-color:#fff;" class="col-sm-7">
                 <div class="container">
                     <picture-input 
                     ref="pictureInput"
@@ -84,7 +84,7 @@
                 </div>
                 
             </div>
-            <div v-if="template == 4" style="border:5px solid #ecebea;height:99vh" class="col-sm-7">
+            <div v-if="template == 4" style="border:5px solid #ecebea;height:99vh;background-color:#fff;" class="col-sm-7">
                 <div class="container">
                     <picture-input 
                     ref="pictureInput"
@@ -161,7 +161,7 @@
                 </div>
                 
             </div>
-            <div v-if="template == 5" style="border:5px solid #ecebea;height:99vh" class="col-sm-7">
+            <div v-if="template == 5" style="border:5px solid #ecebea;height:99vh;background-color:#fff;" class="col-sm-7">
                 <div class="container">
                     <div v-html="textareaOne" style="max-height:65vh;overflow:hidden" v-on:click="editarTextarea(textareaOne,1)"  class="m-3 p-3 textarea">
                     </div>
@@ -196,7 +196,7 @@
                 </div>
                 
             </div>
-            <div v-if="template == 6" style="border:5px solid #ecebea;height:99vh" class="col-sm-7">
+            <div v-if="template == 6" style="border:5px solid #ecebea;height:99vh;background-color:#fff;" class="col-sm-7">
                 <div class="container">
                     <picture-input 
                     ref="pictureInput"
@@ -277,7 +277,7 @@
 <script>
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import PictureInput from 'vue-picture-input'
-import EventBus from './eventBus'
+import EventBus from './EventBus'
 import axios from 'axios'
 import router from '../router'
 

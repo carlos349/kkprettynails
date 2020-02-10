@@ -75,38 +75,38 @@
 		<div class="modal fade" id="myModal2" tabindex="-1"  role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered"  >
 		    <div class="modal-content" >
-		      <div v-bind:style="{ 'background-color': '#1f5673'}" class="modal-header">
-		        <h5 v-bind:style="{ 'background-color': '#1f5673'}" class="modal-title text-white font-weight-bold" id="exampleModalCenterTitle">Edicion del producto</h5>
+		      <div v-bind:style="{ 'background-color': 'rgb(107, 178, 229)'}" class="modal-header">
+		        <h5  class="modal-title text-white font-weight-bold" id="exampleModalCenterTitle">Edicion del producto</h5>
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-		          <span aria-hidden="true" class="text-white">&times;</span>
+		          <span aria-hidden="true" >&times;</span>
 		        </button>
 		      </div>
 		      <div  class="modal-body">
 		        <form v-on:submit.prevent="updateProducts">
 					<div class="form-group">
 						<label for="nombre">Nombre del servicio</label>
-						<input type="text" v-model="editProduct" class="form-control inputs" name="nombreServicio" placeholder="Nombre del producto" >
+						<input type="text" v-model="editProduct" class="form-control inputsInventario w-100" name="nombreServicio" placeholder="Nombre del producto" >
 					</div>
 					<div class="form-group">
 						<label for="nombre">Marca del producto</label>
-						<input type="text" v-model="editBrand" class="form-control inputs" name="nombreServicio" placeholder="Marca del producto" >
+						<input type="text" v-model="editBrand" class="form-control inputsInventario w-100" name="nombreServicio" placeholder="Marca del producto" >
 					</div>
 					<div class="form-group">
 						<label for="nombre">Gramos del producto</label>
-						<input type="text" v-model="editGrams" class="form-control inputs" name="nombreServicio" placeholder="Gramos del producto" >
+						<input type="text" v-model="editGrams" class="form-control inputsInventario w-100" name="nombreServicio" placeholder="Gramos del producto" >
 					</div>
 					<div class="form-group">
 						<label for="nombre">Cantidad del producto</label>
-						<input type="text" v-model="editQuantity" class="form-control inputs" name="nombreServicio" placeholder="Cantidad del producto" >
+						<input type="text" v-model="editQuantity" class="form-control inputsInventario w-100" name="nombreServicio" placeholder="Cantidad del producto" >
 					</div>
 					<div class="form-group">
 						<label for="nombre">Precio del producto</label>
-						<input type="text" v-model="editAmount" class="form-control inputs" name="nombreServicio" placeholder="Precio del producto" >
+						<input type="text" v-model="editAmount" class="form-control inputsInventario w-100" name="nombreServicio" placeholder="Precio del producto" >
 					</div>
 					<div class="form-group row" style="margin-top:-15px;">
-						<input type="text" id="myInputInventEdit" v-on:keyup="myFunctionInventEdit()" class="form-control buscar inputs" placeholder="Seleccione Servicios"/>
-						<div class="ListaProcesar maxHeightEdit">
-							<table class="table table-dark tableBg" id="myTableInventEdit">
+						<input type="text" id="myInputInventEdit" v-on:keyup="myFunctionInventEdit()" class="form-control buscar inputsInventario w-100 mt-2" placeholder="Seleccione Servicios"/>
+						<div class="ListaProcesar maxHeightEdit w-100">
+							<table class="table" id="myTableInventEdit">
 								<tbody>
 									<tr v-for="(servicio, index) of servicios" >
 										<td class="font-weight-bold ">

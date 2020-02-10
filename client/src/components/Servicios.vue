@@ -213,7 +213,7 @@
 	import axios from 'axios'
 	import LineChart from '../plugins/LineChart.js'
 	import router from '../router'
-	import EventBus from './eventBus'
+	import EventBus from './EventBus'
 	class Manicurista{
 		constructor(nombre, documento, porcentaje, comision) {
 			this.nombre = nombre;

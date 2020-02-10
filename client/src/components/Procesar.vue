@@ -397,7 +397,7 @@ box-shadow: 0px 0px 22px 5px rgba(65,67,97,1);">
 <script type="text/javascript">
 import axios from 'axios'
 import router from '../router'
-import EventBus from './eventBus'
+import EventBus from './EventBus'
 import Autocomplete from 'vuejs-auto-complete'
 	class Manicurista{
 		constructor(nombre) {

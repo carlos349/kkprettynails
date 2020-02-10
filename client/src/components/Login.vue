@@ -25,7 +25,7 @@
 <script>
 	import axios from 'axios'
 	import router from '../router'
-	import EventBus from './eventBus'
+	import EventBus from './EventBus'
 	import jwtDecode from 'jwt-decode'
 	export default {
 		data(){
