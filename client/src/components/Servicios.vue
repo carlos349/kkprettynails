@@ -1,5 +1,6 @@
 <template>
 	<div class="container-fluid">
+		
 		<div class="row">
 			<div class="col-md-12 row sectionMetrics">
 				<div class="col-md-3 metricsServices first">
@@ -17,6 +18,13 @@
 			</div>
 			<div class="col-md-12 ">
 				<div class="">
+					<button class="botonOcultarInfoServis" data-toggle="collapse" v-on:click="scrollBot()" data-target="#collapseExample">
+						 <font-awesome-icon class="arrowBot" icon="arrow-circle-down" /> 	
+						  <font-awesome-icon style="display:none" class="arrowUp" icon="arrow-circle-up" /> 
+					</button>
+					<button class="botonCrearServicio" v-on:click="openModalCreateServices">
+						 Crear Servicio
+					</button>
 					<v-client-table class="text-center tableServis"  :data="servicios" :columns="columns" :options="optionsT">
 						<p slot="prestadoress"  slot-scope="props">{{props.row.prestadores.length}}</p>
 						<p slot="precio"  slot-scope="props">{{formatPrice(props.row.precio)}}</p>
@@ -30,10 +38,11 @@
 						<!-- <a slot="edit" slot-scope="props" class="fa fa-edit" :href="pasarDatosEdit(props.row.nombre, props.row.identidad, props.row.correoCliente, props.row.instagramCliente, props.row._id)">Hola </a> -->
 					</v-client-table>
 				</div>
-			</div><button class="btn-white" v-on:click="openModalCreateServices">
-						 Crear Servicio
-					</button>
-			<div class="col-md-4" style="margin-top:20px;">
+			</div>
+				
+					<div style="margin-top:0.5%" class="collapse col-sm-12 row" id="collapseExample">
+						
+							<div class="col-md-4" style="margin-top:20px;">
 				<div class="box">
 					
 				</div>
@@ -71,6 +80,10 @@
 					<line-chart v-bind:style="{ 'color': 'red !important'}" v-if="loaded" :chartdata="chartdata" :options="options" :styles="myStyles"/>
 				</div>
 			</div>
+						
+						
+					</div>
+			
 		</div>
 		<div class="modal fade" id="myModal2" tabindex="-1"  role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered"  >
@@ -583,6 +596,14 @@
 			    }
 			  }
 			},
+			scrollBot() {
+				$(".arrowUp").toggle()
+				$(".arrowBot").toggle()
+				setTimeout( function() {
+					$(document).scrollTop(9999,'slow');
+				},500) 
+				
+			},
 			myFunctionServ() {
 			  var input, filter, table, tr, td, i, txtValue;
 			  input = document.getElementById("myInputServ");
@@ -708,17 +729,8 @@
 		height: 8px;    /* Tamaño del scroll en horizontal */
 		display: none;  /* Ocultar scroll */
 	}
-	.inputs{
-		border:none !important;
-		border-radius:0px !important;
-		border-bottom:2px solid #001514 !important;
-		background-color:transparent !important;
-		color:#001514 !important;
-		font-family: 'Roboto', sans-serif !important;
-	}
-	label{
-		color:#001514;
-	}
+	
+	
 	.selectMani{
 		background-color:#355461 !important;
 		color:#fff !important;
@@ -830,9 +842,10 @@
   	}
 	
 
-	.btn-white{
+	.botonCrearServicio{
+		z-index:100;
 		position: absolute;
-		top: 65.7%;
+		top: 93%;
 		right: 1%;
 		padding: 5px;
 		width: 21.9%;
@@ -842,6 +855,22 @@
 		border-radius: 5px;
 		font-size: 1.3em;
 		box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+		-webkit-transition: all 0.5s ease-out;
+		outline: none !important;
+	}
+	.botonOcultarInfoServis{
+		z-index:100;
+		position: absolute;
+		top: 95.8%;
+		right: 50.6%;
+		padding: 5px;
+		
+		background-color: rgba(238, 238, 238, 0.623);
+		color: #353535;
+		border: none;
+		border-radius: 5px 5px 0 0;
+		font-size: 2.2em;
+		
 		-webkit-transition: all 0.5s ease-out;
 		outline: none !important;
 	}
@@ -901,8 +930,8 @@
 	.table-bordered tbody{
 		background-color: white;
 	}
-	.tableServis table{
-
+	.tableServis {
+		height: 85vh;
 	
 	}
 	.table-bordered {

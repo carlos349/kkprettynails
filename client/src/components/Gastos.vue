@@ -1,5 +1,29 @@
 <template>
 	<div class="container-fluid">
+		<div class="col-sm-12 m-4">
+				<div>
+					<button class="botonOcultarInfoExpenses" data-toggle="collapse" v-on:click="scrollBot()" data-target="#collapseExample">
+						 <font-awesome-icon class="arrowBot" icon="arrow-circle-down" /> 	
+						  <font-awesome-icon style="display:none" class="arrowUp" icon="arrow-circle-up" /> 
+					</button>
+					<v-client-table class="text-center tableExpenses"  :data="expenses" :columns="columns" :options="optionsT">
+						<p slot="datee"  slot-scope="props">{{formatDate(props.row.date)}}</p>
+						<div slot="typee"  slot-scope="props">
+							<p v-if="props.row.type == 'Advancement'">
+										Avance
+							</p>
+							<p v-else-if="props.row.type == 'expense'">
+								Gasto
+							</p>
+							<p v-else>
+								Bono
+							</p>
+						</div>
+						<p slot="mountt"  slot-scope="props">{{formatPrice(props.row.figure)}}</p>
+					</v-client-table>	
+					
+				</div>
+			</div>
 		<!-- <div class="row">
 			<div class="container formGastos">
 				<form v-on:submit.prevent="registerExpense">
@@ -21,7 +45,7 @@
 			</div>
 		</div> -->
 
-		<div class="row pt-2 pl-5">
+		<div class="collapse row pt-2 pl-5" id="collapseExample">
 			<div class="col-md-4 mb-2">
 				<h2 class="p-3 m-0" v-bind:style="{ 'background-color': 'rgba(238, 238, 238, 0.623)', 'color':'#1C1C1C', 'border-radius':'5px 5px 0 0'}">Registrar gasto</h2>
 				<div class="formsExpense" v-bind:style="{ 'background-color': '#fff'}">
@@ -57,69 +81,7 @@
 					<line-chart v-if="loaded" :chartdata="chartdata" :options="options" :styles="myStyles"/>
 				</div>
 			</div>
-			<div class="col-12">
-				<div>
-					<v-client-table class="text-center tableExpenses"  :data="expenses" :columns="columns" :options="optionsT">
-						<p slot="datee"  slot-scope="props">{{formatDate(props.row.date)}}</p>
-						<div slot="typee"  slot-scope="props">
-							<p v-if="props.row.type == 'Advancement'">
-										Avance
-							</p>
-							<p v-else-if="props.row.type == 'expense'">
-								Gasto
-							</p>
-							<p v-else>
-								Bono
-							</p>
-						</div>
-						<p slot="mountt"  slot-scope="props">{{formatPrice(props.row.figure)}}</p>
-					</v-client-table>	
-					<!-- <table  class="table" v-bind:style="{ 'background-color': '#1f5673'}" style="color:#fff !important" >
-						<thead>
-							<tr>
-								<th>
-									Razón del gasto
-								</th>
-								<th>
-									Tipo
-								</th>
-								<th>
-									Monto
-								</th>
-								<th>
-									Fecha
-								</th>	
-							</tr>
-						</thead>
-					</table>	
-					<div class="ListaInventario tbl-content">
-						<table class="table table-light table-borderless table-striped text-left" style="font-size:.8em">
-							<tbody>
-								<tr v-for="(expense, index) of expenses">
-									<td>
-										{{expense.expense}}
-									</td>
-									<td v-if="expense.type == 'Advancement'">
-										Avance
-									</td>
-									<td v-else-if="expense.type == 'expense'">
-										Gasto
-									</td>
-									<td v-else>
-										Bono
-									</td>
-									<td>
-										{{formatPrice(expense.figure)}}
-									</td>
-									<td>
-										{{formatDate(expense.date)}}
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</div> -->
-				</div>
-			</div>
+			
 		</div>
 	</div>
 </template>
@@ -410,6 +372,22 @@
 		text-align: center;
 		margin-bottom: 10px;
 	}
+	.botonOcultarInfoExpenses{
+		z-index:100;
+		position: absolute;
+		top: 95.6%;
+		right: 50.6%;
+		padding: 5px;
+		
+		background-color: rgba(238, 238, 238, 0.623);
+		color: #353535;
+		border: none;
+		border-radius: 5px 5px 0 0;
+		font-size: 2.2em;
+		
+		-webkit-transition: all 0.5s ease-out;
+		outline: none !important;
+	}
 
 	
 
@@ -464,8 +442,8 @@
 	.table-bordered tbody{
 		background-color: white;
 	}
-	.tableExpenses table{
-
+	.tableExpenses {
+		height: 94.9vh;
 	
 	}
 	.table-bordered {

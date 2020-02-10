@@ -16,24 +16,26 @@
 				</div>
 			</div>
             <div class="col-md-12">
-				<div class="">	
+				<div class="">
+					<button class="botonOcultarInfoClient" data-toggle="collapse" v-on:click="scrollBot()" data-target="#collapseExample">
+						 <font-awesome-icon class="arrowBot" icon="arrow-circle-down" /> 	
+						  <font-awesome-icon style="display:none" class="arrowUp" icon="arrow-circle-up" /> 
+					</button>	
+					<button class="botonCrearCliente" v-on:click="openModalCreateClient">
+							Registrar cliente
+						</button>
+						<button class="botonCrearCorreo" v-on:click="showTemplates">
+							Correos a clientes 
+						</button>
 					<v-client-table class="text-center tablaClients"  :data="clients" :columns="columns" :options="optionsT">
 						<button slot="edit"  slot-scope="props" v-on:click="pasarDatosEdit(props.row.nombre, props.row.identidad, props.row.correoCliente, props.row.instagramCliente, props.row._id)" class=" btn btn-colorsEditClient w-100"><font-awesome-icon icon="edit" /></button>
 					</v-client-table>
 				</div>
 			</div>
-			<div class="col-md-4" style="margin-top:20px;">
+			<div style="margin-top:0.9%" class="col-sm-12 row collapse" id="collapseExample">
+				<div class="col-md-4" style="margin-top:20px;">
 				<div class="row">
-					<div class="box col-6">
-						<button class="btn-white" v-on:click="openModalCreateClient">
-							Registrar cliente
-						</button>
-					</div>
-					<div class="box col-6">
-						<button class="btn-white Second" v-on:click="showTemplates">
-							Correos a clientes 
-						</button>
-					</div>
+					
 					<div class="tablaClients col-12">
 						<table  class="table tablaClients table-dark shadow" style="color:#fff !important;border-radius:5px; background-color: rgba(238, 238, 238, 0.623) !important" >
 							<thead class="theadClients">
@@ -69,6 +71,8 @@
 					<line-chart v-if="loaded" :chartdata="chartdata" :options="options" :styles="myStyles"/>
 				</div>
 			</div>
+			</div>
+			
         </div>
         <div class="modal fade" id="ModalCreateClient" tabindex="-1"  role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered"  >
@@ -525,6 +529,14 @@ export default {
 			EventBus.$emit('select-template', select)
 			localStorage.setItem('selectTemplate', select)
 		},
+		scrollBot() {
+				$(".arrowUp").toggle()
+				$(".arrowBot").toggle()
+				setTimeout( function() {
+					$(document).scrollTop(9999,'slow');
+				},500) 
+				
+			},
 		emitMethodTwo() {
 			EventBus.$emit('reload-services', 'updated')
 		},
@@ -663,32 +675,56 @@ export default {
 		box-shadow: 0 0.46875rem 2.1875rem rgba(4,9,20,0.03), 0 0.9375rem 1.40625rem rgba(4,9,20,0.03), 0 0.25rem 0.53125rem rgba(4,9,20,0.05), 0 0.125rem 0.1875rem rgba(4,9,20,0.03);
 		border-radius: 5px;
 	}
-    .box{
-    	width: 100%;	
-  	}
-	label{
-		color:black;
-	}
-	.btn-white{
+    .botonCrearCliente{
+		z-index:100;
+		position: absolute;
+		top: 92.5%;
+		right: 1%;
 		padding: 5px;
-		width: 100%;
-		margin-bottom: 5px;
-		background-color: #E6E6EA;
-		color: #618B25;
+		width: 21.9%;
+		background-color: #353535;
+		color: white;
 		border: none;
-		border:3px solid #7ec365;
+		border-radius: 5px;
 		font-size: 1.3em;
 		box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
 		-webkit-transition: all 0.5s ease-out;
 		outline: none !important;
 	}
-	.btn-white:hover{
-		background-color: #218838;
-	}
-	
-	.btn-white:focus{
+	.botonCrearCorreo{
+		z-index:100;
+		position: absolute;
+		top: 98.5%;
+		right: 1%;
+		padding: 5px;
+		width: 21.9%;
+		background-color: #353535;
+		color: white;
+		border: none;
+		border-radius: 5px;
+		font-size: 1.3em;
+		box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+		-webkit-transition: all 0.5s ease-out;
 		outline: none !important;
 	}
+	.botonOcultarInfoClient{
+		z-index:100;
+		position: absolute;
+		top: 96.5%;
+		right: 50.6%;
+		padding: 5px;
+		
+		background-color: rgba(238, 238, 238, 0.623);
+		color: #353535;
+		border: none;
+		border-radius: 5px 5px 0 0;
+		font-size: 2.2em;
+		
+		-webkit-transition: all 0.5s ease-out;
+		outline: none !important;
+	}
+	
+	
 
 	.VuePagination {
 		text-align: center;
