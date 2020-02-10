@@ -235,9 +235,11 @@
                                     <span v-on:click="clearInputTwo" style="position:absolute;top:8px;left:40px;background-color:#FBF5F3;">{{recomend}}</span>
                                   </div>
                               </div>
-                                 
-                              <button  v-on:click="editCliente" style="display:none;background-color:#353535;color:white" class="btn w-100 mt-2 ag">Editar cliente</button>
-                              <button  v-on:click="ingresoCliente" style="display:none;background-color:#353535;color:white" class="btn w-100 mt-2 add del">Agregar cliente</button>
+                                 <div class="text-center">
+                                   <button  v-on:click="editCliente" style="display:none;background-color:#353535;color:white" class="btn w-75 mx-auto ag">Editar cliente</button>
+                              <button  v-on:click="ingresoCliente" style="display:none;background-color:#353535;color:white" class="btn w-75 mx-auto add del">Agregar cliente</button>
+                                 </div>
+                              
                             </form>
                           </div>
                         </div>
@@ -281,7 +283,7 @@
     </div>
     <div class="modal fade" id="myModalCitasDescripcion" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered" role="document">
-		    <div v-bind:style="{ 'background-color': '#ffffff'}" class="modal-content p-3">
+		    <div v-bind:style="{ 'background-color': '#ffffff'}" class="modal-content">
 		      <div class="modal-header" v-bind:class="selectedEvent.class">
 		        <h5 class="modal-title font-weight-bold" id="exampleModalCenterTitle">{{ selectedEvent.title }}</h5>
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -290,15 +292,20 @@
 		      </div>
 		      <div class="modal-body letters">
 		        <p><strong>Fecha: {{ dateSplit(selectedEvent.start) }}</strong></p>
-            <strong>Detalle de la cita:</strong><br><br>
+            
             <ul class="list-group">
-              <li class="list-group-item" style="background-color: transparent !important">Cliente: {{ selectedEvent.cliente }}</li>
-              <li class="list-group-item" style="background-color: transparent !important">Manicurista: {{ selectedEvent.empleada }}</li>
-              <li class="list-group-item"  style="background-color: transparent !important">Servicios:
-                <p style="margin-bottom:-6px;" v-for="service of selectedEvent.services" v-bind:key = "service"> - {{ service.servicio }} </p> 
+              
+              <li class="list-group-item" style="background-color: transparent !important">
+                <h3 class="text-center"><b>Detalle de la cita</b></h3>
+                <b>Cliente:</b>  {{formatName(selectedEvent.cliente)}} <br> <b>Contacto:</b>{{formatContact(selectedEvent.cliente)}} <br> <b>Manicurista:</b>  {{ selectedEvent.empleada }} </li>
+             
+              <li class="list-group-item"  style="background-color: transparent !important">
+                 <h3 class="text-center"><b>Servicios</b></h3>
+                
+                <p style="margin-bottom:-6px;font-size:1.25em" v-for="service of selectedEvent.services" v-bind:key = "service"> - {{ service.servicio }} </p> 
               </li>
-              <li class="list-group-item" style="background-color: transparent !important">Hora de inicio: {{ dateSplitHours(selectedEvent.start) }}</li>
-              <li class="list-group-item" style="background-color: transparent !important">Hora de finalización: {{ dateSplitHours(selectedEvent.end) }}</li>
+              <li class="list-group-item" style="background-color: transparent !important"><b>Hora de inicio:</b>  {{ dateSplitHours(selectedEvent.start) }}</li>
+              <li class="list-group-item" style="background-color: transparent !important"><b>Hora de finalización:</b>  {{ dateSplitHours(selectedEvent.end) }}</li>
 
             </ul><br>
             <button v-bind:class="selectedEvent.class" v-if="selectedEvent.process == true || status == 3" type="button" class="btn font-weight-bold btn-style col-6" v-on:click="borrarCita(selectedEvent.id)">Borrar cita</button>
@@ -1218,6 +1225,20 @@ import router from '../router'
         }
         
       },
+      formatName(name){
+        if (name) {
+          var sp = name.split("-")
+        return sp[0]
+        }
+        
+      },
+      formatContact(contact){
+        if (contact) {
+          var sp = contact.split("-")
+        return sp[1]
+        }
+        
+      },
 
       selectTime(index,hora){
         var horaSp = hora.split("/")
@@ -1551,8 +1572,9 @@ import router from '../router'
     box-shadow: 0 2px 5px 0 rgba(0,0,0,.14)
   }
   .servPretty{
-    background-color: #353535;
-    color:#fff;
+    background-color: rgba(238, 238, 238, 0.623);
+    color:#353535;
+    font-weight: bold;
     border-radius: 5px;
     margin: 1px;
     cursor: pointer;
@@ -1561,7 +1583,7 @@ import router from '../router'
   }
   .serviInfo{
     
-    border-right: 1px solid #fff;
+    border-right: 1px solid #353535;
   }
   .serviInfoPrestadores{
     background-color: #6BB2E5;

@@ -6,13 +6,20 @@
 					<p>Total prestadores</p>
 					<h1>{{manicuristas.length}}</h1>
 				</div>
-				<div class="col-md-5 metrics second">
+				<div class="col-md-5 metrics first">
 					<p>Servicio mensuales</p>
 					<h1>{{TotalCantidadServicios}}</h1>
 				</div>
 			</div>
 			<div class="col-md-12">
 				<div>	
+					<button class="botonOcultarInfoPrestadores" data-toggle="collapse" v-on:click="scrollBot()" data-target="#collapseExample">
+						 <font-awesome-icon class="arrowBot" icon="arrow-circle-down" /> 	
+						  <font-awesome-icon style="display:none" class="arrowUp" icon="arrow-circle-up" />
+					</button>
+					<button class="botonCrearPrestador" v-on:click="openModalCreateEmploye">
+						Registrar prestador
+					</button>
 					<v-client-table class="text-center tablePresta" :data="manicuristas" :columns="columns" :options="optionsT">
 						
 						<p slot="porcentaje"  slot-scope="props">{{props.row.porcentaje }}%</p>
@@ -25,12 +32,9 @@
 					</v-client-table>
 				</div>
 			</div>
+			<div style="margin-top:-2.2%" class="collapse col-sm-12 row" id="collapseExample">
 			<div class="col-md-4" style="margin-top:20px;">
-				<div class="box">
-					<button class="btn-white" v-on:click="openModalCreateEmploye">
-						Registrar prestador
-					</button>
-				</div>
+				
 				<div>
 					<table  class="table mb-0" style="color:black !important; background-color: rgba(238, 238, 238, 0.623);border-radius:5px 5px 0 0 !important;border:none !important" >
 						<thead>
@@ -64,6 +68,7 @@
 				<div class="small">
 					<line-chart v-if="loaded" :chartdata="chartdata" :options="options" :styles="myStyles"/>
 				</div>
+			</div>
 			</div>
 		</div>
 		<div class="modal fade" id="ModalEditPrestador" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -520,6 +525,14 @@ export default {
 			let val = concat.replace('.', '-')
             return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
 		},
+		scrollBot() {
+				$(".arrowUp").toggle()
+				$(".arrowBot").toggle()
+				setTimeout( function() {
+					$(document).scrollTop(9999,'slow');
+				},500) 
+				
+			},
 		changeRut(){
 			this.documento = this.formatRut(this.documento)
 		},
@@ -703,25 +716,39 @@ export default {
     	width: 100%;
   	}
 
-	.btn-white{
+	.botonCrearPrestador{
+		z-index:100;
+		position: absolute;
+		top: 92%;
+		right: 1%;
 		padding: 5px;
-		width: 100%;
-		margin-bottom: 5px;
-		background-color: #E6E6EA;
-		color: #618B25;
+		width: 21.9%;
+		background-color: #353535;
+		color: white;
 		border: none;
-		border:3px solid #7ec365;
+		border-radius: 5px;
 		font-size: 1.3em;
 		box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
 		-webkit-transition: all 0.5s ease-out;
 		outline: none !important;
 	}
-	.btn-white:hover{
-		border:3px solid #618B25;
-	}
-	.btn-white:focus{
+	.botonOcultarInfoPrestadores{
+		z-index:100;
+		position: absolute;
+		top: 91%;
+		right: 50.6%;
+		padding: 5px;
+		
+		background-color: rgba(238, 238, 238, 0.623);
+		color: #353535;
+		border: none;
+		border-radius: 5px 5px 0 0;
+		font-size: 2em;
+		
+		-webkit-transition: all 0.5s ease-out;
 		outline: none !important;
 	}
+	
 	.VueTables--client .row{
 		display:none
 	}
@@ -775,8 +802,8 @@ export default {
 	.table-bordered tbody{
 		background-color: white;
 	}
-	.tablePresta table{
-
+	.tablePresta{
+		height: 90vh;
 	
 	}
 	.table-bordered {
