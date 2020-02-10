@@ -2,7 +2,7 @@
     <h1>Incio pagina web</h1>
 </template>
 <script>
-import EventBus from './eventBus'
+import EventBus from './EventBus'
 export default {
     beforeCreate(){
         localStorage.removeItem('userToken')

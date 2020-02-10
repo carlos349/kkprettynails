@@ -7,7 +7,7 @@
 
 <script>
   import Navbar from "./components/Navbar"
-  import EventBus from './components/eventBus'
+  import EventBus from './components/EventBus'
   export default {
     name: 'App',
     components: {
