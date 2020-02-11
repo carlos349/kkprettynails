@@ -48,7 +48,6 @@ manicurista.post('/', (req, res) => {
   const dataManicurista = {
     nombre: req.body.nombreManicurista,
     documento: req.body.documentoManicurista,
-    porcentaje: req.body.porcentajeManicurista,
     restTime: req.body.restTime,
     restDay: req.body.restDay,
     comision: 0,
@@ -192,8 +191,7 @@ manicurista.put('/:id', (req, res) => {
   Manicurista.findByIdAndUpdate(req.params.id, {
     $set: {
       nombre: req.body.nombre,
-      documento: req.body.documento,
-      porcentaje: req.body.porcentaje, 
+      documento: req.body.documento, 
       restTime: req.body.restTime,
       restDay: req.body.restDay
     }

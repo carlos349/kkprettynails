@@ -56,6 +56,44 @@
 			<div style="height:93vh;" class="col-md-8 mt-3 mx-auto infoBasic p-3">
 				
 				<div class="">
+					<div v-if="status == 2" >
+			<div class="col-md-12 row sectionMetricssExpense mb-3">
+            <div class="col-md-6 col-sm-12 ">
+                <div class="metricssExpensePerfil firstExpensesPerfil">
+                    <p class="text-center">Monto del fondo de caja</p>
+                    <h2 class="text-center">{{formatPrice(fund)}}</h2>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="metricssExpensePerfil firstExpensesPerfil">
+                    <p class="text-center">Nombre del cajero</p>
+                    <h2 class="text-center">{{checker}}</h2>
+                </div>
+            </div>
+			<v-client-table  class="text-center tablePerfilVenta mt-2"  :data="dataChecker" :columns="columns" :options="optionsT">
+							<div slot="print"  slot-scope="props">
+							<button v-if="props.row.status" style="width:100%;" v-on:click="reporteVenta(props.row._id)" class=" btn btn-colorsPrint"><font-awesome-icon icon="copy" /></button>
+							<button v-else style="width:100%;" v-on:click="reporteVenta(props.row._id)" class=" btn btn-danger"><font-awesome-icon icon="copy" /></button>
+							</div>
+							
+							<p slot="servicios" slot-scope="props">{{props.row.servicios}}</p>
+							<p slot="descuentoo" slot-scope="props">{{props.row.descuento}}%</p>
+							<p slot="clientNombre" slot-scope="props">{{justName(props.row.cliente)}}</p>
+							<p slot="comisionn" slot-scope="props">{{formatPrice(props.row.comision)}}</p>
+							<p slot="locall" slot-scope="props">{{formatPrice(props.row.ganancialocal)}}</p>
+							<p slot="totall" slot-scope="props">{{formatPrice(props.row.total)}}</p>
+							<!-- <a slot="edit" slot-scope="props" class="fa fa-edit" :href="pasarDatosEdit(props.row.nombre, props.row.identidad, props.row.correoCliente, props.row.instagramCliente, props.row._id)">Hola </a> -->
+						</v-client-table>
+        </div>
+
+		<div class="boxCloses">
+			
+
+			<button class="CierreDia btn-whiteDates btn-animation-1" v-on:click="daySaleClose">
+				<font-awesome-icon icon="cloud-upload-alt" />
+			</button>
+		</div>
+		</div>
 					<div v-if="status == 3" class="col-sm-12">
 						<div  class="row pl-1">
 							<div class="col-sm-4 ">
@@ -79,6 +117,7 @@
 								</div>
 								
 							</div>
+							
 						</div>
 							<v-client-table v-if="link != ''" class="text-center tablePerfilVenta"  :data="ventas" :columns="columns" :options="optionsT">
 							<div slot="print"  slot-scope="props">
@@ -92,7 +131,7 @@
 							<p slot="comisionn" slot-scope="props">{{formatPrice(props.row.comision)}}</p>
 							<p slot="locall" slot-scope="props">{{formatPrice(props.row.ganancialocal)}}</p>
 							<p slot="totall" slot-scope="props">{{formatPrice(props.row.total)}}</p>
-							<!-- <a slot="edit" slot-scope="props" class="fa fa-edit" :href="pasarDatosEdit(props.row.nombre, props.row.identidad, props.row.correoCliente, props.row.instagramCliente, props.row._id)">Hola </a> -->
+							
 						</v-client-table>
 					</div>
 				
@@ -162,50 +201,9 @@
 				</div>
               
             </div>
-				<!-- <table style="background-color:rgba(238, 238, 238, 0.623);border-radius:5px;" class="table mx-auto tablePerfil">
-					<tbody>
-						<tr>
-							<td>Nombre</td>
-							<td>
-								<p v-if="changeFirst">{{first_name}}</p> 
-								<input v-else type="text" class="form-control w-75" v-model="first_name">
-							</td>
-							<td>
-								<button v-if="changeFirst" class="btn w-75 addPerfil" v-on:click="change('first')">Editar</button>
-								<button v-else class="btn w-75 btn-success" v-on:click="EditDataFirst()">Editar</button>
-							</td>
-						</tr>
-						<tr>
-							<td>Apellido</td>
-							<td>
-								<p v-if="changeLast">{{last_name}}</p> 
-								<input v-else type="text" class="form-control w-75" v-model="last_name">
-							</td>
-							<td>
-								<button v-if="changeLast" class="btn w-75 addPerfil" v-on:click="change('last')">Editar</button>
-								<button v-else class="btn w-75 btn-success" v-on:click="EditDataLast()">Editar</button>
-							</td>
-						</tr>
-						<tr>
-							<td>Contraseña</td>
-							<td>**********</td>
-							<td><button class="btn w-75 addPerfil" v-on:click="openModal">Editar</button></td>
-						</tr>
-						<tr>
-							<td>Correo</td>
-							<td>
-								<p v-if="changeEmail">{{email}}</p> 
-								<input v-else type="text" class="form-control w-75" v-model="email">
-							</td>
-							<td>
-								<button v-if="changeEmail" class="btn w-75 addPerfil" v-on:click="change('email')">Editar</button>
-								<button v-else class="btn w-75 btn-success" v-on:click="EditDataEmail()">Editar</button>
-							</td>
-						</tr>
-					</tbody>
-				</table> -->
+				
 				</div>
-
+				
 			</div>
 			
 		
@@ -239,11 +237,8 @@
 		    </div>
 		  </div>
 		</div>
-		<div v-if="status == 2" class="boxCloses">
-			<button class="CierreDia btn-whiteDates btn-animation-1" v-on:click="daySaleClose">
-				<font-awesome-icon icon="cloud-upload-alt" />
-			</button>
-		</div>
+		
+		
 		<div v-if="inspector && status == 2" class="boxFunds">
             <button class="FondoDia btn-whiteFunds btn-animation-1" v-on:click="openFunds">
                 <font-awesome-icon icon="cash-register" />
@@ -468,7 +463,9 @@
 			},
 			async getDataChecker(){
 				const dataChecker = await axios.get('ventas/dataChecker')
-				this.dataChecker = dataChecker
+				this.dataChecker = dataChecker.data
+				console.log(this.dataChecker)
+				console.log(this.ventas)
 			},
 			async editImage() {
 				
@@ -1129,4 +1126,24 @@
 		transform:translateY(0);
 		}
 	}
+
+	.metricssExpensePerfil{
+        padding: auto;
+        width: 70%;
+        margin: auto;
+        margin-top: 20px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        color:#fff;
+        box-shadow: 0 0.46875rem 2.1875rem rgba(4,9,20,0.03), 0 0.9375rem 1.40625rem rgba(4,9,20,0.03), 0 0.25rem 0.53125rem rgba(4,9,20,0.05), 0 0.125rem 0.1875rem rgba(4,9,20,0.03);
+        border-radius:5px;
+    }
+	.metricssExpensePerfil p{
+		font-size: 0.7em;
+		margin-top: 10px;
+	}
+	.firstExpensesPerfil{
+		background:rgba(238, 238, 238, 0.623); /* fallback for old browsers */
+		color:#353535;
+	} 
 </style>

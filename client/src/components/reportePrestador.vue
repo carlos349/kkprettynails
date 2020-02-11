@@ -22,7 +22,7 @@
                     <tr>
                         <th>Fecha</th>
                         <th>Cliente</th>
-                        <th>Comision ({{porcentaje}}%)</th>
+                        <th>Comision</th>
                         <th class="text-right">Total</th>
                     </tr>
                 </thead>

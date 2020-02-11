@@ -90,10 +90,6 @@
 						<label for="name">Documento de identificación</label>
 						<input v-model="documentoPrestadorEdit" type="numbre" class="form-control inputsLender w-100" placeholder="Identificación" v-on:change="changeRutEdit()" v-on:click="changeToEdit()">
 					</div>
-					<div class="form-group">
-						<label for="name">Porcentaje de ganancia</label>
-						<input v-model="porcentajePrestadorEdit" type="text" class="form-control inputsLender w-100" placeholder="Porcentaje">
-					</div>
 					<div class="form-group row">
 						<label for="name" class="col-12">Horario de descanso</label>
 						<select class="form-control col-5 ml-3 inputsLender" v-model="restTimeEdit" >
@@ -362,14 +358,7 @@ export default {
 						timer: 1500
 					})
 			}
-			else if (this.porcentaje == '') {
-				this.$swal({
-						type: 'error',
-						title: 'Debe escribir el porcentaje del prestador',
-						showConfirmButton: false,
-						timer: 1500
-					})
-			}
+		
 			else {
 				axios.post('manicuristas', {
 				nombreManicurista: this.nombrePrestador,
