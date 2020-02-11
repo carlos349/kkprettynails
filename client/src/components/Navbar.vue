@@ -218,7 +218,7 @@ export default {
 			fecha: new Date(),
 			nombre:localStorage.nombre,
 			apellido: localStorage.apellido,
-			image:endPoint.endPoint+localStorage.imageUser,
+			image:endPoint.imgEndpoint+localStorage.imageUser,
 			authTwo: true,
 			showNav: true
 		}
@@ -304,11 +304,11 @@ export default {
 			this.auth = status
 			this.nombre = localStorage.nombre
 			this.apellido = localStorage.apellido
-			this.image = endPoint.endPoint+localStorage.getItem('imageUser')
+			this.image = endPoint.imgEndpoint+localStorage.getItem('imageUser')
 			this.showNav = true
 		})
 		EventBus.$on('ChangeImage', status => {
-			this.image = endPoint.endPoint+status
+			this.image = endPoint.imgEndpoint+status
 			console.log(status)
 			console.log(this.image)
 		})

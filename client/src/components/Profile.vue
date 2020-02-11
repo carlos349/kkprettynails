@@ -375,7 +375,7 @@
 					this.email = data.data.email
 					this.status = data.data.status
 					this.access = data.data.LastAccess
-					this.image = endPoint.endPoint+data.data.userImage
+					this.image = endPoint.imgEndpoint+data.data.userImage
 				}catch(err) {
 					this.$swal({
 						type: 'error',
