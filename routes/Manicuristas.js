@@ -43,6 +43,10 @@ manicurista.get('/SalesByPrest/:nombre', async (req, res) => {
   console.log(manicuristas)
   res.json(manicuristas)
 })
+manicurista.get('/advancementsProfile/:data', async (req, res, next) => {
+  const data = await Manicurista.find({documento: req.params.data})
+  res.json(data)
+})
 
 manicurista.post('/', (req, res) => {
   const dataManicurista = {

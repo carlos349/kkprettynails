@@ -26,29 +26,29 @@
 					<button class="btn addPerfil w-75 ml-5" data-toggle="collapse" data-target="#collapseEdit" aria-expanded="false" aria-controls="collapseExample">Editar datos</button>
 					<div class="collapse" id="collapseEdit">
 						<div class="formsProfile mt-2 mb-3" v-bind:style="{ 'background-color': '#fff'}">
-							
+							<form v-on:submit.prevent="editProfile">
 								<div class="form-group">
+									<label>Primer nombre</label>
 									<input v-model="first_name" type="text" class="form-control w-100 inputsProfile" placeholder="Escriba su nombre">
-									<button v-on:click="EditDataFirst()" class="btn add w-100">Cambiar nombre</button>
 								</div>
 								<div class="form-group">
+									<label>Segundo nombre</label>
 									<input v-model="last_name" type="text" class="form-control w-100 inputsProfile" placeholder="Escriba su apellido">
-									<button v-on:click="EditDataLast()" class="btn add w-100">Cambiar apellido</button>
 								</div>
 								<div class="form-group">
+									<label>Correo</label>
 									<input v-on:click="EditDataEmail()" v-model="email" type="text" class="form-control w-100 inputsProfile" placeholder="Escriba su correo">
-									<button class="btn add w-100">Cambiar correo</button>
 								</div>
 								<div class="form-group">
+									<label>Contraseña</label>
 									<input v-on:click="EditDataEmail()" type="text" class="form-control w-100 inputsProfile" value="***********"  readonly>
-									<button class="btn add w-100" v-on:click="openModal">Cambiar contraseña</button>
 								</div>
 								<div class="form-group">
+									<label>Imagen de perfil</label>
 									<input type="file" id="file" ref="file" v-on:change="handleFileUpload" class="btn w-100 btn-img" style="cursor:pointer;">
-									<button class="btn add w-100" v-on:click="editImage">Cambiar nombre</button>
 								</div>
-								
-							
+								<button class="btn addPerfil w-100">Editar datos</button>
+							</form>	
 						</div>
 					</div>
 				</div>
@@ -113,7 +113,7 @@
 							<div class="col-sm-4 ">
 								<div class="metricss first">
 									<p><b>Adelantos</b> </p>
-								<h3>Adelanto</h3>
+									<h3>$ {{formatPrice(advancement)}}</h3>
 								</div>
 								
 							</div>
@@ -321,6 +321,7 @@
 				last_name: '',
 				email: '',
 				status: '',
+				advancement:0,
 				access: '',
 				id: decoded._id,
 				changeFirst: true,
@@ -446,6 +447,8 @@
 					}
 					this.ventas[index].servicios = servicio
 					}
+					const advancements = await axios.get('manicuristas/advancementsProfile/'+split[1])
+					this.advancement = advancements.data[0].advancement
 				}
 			},
 			getFunds(){
@@ -467,35 +470,6 @@
 				console.log(this.dataChecker)
 				console.log(this.ventas)
 			},
-			async editImage() {
-				
-				let formData = new FormData();
-				formData.append('image', this.file)
-				try {
-					const image = await axios.post('users/registerImage/'+this.id, formData, {
-						headers: {
-							'Content-Type': 'multipart/form-data',
-							'x-access-token': localStorage.userToken
-						}
-					})
-					this.$swal({
-						type: 'success',
-						title: 'Imagen editada',
-						showConfirmButton: false,
-						timer: 2500
-					})
-					this.emitMethod(image.data.status)
-					this.getData()
-				} catch(err)  {
-					this.$swal({
-						type: 'error',
-						title: 'Acceso invalido, ingrese de nuevo, si el problema persiste comuniquese con el proveedor del servicio',
-						showConfirmButton: false,
-						timer: 2500
-					})
-					router.push({name: 'Login'})
-				}
-			},
 			emitMethod(image) {
 				console.log(image)
 				EventBus.$emit('ChangeImage', image)
@@ -507,32 +481,28 @@
 				this.file = this.$refs.file.files[0];
 				console.log(this.file)
 			},
-			change(type){
-				if (type == 'first') {
-					this.changeFirst = false
-				}else if(type == 'last'){
-					this.changeLast = false
-				}else{
-					this.changeEmail = false
-				}
-			},
-			async EditDataEmail(){
-				const config = {headers: {'x-access-token': localStorage.userToken}}
-				try{
-					const editData = await axios.put('users/editData/'+this.id, {
-						data:this.email,
-						type:'email'
-					}, config)
-					if (editData.data.status == 'ok') {
-						this.changeEmail = true
-						this.$swal({
-							type: 'success',
-							title: 'Correo editado',
-							showConfirmButton: false,
-							timer: 1000
-						})
-					}
-				}catch(err)  {
+			async editProfile(){
+				let formData = new FormData();
+				formData.append('image', this.file)
+				formData.append('first_name', this.first_name)
+				formData.append('last_name', this.last_name)
+				formData.append('email', this.email)
+				try {
+					const image = await axios.post('users/editData/'+this.id, formData, {
+						headers: {
+							'Content-Type': 'multipart/form-data',
+							'x-access-token': localStorage.userToken
+						}
+					})
+					this.$swal({
+						type: 'success',
+						title: 'Imagen editada',
+						showConfirmButton: false,
+						timer: 2500
+					})
+					// this.emitMethod(image.data.status)
+					this.getData()
+				} catch(err)  {
 					this.$swal({
 						type: 'error',
 						title: 'Acceso invalido, ingrese de nuevo, si el problema persiste comuniquese con el proveedor del servicio',
@@ -541,59 +511,7 @@
 					})
 					router.push({name: 'Login'})
 				}
-			},
-			async EditDataLast(){
-				const config = {headers: {'x-access-token': localStorage.userToken}}
-				try{
-					const editData = await axios.put('users/editData/'+this.id, {
-						data:this.last_name,
-						type:'last'
-					}, config)
-					if (editData.data.status == 'ok') {
-						this.changeLast = true
-						this.$swal({
-							type: 'success',
-							title: 'Primer nombre editado',
-							showConfirmButton: false,
-							timer: 1000
-						})
-					}
-				}catch(err)  {
-					this.$swal({
-						type: 'error',
-						title: 'Acceso invalido, ingrese de nuevo, si el problema persiste comuniquese con el proveedor del servicio',
-						showConfirmButton: false,
-						timer: 2500
-					})
-					router.push({name: 'Login'})
-				}
-			},
-			async EditDataFirst() {
-				const config = {headers: {'x-access-token': localStorage.userToken}}
-				try{
-					const editData = await axios.put('users/editData/'+this.id, {
-						data:this.first_name,
-						type:'first'
-					}, config)
-					if (editData.data.status == 'ok') {
-						this.changeFirst = true
-						this.$swal({
-							type: 'success',
-							title: 'Segundo nombre editado',
-							showConfirmButton: false,
-							timer: 1000
-						})
-					}
-				}catch(err)  {
-					this.$swal({
-						type: 'error',
-						title: 'Acceso invalido, ingrese de nuevo, si el problema persiste comuniquese con el proveedor del servicio',
-						showConfirmButton: false,
-						timer: 2500
-					})
-					router.push({name: 'Login'})
-				}
-			},
+			}, 
 			async EditPass(){
 				const config = {headers: {'x-access-token': localStorage.userToken}}
 				try{

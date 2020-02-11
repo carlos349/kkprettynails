@@ -329,6 +329,7 @@
                 setTimeout(() => {
                     axios.get('/manicuristas/advancements/'+this.codigo)
                     .then(res => {	
+                        console.log(res)
                         console.log(res.data)
                         this.advancements = []
                         this.advancements = res.data

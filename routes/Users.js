@@ -22,6 +22,7 @@ const upload = multer({
 	storage
 })
 
+
 users.get('/createSuperuser', async (req, res, next) => {
 	console.log(credentials)
 	const today = new Date()
@@ -59,6 +60,49 @@ users.get('/createSuperuser', async (req, res, next) => {
 	.catch(err => {
 		res.send('error: ' + err)
 	})
+})
+
+users.post('/editData/:id', upload.single("image"), async (req, res, next) => {
+	const token = req.headers['x-access-token'];
+	if (!token) {
+		return res.status(401).json({auth: false, message: 'no token provided'})
+	}
+
+	try {
+		const decoded = jwt.verify(token, process.env.SECRET_KEY)
+		const verify = await User.findById(decoded._id)
+		if (!verify) {
+			return res.status(401).json({auth: false, message: 'invalid access'})
+		}
+	} catch(err) {
+		return res.status(401).json({auth: false, message: 'token expired'})
+	}
+	
+	const id = req.params.id
+	const firstName = req.body.first_name  
+	const lastName = req.body.last_name 
+	const Mail = req.body.email
+	if(req.file){
+		const images = req.file.filename
+		const change = await User.findByIdAndUpdate(id, {
+			$set: {
+				first_name: firstName,
+				last_name: lastName,
+				email:Mail,
+				userImage: images
+			}
+		})
+		res.json({status:change})
+	}else{
+		const change = await User.findByIdAndUpdate(id, {
+			$set: {
+				first_name: firstName,
+				last_name: lastName,
+				email:Mail
+			}
+		})
+		res.json({status:change})
+	}
 })
 
 users.post('/registerImage/:id', upload.single("image"), async (req, res, next) => {
@@ -284,58 +328,6 @@ users.get('/data/:id', async (req, res, next) => {
 		res.status(404).send('User not found')
 	}
 	res.send(data)
-})
-
-users.put('/editData/:id', async (req, res, next) => {
-	const token = req.headers['x-access-token'];
-	if (!token) {
-		return res.status(401).json({auth: false, message: 'no token provided'})
-	}
-
-	try {
-		const decoded = jwt.verify(token, process.env.SECRET_KEY)
-		const verify = await User.findById(decoded._id)
-		if (!verify) {
-			return res.status(401).json({auth: false, message: 'invalid access'})
-		}
-	} catch(err) {
-		return res.status(401).json({auth: false, message: 'token expired'})
-	}
-
-	const type = req.body.type
-	const id = req.params.id
-	const data = req.body.data
-	if (type == 'first') {
-		const editFirst = await User.findByIdAndUpdate(id, {
-			$set: {
-				first_name: data
-			}
-		})
-		if (!editFirst) {
-			res.json({status: 'bad'})
-		}
-		res.json({status: 'ok'})
-	}else if (type == 'last') {
-		const editFirst = await User.findByIdAndUpdate(id, {
-			$set: {
-				last_name: data
-			}
-		})
-		if (!editFirst) {
-			res.json({status: 'bad'})
-		}
-		res.json({status: 'ok'})
-	}else if (type == 'email') {
-		const editFirst = await User.findByIdAndUpdate(id, {
-			$set: {
-				email: data
-			}
-		})
-		if (!editFirst) {
-			res.json({status: 'bad'})
-		}
-		res.json({status: 'ok'})
-	}
 })
 
 users.put('/changePass/:id', async (req, res, next) => {
