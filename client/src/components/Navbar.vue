@@ -205,7 +205,7 @@ import Procesar from "./Procesar"
 import EventBus from './EventBus'
 import router from '../router'
 import jwtDecode from 'jwt-decode'
-
+import endPoint from '../../config-endpoint/endpoint.js'
 export default {
 	components: {
       'Procesar': Procesar
@@ -218,7 +218,7 @@ export default {
 			fecha: new Date(),
 			nombre:localStorage.nombre,
 			apellido: localStorage.apellido,
-			image:'http://localhost:4200/static/users/'+localStorage.imageUser,
+			image:endPoint.endPoint+localStorage.imageUser,
 			authTwo: true,
 			showNav: true
 		}
@@ -304,11 +304,11 @@ export default {
 			this.auth = status
 			this.nombre = localStorage.nombre
 			this.apellido = localStorage.apellido
-			this.image = 'http://localhost:4200/static/users/'+localStorage.getItem('imageUser')
+			this.image = endPoint.endPoint+localStorage.getItem('imageUser')
 			this.showNav = true
 		})
 		EventBus.$on('ChangeImage', status => {
-			this.image = 'http://localhost:4200/static/users/'+status
+			this.image = endPoint.endPoint+status
 			console.log(status)
 			console.log(this.image)
 		})

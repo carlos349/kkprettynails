@@ -282,6 +282,7 @@
 	import axios from 'axios'
 	import EventBus from './EventBus'
 	import LineChart from '../plugins/LineChart.js'
+	import endPoint from '../../config-endpoint/endpoint.js'
 	
 	export default {
 		components:{
@@ -374,7 +375,7 @@
 					this.email = data.data.email
 					this.status = data.data.status
 					this.access = data.data.LastAccess
-					this.image = 'http://localhost:4200/static/users/'+data.data.userImage
+					this.image = endPoint.endPoint+data.data.userImage
 				}catch(err) {
 					this.$swal({
 						type: 'error',
