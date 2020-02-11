@@ -232,12 +232,12 @@
                                       :results-display="formattedDisplayTwo"
                                       @selected="addDistributionGroupTwo">
                                     </autocomplete>
-                                    <span v-on:click="clearInputTwo" style="position:absolute;top:8px;left:40px;background-color:#FBF5F3;">{{recomend}}</span>
+                                    <span v-on:click="clearInputTwo" style="position:absolute;top:8px;left:40px;background-color:white;">{{recomend}}</span>
                                   </div>
                               </div>
                                  <div class="text-center">
                                    <button  v-on:click="editCliente" style="display:none;background-color:#353535;color:white" class="btn w-75 mx-auto ag">Editar cliente</button>
-                              <button  v-on:click="ingresoCliente" style="display:none;background-color:#353535;color:white" class="btn w-75 mx-auto add del">Agregar cliente</button>
+                              <button  v-on:click="ingresoCliente" style="display:none;background-color:#353535;color:white" class="btn w-75 mx-auto mt-2 add del">Agregar cliente</button>
                                  </div>
                               
                             </form>
@@ -499,7 +499,7 @@ import router from '../router'
       },
       formattedDisplay (result) {
         console.log(result)
-        return result.nombre+'-'+result.identidad
+        return result.nombre+' / '+result.identidad
       },
       noresult(result){
         $(".formUser").show()
@@ -513,7 +513,7 @@ import router from '../router'
         setTimeout(() => {
           this.clientsSelect = group.display
         }, 100);
-        const sp = group.display.split("-")
+        const sp = group.display.split(" / ")
         console.log(sp)
         for (let f = 0; f < this.clients.length; f++) {
           console.log(this.clients[f].identidad)
@@ -534,7 +534,7 @@ import router from '../router'
       },
       formattedDisplayTwo (result) {
         console.log(result)
-        return result.nombre+'-'+result.identidad
+        return result.nombre+' / '+result.identidad
       },
       addDistributionGroupTwo (group) {
         setTimeout(() => {
@@ -640,6 +640,13 @@ import router from '../router'
           })
           .then(res => {
             if (res.data.status == 'Servicio actualizado') {
+              this.nombreClienteRegister = ''
+              this.identidadCliente = ''
+              this.correoCliente = ''
+              this.instagramCliente = ''
+              this.clienteID = ''
+              $(".formUser").hide()
+              $(".ag").hide()
               this.$swal({
                 type: 'success',
                 title: 'Cliente actualizado',
@@ -694,10 +701,15 @@ import router from '../router'
 							timer: 1500
             })
             this.nombreClienteRegister = ''
+            this.identidadCliente = ''
+            this.correoCliente = ''
             this.instagramCliente = ''
             this.nombreCliente = ''
-            $('#myModalRegisterClient').modal('hide')
+            $(".formUser").hide()
+            $(".del").hide()
+            $(".recomendador").hide()
             this.getClients()
+            this.clearInputTwo()
 					}else{
 						this.$swal({
 							type: 'error',
@@ -965,7 +977,7 @@ import router from '../router'
           this.$swal({
           title: 'Confirma tu cita',
           type: 'success',
-          html: `<h6>Servicio: ${this.servicioCita[0].servicio}</h6> <h6>Diseño: ${this.design}</h6> <h6>Cliente: ${this.clientsSelect}</h6> <h6>Fecha: ${this.fecha}</h6> <h6>Personal: ${this.manicuristaFinal}</h6><h6>Entrada: ${this.hora}</h6> <h6>Salida: ${this.salida}</h6>`,
+          html: `<h6><b>Servicio:</b>  ${this.servicioCita[0].servicio}</h6> <h6><b>Diseño:</b> ${this.design}</h6> <h6><b>Cliente:</b> ${this.clientsSelect}</h6> <h6><b>Fecha:</b> ${this.fecha}</h6> <h6><b>Personal:</b> ${this.manicuristaFinal}</h6><h6><b>Entrada:</b> ${this.hora}</h6> <h6><b>Salida:</b> ${this.salida}</h6>`,
           showCancelButton: true,
           confirmButtonText: 'Si',
           cancelButtonText: 'No',
