@@ -30,7 +30,7 @@ users.get('/createSuperuser', async (req, res, next) => {
 		last_name: 'admin',
 		email: 'admin@gmail.com',
 		password: credentials,
-		status: 2,
+		status: 1,
 		linkLender: '',
 		userImage: '',
 		LastAccess: today,
