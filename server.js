@@ -34,6 +34,7 @@ app.use('/expenses', require('./routes/Expenses.js'))
 app.use('/inventario', require('./routes/Inventario.js'))
 app.use('/clients', require('./routes/Clients.js'))
 
+
 //Static files
 
 app.use('/static', express.static(__dirname + '/public'));

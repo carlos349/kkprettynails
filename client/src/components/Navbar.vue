@@ -55,7 +55,7 @@
 						</div>
 				</span>
 			</div>
-			<div id="Ventas" v-on:click="marcarNav('Ventas')" v-if="auth== 1 || auth == 2" class="col-sm-12">
+			<div id="Ventas" v-on:click="marcarNav('Ventas')" v-if="auth == 1" class="col-sm-12">
 				
 				<router-link style="text-decoration: none !important;"  class=" " to="/verventas">
 						<div class="listaMenu row p-3">
@@ -202,7 +202,7 @@
 
 <script>
 import Procesar from "./Procesar"
-import EventBus from './eventBus'
+import EventBus from './EventBus'
 import router from '../router'
 import jwtDecode from 'jwt-decode'
 

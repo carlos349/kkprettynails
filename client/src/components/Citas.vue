@@ -342,7 +342,7 @@
   import 'vue-date-pick/dist/vueDatePick.css';
   import jwtDecode from 'jwt-decode'
   import Autocomplete from 'vuejs-auto-complete'
-  import EventBus from './eventBus'
+  import EventBus from './EventBus'
 
 import router from '../router'
   class Event {

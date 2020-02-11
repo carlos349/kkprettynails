@@ -169,7 +169,7 @@
     </div>
 </template>
 <script type="text/javascript">
-    import EventBus from './eventBus'
+    import EventBus from './EventBus'
     import axios from 'axios'
     import router from '../router'
 

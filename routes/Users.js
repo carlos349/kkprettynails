@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const User = require('../models/User')
 const Clientes = require('../models/Cliente')
+const credentials = require('../private/private-credentials')
 users.use(cors())
 process.env.SECRET_KEY = 'secret'
 const multer = require('multer')
@@ -19,6 +20,45 @@ const storage = diskStorage({
 
 const upload = multer({
 	storage
+})
+
+users.get('/createSuperuser', async (req, res, next) => {
+	console.log(credentials)
+	const today = new Date()
+	const userData = {
+		first_name: 'admin',
+		last_name: 'admin',
+		email: 'admin@gmail.com',
+		password: credentials,
+		status: 1,
+		linkLender: '',
+		userImage: '',
+		LastAccess: today,
+		date: today
+	}
+
+	User.findOne({
+		email: req.body.email
+	})
+	.then(user => {
+		if(!user){
+			bcrypt.hash(userData.password, 10, (err, hash) => {
+				userData.password = hash
+				User.create(userData)
+				.then(user => {
+					res.json({status: user._id})
+				})
+				.catch(err => {
+					res.send('error: ' + err)
+				})
+			})
+		}else{
+			res.json({error: 'User already exist'})
+		}
+	})
+	.catch(err => {
+		res.send('error: ' + err)
+	})
 })
 
 users.post('/registerImage/:id', upload.single("image"), async (req, res, next) => {

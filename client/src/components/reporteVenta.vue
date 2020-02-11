@@ -58,7 +58,7 @@
     </div>
 </template>
 <script>
-    import EventBus from './eventBus'
+    import EventBus from './EventBus'
     import axios from 'axios'
     import router from '../router'
     export default {
