@@ -9,7 +9,7 @@ mongoose.connect('mongodb://localhost/kkprettynails-database', {
 			useNewUrlParser: true
 		})
 		.then(db => console.log('DB in connected'))
-		.catch(err => console.erro(err))
+		.catch(err => console.error(err))
 
 
 // settings
