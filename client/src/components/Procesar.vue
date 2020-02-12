@@ -749,26 +749,27 @@ import Autocomplete from 'vuejs-auto-complete'
 			if(this.descuento != ""){
 				const descuento = parseFloat(this.descuento) / 100
 				const porcentaje = 1 - parseFloat(descuento)
-				const precioConDescuento = parseFloat(this.totalSinFormato) * parseFloat(porcentaje)
-				const submitConDescuento = parseFloat(this.subTotal) * parseFloat(porcentaje)
-				this.subTotal = submitConDescuento
+				const precioConDescuento = parseFloat(this.subTotal) * parseFloat(porcentaje)
+				
 				this.total = "$"+ this.formatPrice(precioConDescuento)
 				this.totalSinFormato = precioConDescuento
+			}else if(this.descuento == '' || this.descuento == 0){
+				this.totalSinFormato = this.subTotal
 			}
 		},
 		conteoServicio(esto, servicio, precio, comision){
 			const descuento = parseFloat(this.descuento) / 100
 			const porcentaje = 1 - parseFloat(descuento)
-			const precioTotal = parseFloat(this.totalSinFormato) + parseFloat(precio)
+			const precioTotal = parseFloat(this.subTotal) + parseFloat(precio)
 			console.log(parseFloat(this.precio))
 			this.precio = "$"+this.formatPrice(precioTotal)
 			this.subTotal = precioTotal
-			this.totalSinFormato = precioTotal
+			this.totalSinFormato = "$"+this.formatPrice(precioTotal)
 			if(this.descuento === ''){
 				this.total = "$"+this.formatPrice(precioTotal)
 			}else{
-				const precioConDescuento = parseFloat(this.totalSinFormato) * parseFloat(porcentaje)
-				this.total = this.formatPrice(precioConDescuento)
+				const precioConDescuento = parseFloat(this.subTotal) * parseFloat(porcentaje)
+				this.total = "$"+this.formatPrice(precioConDescuento)
 				this.totalSinFormato = precioConDescuento
 			}
 
