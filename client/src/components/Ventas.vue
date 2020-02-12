@@ -103,6 +103,7 @@
             </div>
             <div  class="modal-body row p-3">
               <div class="form-group col-md-12">
+                <h4> <b>N° Venta: </b> V-{{arreglo.count}}</h4>
                 <h4> <b>Prestador: </b> {{justName(arreglo.manicurista)}}</h4>
                 <h4> <b>Cliente:</b>  {{justNameTwo(arreglo.cliente)}}</h4>
                 <h4><b>Contacto: </b>{{justNameThree(arreglo.cliente)}}</h4>

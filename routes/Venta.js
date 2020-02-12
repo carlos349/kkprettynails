@@ -841,7 +841,7 @@ ventas.post('/procesar', (req, res) => {
   const gananciaTotal = totalParaComision - parseFloat(comisionTotal) 
   const comision = parseFloat(comisionTotal) + parseFloat(totalComisionDesign)
   const documentoManicurista = req.body.documentoManicurista
-  console.log(comision)
+
   const venta = {
     cliente: req.body.cliente,
     manicurista: req.body.manicurista+"/"+documentoManicurista,
@@ -855,6 +855,7 @@ ventas.post('/procesar', (req, res) => {
     descuento:req.body.descuento,
     ganancialocal: gananciaTotal,
     design: req.body.diseno,
+    count: 0,
     status: true,
     total: total,
     fecha: today
@@ -883,60 +884,124 @@ ventas.post('/procesar', (req, res) => {
   .then(have => {
     if (have.length > 0) {
       if (have[0].validator) {
-        Venta.create(venta)
-        .then(ventas => {
-          ventaDia.idTableSales = ventas._id
-          Manicurista.updateOne({documento:documentoManicurista},{
-            $inc: {comision:ventas.comision}
-          })
-          .then(comision => {
-            console.log(comision)
-            Cliente.updateOne({identidad: finalClient[1]},{
-              $inc: {participacion: 1}
-            })
-            .then(participacion => {
-              Cliente.updateOne({identidad: finalClient[1]},{
-                $set: {ultimaFecha: today}
-              })
-              .then(lasDate => {
-                VentaDia.create(ventaDia)
-                .then(venta => {
-                  console.log(ifProcess)
-                  if (ifProcess != '') {
-                    Citas.findByIdAndUpdate(ifProcess, {
-                      $set: {
-                        process: false
-                      }
+        Venta.find()
+        .then(ifCount => {
+          if (ifCount.length > 0) {
+            Venta.find().sort({count: -1}).limit(1)
+            .then(Count => {
+              venta.count = parseFloat(Count[0].count) + 1
+              Venta.create(venta)
+              .then(ventas => {
+                ventaDia.idTableSales = ventas._id
+                Manicurista.updateOne({documento:documentoManicurista},{
+                  $inc: {comision:ventas.comision}
+                })
+                .then(comision => {
+                  Cliente.updateOne({identidad: finalClient[1]},{
+                    $inc: {participacion: 1}
+                  })
+                  .then(participacion => {
+                    Cliente.updateOne({identidad: finalClient[1]},{
+                      $set: {ultimaFecha: today}
                     })
-                    .then(process => {
-                      
-                      res.json({status: 'Venta registrada'})
+                    .then(lasDate => {
+                      VentaDia.create(ventaDia)
+                      .then(venta => {
+                        if (ifProcess != '') {
+                          Citas.findByIdAndUpdate(ifProcess, {
+                            $set: {
+                              process: false
+                            }
+                          })
+                          .then(process => {
+                            
+                            res.json({status: 'Venta registrada'})
+                          })
+                          .catch(err => {
+                            res.send('Error:' + err)
+                          })
+                        }else{
+                          res.json({status: 'Venta registrada'})
+                        }
+                      })
+                      .catch(err => {
+                        res.send('Error:' + err)
+                      })
                     })
                     .catch(err => {
-                      res.send('Error:' + err)
+                      res.send(err)
                     })
-                  }else{
-                    res.json({status: 'Venta registrada'})
-                  }
+                  })
+                  .catch(err => {
+                    res.send('Error:' + err)
+                  })
                 })
                 .catch(err => {
                   res.send('Error:' + err)
                 })
               })
               .catch(err => {
-                res.send(err)
+                res.send('Error: ' + err)
+              })
+            })
+          }else{
+            venta.count = 1
+            Venta.create(venta)
+            .then(ventas => {
+              ventaDia.idTableSales = ventas._id
+              Manicurista.updateOne({documento:documentoManicurista},{
+                $inc: {comision:ventas.comision}
+              })
+              .then(comision => {
+                console.log(comision)
+                Cliente.updateOne({identidad: finalClient[1]},{
+                  $inc: {participacion: 1}
+                })
+                .then(participacion => {
+                  Cliente.updateOne({identidad: finalClient[1]},{
+                    $set: {ultimaFecha: today}
+                  })
+                  .then(lasDate => {
+                    VentaDia.create(ventaDia)
+                    .then(venta => {
+                      console.log(ifProcess)
+                      if (ifProcess != '') {
+                        Citas.findByIdAndUpdate(ifProcess, {
+                          $set: {
+                            process: false
+                          }
+                        })
+                        .then(process => {
+                          
+                          res.json({status: 'Venta registrada'})
+                        })
+                        .catch(err => {
+                          res.send('Error:' + err)
+                        })
+                      }else{
+                        res.json({status: 'Venta registrada'})
+                      }
+                    })
+                    .catch(err => {
+                      res.send('Error:' + err)
+                    })
+                  })
+                  .catch(err => {
+                    res.send(err)
+                  })
+                })
+                .catch(err => {
+                  res.send('Error:' + err)
+                })
+              })
+              .catch(err => {
+                res.send('Error:' + err)
               })
             })
             .catch(err => {
-              res.send('Error:' + err)
+              res.send('Error: ' + err)
             })
-          })
-          .catch(err => {
-            res.send('Error:' + err)
-          })
-        })
-        .catch(err => {
-          res.send('Error: ' + err)
+          }
         })
       }else{
         res.json({status: 'no-cash'})

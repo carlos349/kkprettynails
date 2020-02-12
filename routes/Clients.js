@@ -204,6 +204,11 @@ clients.get('/mails', async (req, res) => {
     res.json(Clients)
 })
 
+clients.get('/dataDiscount/:ident', async (req, res) => {
+    const Client = await Cliente.find({identidad: req.params.ident})
+    res.json(Client)
+})
+
 clients.post('/', (req, res) => {
     let recommender = req.body.recomendador
     let finalRecommender = ''
