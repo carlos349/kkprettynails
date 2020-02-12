@@ -59,7 +59,7 @@
 						<tr>
 							<th style="border-radius:15px !important;border:none" class="text-left pl-4 text-white">
 								
-								<input autocomplete="off" style="color:white !important;outline:none !important;background-color:white !important" type="text" id="myInput" v-on:keyup="myFunction()" class="form-control buscar inputsVenta w-75 text-white" placeholder="Filtrar servicios"/>
+								<input autocomplete="off" style="outline:none !important;background-color:white !important" type="text" id="myInput" v-on:keyup="myFunction()" class="form-control buscar inputsVenta w-75 text-white" placeholder="Filtrar servicios"/>
 							</th>
 							<th style="color:white;border:none" class="text-center pl-5 pb-3">
 								Precio 
@@ -243,7 +243,7 @@ box-shadow: 0px 0px 22px 5px rgba(65,67,97,1);">
 				  <form v-on:submit.prevent="ingresoCliente">
 					<div class="form-group">
 						<label for="name">Nombre del cliente <span style="color:red;">*</span></label>
-						<input v-model="nombreClienteRegister" type="text" class="form-control w-100 inputsVenta" placeholder="Nombre del prestador">
+						<input v-model="nombreClienteRegister" type="text" class="form-control w-100 inputsVenta" placeholder="Nombre del cliente">
 					</div>
 					<div class="form-group">
 						<label for="identidad">Teléfono del cliente <span style="color:red;">*</span></label>
