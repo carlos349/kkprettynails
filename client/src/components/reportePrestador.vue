@@ -17,6 +17,26 @@
             </div>
         </div>
         <div class="datos mt-4 col-12" >
+            <v-client-table class="text-center tablaReportesPersonal"  :data="sales" :columns="columns" :options="optionsT">
+                <div slot="print"  slot-scope="props">
+                  <button v-if="props.row.status" style="width:100%;" v-on:click="reporteVenta(props.row._id)" class=" btn btn-colorsPrint"><font-awesome-icon icon="copy" /></button>
+                  <button v-else style="width:100%;" v-on:click="reporteVenta(props.row._id)" class=" btn btn-danger"><font-awesome-icon icon="copy" /></button>
+                </div>
+                <div slot="servicios" slot-scope="props">
+                  <button  class="btn btn btn-colorsPrint" type="button" data-toggle="collapse" :data-target="'#servi'+props.index" aria-expanded="false" aria-controls="multiCollapseExample2">Mostrar Servivios</button>
+                  <div class="collapse multi-collapse" :id="'servi'+props.index">
+                    <div class="card card-body">
+                    {{props.row.servicios}}
+                    </div>
+                  </div>
+                  
+                </div>
+                <p slot="lender" slot-scope="props">{{justName(props.row.manicurista)}}</p>
+                <p slot="descuentoo" slot-scope="props">{{props.row.descuento}}%</p>
+                <p slot="comisionn" slot-scope="props">{{formatPrice(props.row.comision)}}</p>
+                <p slot="locall" slot-scope="props">{{formatPrice(props.row.ganancialocal)}}</p>
+                <p slot="totall" slot-scope="props">{{formatPrice(props.row.total)}}</p>
+              </v-client-table>
             <table class="table table-striped tablaReportesPersonal">
                 <thead v-bind:style="{ 'background-color': '#1F5673' , 'color':'#fff'}">
                     <tr>
@@ -131,6 +151,33 @@
         },
         data(){
             return{
+                 columns:['fecha' , 'servicios' , 'cliente' , 'lender' , 'descuentoo' , 'comisionn' , 'locall', 'totall', 'print'],
+			optionsT: {
+				filterByColumn: false,
+				texts: {
+					filter: "Filtrar:",
+					filterBy: 'Filtrar por {column}',
+					count:' '
+				},
+				headings: {
+					fecha: 'Fecha ',
+					servicioss: 'Servicios ',
+					cliente: 'Cliente ',
+					lender: 'Prestador ',
+					descuentoo: 'Descuento ',
+                    comisionn: 'Comision ',
+                    locall: 'Local ',
+                    totall: 'Total',
+                    print: 'Reporte'
+				},
+				pagination: { chunk:10 },
+				pagination: { dropdown:true },
+				pagination: { nav: 'fixed' },
+				pagination: { edge: true },
+				sortIcon: {base:'fa' , up:'fa-sort-up', down:'fa-sort-down', is:'fa-sort'},
+				sortable: ['fecha'],
+				filterable: ['fecha']
+			},
                 aperturaBanco: 0,
                 aperturaefectivo: 0,
                 aperturatotal: 0,
@@ -329,7 +376,6 @@
                 setTimeout(() => {
                     axios.get('/manicuristas/advancements/'+this.codigo)
                     .then(res => {	
-                        console.log(res)
                         console.log(res.data)
                         this.advancements = []
                         this.advancements = res.data
@@ -536,7 +582,7 @@
 		border-radius: 10px !important; 
 	}
 	.tablaReportesPersonal thead {
-			background-color: rgba(238, 238, 238, 0.623);
+			background-color: rgba(238, 238, 238, 0.623) !important;
 			color: #353535;
 			text-align: center
 	}

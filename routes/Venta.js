@@ -142,8 +142,8 @@ ventas.get('/findSalesByDate/:dates', async (req, res) => {
 ventas.get('/findSalesByDay/:dates', async (req, res) => {
   const dates = req.params.dates
   const splitDates = dates.split(':')
-  const desde = splitDates[0]
-  const hasta = splitDates[1]
+  const desde = splitDates[0] + " 1:00"
+  const hasta = splitDates[1] + " 1:00"
   console.log(desde)
   console.log(hasta)
   try {

@@ -38,7 +38,7 @@
 							    :weekdays=Days
 								:months=months
                 :inputAttributes="{readonly: true}"
-                :format="'DD.MM.YYYY'"
+                :format="'MM.DD.YYYY'"
 								placeholder="Desde"
 								:nextMonthCaption="'Siguiente mes'"
 								:prevMonthCaption="'Mes anterior'"
@@ -60,7 +60,7 @@
 							    :weekdays=Days
 								:months=months
                 :inputAttributes="{readonly: true}"
-                :format="'DD.MM.YYYY'"
+                :format="'MM.DD.YYYY'"
 								placeholder="Desde"
 								:nextMonthCaption="'Siguiente mes'"
 								:prevMonthCaption="'Mes anterior'"
@@ -75,7 +75,7 @@
 							    :weekdays=Days
 								:months=months
                 :inputAttributes="{readonly: true}"
-                :format="'DD.MM.YYYY'"
+                :format="'MM.DD.YYYY'"
 								placeholder="Desde"
 								:nextMonthCaption="'Siguiente mes'"
 								:prevMonthCaption="'Mes anterior'"
@@ -318,8 +318,8 @@ export default {
     async findSalesByDate(){
       const dateDesde = new Date(this.fechaDesde)
       const dateHasta = new Date(this.fechaHasta)
-      const formatDesde =dateDesde.getDate() +"-"+ (dateDesde.getMonth() + 1) +"-"+dateDesde.getFullYear()
-      const formatHasta = dateHasta.getDate() +"-"+ (dateHasta.getMonth() + 1) +"-"+dateHasta.getFullYear()
+      const formatDesde =(dateDesde.getMonth() + 1) +"-"+dateDesde.getDate() +"-"+ dateDesde.getFullYear()
+      const formatHasta = (dateHasta.getMonth() + 1) +"-"+dateHasta.getDate() +"-"+ dateHasta.getFullYear()
       const Dates = formatDesde+':'+formatHasta
       
       try {
@@ -354,9 +354,9 @@ export default {
     async findSalesByDay(){
       const dateDesde = new Date(this.justOneDay)
       console.log(dateDesde)
-      const formatDesde =dateDesde.getDate()+"-"+(dateDesde.getMonth() + 1)+"-"+dateDesde.getFullYear() 
+      const formatDesde =(dateDesde.getMonth() + 1) + "-" + dateDesde.getDate()+"-"+dateDesde.getFullYear() 
       dateDesde.setDate(dateDesde.getDate() + 1)
-      const formatHasta = dateDesde.getDate()+"-"+(dateDesde.getMonth() + 1)+"-"+dateDesde.getFullYear()
+      const formatHasta = (dateDesde.getMonth() + 1)+"-" + dateDesde.getDate()+"-"+dateDesde.getFullYear()
       const Dates = formatDesde+':'+formatHasta
       console.log(Dates)
 
