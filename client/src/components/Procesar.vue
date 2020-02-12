@@ -1060,6 +1060,7 @@ import Autocomplete from 'vuejs-auto-complete'
 			this.maniSelect = ''
 			this.nombreCliente = ''
 			this.resto  = 0
+			this.subTotal = 0
 			this.inspector = false
 		},
 		mouseOverVenta(clase,num){
