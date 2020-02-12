@@ -764,7 +764,7 @@ import Autocomplete from 'vuejs-auto-complete'
 			console.log(parseFloat(this.precio))
 			this.precio = "$"+this.formatPrice(precioTotal)
 			this.subTotal = precioTotal
-			this.totalSinFormato = "$"+this.formatPrice(precioTotal)
+			this.totalSinFormato = precioTotal
 			if(this.descuento === ''){
 				this.total = "$"+this.formatPrice(precioTotal)
 			}else{
