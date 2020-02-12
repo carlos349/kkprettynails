@@ -43,6 +43,10 @@ manicurista.get('/SalesByPrest/:nombre', async (req, res) => {
   console.log(manicuristas)
   res.json(manicuristas)
 })
+manicurista.get('/advancementsProfile/:data', async (req, res, next) => {
+  const data = await Manicurista.find({documento: req.params.data})
+  res.json(data)
+})
 
 manicurista.post('/', (req, res) => {
   const dataManicurista = {
@@ -67,7 +71,6 @@ manicurista.post('/', (req, res) => {
           Manicurista.find().sort({date: -1})
           .then(records => {
             let position = records[0].class.split('s')
-            console.log(position)
             dataManicurista.class = 'class'+ (parseFloat(position[2]) + 1) 
             Manicurista.create(dataManicurista)
             .then(manicurista => {

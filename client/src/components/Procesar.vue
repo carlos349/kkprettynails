@@ -525,6 +525,13 @@ import Autocomplete from 'vuejs-auto-complete'
 		addDistributionGroup (group) {
 			setTimeout(() => {
 				this.nombreCliente = group.display
+				const split = this.nombreCliente.split('-')
+				axios.get('clients/dataDiscount/'+split[1])
+				.then(res => {
+					if (res.data[0].participacion == 0) {
+						this.descuento = 10
+					}
+				})
 			}, 100);
 			// access the autocomplete component methods from the parent
 			// this.$refs.autocomplete.clear()
@@ -816,25 +823,39 @@ import Autocomplete from 'vuejs-auto-complete'
 				this.maniSelect = res.data.employe
 				this.servicesProcess = res.data.services
 				this.elegirManicurista()
-				console.log(this.servicesProcess)
-				axios.get('servicios')
+				const split = res.data.client.split('/')
+				const splitTwo = split[1].split(' ')
+				axios.get('clients/dataDiscount/'+splitTwo[1])
 				.then(res => {
-					var subTotal = 0
-					for (let index = 0; index < this.servicesProcess.length; index++) {
-						this.serviciosSelecionados.push({servicio: this.servicesProcess[index].servicio, comision: this.servicesProcess[index].comision, precio: this.servicesProcess[index].precio})
-						for (let indexTwo = 0; indexTwo < res.data.length; indexTwo++) {
-							if (this.servicesProcess[index].servicio == res.data[indexTwo].nombre) {
-								subTotal = subTotal + parseFloat(res.data[indexTwo].precio)
-								let valSpan = $(`#${res.data[indexTwo]._id}`).text()
-								let sumaVal = parseFloat(valSpan) + 1
-								$(`#${res.data[indexTwo]._id}`).text(sumaVal)
+					if (res.data[0].participacion == 0) {
+						this.descuento = 10
+					}
+					axios.get('servicios')
+					.then(res => {
+						var subTotal = 0
+						for (let index = 0; index < this.servicesProcess.length; index++) {
+							this.serviciosSelecionados.push({servicio: this.servicesProcess[index].servicio, comision: this.servicesProcess[index].comision, precio: this.servicesProcess[index].precio})
+							let valSpan = ''
+							let sumaVal = 0
+							for (let indexTwo = 0; indexTwo < res.data.length; indexTwo++) {
+								console.log(indexTwo)
+								if (this.servicesProcess[index].servicio == res.data[indexTwo].nombre) {
+									subTotal = subTotal + parseFloat(res.data[indexTwo].precio)
+									let valSpan = $(`#${res.data[indexTwo]._id}`).text()
+									let sumaVal = parseFloat(valSpan) + 1
+									$(`#${res.data[indexTwo]._id}`).text(sumaVal)
+								}
 							}
 						}
-					}
-					this.precio = '$'+this.formatPrice(subTotal)
-					this.total = '$'+this.formatPrice(subTotal)
-					this.totalSinFormato = subTotal
-					
+						this.precio = '$'+this.formatPrice(subTotal)
+						if (this.descuento == 10) {
+							subTotal = subTotal * 0.90
+						}else{
+							subTotal = subTotal
+						}
+						this.total = '$'+this.formatPrice(subTotal)
+						this.totalSinFormato = subTotal
+					})
 				})
 			})
 		},

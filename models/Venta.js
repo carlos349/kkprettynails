@@ -38,6 +38,9 @@ const VentaSchema = new Schema({
 	design: {
 		type: Number
 	},
+	count: {
+		type: Number
+	},
 	status: {
 		type: Boolean
 	},
