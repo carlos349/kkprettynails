@@ -30,6 +30,7 @@
 <style>
   .menuVer:hover{
 	  width:270px;
+    background-color: rgb(238, 238, 238) !important;
     z-index:2;
   }
   .menuVer{

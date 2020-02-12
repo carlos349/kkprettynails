@@ -144,10 +144,11 @@ ventas.get('/findSalesByDay/:dates', async (req, res) => {
   const splitDates = dates.split(':')
   const desde = splitDates[0]
   const hasta = splitDates[1]
-  
+  console.log(desde)
+  console.log(hasta)
   try {
     const Sales = await Venta.find({fecha: { $gte: desde, $lte: hasta }})
-    
+    console.log(Sales)
     if (Sales.length == 0) {
       res.json({status: 'no Sales'})
     }else{

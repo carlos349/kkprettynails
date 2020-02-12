@@ -33,7 +33,17 @@
       <div class="row">
         <div class="col-md-3">
           <div class="pt-3 pb-3 " style="padding-left:20%;">
-            <datetime placeholder="Filtrar día" class="theme-blue  SalesInputs"  v-model="justOneDay" :phrases="{ok: 'Elegir', cancel: 'Salir'}" :format="{ year: 'numeric', month: 'long', day: 'numeric'}" auto></datetime>
+            <date-pick class="theme-blue w-100 SalesInputs"
+								v-model="justOneDay"
+							    :weekdays=Days
+								:months=months
+                :inputAttributes="{readonly: true}"
+                :format="'DD.MM.YYYY'"
+								placeholder="Desde"
+								:nextMonthCaption="'Siguiente mes'"
+								:prevMonthCaption="'Mes anterior'"
+							  ></date-pick>
+            
           </div>
         </div>
         <div class="col-md-2">
@@ -45,12 +55,32 @@
         </div>
         <div class="col-md-2">
           <div class="pt-3 pb-3" >
-            <datetime placeholder="Desde" class="theme-blue SalesInputs"  v-model="fechaDesde" :phrases="{ok: 'Elegir', cancel: 'Salir'}" :format="{ year: 'numeric', month: 'long', day: 'numeric'}" auto></datetime>
+            <date-pick class="theme-blue w-100 SalesInputs"
+								v-model="fechaDesde"
+							    :weekdays=Days
+								:months=months
+                :inputAttributes="{readonly: true}"
+                :format="'DD.MM.YYYY'"
+								placeholder="Desde"
+								:nextMonthCaption="'Siguiente mes'"
+								:prevMonthCaption="'Mes anterior'"
+							  ></date-pick>
+            <!-- <datetime placeholder="Desde" class="theme-blue SalesInputs"  v-model="fechaDesde" :phrases="{ok: 'Elegir', cancel: 'Salir'}" :format="{ year: 'numeric', month: 'long', day: 'numeric'}" auto></datetime> -->
           </div>
         </div>
         <div class="col-md-2">
           <div class="pt-3 pb-3">
-            <datetime placeholder="Hasta" class="theme-blue SalesInputs"  v-model="fechaHasta" :phrases="{ok: 'Elegir', cancel: 'Salir'}" :format="{ year: 'numeric', month: 'long', day: 'numeric'}" auto></datetime>
+            <date-pick class="theme-blue w-100 SalesInputs"
+								v-model="fechaHasta"
+							    :weekdays=Days
+								:months=months
+                :inputAttributes="{readonly: true}"
+                :format="'DD.MM.YYYY'"
+								placeholder="Desde"
+								:nextMonthCaption="'Siguiente mes'"
+								:prevMonthCaption="'Mes anterior'"
+							  ></date-pick>
+           
           </div>
         </div>
         <div class="col-md-2">
@@ -157,6 +187,8 @@
 import axios from 'axios'
 import LineChart from '../plugins/LineChart.js'
 import router from '../router'
+import DatePick from 'vue-date-pick';
+import 'vue-date-pick/dist/vueDatePick.css';
 import { Datetime } from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.css'
 class Ventas{
@@ -180,7 +212,8 @@ class Fechas{
 export default {
   components: {
     LineChart,
-    Datetime
+    Datetime,
+    DatePick
 	},
   data(){
     return {
@@ -232,9 +265,9 @@ export default {
 			chartdata: null,
       height:360,
       arreglo: [],
-      fechaDesde: '',
-      fechaHasta: '',
-      justOneDay: ''
+      fechaDesde: 'Desde',
+      fechaHasta: 'Hasta',
+      justOneDay: 'Filtrar día'
     }
   },
   beforeCreate() {
@@ -284,8 +317,8 @@ export default {
     async findSalesByDate(){
       const dateDesde = new Date(this.fechaDesde)
       const dateHasta = new Date(this.fechaHasta)
-      const formatDesde = dateDesde.getFullYear() +"-"+(dateDesde.getMonth() + 1)+"-"+dateDesde.getDate()
-      const formatHasta = dateHasta.getFullYear() +"-"+(dateHasta.getMonth() + 1)+"-"+dateHasta.getDate()
+      const formatDesde =dateDesde.getDate() +"-"+ (dateDesde.getMonth() + 1) +"-"+dateDesde.getFullYear()
+      const formatHasta = dateHasta.getDate() +"-"+ (dateHasta.getMonth() + 1) +"-"+dateHasta.getFullYear()
       const Dates = formatDesde+':'+formatHasta
       
       try {
@@ -319,9 +352,10 @@ export default {
     },
     async findSalesByDay(){
       const dateDesde = new Date(this.justOneDay)
-      const formatDesde = dateDesde.getFullYear() +"-"+(dateDesde.getMonth() + 1)+"-"+dateDesde.getDate()
+      console.log(dateDesde)
+      const formatDesde =dateDesde.getDate()+"-"+(dateDesde.getMonth() + 1)+"-"+dateDesde.getFullYear() 
       dateDesde.setDate(dateDesde.getDate() + 1)
-      const formatHasta = dateDesde.getFullYear() +"-"+(dateDesde.getMonth() + 1)+"-"+dateDesde.getDate()
+      const formatHasta = dateDesde.getDate()+"-"+(dateDesde.getMonth() + 1)+"-"+dateDesde.getFullYear()
       const Dates = formatDesde+':'+formatHasta
       console.log(Dates)
 
@@ -711,14 +745,15 @@ export default {
 		font-family: 'Raleway', sans-serif;
 		font-weight:600;
 	}
-  .SalesInputs .vdatetime-input{
+  .SalesInputs input{
     width:100%;
-    padding: 10px;
+    cursor: pointer;
+    padding: 10px !important;
     background-color: white;
     border:none;
-    
+    color: #353535;
     border-radius: 5px;
-    font-size: 1.4em;
+    font-size: 1.9em !important;
   }
   .findSales{
     background-color: #353535;
@@ -822,5 +857,8 @@ box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
 .addVentas{
   background-color: #353535;
   color: white;
+}
+.vdpClearInput{
+  display: none
 }
 </style>

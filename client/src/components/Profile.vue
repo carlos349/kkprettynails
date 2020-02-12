@@ -70,7 +70,7 @@
                     <h2 class="text-center">{{checker}}</h2>
                 </div>
             </div>
-			<v-client-table  class="text-center tablePerfilVenta mt-2"  :data="dataChecker" :columns="columns" :options="optionsT">
+			<v-client-table  class="text-center tablePerfilVenta w-100 mt-2"  :data="dataChecker" :columns="columns" :options="optionsT">
 							<div slot="print"  slot-scope="props">
 							<button v-if="props.row.status" style="width:100%;" v-on:click="reporteVenta(props.row._id)" class=" btn btn-colorsPrint"><font-awesome-icon icon="copy" /></button>
 							<button v-else style="width:100%;" v-on:click="reporteVenta(props.row._id)" class=" btn btn-danger"><font-awesome-icon icon="copy" /></button>
@@ -463,8 +463,18 @@
 			async getDataChecker(){
 				const dataChecker = await axios.get('ventas/dataChecker')
 				this.dataChecker = dataChecker.data
-				console.log(this.dataChecker)
-				console.log(this.ventas)
+				let fechaBien = ''
+					for (let index = 0; index < this.dataChecker.length; index++) {
+					let fech = new Date(this.dataChecker[index].fecha)
+					fechaBien = fech.getDate() +"/"+ (fech.getMonth() + 1) +"/"+fech.getFullYear() +" "+" ("+ fech.getHours()+":"+ fech.getMinutes()+")"
+					this.dataChecker[index].fecha = fechaBien
+					let servicio = ''
+					
+					for (let indexTwo = 0; indexTwo < this.dataChecker[index].servicios.length; indexTwo++) {
+						servicio = servicio +'\n'+ this.dataChecker[index].servicios[indexTwo].servicio
+					}
+					this.dataChecker[index].servicios = servicio
+					}
 			},
 			async editImage() {
 				

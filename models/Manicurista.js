@@ -8,9 +8,6 @@ const manicuristaSchema = new Schema({
   documento:{
     type:String
   },
-  porcentaje:{
-    type:Number
-  },
   restTime: {
     type:String
   },

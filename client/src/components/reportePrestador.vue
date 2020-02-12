@@ -17,7 +17,7 @@
             </div>
         </div>
         <div class="datos mt-4 col-12" >
-            <table class="table table-striped">
+            <table class="table table-striped tablaReportesPersonal">
                 <thead v-bind:style="{ 'background-color': '#1F5673' , 'color':'#fff'}">
                     <tr>
                         <th>Fecha</th>
@@ -359,12 +359,16 @@
 </script>
 <style media="screen">
     .recuadro{
-        border: solid 2px #1F5673;
+        background-color: rgba(238, 238, 238, 0.623);
+        border-radius: 5px;
+        border: solid 2px #353535;
         padding: 20px;
-        color:#102229;
+        color:#353535;
     }
     .datos{
-        border: solid 2px #1F5673;
+        border: solid 2px #353535;
+        background-color: rgba(238, 238, 238, 0.623);
+        border-radius: 5px;
         padding: 20px;
     }
     .datos table{
@@ -380,7 +384,7 @@
         color:black;
     }
     .add{
-		background-color:#1F5673;
+		background-color:#353535;
 		color: azure;
 		transition: all 0.5s ease-out;
 		font-family: 'Roboto', sans-serif !important;
@@ -515,5 +519,27 @@
 		-webkit-transform: rotate(45deg);
 		-ms-transform: rotate(45deg);
 		transform: rotate(45deg);
+	}
+    .tablaReportesPersonal th{
+	border:none !important;
+	}
+	.tablaReportesPersonal tbody{
+		background-color: white;
+	}
+	.tablaReportesPersonal table{
+
+	border-radius: 10px !important; 
+	}
+	.tablaReportesPersonal {
+		box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+		border-radius: 10px !important; 
+	}
+	.tablaReportesPersonal thead {
+			background-color: rgba(238, 238, 238, 0.623);
+			color: #353535;
+			text-align: center
+	}
+	.tablaReportesPersonal thead th {
+			border-left: 1px black !important;
 	}
 </style>

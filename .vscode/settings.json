@@ -1,0 +1,6 @@
+{
+    "editor.autoIndent": "advanced",
+    "editor.wordWrap": "on",
+    "editor.highlightActiveIndentGuide": false,
+    "editor.renderLineHighlight": "none"
+}

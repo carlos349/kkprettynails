@@ -1,6 +1,6 @@
 <template>
 <div>
-	<div v-if="showNav"  v-on:click="marcarNav()" v-bind:style="{ 'background-color': '#EEEEEE', 'height': '100vh', 'position': 'fixed', 'z-index' : '1000', 'color': 'black !important' }"  class=" pl-2 menuVer navS" v-on:mouseenter="mouseOver()" v-on:mouseleave="mouseLeave()">
+	<div v-if="showNav"  v-on:click="marcarNav()" v-bind:style="{ 'background-color': 'rgba(238, 238, 238, 0.623)', 'height': '100vh', 'position': 'fixed', 'z-index' : '1000', 'color': 'black !important' }"  class=" pl-2 menuVer navS" v-on:mouseenter="mouseOver()" v-on:mouseleave="mouseLeave()">
 		<div style="border-bottom:1.5px solid  rgba(91, 91, 90, .5);" class="p-3  text-center col-md-12"><img src="../assets/logoNew.png" class="logoNonHover"  alt=""></div>
 
 			<div style="border-bottom:1.5px solid  rgba(91, 91, 90, .5);color:black" class=" p-2 pb-1 pt-1 mx-auto col-md-12 paddingName">
@@ -19,7 +19,7 @@
 					</div>
 				</div>
 				<div class="collapse" id="collapseUser">
-					<ul style="color:black !important" class="listaMenu">
+					<ul style="color:black !important" class="listaMenuP">
 						<router-link style="text-decoration: none !important;" class="menuText" to="/profile"> <li><font-awesome-icon class="icons mr-3" icon="edit" />Editar perfil</li> </router-link>
 						<router-link style="text-decoration: none !important;" class="menuText" to="/"><li v-on:click="logout"><font-awesome-icon class="icons mr-3" icon="sign-out-alt" />Cerrar Sesión</li> </router-link>
 					</ul>
@@ -361,6 +361,24 @@ export default {
 	
   }
   .listaMenu li:hover{
+    background-color: #6BB2E5;
+	transition: all 0.5s ease-out;
+  }
+  .listaMenuP li{
+	text-decoration: none !important;
+    padding:10px;
+	padding-left: 28%;
+	border-radius: 5px;
+    margin-top:5px;
+    list-style-type: none;
+    cursor:pointer;
+    margin-left:-15%;
+    height:5vh;
+	transition: all 0.5s ease-out;
+	color: black !important;
+  }
+
+  .listaMenuP li:hover{
     background-color: #6BB2E5;
 	transition: all 0.5s ease-out;
   }
