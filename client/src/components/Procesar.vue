@@ -241,21 +241,28 @@ box-shadow: 0px 0px 22px 5px rgba(65,67,97,1);">
 		      </div>
 		      <div class="modal-body">
 				  <form v-on:submit.prevent="ingresoCliente">
+					<div class="form-group" style="margin-bottom:-5px;">
+						<label class="containeer">
+							<input class="ifCheck" type="checkbox" >
+							<span class="checkmark"></span>
+							<h6 style="font-size:17px;" class="w-100 mt-1">¿Desea agregar descuento de primera visita?</h6>	
+						</label>
+					</div>
 					<div class="form-group">
 						<label for="name">Nombre del cliente <span style="color:red;">*</span></label>
 						<input v-model="nombreClienteRegister" type="text" class="form-control w-100 inputsVenta" placeholder="Nombre del cliente">
 					</div>
 					<div class="form-group">
-						<label for="identidad">Teléfono del cliente <span style="color:red;">*</span></label>
-						<input v-model="telefonoCliente" type="number" class="form-control w-100 inputsVenta" placeholder="Telefono">
+						<label for="identidad">Información de contacto <span style="color:red;">*</span></label>
+						<input v-model="telefonoCliente" type="text" class="form-control w-100 inputsVenta" placeholder="Registre contacto">
 					</div>
 					<div class="form-group">
-						<label for="identidad">Correo del cliente <span style="color:blue;">+</span></label>
-						<input v-model="correoCliente" type="email" class="form-control w-100 inputsVenta" placeholder="Correo">
+						<label for="identidad">Contacto adicional <span style="color:blue;">+</span></label>
+						<input v-model="correoCliente" type="text" class="form-control w-100 inputsVenta" placeholder="Registre contacto adicional">
 					</div>
 					<div class="form-group">
-						<label for="identidad">Instagram del cliente <span style="color:blue;">+</span></label>
-						<input v-model="instagramCliente" type="text" class="form-control w-100 inputsVenta" placeholder="Instagram">
+						<label for="identidad">Contacto adicional <span style="color:blue;">+</span></label>
+						<input v-model="instagramCliente" type="text" class="form-control w-100 inputsVenta" placeholder="Registre contacto adicional">
 					</div>
                     <div class="form-group inputProce">
                         <label for="recomendacion">Registre recomendador <span style="color:blue;">+</span></label>
@@ -269,7 +276,7 @@ box-shadow: 0px 0px 22px 5px rgba(65,67,97,1);">
 							:results-display="formattedDisplayThree"
 							@selected="addDistributionGroupThree">
 							</autocomplete>
-							<span v-on:click="clearInputThree" style="position:absolute;top:410px;left:50px;background-color:white;width:70%;">{{recomendSelect}}</span>
+							<span v-on:click="clearInputThree" style="position:absolute;top:450px;left:50px;background-color:white;width:70%;">{{recomendSelect}}</span>
 						</div>
                     </div>
 					<button class="btn w-100 addProce">Agregar cliente</button>
@@ -663,7 +670,25 @@ import Autocomplete from 'vuejs-auto-complete'
 		verificacionCliente(){
 			$('#myModal').modal('show')	
 		},
+		MaysPrimera(string){
+			return string.charAt(0).toUpperCase() + string.slice(1);
+		},
 		ingresoCliente() {
+			const name = this.nombreClienteRegister.split(' ')
+			var firstName, lastName, fullName, ifCheck
+			if (name[1]) {
+				firstName = this.MaysPrimera(name[0])
+				lastName = this.MaysPrimera(name[1])
+				fullName = firstName+' '+lastName
+			}else{
+				fullName = this.MaysPrimera(name[0])
+			}
+
+			if ($('.ifCheck').prop('checked')) {
+				ifCheck = 0
+			}else{
+				ifCheck = 1
+			}
 			if (this.nombreClienteRegister == '' || this.telefonoCliente == '') {
 				this.$swal({
 					type: 'error',
@@ -673,11 +698,12 @@ import Autocomplete from 'vuejs-auto-complete'
 				})
 			}else{
 				axios.post('clients', {
-					nombre:this.nombreClienteRegister,
+					nombre:fullName,
 					identidad:this.telefonoCliente,
 					correoCliente: this.correoCliente,
 					instagramCliente: this.instagramCliente,
-					recomendador:this.recomendSelect
+					recomendador:this.recomendSelect,
+					ifCheck: ifCheck
 				})
 				.then(res => {
 					if (res.data.status == 'Registrado') {
@@ -688,6 +714,11 @@ import Autocomplete from 'vuejs-auto-complete'
 							timer: 1500
 						})
 						this.getManicuristas()
+						this.nombreClienteRegister = ''
+						this.telefonoCliente = ''
+						this.instagramCliente = ''
+						this.recomendSelect = ''
+						$('.ifCheck').prop('checked', false)
 						$('#myModal').modal('hide')
 					}else{
 						this.$swal({
@@ -1725,4 +1756,91 @@ import Autocomplete from 'vuejs-auto-complete'
 	outline: none !important;
 	padding: 13px !important;
 }
+.containeer {
+        display: block;
+        position: relative;
+        padding-left: 35px;
+        
+        cursor: pointer;
+        font-size: 22px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+        /* Hide the browser's default checkbox */
+    .containeer input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+    }
+
+        /* Create a custom checkbox */
+    .containeer {
+		display: inline-block;
+		position: relative;
+		cursor: pointer;
+		font-size: 0.8em;
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+	}
+
+		/* Hide the browser's default checkbox */
+	.containeer input {
+		position: absolute;
+		opacity: 0;
+		cursor: pointer;
+		height: 0;
+		width: 0;
+	}
+
+/* Create a custom checkbox */
+	.checkmark {
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: 25px;
+		width: 25px;
+		background-color: #1F5673;
+	}
+
+	/* On mouse-over, add a grey background color */
+	.containeer:hover input ~ .checkmark {
+		background-color: #1F5673;
+	}
+
+	/* When the checkbox is checked, add a blue background */
+	.containeer input:checked ~ .checkmark {
+		background-color: #102229;
+	}
+
+	/* Create the checkmark/indicator (hidden when not checked) */
+	.checkmark:after {
+		content: "";
+		position: absolute;
+		display: none;
+	}
+
+	/* Show the checkmark when checked */
+	.containeer input:checked ~ .checkmark:after {
+		display: inline-block;
+	}
+
+	/* Style the checkmark/indicator */
+	.containeer .checkmark:after {
+		left: 9px;
+		top: 5px;
+		width: 5px;
+		height: 10px;
+		border: solid white;
+		border-width: 0 3px 3px 0;
+		-webkit-transform: rotate(45deg);
+		-ms-transform: rotate(45deg);
+		transform: rotate(45deg);
+	}
 </style>

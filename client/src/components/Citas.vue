@@ -172,6 +172,14 @@
                           </div>
                           <div style="display:none" class="mt-4 formUser col-sm-12">
                             <form>
+                              <div class="form-group del" style="margin-bottom:-5px;">
+                                <label class="containeer row ml-2">
+                                  <input class="ifCheck" type="checkbox" >
+                                  <span class="checkmark"></span>
+                                  <h6 style="font-size:18px;" class="col-12">¿Desea agregar descuento de primera visita?</h6>
+                                  
+                                </label>
+                              </div>
                               <div class="form-group">
                                 <div class="row mt-2">
                                   <div class="col-sm-4">
@@ -180,14 +188,12 @@
                                     <div class="col-sm-8">
                                       <input v-model="nombreClienteRegister" type="text" class=" w-100 inputsCrear" placeholder="" required>
                                     </div>
-                                </div>
-                                
-                                
+                                </div>  
                               </div>
                               <div class="form-group">
                                 <div class="row">
                                   <div class="col-sm-4">
-                                    <label for="identidad">Teléfono del cliente <span style="color:red;">*</span></label>
+                                    <label for="identidad">Información de contacto <span style="color:red;">*</span></label>
                                   </div>
                                   <div class="col-sm-8">
                                     <input v-model="identidadCliente" type="text" class="inputsCrear w-100" requerid>
@@ -199,7 +205,7 @@
                               <div class="form-group">
                                 <div class="row mt-2">
                                   <div class="col-sm-4">
-                                    <label for="identidad">Correo del <br> cliente <span style="color:blue;">+</span></label>
+                                    <label for="identidad">Contacto adicional <span style="color:blue;">+</span></label>
                                   </div>
                                   <div class="col-sm-8">
                                     <input v-model="correoCliente" type="text" class="inputsCrear w-100"  >
@@ -211,7 +217,7 @@
                               <div class="form-group">
                                 <div class="row mt-2">
                                   <div class="col-sm-4">
-                                    <label for="identidad">Instagram del cliente <span style="color:blue;">+</span></label>
+                                    <label for="identidad">Contacto adicional <span style="color:blue;">+</span></label>
                                   </div>
                                   <div class="col-sm-8">
                                     <input v-model="instagramCliente" type="text" class="inputsCrear w-100" >
@@ -297,7 +303,8 @@
               
               <li class="list-group-item" style="background-color: transparent !important">
                 <h3 class="text-center"><b>Detalle de la cita</b></h3>
-                <b>Cliente:</b>  {{formatName(selectedEvent.cliente)}} <br> <b>Contacto:</b>{{formatContact(selectedEvent.cliente)}} <br> <b>Manicurista:</b>  {{ selectedEvent.empleada }} </li>
+                <b>Cliente:</b>  {{formatName(selectedEvent.cliente)}} <br> <b>Contacto:</b>{{formatContact(selectedEvent.cliente)}} <br> <b>Manicurista:</b>  {{ selectedEvent.empleada }} 
+                <br> <b v-if="descuento">Descuento de primera visita: <font-awesome-icon style="font-size:22px;color:#97DB4F;" icon="check-square" /> </b> </li>
              
               <li class="list-group-item"  style="background-color: transparent !important">
                  <h3 class="text-center"><b>Servicios</b></h3>
@@ -445,7 +452,8 @@ import router from '../router'
         sectionDelete: true,
         sectionDeleteTwo: true,
         recomend:'',
-        clienteID:''
+        clienteID:'',
+        descuento:false
       }
     },
     beforeCreate() {
@@ -676,7 +684,7 @@ import router from '../router'
       },
       ingresoCliente() {
         const name = this.nombreClienteRegister.split(' ')
-        var firstName, lastName, fullName
+        var firstName, lastName, fullName, ifCheck
         if (name[1]) {
           firstName = this.MaysPrimera(name[0])
           lastName = this.MaysPrimera(name[1])
@@ -684,13 +692,19 @@ import router from '../router'
         }else{
           fullName = this.MaysPrimera(name[0])
         }
+        if ($('.ifCheck').prop('checked')) {
+          ifCheck = 0
+        }else{
+          ifCheck = 1
+        }
         
 				axios.post('clients', {
 					nombre:fullName,
 					identidad:this.identidadCliente,
 					recomendador:this.recomend,
 					correoCliente:this.correoCliente,
-					instagramCliente:this.instagramCliente
+					instagramCliente:this.instagramCliente,
+          ifCheck: ifCheck
 				})
 				.then(res => {
 					if (res.data.status == 'Registrado') {
@@ -722,7 +736,21 @@ import router from '../router'
 			},
       onEventClick(event, e){
         this.selectedEvent = event
+        console.log(event)
         $('#myModalCitasDescripcion').modal('show')
+        const split = event.cliente.split('/')
+        const splitTwo = split[1].split(' ')
+        axios.get('clients/dataDiscount/'+splitTwo[1])
+        .then(res => {
+          console.log(res)
+          if (res.data[0].participacion == 0) {
+						this.descuento = true
+            
+					}else{
+            this.descuento = false
+          }
+          console.log(this.descuento)
+        })
         e.stopPropagation()
       },
       getCitas () {
@@ -2371,5 +2399,91 @@ import router from '../router'
   color: black !important;
   outline: none !important;
 }
+.containeer {
+        display: block;
+        position: relative;
+        padding-left: 35px;
+        
+        cursor: pointer;
+        font-size: 22px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
 
+        /* Hide the browser's default checkbox */
+    .containeer input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+    }
+
+        /* Create a custom checkbox */
+    .containeer {
+		display: inline-block;
+		position: relative;
+		cursor: pointer;
+		font-size: 0.8em;
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+	}
+
+		/* Hide the browser's default checkbox */
+	.containeer input {
+		position: absolute;
+		opacity: 0;
+		cursor: pointer;
+		height: 0;
+		width: 0;
+	}
+
+/* Create a custom checkbox */
+	.checkmark {
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: 25px;
+		width: 25px;
+		background-color: #1F5673;
+	}
+
+	/* On mouse-over, add a grey background color */
+	.containeer:hover input ~ .checkmark {
+		background-color: #1F5673;
+	}
+
+	/* When the checkbox is checked, add a blue background */
+	.containeer input:checked ~ .checkmark {
+		background-color: #102229;
+	}
+
+	/* Create the checkmark/indicator (hidden when not checked) */
+	.checkmark:after {
+		content: "";
+		position: absolute;
+		display: none;
+	}
+
+	/* Show the checkmark when checked */
+	.containeer input:checked ~ .checkmark:after {
+		display: inline-block;
+	}
+
+	/* Style the checkmark/indicator */
+	.containeer .checkmark:after {
+		left: 9px;
+		top: 5px;
+		width: 5px;
+		height: 10px;
+		border: solid white;
+		border-width: 0 3px 3px 0;
+		-webkit-transform: rotate(45deg);
+		-ms-transform: rotate(45deg);
+		transform: rotate(45deg);
+	}
 </style>

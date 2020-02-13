@@ -85,21 +85,28 @@
 		      </div>
 		      <div  class="modal-body">
 		        <form v-on:submit.prevent="registroCliente" class="p-3">
+					<div class="form-group" style="margin-bottom:-5px;">
+						<label class="containeer">
+							<input class="ifCheck" type="checkbox" >
+							<span class="checkmark"></span>
+							<h6 style="font-size:17px;" class="w-100 mt-1">¿Desea agregar descuento de primera visita?</h6>	
+						</label>
+					</div>
 					<div class="form-group">
-						<label for="name">Nombre del cliente <span style="color:red;">*</span></label>
+						<label for="name">Nombre del cliente <span style="color:red;"> *</span></label>
 						<input v-model="nombreCliente" type="text" class="form-control inputsClient w-100" placeholder="Nombre y apellido" requerid>
 					</div>
 					<div class="form-group">
-						<label for="identidad">Teléfono del cliente <span style="color:red;">*</span></label>
-						<input v-model="identidadCliente" type="text" class="form-control inputsClient w-100" placeholder="Registre numero telefónico" requerid>
+						<label for="identidad">Información de contacto<span style="color:red;"> *</span></label>
+						<input v-model="identidadCliente" type="text" class="form-control inputsClient w-100" placeholder="Registre contacto" requerid>
 					</div>
 					<div class="form-group">
-						<label for="identidad">Correo del cliente <span style="color:blue;">+</span></label>
-						<input v-model="correoCliente" type="text" class="form-control inputsClient w-100" placeholder="Registre correo" >
+						<label for="identidad">Contacto adicional <span style="color:blue;">+</span></label>
+						<input v-model="correoCliente" type="text" class="form-control inputsClient w-100" placeholder="Registre adicional" >
 					</div>
 					<div class="form-group">
-						<label for="identidad">Instagram del cliente <span style="color:blue;">+</span></label>
-						<input v-model="instagramCliente" type="text" class="form-control inputsClient w-100" placeholder="Registre instagram" >
+						<label for="identidad">Contacto adicional <span style="color:blue;">+</span></label>
+						<input v-model="instagramCliente" type="text" class="form-control inputsClient w-100" placeholder="Registre adicional" >
 					</div>
                     <div class="form-group">
                         <label for="recomendacion">Registre recomendador</label>
@@ -113,7 +120,7 @@
 							:results-display="formattedDisplay"
 							@selected="addDistributionGroup">
 							</autocomplete>
-							<span v-on:click="clearInput" style="position:absolute;top:410px;left:50px;background-color:#FBF5F3;">{{recomendador}}</span>
+							<span v-on:click="clearInput" style="position:absolute;top:460px;left:70px;background-color:#FBF5F3;width:70%;">{{recomendador}}</span>
 						</div>
 						
                     </div>
@@ -336,24 +343,9 @@ export default {
             axios.get('clients/onlyData')
             .then(res => {
                 this.arregloClients = res.data
-                console.log(this.arregloClients)
+                
             })
         },
-        arrayUsers(){
-            setTimeout(() => {
-                for (let index = 0; index < this.clients.length; index++) {
-                    this.arregloClients.push(this.clients[index].nombre+'-'+this.clients[index].identidad)
-                }
-            }, 2000);
-            
-        },
-        searchClientOnClient(input){
-            if (input.length < 1) { return [] }
-                return this.arregloClients.filter(manicurista => {
-                    return manicurista.toLowerCase()
-                    .startsWith(input.toLowerCase())
-            })
-		},
 		formattedDisplay (result) {
 			return result.nombre+'-'+result.identidad
 		},
@@ -458,13 +450,18 @@ export default {
 		},
         registroCliente(){
 			const name = this.nombreCliente.split(' ')
-			var firstName, lastName, fullName
+			var firstName, lastName, fullName, ifCheck
 			if (name[1]) {
 				firstName = this.MaysPrimera(name[0])
 				lastName = this.MaysPrimera(name[1])
 				fullName = firstName+' '+lastName
 			}else{
 				fullName = this.MaysPrimera(name[0])
+			}
+			if ($('.ifCheck').prop('checked')) {
+				ifCheck = 0
+			}else{
+				ifCheck = 1
 			}
 			
 			if (this.nombreCliente != '' && this.identidadCliente != '') {
@@ -473,7 +470,8 @@ export default {
 					identidad:this.identidadCliente,
 					recomendador:this.recomendador,
 					correoCliente:this.correoCliente,
-					instagramCliente:this.instagramCliente
+					instagramCliente:this.instagramCliente,
+					ifCheck: ifCheck
 				})
 				.then(res => {
 					if (res.data.status == 'Registrado') {
@@ -485,7 +483,7 @@ export default {
 						})
 						this.arregloClients = []
 						this.getClients();
-						this.arrayUsers();
+						this.getClientsThree()
 						this.ServicesQuantityChartFunc();
 						this.nombreCliente = ''
 						this.identidadCliente = ''
@@ -835,4 +833,91 @@ export default {
 	outline: none !important;
 	padding: 13px !important;
 }
+.containeer {
+        display: block;
+        position: relative;
+        padding-left: 35px;
+        
+        cursor: pointer;
+        font-size: 22px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+        /* Hide the browser's default checkbox */
+    .containeer input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+    }
+
+        /* Create a custom checkbox */
+    .containeer {
+		display: inline-block;
+		position: relative;
+		cursor: pointer;
+		font-size: 0.8em;
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+	}
+
+		/* Hide the browser's default checkbox */
+	.containeer input {
+		position: absolute;
+		opacity: 0;
+		cursor: pointer;
+		height: 0;
+		width: 0;
+	}
+
+/* Create a custom checkbox */
+	.checkmark {
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: 25px;
+		width: 25px;
+		background-color: #1F5673;
+	}
+
+	/* On mouse-over, add a grey background color */
+	.containeer:hover input ~ .checkmark {
+		background-color: #1F5673;
+	}
+
+	/* When the checkbox is checked, add a blue background */
+	.containeer input:checked ~ .checkmark {
+		background-color: #102229;
+	}
+
+	/* Create the checkmark/indicator (hidden when not checked) */
+	.checkmark:after {
+		content: "";
+		position: absolute;
+		display: none;
+	}
+
+	/* Show the checkmark when checked */
+	.containeer input:checked ~ .checkmark:after {
+		display: inline-block;
+	}
+
+	/* Style the checkmark/indicator */
+	.containeer .checkmark:after {
+		left: 9px;
+		top: 5px;
+		width: 5px;
+		height: 10px;
+		border: solid white;
+		border-width: 0 3px 3px 0;
+		-webkit-transform: rotate(45deg);
+		-ms-transform: rotate(45deg);
+		transform: rotate(45deg);
+	}
 </style>
