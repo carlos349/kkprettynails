@@ -1073,8 +1073,10 @@ ventas.get('/dataSectionManagement', (req, res) => {
   Venta.find({fecha: { $gte: dateDailyToday, $lte: dailyTomorrow }})
   .then(Sales => {
     for (let index = 0; index < Sales.length; index++) {
-      dailyData.Sale = dailyData.Sale + Sales[index].total
-      dailyData.Services = dailyData.Services + Sales[index].servicios.length
+      if(Sales[index].status){
+        dailyData.Sale = dailyData.Sale + Sales[index].total
+        dailyData.Services = dailyData.Services + Sales[index].servicios.length
+      }
     }
     Expenses.find({date: { $gte: dateDailyToday, $lte: dailyTomorrow }})
     .then(Dailyexpense => {
@@ -1084,8 +1086,10 @@ ventas.get('/dataSectionManagement', (req, res) => {
       Venta.find({fecha: { $gte: dateWeeklySince, $lte: dateWeeklyUntil}})
       .then(weeklySales => {
         for (let indexThree = 0; indexThree < weeklySales.length; indexThree++) {
-          weeklyData.Sale = weeklyData.Sale + weeklySales[indexThree].total
-          weeklyData.Services = weeklyData.Services + weeklySales[indexThree].servicios.length
+          if(weeklySales[indexThree].status){
+            weeklyData.Sale = weeklyData.Sale + weeklySales[indexThree].total
+            weeklyData.Services = weeklyData.Services + weeklySales[indexThree].servicios.length
+          }
         }
         Expenses.find({date: { $gte: dateWeeklySince, $lte: dateWeeklyUntil }})
         .then(weeklyExpense => {
@@ -1095,8 +1099,10 @@ ventas.get('/dataSectionManagement', (req, res) => {
           Venta.find({fecha: { $gte: dateMonthlySince, $lte: dateMonthlyUntil}})
           .then(monthlySales => {
             for (let indexFive = 0; indexFive < monthlySales.length; indexFive++) {
-              monthlyData.Sale = monthlyData.Sale + monthlySales[indexFive].total
-              monthlyData.Services = monthlyData.Services + monthlySales[indexFive].servicios.length
+              if(monthlySales[indexFive].status){
+                monthlyData.Sale = monthlyData.Sale + monthlySales[indexFive].total
+                monthlyData.Services = monthlyData.Services + monthlySales[indexFive].servicios.length
+              }
             }
             Expenses.find({date: { $gte: dateMonthlySince, $lte: dateMonthlyUntil }})
             .then(monthlyExpense => {

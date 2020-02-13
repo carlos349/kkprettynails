@@ -20,7 +20,7 @@
 				</div>
 				<div class="collapse" id="collapseUser">
 					<ul style="color:black !important" class="listaMenuP">
-						<router-link style="text-decoration: none !important;" class="menuText" to="/profile"> <li><font-awesome-icon class="icons mr-3" icon="edit" />Editar perfil</li> </router-link>
+						<router-link style="text-decoration: none !important;" class="menuText" to="/profile"> <li><font-awesome-icon class="icons mr-3" icon="edit" />Perfil de usuario</li> </router-link>
 						<router-link style="text-decoration: none !important;" class="menuText" to="/"><li v-on:click="logout"><font-awesome-icon class="icons mr-3" icon="sign-out-alt" />Cerrar Sesión</li> </router-link>
 					</ul>
 				</div>
