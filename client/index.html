@@ -27,7 +27,7 @@
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
   </body>
-  <script>
+  <!-- <script>
     // dragElement(document.getElementById("mydiv"));
 
 // function dragElement(elmnt) {
@@ -70,5 +70,16 @@
 //     document.onmousemove = null;
 //   }
 // }
-  </script>
+  </script> -->
+  <script >
+$(document).ready(function(){
+
+  $("body").on("focus","input",function(event){
+    $(this).attr('autocomplete', 'off')
+  });
+
+});
+
+
+</script>
 </html>
