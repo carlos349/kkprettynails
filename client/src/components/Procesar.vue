@@ -8,6 +8,7 @@
 						<div class="w-100 " v-on:click="clearInput">
 							<autocomplete
 							ref="autocomplete"
+							type="text"
 							placeholder="Buscar cliente"
 							:source="clients"
 							input-class="esteqlq one"
@@ -27,11 +28,12 @@
 						class="auto">
 					</autocomplete> -->
 				</div>
-				<div class="input-group input-group-lg col-sm-6">
+				<div class="input-group  col-sm-6">
 						<div class="w-100 " v-on:click="clearInputTwo">
 							<autocomplete
 							ref="autocomplete"
 							placeholder="Buscar Prestador"
+							type="text"
 							:source="manicuristas"
 							input-class="esteqlq two"
 							results-property="data"
@@ -610,6 +612,7 @@ import Autocomplete from 'vuejs-auto-complete'
 				console.log()
 		},
 		getManicuristas(){
+			
 			axios.get('manicuristas')
 			.then(res => {
 				this.arregloManicuristas = []
@@ -626,6 +629,8 @@ import Autocomplete from 'vuejs-auto-complete'
 					})
 				})
 			}),
+			$("input").attr('autocomplete', 'off');
+			console.log($(".esteqlq").attr('autocomplete', 'off'))
 			this.precio = 0
 			this.indentidadCliente = ""
 			this.inspector = false
@@ -746,15 +751,24 @@ import Autocomplete from 'vuejs-auto-complete'
 
 		},
 		descuentoFunc(){
-			if(this.descuento != ""){
+			if(this.descuento > 0){
 				const descuento = parseFloat(this.descuento) / 100
 				const porcentaje = 1 - parseFloat(descuento)
 				const precioConDescuento = parseFloat(this.subTotal) * parseFloat(porcentaje)
 				
 				this.total = "$"+ this.formatPrice(precioConDescuento)
 				this.totalSinFormato = precioConDescuento
-			}else if(this.descuento == '' || this.descuento == 0){
-				this.totalSinFormato = this.subTotal
+			}
+			 if(this.descuento == '' || this.descuento == 0){
+				 if (this.diseño != '') {
+					this.totalSinFormato = this.subTotal
+					this.total = "$" + this.formatPrice(this.subTotal)
+				 }
+				 else{
+					 this.totalSinFormato = this.subTotal + this.diseño
+					this.total = "$" + this.formatPrice(this.totalSinFormato)
+				 }
+				
 			}
 		},
 		conteoServicio(esto, servicio, precio, comision){
@@ -989,7 +1003,10 @@ import Autocomplete from 'vuejs-auto-complete'
 								showConfirmButton: false,
 								timer: 1500
 							})
+							this.servicios =''
 							this.borrarServicios()
+							this.getManicuristas()
+							$(".buscar").val('')
 							EventBus.$emit('reloadCitas', 'process')
 						}else if(res.data.status == "no-cash"){
 							this.$swal({

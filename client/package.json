@@ -26,6 +26,7 @@
     "chart.js": "^2.8.0",
     "ckeditor4": "^4.13.1",
     "debounce": "^1.2.0",
+    "disableautofill": "^1.2.8",
     "eventbus": "0.0.3",
     "froala-editor": "^3.0.6",
     "jwt-decode": "^2.2.0",

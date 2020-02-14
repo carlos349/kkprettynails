@@ -125,7 +125,7 @@
 							<input v-model="comisionServicio" type="text" class="inputServi w-100" placeholder="Comisión">
 						</div>
 					<div class="form-group row mt-4">
-						<input type="text" id="myInputServEdit" v-on:keyup="myFunctionServEdit()" class="inputServi w-100 buscar" placeholder="Buscar prestadores"/>
+						<input type="text" v-model="searchingTwo" id="myInputServEdit" v-on:keyup="myFunctionServEdit()" class="inputServi w-100 buscar" placeholder="Buscar prestadores"/>
 						<div class="ListaProcesar maxHeightEdit w-100">
 							<table class="table table-light table-borderless table-striped" id="myTableServEdit">
 								<tbody>
@@ -191,7 +191,7 @@
 						</div>
 						<div class="form-group row" style="margin-top:-15px;">
 							<div class="w-100">
-							<input type="text" id="myInputServ" v-on:keyup="myFunctionServ()" class="inputServi buscar mt-4 mb-1 w-100" placeholder="Buscar prestadores"/>
+							<input type="text" v-model="searching" id="myInputServ" v-on:keyup="myFunctionServ()" class="inputServi buscar mt-4 mb-1 w-100" placeholder="Buscar prestadores"/>
 							<font-awesome-icon class="lupa-modalServices" icon="search"/></div>
 							<div class="ListaProcesar maxHeight">
 								<table class="table table-light table-borderless table-striped" id="myTableServ">
@@ -298,6 +298,8 @@
 				manicuristas: [],
 				servicio: new Servicio(),
  			 	servicios: [],
+				searching:'',
+				searchingTwo: '',
 				nombreServicio: '',
 				tiempoServicio: '',
 				precioServicio: '',
@@ -410,6 +412,8 @@
 								this.getServicios();
 								this.nombreServi = ''
 								this.precioServi = ''
+								this.searching = ''
+								this.comisionServicio = ''
 								this.tiempoServi = 'Seleccione el tiempo'
 								this.prestadoresSeleccionados = []
 								$('.checkFirst').prop('checked', false)
@@ -511,6 +515,7 @@
 							timer: 1500
 							})
 							this.getServicios()
+							this.searchingTwo = ''
 							$('#myModal2').modal('hide')
 							this.emitMethod()
 						}else{

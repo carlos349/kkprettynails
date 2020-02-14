@@ -53,7 +53,6 @@ citas.post('/getBlocks', (req,res) => {
     ]
   }).sort({sort:1})
   .then(citas => {
-    console.log(citas)
     var timelineBlock = []
     var bloques = []
     if (citas.length == 0) {

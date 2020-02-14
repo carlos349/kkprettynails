@@ -1,11 +1,38 @@
 <template>
     <div class="container">
-        <div class="recuadro mt-4" >
-            <h1 class="text-center ">Reporte prestador</h1>
-            <h2>Fecha: {{fecha}}</h2>
-            <h3>Nombre: {{nameLender}}</h3>
-            <button class="btn add float-right" style="margin-top:-50px;" v-on:click="openPrestDiscount">Adelantos o Bonos</button>
+        <div class="row">
+             <div class="recuadro col-sm-4 ml-4 mt-4" >
+            <h1 class="text-left"><b>REPORTE PRESTADOR</b> </h1>
+            <h3><b>Fecha:</b>  {{fecha}}</h3>
+            <h3><b>Nombre:</b>  {{nameLender}}</h3>
+            <h3><b>Bonos:</b>  0</h3>
+            <h3><b>Adelantos:</b>  0</h3>
+            <h3><b>Fecha de Inicio:</b> 11-02-2020</h3>
+            <h3><b>Fecha de Salida:</b> 11-02-2020</h3>
+            <h3><b>Comisión Total:</b> {{formatPrice(totalComisiones)}}</h3>
+            <h3><b>Total Ventas:</b>  {{formatPrice(totalVentas)}}</h3>
+            <h3><b>Cantidad de Ventas:</b>  {{this.sales.length}}</h3>
+            <center>
+               <button class="btn add mt-5 w-75 text-center" style="" v-on:click="openPrestDiscount">Adelantos o Bonos</button>
+                <button class="w-75 btn mt-2 add" v-on:click="printReport">Crear reporte y cerrar ventas</button> 
+            </center>
+            
+            </div>
+            <div class="col-sm-7 mt-4 ml-5">
+                <v-client-table class="text-center tablaReportesPersonal"  :data="sales" :columns="columns" :options="optionsT">
+                
+               
+                <p slot="fecha" slot-scope="props">{{formatDate(props.row.fecha)}}</p>
+                
+                <p slot="comisionn" slot-scope="props">{{formatPrice(props.row.comision)}}</p>
+                
+                <p slot="totall" slot-scope="props">{{formatPrice(props.row.total)}}</p>
+              </v-client-table>
+            </div>
+            
         </div>
+       
+        
         <div class="row">
             <div class="col-12">
                 <div class="small">
@@ -16,53 +43,7 @@
 
             </div>
         </div>
-        <div class="datos mt-4 col-12" >
-            <v-client-table class="text-center tablaReportesPersonal"  :data="sales" :columns="columns" :options="optionsT">
-                <div slot="print"  slot-scope="props">
-                  <button v-if="props.row.status" style="width:100%;" v-on:click="reporteVenta(props.row._id)" class=" btn btn-colorsPrint"><font-awesome-icon icon="copy" /></button>
-                  <button v-else style="width:100%;" v-on:click="reporteVenta(props.row._id)" class=" btn btn-danger"><font-awesome-icon icon="copy" /></button>
-                </div>
-                <div slot="servicios" slot-scope="props">
-                  <button  class="btn btn btn-colorsPrint" type="button" data-toggle="collapse" :data-target="'#servi'+props.index" aria-expanded="false" aria-controls="multiCollapseExample2">Mostrar Servivios</button>
-                  <div class="collapse multi-collapse" :id="'servi'+props.index">
-                    <div class="card card-body">
-                    {{props.row.servicios}}
-                    </div>
-                  </div>
-                  
-                </div>
-                <p slot="lender" slot-scope="props">{{justName(props.row.manicurista)}}</p>
-                <p slot="descuentoo" slot-scope="props">{{props.row.descuento}}%</p>
-                <p slot="comisionn" slot-scope="props">{{formatPrice(props.row.comision)}}</p>
-                <p slot="locall" slot-scope="props">{{formatPrice(props.row.ganancialocal)}}</p>
-                <p slot="totall" slot-scope="props">{{formatPrice(props.row.total)}}</p>
-              </v-client-table>
-            <table class="table table-striped tablaReportesPersonal">
-                <thead v-bind:style="{ 'background-color': '#1F5673' , 'color':'#fff'}">
-                    <tr>
-                        <th>Fecha</th>
-                        <th>Cliente</th>
-                        <th>Comision</th>
-                        <th class="text-right">Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="sale in sales">
-                        <td style="font-size:1.3em">{{formatDate(sale.fecha)}}</td>
-                        <td style="font-size:1.3em">{{sale.cliente}}</td>
-                        <td style="font-size:1.3em">{{formatPrice(sale.comision)}}</td>
-                        <td style="font-size:1.3em" class="text-right">{{formatPrice(sale.total)}}</td>
-                    </tr>
-                    <tr>
-                        <td style="font-size:1.3em">Total</td>
-                        <td style="font-size:1.3em"></td>
-                        <td style="font-size:1.3em">{{formatPrice(totalComisiones)}}</td>
-                        <td style="font-size:1.3em" class="text-right">{{formatPrice(totalVentas)}}</td>
-                    </tr>
-                </tbody>
-            </table>
-            <button class="w-100 btn add" v-on:click="printReport">Crear reporte y cerrar ventas</button>
-        </div>
+       
         <div class="modal fade" id="ModalEditPrestador" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered" role="document">
 		    <div v-bind:style="{ 'background-color': '#ffffff'}" class="modal-content p-3">
@@ -151,9 +132,9 @@
         },
         data(){
             return{
-                 columns:['fecha' , 'servicios' , 'cliente' , 'lender' , 'descuentoo' , 'comisionn' , 'locall', 'totall', 'print'],
+                 columns:['fecha' , 'cliente' , 'comisionn' , 'totall'],
 			optionsT: {
-				filterByColumn: false,
+				filterByColumn: true,
 				texts: {
 					filter: "Filtrar:",
 					filterBy: 'Filtrar por {column}',
@@ -161,14 +142,9 @@
 				},
 				headings: {
 					fecha: 'Fecha ',
-					servicioss: 'Servicios ',
 					cliente: 'Cliente ',
-					lender: 'Prestador ',
-					descuentoo: 'Descuento ',
                     comisionn: 'Comision ',
-                    locall: 'Local ',
                     totall: 'Total',
-                    print: 'Reporte'
 				},
 				pagination: { chunk:10 },
 				pagination: { dropdown:true },
@@ -176,7 +152,7 @@
 				pagination: { edge: true },
 				sortIcon: {base:'fa' , up:'fa-sort-up', down:'fa-sort-down', is:'fa-sort'},
 				sortable: ['fecha'],
-				filterable: ['fecha']
+				filterable: ['']
 			},
                 aperturaBanco: 0,
                 aperturaefectivo: 0,
@@ -408,9 +384,13 @@
     .recuadro{
         background-color: rgba(238, 238, 238, 0.623);
         border-radius: 5px;
-        border: solid 2px #353535;
+        
+        box-shadow: 0 0.46875rem 2.1875rem rgba(4,9,20,0.03), 0 0.9375rem 1.40625rem rgba(4,9,20,0.03), 0 0.25rem 0.53125rem rgba(4,9,20,0.05), 0 0.125rem 0.1875rem rgba(4,9,20,0.03);
         padding: 20px;
         color:#353535;
+    }
+    .recuadro h3{
+        margin-top: 4%;
     }
     .datos{
         border: solid 2px #353535;
@@ -433,6 +413,7 @@
     .add{
 		background-color:#353535;
 		color: azure;
+        margin: auto;
 		transition: all 0.5s ease-out;
 		font-family: 'Roboto', sans-serif !important;
 		font-weight:600;

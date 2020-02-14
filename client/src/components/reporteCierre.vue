@@ -27,10 +27,10 @@
             <h3 class="col-6">Codigo de operación: {{codigo}}</h3>
             <h3 class="col-3">Encargado/a : {{identificacionCierre}}</h3>
         </div> -->
-        <div class="datos mt-5 col-12 row" style="background-color:transparent">
-            <table class="table col-4 mr-5 table-striped" style="padding:0 !important;">
-                <thead style="background-color: rgba(238,238,238, 0.6);">
-                    <tr>
+        <div class="datos mt-5 col-12 row" style="background-color:transparent !important">
+            <table class="table col-4 mr-5 table-striped" style="padding:0 !important; border-radius:5px !important;">
+                <thead style="background-color: rgba(238,238,238, 0.6) !important;">
+                    <tr style="border-radius:5px !important;">
                         <th style="font-size:1.3em">Ingresos manuales</th>
                         <th style="font-size:1.3em" class="text-right">Montos</th>
                     </tr>
