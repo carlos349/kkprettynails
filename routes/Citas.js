@@ -36,7 +36,7 @@ citas.post('/getBlocks', (req,res) => {
   const employe = req.body.employe
   const date = req.body.date
   const duracion= req.body.time
-  const dateNow = new Date(date+' 10:00')
+  const dateNow = new Date(date+' 1:00')
   const resTimes = req.body.resTime
   
   const sepRes = resTimes.split('/')
@@ -59,15 +59,17 @@ citas.post('/getBlocks', (req,res) => {
       timelineBlock.push(["10:00","21:00",true])
     }else{
       if (citas[0].start == "10:00") {
+        var count = 0
         for (let c = 0; c < citas.length; c++) {
           if (c == 0) {
             timelineBlock.push([citas[c].start, citas[c].end, false])
             timelineBlock.push([citas[c].end])
           }
           else {
-            timelineBlock[c].push(citas[c].start, true)
+            timelineBlock[c+count].push(citas[c].start, true)
             timelineBlock.push([citas[c].start, citas[c].end, false])
             timelineBlock.push([citas[c].end])
+            count++
           }
         }
       }else{
@@ -138,6 +140,8 @@ citas.post('/getBlocks', (req,res) => {
         } 
       } 
     }
+    console.log(timelineBlock)
+    console.log(bloques)
     bloques.push({Horario:'21:00' , validator: 'nDisponible'})
     var insp = false
     for (let j = 0; j < bloques.length; j++) {
@@ -174,7 +178,7 @@ citas.post('/getBlocks', (req,res) => {
         }  
       }  
     }
-
+    
     res.json(bloques)
   })
   .catch(err => {

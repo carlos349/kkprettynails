@@ -224,7 +224,7 @@ clients.post('/', (req, res) => {
         identidad: req.body.identidad,
         correoCliente:req.body.correoCliente,
         instagramCliente: req.body.instagramCliente,
-        participacion: 0,
+        participacion: req.body.ifCheck,
         recomendacion: finalRecommender,
         recomendaciones:0,
         ultimaFecha:today,

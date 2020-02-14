@@ -120,19 +120,19 @@
 							
 						</div>
 							<v-client-table v-if="link != ''" class="text-center tablePerfilVenta"  :data="ventas" :columns="columns" :options="optionsT">
-							<div slot="print"  slot-scope="props">
-							<button v-if="props.row.status" style="width:100%;" v-on:click="reporteVenta(props.row._id)" class=" btn btn-colorsPrint"><font-awesome-icon icon="copy" /></button>
-							<button v-else style="width:100%;" v-on:click="reporteVenta(props.row._id)" class=" btn btn-danger"><font-awesome-icon icon="copy" /></button>
-							</div>
-							
-							
-							<p slot="descuentoo" slot-scope="props">{{props.row.descuento}}%</p>
-							<p slot="clientNombre" slot-scope="props">{{justName(props.row.cliente)}}</p>
-							<p slot="comisionn" slot-scope="props">{{formatPrice(props.row.comision)}}</p>
-							<p slot="locall" slot-scope="props">{{formatPrice(props.row.ganancialocal)}}</p>
-							<p slot="totall" slot-scope="props">{{formatPrice(props.row.total)}}</p>
-							
-						</v-client-table>
+								<div slot="print"  slot-scope="props">
+								<button v-if="props.row.status" style="width:100%;" v-on:click="reporteVenta(props.row._id)" class=" btn btn-colorsPrint"><font-awesome-icon icon="copy" /></button>
+								<button v-else style="width:100%;" v-on:click="reporteVenta(props.row._id)" class=" btn btn-danger"><font-awesome-icon icon="copy" /></button>
+								</div>
+								
+								
+								<p slot="descuentoo" slot-scope="props">{{props.row.descuento}}%</p>
+								<p slot="clientNombre" slot-scope="props">{{justName(props.row.cliente)}}</p>
+								<p slot="comisionn" slot-scope="props">{{formatPrice(props.row.comision)}}</p>
+								<p slot="locall" slot-scope="props">{{formatPrice(props.row.ganancialocal)}}</p>
+								<p slot="totall" slot-scope="props">{{formatPrice(props.row.total)}}</p>
+								
+							</v-client-table>
 					</div>
 				
 				<div v-if="status == 1" class="col-sm-12">
@@ -415,7 +415,6 @@
 				}catch(err){
 					console.log(err)
 				}
-				
 			},
 			formatPrice(value) {
 				let val = (value/1).toFixed(2).replace('.', ',')
@@ -469,15 +468,15 @@
 				this.dataChecker = dataChecker.data
 				let fechaBien = ''
 					for (let index = 0; index < this.dataChecker.length; index++) {
-					let fech = new Date(this.dataChecker[index].fecha)
-					fechaBien = fech.getDate() +"/"+ (fech.getMonth() + 1) +"/"+fech.getFullYear() +" "+" ("+ fech.getHours()+":"+ fech.getMinutes()+")"
-					this.dataChecker[index].fecha = fechaBien
-					let servicio = ''
-					
-					for (let indexTwo = 0; indexTwo < this.dataChecker[index].servicios.length; indexTwo++) {
-						servicio = servicio +'\n'+ this.dataChecker[index].servicios[indexTwo].servicio
-					}
-					this.dataChecker[index].servicios = servicio
+						let fech = new Date(this.dataChecker[index].fecha)
+						fechaBien = fech.getDate() +"/"+ (fech.getMonth() + 1) +"/"+fech.getFullYear() +" "+" ("+ fech.getHours()+":"+ fech.getMinutes()+")"
+						this.dataChecker[index].fecha = fechaBien
+						let servicio = ''
+						
+						for (let indexTwo = 0; indexTwo < this.dataChecker[index].servicios.length; indexTwo++) {
+							servicio = servicio +'\n'+ this.dataChecker[index].servicios[indexTwo].servicio
+						}
+						this.dataChecker[index].servicios = servicio
 					}
 			},
 			emitMethod(image) {
