@@ -813,7 +813,7 @@ ventas.post('/procesar', (req, res) => {
   const ifProcess = req.body.ifProcess
   const services = req.body.servicios
   let clientEdit = req.body.cliente
-  const finalClient = clientEdit.split("-")
+  const finalClient = clientEdit.split(" / ")
   let today = ''
   if (req.body.fecha == 'fecha') {
     today = new Date()
@@ -899,42 +899,36 @@ ventas.post('/procesar', (req, res) => {
                 })
                 .then(comision => {
                   Cliente.updateOne({identidad: finalClient[1]},{
-                    $inc: {participacion: 1}
+                    $inc: {participacion: 1},
+                    $set: {ultimaFecha: today},
+                    $push: {historical: ventaDia}
                   })
-                  .then(participacion => {
-                    Cliente.updateOne({identidad: finalClient[1]},{
-                      $set: {ultimaFecha: today}
-                    })
-                    .then(lasDate => {
-                      VentaDia.create(ventaDia)
-                      .then(venta => {
-                        if (ifProcess != '') {
-                          Citas.findByIdAndUpdate(ifProcess, {
-                            $set: {
-                              process: false
-                            }
-                          })
-                          .then(process => {
-                            
-                            res.json({status: 'Venta registrada'})
-                          })
-                          .catch(err => {
-                            res.send('Error:' + err)
-                          })
-                        }else{
+                  .then(lasDate => {
+                    VentaDia.create(ventaDia)
+                    .then(venta => {
+                      Cliente.findByIdAndUpdate()
+                      if (ifProcess != '') {
+                        Citas.findByIdAndUpdate(ifProcess, {
+                          $set: {
+                            process: false
+                          }
+                        })
+                        .then(process => {
                           res.json({status: 'Venta registrada'})
-                        }
-                      })
-                      .catch(err => {
-                        res.send('Error:' + err)
-                      })
+                        })
+                        .catch(err => {
+                          res.send('Error:' + err)
+                        })
+                      }else{
+                        res.json({status: 'Venta registrada'})
+                      }
                     })
                     .catch(err => {
-                      res.send(err)
+                      res.send('Error:' + err)
                     })
                   })
                   .catch(err => {
-                    res.send('Error:' + err)
+                    res.send(err)
                   })
                 })
                 .catch(err => {
@@ -956,43 +950,36 @@ ventas.post('/procesar', (req, res) => {
               .then(comision => {
                 console.log(comision)
                 Cliente.updateOne({identidad: finalClient[1]},{
-                  $inc: {participacion: 1}
+                  $inc: {participacion: 1},
+                  $set: {ultimaFecha: today},
+                  $push: {historical: ventaDia}
                 })
-                .then(participacion => {
-                  Cliente.updateOne({identidad: finalClient[1]},{
-                    $set: {ultimaFecha: today}
-                  })
-                  .then(lasDate => {
-                    VentaDia.create(ventaDia)
-                    .then(venta => {
-                      console.log(ifProcess)
-                      if (ifProcess != '') {
-                        Citas.findByIdAndUpdate(ifProcess, {
-                          $set: {
-                            process: false
-                          }
-                        })
-                        .then(process => {
-                          
-                          res.json({status: 'Venta registrada'})
-                        })
-                        .catch(err => {
-                          res.send('Error:' + err)
-                        })
-                      }else{
+                .then(lasDate => {
+                  VentaDia.create(ventaDia)
+                  .then(venta => {
+                    if (ifProcess != '') {
+                      Citas.findByIdAndUpdate(ifProcess, {
+                        $set: {
+                          process: false
+                        }
+                      })
+                      .then(process => {
+                        
                         res.json({status: 'Venta registrada'})
-                      }
-                    })
-                    .catch(err => {
-                      res.send('Error:' + err)
-                    })
+                      })
+                      .catch(err => {
+                        res.send('Error:' + err)
+                      })
+                    }else{
+                      res.json({status: 'Venta registrada'})
+                    }
                   })
                   .catch(err => {
-                    res.send(err)
+                    res.send('Error:' + err)
                   })
                 })
                 .catch(err => {
-                  res.send('Error:' + err)
+                  res.send(err)
                 })
               })
               .catch(err => {

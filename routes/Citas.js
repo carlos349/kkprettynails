@@ -25,12 +25,17 @@ citas.get('/getDataToDate/:id', async (req, res) => {
   res.json(citasById)
 })
 
-// citas.get('/byId/:employe', async (req, res) => {
-//   console.log(req.params.employe)
-//   const citasByEmploye = await Citas.findById(req.params.employe)
-//   console.log(citasByEmploye)
-//   res.json(citasByEmploye)
-// })
+citas.put('/closeDate/:id', async (req, res) => {
+  try {
+    const closeDate = await Citas.findByIdAndUpdate(req.params.id, {
+      $set: {process: false}
+    })
+    console.log(closeDate)
+    res.json({status: 'ok'})
+  }catch(err){
+    res.send(err)
+  }
+})
 
 citas.post('/getBlocks', (req,res) => {
   const employe = req.body.employe
