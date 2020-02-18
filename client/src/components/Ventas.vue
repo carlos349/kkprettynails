@@ -1,6 +1,11 @@
 <template>
     <div class="container-fluid">
+      
+      
       <div class="col-md-12 row sectionMetricssSales">
+        <div class="reiniarFiltrosVentas">
+        <font-awesome-icon v-if="filterInspector == true"  icon="redo" v-on:click="resetFiltroVentas()" />
+      </div>
 				<div class="col-md-2 col-sm-5 metricssSales first">
 					<p>Total de ventas</p>
 					<h2>{{ventas.length}}</h2>
@@ -268,7 +273,8 @@ export default {
       arreglo: [],
       fechaDesde: 'Desde',
       fechaHasta: 'Hasta',
-      justOneDay: 'Filtrar día'
+      justOneDay: 'Filtrar día',
+      filterInspector: false
     }
   },
   beforeCreate() {
@@ -316,6 +322,7 @@ export default {
       })
     },
     async findSalesByDate(){
+      this.filterInspector = true
       const dateDesde = new Date(this.fechaDesde)
       const dateHasta = new Date(this.fechaHasta)
       const formatDesde =(dateDesde.getMonth() + 1) +"-"+dateDesde.getDate() +"-"+ dateDesde.getFullYear()
@@ -352,6 +359,7 @@ export default {
       }
     },
     async findSalesByDay(){
+      this.filterInspector = true
       const dateDesde = new Date(this.justOneDay)
       console.log(dateDesde)
       const formatDesde =(dateDesde.getMonth() + 1) + "-" + dateDesde.getDate()+"-"+dateDesde.getFullYear() 
@@ -570,6 +578,13 @@ export default {
         this.serviciosArray.push(value)
         return  value + " (" + conteo + ")"
       }   
+    },
+    resetFiltroVentas(){
+      this.getVentas();
+      this.totales(0);
+      this.SalesQuantityChartFunc();
+      
+      this.filterInspector = false
     }
   },
   
@@ -861,5 +876,24 @@ box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
 }
 .vdpClearInput{
   display: none
+}
+.reiniarFiltrosVentas{
+  position: absolute;
+  color: #353535 !important;
+  top: 113%;
+  background-color: rgba(238, 238, 238, 0.623);
+  padding: 0px 20px 0px 20px;
+ border-radius:5px; 
+  font-size: 2em;
+  right: 4%;
+  z-index: 1000;
+  cursor: pointer;
+  -webkit-transition: all 0.5s ease-out;
+ 	box-shadow: 0 0.46875rem 2.1875rem rgba(4,9,20,0.03), 0 0.9375rem 1.40625rem rgba(4,9,20,0.03), 0 0.25rem 0.53125rem rgba(4,9,20,0.05), 0 0.125rem 0.1875rem rgba(4,9,20,0.03)
+}
+.reiniarFiltrosVentas:hover{
+  -webkit-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+    -moz-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+    box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
 }
 </style>

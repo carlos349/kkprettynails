@@ -5,8 +5,8 @@
             <h1 class="text-left"><b>REPORTE PRESTADOR</b> </h1>
             <h3><b>Fecha:</b>  {{fecha}}</h3>
             <h3><b>Nombre:</b>  {{nameLender}}</h3>
-            <h3><b>Bonos:</b>  0</h3>
-            <h3><b>Adelantos:</b>  0</h3>
+            
+            <h3><b>Adelantos:</b>  {{formatPrice(advancements)}}</h3>
             <h3><b>Fecha de Inicio:</b> 11-02-2020</h3>
             <h3><b>Fecha de Salida:</b> 11-02-2020</h3>
             <h3><b>Comisión Total:</b> {{formatPrice(totalComisiones)}}</h3>
@@ -46,8 +46,8 @@
        
         <div class="modal fade" id="ModalEditPrestador" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered" role="document">
-		    <div v-bind:style="{ 'background-color': '#ffffff'}" class="modal-content p-3">
-		      <div class="modal-header" v-bind:style="{ 'background-color': '#1F5673'}">
+		    <div v-bind:style="{ 'background-color': '#ffffff'}" class="modal-content">
+		      <div class="modal-header" v-bind:style="{ 'background-color': '#6BB2E5'}">
 		        <h5 class="modal-title text-white font-weight-bold" id="exampleModalCenterTitle">Registrar adelanto o bono</h5>
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 		          <span aria-hidden="true" class="text-white">&times;</span>
@@ -61,9 +61,9 @@
                             <span class="checkmark"></span>
                         </label>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group ">
 						<label for="name">Fecha del adelanto o bono</label>
-                        <date-pick class="form-control inputss"
+                        <date-pick class="reportePrestadorInputs"
 								v-model="dateAdvancement"
 							    :weekdays=Days
 								:months=months
@@ -73,11 +73,11 @@
 					</div>
 					<div class="form-group">
 						<label for="name">Razón</label>
-						<input v-model="reason" type="text" class="form-control inputs" placeholder="Razon del adelanto">
+						<input v-model="reason" type="text" class="form-control reportePrestadorInputs" placeholder="Razon del adelanto">
 					</div>
 					<div class="form-group mb-5">
 						<label for="name">Total del adelanto o bono</label>
-						<input v-model="totalAdvancement" type="text" class="form-control inputs" placeholder="Escriba el monto">
+						<input v-model="totalAdvancement" type="text" class="form-control reportePrestadorInputs" placeholder="Escriba el monto">
 					</div>
                     <div class="maxHei" style="margin-top:-30px;">
                         <table class="table table-light table-borderless table-striped">
@@ -570,4 +570,17 @@
 	.tablaReportesPersonal thead th {
 			border-left: 1px black !important;
 	}
+    .reportePrestadorInputs{
+        background-color: transparent !important;
+		-webkit-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+		-moz-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+		box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+		border: none !important;
+		border-radius: 5px;
+		padding: 10px;
+		width: 50% ;
+		color: black !important;
+		width: 100%;
+		outline: none !important;
+    }
 </style>

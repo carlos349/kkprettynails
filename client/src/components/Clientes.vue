@@ -120,7 +120,7 @@
 							:results-display="formattedDisplay"
 							@selected="addDistributionGroup">
 							</autocomplete>
-							<span v-on:click="clearInput" style="position:absolute;top:460px;left:70px;background-color:#FBF5F3;width:70%;">{{recomendador}}</span>
+							<span v-on:click="clearInput" style="position:absolute;top:458px;left:70px;background-color:white;width:70%;">{{recomendador}}</span>
 						</div>
 						
                     </div>
@@ -313,10 +313,10 @@ export default {
 				for (let i = 0; i < this.clients.length; i++) {
 					// this.clients[i].push({thatId:this.clients[i].identidad}) 
 					if (this.clients[i].correoCliente) {
-						this.clients[i].identidad = this.clients[i].identidad + '\n' + this.clients[i].correoCliente 
+						this.clients[i].identidad = this.clients[i].identidad + '\n / ' + this.clients[i].correoCliente 
 					}
 					if (this.clients[i].instagramCliente) {
-						this.clients[i].identidad = this.clients[i].identidad + '\n' + this.clients[i].instagramCliente
+						this.clients[i].identidad = this.clients[i].identidad + '\n / ' + this.clients[i].instagramCliente
 					}
 					this.clients[i].fecha = this.formatDate(this.clients[i].fecha)
 					this.clients[i].ultimaFecha = this.formatDate(this.clients[i].ultimaFecha)
@@ -347,7 +347,7 @@ export default {
             })
         },
 		formattedDisplay (result) {
-			return result.nombre+'-'+result.identidad
+			return result.nombre+' / '+result.identidad
 		},
 		addDistributionGroup (group) {
 			setTimeout(() => {

@@ -102,6 +102,7 @@
 							<div class="input-group-prepend text-center">
 								<span style="font-size:1.5em;color:#5a5a5a !important" class="inputsVenta w-100 text-white input-group-text text-center" id="inputGroup-sizing-lg">Subtotal</span>
 							</div>
+							
 							<input style="font-size:1.5em;color:#5a5a5a !important" readonly type="text" disabled class="inputsVenta text-center w-100 form-control manicuristaFocus" v-model="precio" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
 						</div>
 					</div>
@@ -120,8 +121,14 @@
 					</div>
 					<div class="col-sm-3">
 						<div class="input-group input-group-lg mb-2 ">
+							<currency-input
+                            v-model="diseño"
+							placeholder="Diseño"
+                            locale="de"
+                            class="form-control manicuristaFocu inputsVenta"
+                            v-on:keyup="formatDiscount()"
+                        	/>
 							
-							<input type="text" v-on:keyup="formatDiscount()" v-model="diseño" placeholder="Diseño" class="form-control manicuristaFocu inputsVenta" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
 						</div>
 					</div>
 				</div>
@@ -147,7 +154,14 @@
 									</span>
 									
 								</div>
-								<input type="text" class="inputsVenta form-control text-center manicuristaFocus" v-model="pagoEfectivo" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="Efectivo" v-on:change="formato('pagoEfectivo')" v-on:click="erasedFormat('pagoEfectivo')">
+								<currency-input
+									v-model="pagoEfectivo"
+									locale="de"
+									placeholder="Efectivo"
+									class="inputsVenta form-control text-center manicuristaFocus"
+									v-on:click="erasedFormat('pagoEfectivo')"
+								/>
+								
 							</div>
 							<input type="hidden" class="form-control text-center manicuristaFocus inputsVenta p-1" v-model="pagoEfectivoSinformato" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="Débito" >
 						</div>
@@ -159,7 +173,14 @@
 									<font-awesome-icon class="transferencia" style="font-size:1em; color:#6BB2E5" icon="money-check-alt"/>
 								</span>
 							</div>
-							<input type="text" class="form-control text-center manicuristaFocus inputsVenta" v-model="pagoTransf" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="Transferencia" v-on:change="formato('pagoTransf')" v-on:click="erasedFormat('pagoTransf')">
+							<currency-input
+									v-model="pagoTransf"
+									locale="de"
+									placeholder="Trasnferencia"
+									class="inputsVenta form-control text-center manicuristaFocus"
+									v-on:click="erasedFormat('pagoTransf')"
+								/>
+							
 						</div>
 						<input type="hidden" class="form-control text-center manicuristaFocus inputsVenta p-1" v-model="pagoTransfSinformato" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="Débito" >
 					</div>
@@ -172,7 +193,14 @@
 								</span>
 								
 							</div>
-							<input type="text" v-model="pagoOtros"  class="form-control text-center manicuristaFocu inputsVenta" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="Otros" v-on:change="formato('pagoOtros')" v-on:click="erasedFormat('pagoOtros')"> 
+							<currency-input
+									v-model="pagoOtros"
+									locale="de"
+									placeholder="Otros"
+									class="inputsVenta form-control text-center manicuristaFocus"
+									v-on:click="erasedFormat('pagoOtros')"
+								/>
+							
 						</div>
 						<input type="hidden" class="form-control text-center manicuristaFocus inputsVenta p-1" v-model="pagoOtrosSinformato" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="Débito" >
 					</div>
@@ -183,8 +211,14 @@
 									<b class="credito pl-3" style="font-size:0.6em;display:none">100%</b>
 									<img style="width:98%;padding-left:1px" class="credito"  src="../assets/trans1.png" alt=""></span>
 							</div>
+							<currency-input
+									v-model="pagoRedCCredito"
+									locale="de"
+									placeholder="Crédito"
+									class="inputsVenta form-control text-center manicuristaFocus"
+									v-on:click="erasedFormat('pagoRedCCredito')"
+								/>
 							
-							<input type="text" class="form-control text-center manicuristaFocus inputsVenta p-1" v-model="pagoRedCCredito" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="Crédito" v-on:change="formato('pagoRedCCredito')" v-on:click="erasedFormat('pagoRedCCredito')">
 						</div>
 						<input type="hidden" class="form-control text-center manicuristaFocus inputsVenta p-1" v-model="pagoRedCCreditoSinformato" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="Débito" >
 					</div>
@@ -195,8 +229,13 @@
 									<b class="debito pl-3" style="font-size:0.6em;display:none">100%</b>
 									<img class="debito" style="width:98%;padding-left:1px"  src="../assets/trans1.png" alt=""></span>
 							</div>
-							<input type="text" class="form-control text-center manicuristaFocus inputsVenta p-1" v-model="pagoRedCDebito" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="Débito" v-on:change="formato('pagoRedCDebito')" v-on:click="erasedFormat('pagoRedCDebito')">
-							
+							<currency-input
+									v-model="pagoRedCDebito"
+									locale="de"
+									placeholder="Débito"
+									class="inputsVenta form-control text-center manicuristaFocus"
+									v-on:click="erasedFormat('pagoRedCDebito')"
+								/>	
 
 						</div>
 						<input type="hidden" class="form-control text-center manicuristaFocus inputsVenta p-1" v-model="pagoRedCDebitoSinformato" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="Débito" >
@@ -517,7 +556,7 @@ import Autocomplete from 'vuejs-auto-complete'
 		},
 		arrayUsers(){	
 				for (let index = 0; index < this.clients.length; index++) {
-					this.arregloClients.push(this.clients[index].nombre+'-'+this.clients[index].identidad)
+					this.arregloClients.push(this.clients[index].nombre+' / '+this.clients[index].identidad)
 				}
 		},
 		
@@ -529,12 +568,12 @@ import Autocomplete from 'vuejs-auto-complete'
 			})
 		},
 		formattedDisplay (result) {
-		return result.nombre+'-'+result.identidad
+		return result.nombre+' / '+result.identidad
 		},
 		addDistributionGroup (group) {
 			setTimeout(() => {
 				this.nombreCliente = group.display
-				const split = this.nombreCliente.split('-')
+				const split = this.nombreCliente.split('/')
 				axios.get('clients/dataDiscount/'+split[1])
 				.then(res => {
 					if (res.data[0].participacion == 0) {
@@ -573,7 +612,7 @@ import Autocomplete from 'vuejs-auto-complete'
 			
 		},
 		formattedDisplayThree (result) {
-			return result.nombre+'-'+result.identidad
+			return result.nombre+' / '+result.identidad
 		},
 		addDistributionGroupThree (group) {
 			setTimeout(() => {
@@ -917,23 +956,23 @@ import Autocomplete from 'vuejs-auto-complete'
 			else{
 				if (tipo == "efectivo") {
 					this.pagoEfectivoSinformato = this.totalSinFormato
-					this.pagoEfectivo = '$ '+this.formatPrice(this.totalSinFormato)
+					this.pagoEfectivo = this.totalSinFormato
 				}
 				if (tipo == "transferencia") {
 					this.pagoTransfSinformato = this.totalSinFormato
-					this.pagoTransf = '$ '+this.formatPrice(this.totalSinFormato)
+					this.pagoTransf = this.totalSinFormato
 				}
 				if (tipo == "otros") {
 					this.pagoOtrosSinformato = this.totalSinFormato
-					this.pagoOtros = '$ '+this.formatPrice(this.totalSinFormato)
+					this.pagoOtros = this.totalSinFormato
 				}
 				if (tipo == "credito") {
 					this.pagoRedCCreditoSinformato = this.totalSinFormato
-					this.pagoRedCCredito = '$ '+this.formatPrice(this.totalSinFormato)
+					this.pagoRedCCredito = this.totalSinFormato
 				}
 				if (tipo == "debito") {
 					this.pagoRedCDebitoSinformato = this.totalSinFormato
-					this.pagoRedCDebito = '$ '+this.formatPrice(this.totalSinFormato)
+					this.pagoRedCDebito = this.totalSinFormato
 				}
 			}
 		},
@@ -1037,6 +1076,7 @@ import Autocomplete from 'vuejs-auto-complete'
 							this.servicios =''
 							this.borrarServicios()
 							this.getManicuristas()
+							
 							$(".buscar").val('')
 							EventBus.$emit('reloadCitas', 'process')
 						}else if(res.data.status == "no-cash"){

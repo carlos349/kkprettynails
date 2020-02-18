@@ -11,13 +11,21 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 import '@trevoreyre/autocomplete-vue/dist/style.css'
 import {ServerTable, ClientTable, Event} from 'vue-tables-2'
 import CKEditor from '@ckeditor/ckeditor5-vue';
+import VueCurrencyInput from 'vue-currency-input'
 // import 'vue-croppa/dist/vue-croppa.css'
 // import Croppa from 'vue-croppa'
 require("../node_modules/bootstrap/dist/css/bootstrap.css")
 
 library.add(faRedo, faUserCheck, faTrash,faEdit,faCopy,faTimes,faSearch, faAngleRight, faAngleLeft, faCreditCard, faDollarSign, faCloudUploadAlt, faUsers, faUserLock, faPlus, faClipboardCheck, faTasks, faPollH, faUserTag, faBoxOpen, faSearchDollar, faChartLine, faCashRegister, faCaretDown, faCaretUp, faBoxes, faCheckSquare, faTags, faPlusSquare, faUserPlus, faAddressBook, faCalendarAlt, faSortUp, faSort, faSortDown,faMoneyBillWave, faMoneyCheckAlt, faHandHoldingUsd, faSignOutAlt, faFolderPlus, faTag, faPercent, faArrowCircleDown, faArrowCircleUp )
+
+const pluginOptions = {
+  
+  globalOptions: { currency: {'prefix':'$ '},precision: 2, distractionFree:false, autoDecimalMode:true}
+}
+
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.config.productionTip = false
+Vue.use(VueCurrencyInput, pluginOptions)
 Vue.use(VueSweetalert2);
 Vue.use(Autocomplete)
 Vue.use(ClientTable);

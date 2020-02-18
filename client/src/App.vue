@@ -1,5 +1,5 @@
 <template style="background-color:black;">
-  <div class="row"  id="app">
+  <div  class="row"  id="app">
     <navbar v-on:mouseover="mouseOver()" v-on:mouseleave="mouseLeave()" ></navbar>
     <router-view style="margin-left:5%" class="bod col-md-11"/>
   </div>

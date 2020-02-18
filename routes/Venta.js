@@ -1252,6 +1252,29 @@ ventas.get('/GetSalesPerMonth', (req, res) => {
   })
 })
 
+ventas.put('/editarIngManual/:id', (req,res) => {
+  const data = {
+    ingresoFondo : req.body.fondo,
+    efectivo : req.body.efectivo,
+    egreso : req.body.egreso,
+    totalEfectivo : req.body.totalEfectivo,
+    credito : req.body.credito,
+    debito : req.body.debito,
+    transferencia : req.body.transferencia,
+    otros : req.body.otros,
+    total : req.body.totalEfectivo + req.body.credito + req.body.debito +  req.body.transferencia + req.body.otros
+  }
+Cierres.findByIdAndUpdate(req.params.id, {
+  $set:{manual:data}
+})
+.then(cierres => {
+  res.json({status: 'ok'})
+})
+.catch(err => {
+  res.send(err)
+})
+})
+
 
 module.exports = ventas
 
