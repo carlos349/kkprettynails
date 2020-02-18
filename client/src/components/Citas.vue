@@ -664,7 +664,7 @@ import router from '../router'
       MaysPrimera(string){
         return string.charAt(0).toUpperCase() + string.slice(1);
       },
-      editCliente(){
+      editCliente(event){
         event.preventDefault()
         const name = this.nombreClienteRegister.split(' ')
         var firstName, lastName, fullName
