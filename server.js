@@ -6,7 +6,8 @@ const app = express()
 const mongoose = require('mongoose')
 
 mongoose.connect('mongodb://localhost/kkprettynails-database', {
-			useNewUrlParser: true
+			useNewUrlParser: true,
+			useUnifiedTopology: true
 		})
 		.then(db => console.log('DB in connected'))
 		.catch(err => console.error(err))

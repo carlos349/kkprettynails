@@ -280,7 +280,7 @@ clients.put('/:id', async (req, res, next) => {
                 if (updateClient) {
                     res.json({status: 'Servicio actualizado'})
                 }
-            } catch {
+            } catch(err) {
                 res.send('error: ' + err)
             }
             
@@ -291,21 +291,21 @@ clients.put('/:id', async (req, res, next) => {
                         $set: {
                           nombre:req.body.nombreClienteEditar,
                           identidad:req.body.identidadClienteEditar,
-                          correoCliente: req.body.correoClienteEditar,
+                          correoCliente: req.body.correoClienteEdritar,
                           instagramCliente: req.body.instagramClienteEditar
                         }
                     })
                     if (updateClient) {
                         res.json({status: 'Servicio actualizado'})
                     }
-                } catch {
+                } catch(err) {
                     res.send('error: ' + err)
                 }
             }else{
                 res.json({status: 'exist'})
             }
         }
-    } catch {
+    } catch(err) {
         res.send('error: ' + err)
     }
     

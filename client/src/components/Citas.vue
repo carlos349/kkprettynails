@@ -740,16 +740,18 @@ import router from '../router'
         $('#myModalCitasDescripcion').modal('show')
         const split = event.cliente.split('/')
         const splitTwo = split[1].split(' ')
+        const splitThree = split[0].split(' ')
         axios.get('clients/dataDiscount/'+splitTwo[1])
         .then(res => {
-          console.log(res)
           if (res.data[0].participacion == 0) {
 						this.descuento = true
-            
 					}else{
             this.descuento = false
           }
-          console.log(this.descuento)
+          axios.get('clients/historical/'+splitTwo[1]+'-'+splitThree[0])
+          .then(res => {
+            console.log(res)
+          })
         })
         e.stopPropagation()
       },
