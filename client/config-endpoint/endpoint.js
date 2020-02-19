@@ -1,7 +1,7 @@
-const imgEndpoint = 'http://localhost:4200/static/users/'
-const portClient = '3389'
-const endpointTarget = 'http://localhost:4200'
 const server = 'localhost'
+const imgEndpoint = `http://${server}:4200/static/users/`
+const portClient = '3389'
+const endpointTarget = `http://${server}:4200'`
 const endPoint =  { 
     imgEndpoint: imgEndpoint, 
     portClient:portClient, 
