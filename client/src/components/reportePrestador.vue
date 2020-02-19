@@ -62,14 +62,24 @@
                         </label>
                     </div>
                     <div class="form-group ">
-						<label for="name">Fecha del adelanto o bono</label>
-                        <date-pick class="reportePrestadorInputs"
+						<label class="text-center" for="name">Fecha del adelanto o bono</label>
+                        <!-- <date-pick class="reportePrestadorInputs"
 								v-model="dateAdvancement"
 							    :weekdays=Days
 								:months=months
 								:nextMonthCaption="'Siguiente mes'"
 								:prevMonthCaption="'Mes anterior'"
-						></date-pick>
+						></date-pick> -->
+                        <date-pick
+                              v-model="dateAdvancement"
+                              :isDateDisabled="isFutureDate"
+                              :hasInputElement="false"
+                              :months="months"
+                              :weekdays="Days"
+                              :nextMonthCaption="'Siguiente mes'"
+								:prevMonthCaption="'Mes anterior'"
+                                 
+                          ></date-pick> 
 					</div>
 					<div class="form-group">
 						<label for="name">Razón</label>
@@ -372,7 +382,11 @@
             formatDate(date) {
                let dateFormat = new Date(date)
                return dateFormat.getDate()+"-"+(dateFormat.getMonth() + 1)+"-"+dateFormat.getFullYear()
-            }
+            },
+            isFutureDate(date) {
+            const currentDate = new Date();
+            return date < currentDate;
+        }
         },
         computed: {
             myStyles (){

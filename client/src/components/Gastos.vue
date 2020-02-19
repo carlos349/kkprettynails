@@ -66,6 +66,7 @@
 								v-model="date"
 							    :weekdays=Days
 								:months=months
+								:isDateDisabled="isFutureDate"
 								:placeholder="'a ver'"
 								:nextMonthCaption="'Siguiente mes'"
 								:prevMonthCaption="'Mes anterior'"
@@ -265,6 +266,10 @@
 				},500) 
 				
 			},
+			isFutureDate(date) {
+            const currentDate = new Date();
+            return date < currentDate;
+        }
 		},
 		computed: {
 			myStyles (){

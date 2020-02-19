@@ -256,6 +256,7 @@
                                                    
                           <date-pick
                               v-model="fecha"
+                              :isDateDisabled="isFutureDate"
                               :hasInputElement="false"
                               :months="months"
                               :weekdays="Days"
@@ -1527,6 +1528,10 @@ import router from '../router'
 				let val = (value/1).toFixed(2).replace('.', ',')
 				return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
 			},
+      isFutureDate(date) {
+            const currentDate = new Date();
+            return date < currentDate;
+        },
       cerraCita(id){
         axios.put('citas/closeDate/'+id)
         .then(res => {

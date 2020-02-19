@@ -25,16 +25,22 @@
 					<button class="botonCrearServicio" v-on:click="openModalCreateServices">
 						 Crear Servicio
 					</button>
+					<div v-on:click="toggleFilters()" class="filterTablesServis">
+						
+						<font-awesome-icon  icon="search" /> 
+						<font-awesome-icon class="arrowFilter" icon="level-down-alt" />
+						<font-awesome-icon style="display:none" class="arrowFilter" icon="level-up-alt" />
+					</div>
 					<v-client-table class="text-center tableServis"  :data="servicios" :columns="columns" :options="optionsT">
 						<p slot="prestadoress"  slot-scope="props">{{props.row.prestadores.length}}</p>
 						<p slot="precio"  slot-scope="props">{{formatPrice(props.row.precio)}}</p>
 						<p slot="comision"  slot-scope="props">{{props.row.comision}}%</p>
 						<p slot="tiempoo"  slot-scope="props">{{props.row.tiempo}} min</p>
 						<div slot="activee"  slot-scope="props">
-							<button style="background-color:#E6E6EA;color:#618B25" v-on:click="desactivarServicio(props.row._id)" v-if="props.row.active" class="font-weight-bold btn btn-success w-100">Activo</button>
-							<button v-on:click="desactivarServicio(props.row._id)" v-if="!props.row.active" class="font-weight-bold btn btn-inactive w-100">Inactivo</button>
+							<button style="background-color:#E6E6EA;color:#618B25" v-on:click="desactivarServicio(props.row._id)" v-if="props.row.active" class="font-weight-bold btn btn-success w-100 p-0 m-0">Activo</button>
+							<button v-on:click="desactivarServicio(props.row._id)" v-if="!props.row.active" class="font-weight-bold btn btn-inactive w-100 p-0 m-0">Inactivo</button>
 						</div>
-						<button style="background-color:#353535;color:white" slot="edit"  slot-scope="props"  v-on:click="pasarDatosEdit(props.row.nombre, props.row.tiempo, props.row.precio, props.row.prestadores, props.row._id, props.row.comision)" class="btn add w-100"><font-awesome-icon icon="edit" /></button>
+						<button style="background-color:#353535;color:white" slot="edit"  slot-scope="props"  v-on:click="pasarDatosEdit(props.row.nombre, props.row.tiempo, props.row.precio, props.row.prestadores, props.row._id, props.row.comision)" class="btn add w-100 p-0 m-0"><font-awesome-icon icon="edit" /></button>
 						<!-- <a slot="edit" slot-scope="props" class="fa fa-edit" :href="pasarDatosEdit(props.row.nombre, props.row.identidad, props.row.correoCliente, props.row.instagramCliente, props.row._id)">Hola </a> -->
 					</v-client-table>
 				</div>
@@ -271,7 +277,8 @@
 			return {
 				columns:['nombre' , 'precio' , 'comision', 'tiempoo' , 'prestadoress' , 'activee' , 'edit'],
 				optionsT: {
-					filterByColumn: false,
+					filterByColumn: true,
+					perPage: 11,
 					texts: {
 						filter: "Filtrar:",
 						filterBy: 'Filtrar por {column}',
@@ -536,6 +543,7 @@
 				}
 			},
 			pasarDatosEdit(nombre,tiempo, precio, prestadores, id, comision){
+				this.optionsT.filterByColumn = true
 				
 				this.prestadoresSeleccionadosTwos = []
 				$(".desMarc").prop("checked", false)
@@ -630,6 +638,10 @@
 			      }
 			    }
 			  }
+			},
+			toggleFilters(){
+				$(".VueTables__filters-row").toggle('slow')
+				$(".arrowFilter").toggle('slow')
 			}
 		},
 		computed: {
@@ -870,7 +882,7 @@
 	.botonOcultarInfoServis{
 		z-index:100;
 		position: absolute;
-		top: 95.8%;
+		top: 98.8%;
 		right: 50.6%;
 		padding: 5px;
 		
@@ -915,19 +927,11 @@
 
 	.VueTables__child-row-toggler {
 	width: 16px;
-	height: 16px;
+	height: 10px;
 	line-height: 16px;
 	display: block;
 	margin: auto;
 	text-align: center;
-	}
-
-	.VueTables__child-row-toggler--closed::before {
-	content: "+";
-	}
-
-	.VueTables__child-row-toggler--open::before {
-	content: "-";
 	}
 
 	[v-cloak] {
@@ -940,9 +944,17 @@
 		background-color: white;
 	}
 	.tableServis {
-		height: 85vh;
-	
+		height: 82.5vh;
+		font-size: 1em;
+		-webkit-transition: all 0.5s ease-out;
 	}
+	.table th, .table td {
+    padding: 0.4rem;
+    padding-bottom: -1px;
+    vertical-align: inherit !important;
+    border-top: 1px solid #dee2e6;
+	}
+
 	.table-bordered {
 		box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
 		border-radius: 10px !important; 
@@ -982,4 +994,33 @@
 		color: black !important;
 		outline: none !important;
 	}
+	.filterTablesServis{
+		background-color: #353535;
+		cursor: pointer;
+		-webkit-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+		-moz-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+		box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+		top: -7%;
+		left: 1.5%;
+		color: azure;
+		position: absolute;
+		padding: 15px;
+		border-radius:5px 5px 0 0;
+		-webkit-transition: all 0.5s ease-out; 
+	}
+	.filterTablesServis:hover{
+		color: #353535;
+		background-color: #fff;
+	}
+	.VueTables__filters-row{
+		display: none;
+		-webkit-transition: all 0.5s ease-out; 
+	}
+	.arrowFilter{
+		-webkit-transition: all 0.5s ease-out;
+	}
+	.page-link{
+	color: black !important;
+	background-color: rgba(238, 238, 238, 0.623) !important;
+}
 </style>
