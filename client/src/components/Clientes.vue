@@ -27,6 +27,12 @@
 						<button class="botonCrearCorreo" v-on:click="showTemplates">
 							Correos a clientes 
 						</button>
+						<div v-on:click="toggleFilters()" class="filterTablesClients">
+						
+						<font-awesome-icon  icon="search" /> 
+						<font-awesome-icon class="arrowFilter" icon="level-down-alt" />
+						<font-awesome-icon style="display:none" class="arrowFilter" icon="level-up-alt" />
+					</div>
 					<v-client-table class="text-center tablaClients"  :data="clients" :columns="columns" :options="optionsT">
 						<button slot="edit"  slot-scope="props" v-on:click="pasarDatosEdit(props.row.nombre, props.row.identidad, props.row.correoCliente, props.row.instagramCliente, props.row._id)" class=" btn btn-colorsEditClient w-100"><font-awesome-icon icon="edit" /></button>
 					</v-client-table>
@@ -239,7 +245,8 @@ export default {
         return {
 			columns:['nombre' , 'identidad' , 'recomendacion' , 'recomendaciones' , 'ultimaFecha' , 'fecha' , 'edit'],
 			optionsT: {
-				filterByColumn: false,
+				filterByColumn: true,
+				perPage: 7,
 				texts: {
 					filter: "Filtrar:",
 					filterBy: 'Filtrar por {column}',
@@ -538,6 +545,10 @@ export default {
 		emitMethodTwo() {
 			EventBus.$emit('reload-services', 'updated')
 		},
+		toggleFilters(){
+				$(".VueTables__filters-row").toggle('slow')
+				$(".arrowFilter").toggle('slow')
+			}
 	},
 	computed: {
 		myStyles () {
@@ -676,7 +687,7 @@ export default {
     .botonCrearCliente{
 		z-index:100;
 		position: absolute;
-		top: 92.5%;
+		top: 89%;
 		right: 1%;
 		padding: 5px;
 		width: 21.9%;
@@ -692,7 +703,7 @@ export default {
 	.botonCrearCorreo{
 		z-index:100;
 		position: absolute;
-		top: 98.5%;
+		top: 95%;
 		right: 1%;
 		padding: 5px;
 		width: 21.9%;
@@ -708,7 +719,7 @@ export default {
 	.botonOcultarInfoClient{
 		z-index:100;
 		position: absolute;
-		top: 96.5%;
+		top: 93.5%;
 		right: 50.6%;
 		padding: 5px;
 		
@@ -775,8 +786,10 @@ export default {
 	.table-bordered tbody{
 		background-color: white;
 	}
-	.tablaClients table{
-
+	.tablaClients{
+		height: 82.5vh;
+		font-size: 1em;
+		-webkit-transition: all 0.5s ease-out;
 	
 	}
 	.table-bordered {
@@ -920,4 +933,39 @@ export default {
 		-ms-transform: rotate(45deg);
 		transform: rotate(45deg);
 	}
+	.filterTablesClients{
+		background-color: #353535;
+		cursor: pointer;
+		-webkit-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+		-moz-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+		box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+		top: -7%;
+		left: 1.5%;
+		color: azure;
+		position: absolute;
+		padding: 15px;
+		border-radius:5px 5px 0 0;
+		-webkit-transition: all 0.5s ease-out; 
+	}
+	.filterTablesClients:hover{
+		color: #353535;
+		background-color: #fff;
+	}
+	.VueTables__filters-row{
+		display: none;
+		-webkit-transition: all 0.5s ease-out; 
+	}
+	.arrowFilter{
+		-webkit-transition: all 0.5s ease-out;
+	}
+    .table th, .table td {
+    padding: 0.4rem;
+    padding-bottom: -1px;
+    vertical-align: inherit !important;
+    border-top: 1px solid #dee2e6;
+	}
+	.page-link{
+	color: black !important;
+	background-color: rgba(238, 238, 238, 0.623) !important;
+}
 </style>

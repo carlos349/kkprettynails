@@ -17,6 +17,12 @@
 						 <font-awesome-icon class="arrowBot" icon="arrow-circle-down" /> 	
 						  <font-awesome-icon style="display:none" class="arrowUp" icon="arrow-circle-up" />
 					</button>
+					<div v-on:click="toggleFilters()" class="filterTablesPerso">
+						
+						<font-awesome-icon  icon="search" /> 
+						<font-awesome-icon class="arrowFilter" icon="level-down-alt" />
+						<font-awesome-icon style="display:none" class="arrowFilter" icon="level-up-alt" />
+					</div>
 					<button class="botonCrearPrestador" v-on:click="openModalCreateEmploye">
 						Registrar prestador
 					</button>
@@ -32,7 +38,7 @@
 					</v-client-table>
 				</div>
 			</div>
-			<div style="margin-top:-2.2%" class="collapse col-sm-12 row" id="collapseExample">
+			<div style="margin-top:1.8%" class="collapse col-sm-12 row" id="collapseExample">
 			<div class="col-md-4" style="margin-top:20px;">
 				
 				<div>
@@ -219,6 +225,7 @@ export default {
 			columns:['nombre' , 'documento' , 'comision' , 'advancement', 'rest', 'edit', 'delete', 'report'],
 			optionsT: {
 				filterByColumn: true,
+				perPage: 11,
 				texts: {
 					filter: "Filtrar:",
 					filterBy: 'Filtrar por {column}',
@@ -533,7 +540,11 @@ export default {
 		},
 		changeToEdit(){
 			this.documentoPrestadorEdit = ''
-		}
+		},
+		toggleFilters(){
+				$(".VueTables__filters-row").toggle('slow')
+				$(".arrowFilter").toggle('slow')
+			}
 		
 	},
 	computed: {
@@ -724,7 +735,7 @@ export default {
 	.botonOcultarInfoPrestadores{
 		z-index:100;
 		position: absolute;
-		top: 91%;
+		top: 99.4%;
 		right: 50.6%;
 		padding: 5px;
 		
@@ -792,7 +803,9 @@ export default {
 		background-color: white;
 	}
 	.tablePresta{
-		height: 90vh;
+		height: 82.5vh;
+		font-size: 1em;
+		-webkit-transition: all 0.5s ease-out;
 	
 	}
 	.table-bordered {
@@ -809,10 +822,41 @@ export default {
 	}
 
 .page-link{
-	color: black;
+	color: black !important;
 	background-color: rgba(238, 238, 238, 0.623) !important;
 }
 .modal{
 	background-color: rgba(107, 178, 229, 0.2)
 }
+.filterTablesPerso{
+		background-color: #353535;
+		cursor: pointer;
+		-webkit-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+		-moz-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+		box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+		top: -7%;
+		left: 1.5%;
+		color: azure;
+		position: absolute;
+		padding: 15px;
+		border-radius:5px 5px 0 0;
+		-webkit-transition: all 0.5s ease-out; 
+	}
+	.filterTablesPerso:hover{
+		color: #353535;
+		background-color: #fff;
+	}
+	.VueTables__filters-row{
+		display: none;
+		-webkit-transition: all 0.5s ease-out; 
+	}
+	.arrowFilter{
+		-webkit-transition: all 0.5s ease-out;
+	}
+    .table th, .table td {
+    padding: 0.4rem;
+    padding-bottom: -1px;
+    vertical-align: inherit !important;
+    border-top: 1px solid #dee2e6;
+	}
 </style>

@@ -99,6 +99,12 @@
 
         <div class="row">
 					<div class="col-md-12">
+            <div v-on:click="toggleFilters()" class="filterTablesVentas">
+						
+						<font-awesome-icon  icon="search" /> 
+						<font-awesome-icon class="arrowFilter" icon="level-down-alt" />
+						<font-awesome-icon style="display:none" class="arrowFilter" icon="level-up-alt" />
+					</div>
             <div class="shadow">	
               <v-client-table class="text-center tableVentas"  :data="ventas" :columns="columns" :options="optionsT">
                 <div slot="print"  slot-scope="props">
@@ -225,7 +231,8 @@ export default {
     return {
       columns:['fecha' , 'servicios' , 'cliente' , 'lender' , 'descuentoo' , 'comisionn' , 'locall', 'totall', 'print'],
 			optionsT: {
-				filterByColumn: false,
+				filterByColumn: true,
+        perPage: 9,
 				texts: {
 					filter: "Filtrar:",
 					filterBy: 'Filtrar por {column}',
@@ -585,7 +592,11 @@ export default {
       this.SalesQuantityChartFunc();
       
       this.filterInspector = false
-    }
+    },
+    toggleFilters(){
+				$(".VueTables__filters-row").toggle('slow')
+				$(".arrowFilter").toggle('slow')
+			}
   },
   
   computed: {
@@ -853,8 +864,10 @@ box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
 .table-bordered tbody{
 	background-color: white;
 }
-.tableVentas table{
-
+.tableVentas{
+  height: 70.5vh;
+		font-size: 1em;
+		-webkit-transition: all 0.5s ease-out;
  
 }
 .table-bordered {
@@ -895,5 +908,40 @@ box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
   -webkit-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
     -moz-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
     box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+}
+.filterTablesVentas{
+		background-color: #353535;
+		cursor: pointer;
+		-webkit-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+		-moz-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+		box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+		top: -8.2%;
+		left: 1.5%;
+		color: azure;
+		position: absolute;
+		padding: 15px;
+		border-radius:5px 5px 0 0;
+		-webkit-transition: all 0.5s ease-out; 
+	}
+	.filterTablesVentas:hover{
+		color: #353535;
+		background-color: #fff;
+	}
+	.VueTables__filters-row{
+		display: none;
+		-webkit-transition: all 0.5s ease-out; 
+	}
+	.arrowFilter{
+		-webkit-transition: all 0.5s ease-out;
+	}
+    .table th, .table td {
+    padding: 0.4rem;
+    padding-bottom: -1px;
+    vertical-align: inherit !important;
+    border-top: 1px solid #dee2e6;
+	}
+  .page-link{
+	color: black !important;
+	background-color: rgba(238, 238, 238, 0.623) !important;
 }
 </style>

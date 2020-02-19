@@ -256,6 +256,7 @@
                                                    
                           <date-pick
                               v-model="fecha"
+                              :isDateDisabled="isFutureDate"
                               :hasInputElement="false"
                               :months="months"
                               :weekdays="Days"
@@ -1483,7 +1484,11 @@ import router from '../router'
       formatPrice(value) {
 				let val = (value/1).toFixed(2).replace('.', ',')
 				return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
-			}
+			},
+      isFutureDate(date) {
+            const currentDate = new Date();
+            return date < currentDate;
+        }
     },
     mounted(){
       EventBus.$on('reloadCitas', status => {
