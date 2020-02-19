@@ -27,6 +27,9 @@ const clienteSchema = new Schema ({
     type: Date, 
     default: Date.now
   },
+  historical: {
+    type: Array
+  },
   fecha: {
     type: Date,
 		default: Date.now

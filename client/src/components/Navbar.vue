@@ -220,7 +220,7 @@ export default {
 			apellido: localStorage.apellido,
 			image:endPoint.imgEndpoint+localStorage.imageUser,
 			authTwo: true,
-			showNav: true
+			showNav: false
 		}
 	},
 	created(){

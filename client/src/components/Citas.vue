@@ -174,7 +174,7 @@
                             <form>
                               <div class="form-group del" style="margin-bottom:-5px;">
                                 <label class="containeer row ml-2">
-                                  <input class="ifCheck" type="checkbox" >
+                                  <input id="ifCheck"  type="checkbox" >
                                   <span class="checkmark"></span>
                                   <h6 style="font-size:18px;" class="col-12">¿Desea agregar descuento de primera visita?</h6>
                                   
@@ -314,11 +314,42 @@
               </li>
               <li class="list-group-item" style="background-color: transparent !important"><b>Hora de inicio:</b>  {{ dateSplitHours(selectedEvent.start) }}</li>
               <li class="list-group-item" style="background-color: transparent !important"><b>Hora de finalización:</b>  {{ dateSplitHours(selectedEvent.end) }}</li>
+              <li v-if="historicals.length > 0" class="list-group-item" style="background-color: transparent !important">
+                <h3 class="text-center"><b>Histórico de cliente</b></h3>
+                <div class="maxHeightHistorical">
+                  <table class="table table-light table-borderless table-striped ">
+                      <thead >
+                          <tr>
+                              <th>
+                                  Fecha
+                              </th>
+                              <th>
+                                  Servicios
+                              </th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr v-for="historical of historicals" :key="historical">
+                              <td>
+                                  {{formatDate(historical.fecha)}}
+                              </td>
+                              <td>
+                                  <p v-for="(servicios, index) of historical.servicios" :key="servicios" style="margin-bottom:-6px;">
+                                    <strong >{{(index + 1)+ ') ' +servicios.servicio}} </strong>
+                                  </p>
+                              </td>
+                          </tr>
+                      </tbody>
+                  </table>
+                </div>
+                 
+              </li>
 
             </ul><br>
-            <button v-bind:class="selectedEvent.class" v-if="selectedEvent.process == true || status == 3" type="button" class="btn font-weight-bold btn-style col-6" v-on:click="borrarCita(selectedEvent.id)">Borrar cita</button>
+            <button v-bind:class="selectedEvent.class" v-if="selectedEvent.process == true || status == 3" type="button" class="btn font-weight-bold btn-style col-4" v-on:click="borrarCita(selectedEvent.id)">Borrar cita</button>
             <button v-bind:class="selectedEvent.class" v-else type="button" class="btn font-weight-bold btn-style col-12" v-on:click="borrarCita(selectedEvent.id)">Borrar cita</button>
-            <button v-bind:class="selectedEvent.class" v-if="selectedEvent.process == true || status == 3" type="button" class="btn font-weight-bold btn-style ml-4 col-5" v-on:click="processSale(selectedEvent.id, 'process')">Procesar venta</button>
+            <button v-bind:class="selectedEvent.class" v-if="selectedEvent.process == true || status == 3" type="button" class="btn font-weight-bold btn-style col-3" v-on:click="cerraCita(selectedEvent.id)">Cerrar cita</button>
+            <button v-bind:class="selectedEvent.class" v-if="selectedEvent.process == true || status == 3" type="button" class="btn font-weight-bold btn-style col-4" v-on:click="processSale(selectedEvent.id, 'process')">Procesar venta</button>
             
             </div>
 		    </div>
@@ -426,6 +457,7 @@ import router from '../router'
         empByCita : 'Manicurista',
         bloquesHora : [],
         culito : [],
+        historicals: [],
         salida:'',
         query:'',
         salidaMuestra: '',
@@ -466,6 +498,8 @@ import router from '../router'
           timer: 1500
         })
         router.push({name: 'Login'})
+      }else{
+        EventBus.$emit('logged-out', true)
       }
     },
     created(){
@@ -490,6 +524,10 @@ import router from '../router'
         this.status = decoded.status
         console.log(this.lender)
       },
+      formatDate(date) {
+				let dateFormat = new Date(date)
+				return dateFormat.getDate()+"-"+(dateFormat.getMonth() + 1)+"-"+dateFormat.getFullYear()
+			},
       searchClient(input){
 				if (input.length < 1) { return [] }
 					return this.arregloClients.filter(manicurista => {
@@ -629,7 +667,8 @@ import router from '../router'
       MaysPrimera(string){
         return string.charAt(0).toUpperCase() + string.slice(1);
       },
-      editCliente(){
+      editCliente(event){
+        event.preventDefault()
         const name = this.nombreClienteRegister.split(' ')
         var firstName, lastName, fullName
         if (name[1]) {
@@ -683,7 +722,8 @@ import router from '../router'
         }
         
       },
-      ingresoCliente() {
+      ingresoCliente(event) {
+        event.preventDefault()
         const name = this.nombreClienteRegister.split(' ')
         var firstName, lastName, fullName, ifCheck
         if (name[1]) {
@@ -693,11 +733,13 @@ import router from '../router'
         }else{
           fullName = this.MaysPrimera(name[0])
         }
-        if ($('.ifCheck').prop('checked')) {
+        if ($('#ifCheck').prop('checked')) {
           ifCheck = 0
+          console.log('entre')
         }else{
           ifCheck = 1
         }
+        console.log(ifCheck)
         
 				axios.post('clients', {
 					nombre:fullName,
@@ -749,10 +791,9 @@ import router from '../router'
 					}else{
             this.descuento = false
           }
-          axios.get('clients/historical/'+splitTwo[1]+'-'+splitThree[0])
-          .then(res => {
-            console.log(res)
-          })
+          this.historicals = []
+          this.historicals = res.data[0].historical
+          console.log(this.historicals)
         })
         e.stopPropagation()
       },
@@ -1277,7 +1318,7 @@ import router from '../router'
       },
       formatContact(contact){
         if (contact) {
-          var sp = contact.split("-")
+          var sp = contact.split(" / ")
         return sp[1]
         }
         
@@ -1488,7 +1529,15 @@ import router from '../router'
       isFutureDate(date) {
             const currentDate = new Date();
             return date < currentDate;
-        }
+        },
+      cerraCita(id){
+        axios.put('citas/closeDate/'+id)
+        .then(res => {
+          if (res.data.status == 'ok') {
+            this.selectedEvent.process = false
+          }
+        })
+      } 
     },
     mounted(){
       EventBus.$on('reloadCitas', status => {
@@ -1839,7 +1888,7 @@ import router from '../router'
 	}
 	.btn-style:hover{
 		background-color:#ccc;
-    border: none;
+    
 		color:#001514;
 	}
   .generar{
@@ -2493,4 +2542,15 @@ import router from '../router'
 		-ms-transform: rotate(45deg);
 		transform: rotate(45deg);
 	}
+
+  .maxHeightHistorical{
+    max-height: 150px;
+    overflow: hidden;
+    overflow-y: scroll;
+  }
+  .maxHeightHistorical::-webkit-scrollbar {
+    width: 8px;     /* Tamaño del scroll en vertical */
+    height: 8px;    /* Tamaño del scroll en horizontal */
+    display: none;  /* Ocultar scroll */
+}
 </style>

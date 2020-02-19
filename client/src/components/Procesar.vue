@@ -573,11 +573,13 @@ import Autocomplete from 'vuejs-auto-complete'
 		addDistributionGroup (group) {
 			setTimeout(() => {
 				this.nombreCliente = group.display
-				const split = this.nombreCliente.split('/')
+				const split = this.nombreCliente.split(' / ')
 				axios.get('clients/dataDiscount/'+split[1])
 				.then(res => {
 					if (res.data[0].participacion == 0) {
 						this.descuento = 10
+					}else{
+						this.descuento = ''
 					}
 				})
 			}, 100);
@@ -914,6 +916,8 @@ import Autocomplete from 'vuejs-auto-complete'
 				.then(res => {
 					if (res.data[0].participacion == 0) {
 						this.descuento = 10
+					}else{
+						this.descuento = ''
 					}
 					axios.get('servicios')
 					.then(res => {

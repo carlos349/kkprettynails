@@ -6,6 +6,7 @@ const email = require('../modelsMails/Mails')
 const multer = require('multer')
 const { diskStorage } = require('multer')
 const path = require('path')
+const Venta = require('../models/Venta')
 const storage = diskStorage({
 	destination: 'public/mailsImage',
 	filename: (req, files, cb) => {
@@ -204,6 +205,13 @@ clients.get('/mails', async (req, res) => {
     res.json(Clients)
 })
 
+// clients.get('/historical/:data', async (req, res) => {
+//     const split = req.params.data.split('-')
+//     const data = split[0]+' / '+split[1]
+//     console.log(data)
+//     const historical = await Venta.find({})
+// })
+
 clients.get('/dataDiscount/:ident', async (req, res) => {
     const Client = await Cliente.find({identidad: req.params.ident})
     res.json(Client)
@@ -227,6 +235,7 @@ clients.post('/', (req, res) => {
         participacion: req.body.ifCheck,
         recomendacion: finalRecommender,
         recomendaciones:0,
+        historical: [],
         ultimaFecha:today,
         fecha: today
     }
