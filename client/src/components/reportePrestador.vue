@@ -199,7 +199,9 @@
                 })
                 router.push({name: 'Login'})
             }else{
-                EventBus.$emit('logged-out', true)
+                setTimeout(() => {
+                    EventBus.$emit('logged-out', true)
+                }, 500);
             }
         },
         created(){
