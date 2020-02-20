@@ -5,7 +5,7 @@
           <div style="" class="col-sm-12 mx-auto text-center p-1">
             <div class="row">
               <div class="col-sm-6">
-                <button  data-toggle="modal" class="generar" data-target=".genCita"><span></span>Generar cita</button>
+                <button  data-toggle="modal" class="generar" data-target=".genCita">Generar cita <font-awesome-icon style="float:right;margin-top:2px;margin-right:5px;font-size:1.2em" icon="tasks" /></button>
               </div>
               <div class="col-sm-6">
                 <select v-if="status == 1 || status == 2" id="manicuristas" v-model="empByCita" v-on:change="getCitasByEmploye()"  class="generar Two" name="manicuristas">
@@ -1901,10 +1901,11 @@ import router from '../router'
      margin-bottom: 1%;
      border-radius: 5px; 
      width: 50%;
+     text-align: left;
      -webkit-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
 		-moz-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
 		box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
-		
+		transition: all 0.5s ease-out;
     font-family: 'Roboto', sans-serif !important;
     font-size: 1.4em;
   }

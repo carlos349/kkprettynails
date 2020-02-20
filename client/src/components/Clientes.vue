@@ -504,6 +504,7 @@ export default {
 						$('.autocomplete-input').val('')
 						$('#ModalCreateClient').modal('hide')
 						this.emitMethodTwo()
+						$('.ifCheck').prop('checked', false)
 					}else{
 						this.$swal({
 							type: 'error',

@@ -505,6 +505,10 @@
 				formData.append('first_name', this.first_name)
 				formData.append('last_name', this.last_name)
 				formData.append('email', this.email)
+				const dataChange = {
+					nombre: this.first_name,
+					apellido: this.last_name
+				}
 				try {
 					const image = await axios.post('users/editData/'+this.id, formData, {
 						headers: {
@@ -514,11 +518,14 @@
 					})
 					this.$swal({
 						type: 'success',
-						title: 'Imagen editada',
+						title: 'Datos editados',
 						showConfirmButton: false,
 						timer: 2500
 					})
 					// this.emitMethod(image.data.status)
+					localStorage.setItem('nombre', dataChange.nombre)
+					localStorage.setItem('apellido', dataChange.apellido)
+					EventBus.$emit('data-change', dataChange)
 					this.getData()
 				} catch(err)  {
 					this.$swal({

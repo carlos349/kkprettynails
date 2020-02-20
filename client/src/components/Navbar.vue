@@ -313,6 +313,11 @@ export default {
 		EventBus.$on('logged-out', status => {
 			this.showNav = status
 		})
+		EventBus.$on('data-change', status => {
+			console.log(status)
+			this.nombre = status.nombre
+			this.apellido = status.apellido
+		})
 		const User = localStorage.getItem('logged-in')
 		this.auth = User
 	}
