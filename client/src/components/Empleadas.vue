@@ -352,6 +352,7 @@ export default {
             router.push({name:'reporteprestador'})
         },
 		registroPrestador(){
+			const nombre = this.nombrePrestador.replace(/\s*$/,"");
 			const restTime = this.restTime+"/"+this.restTimeEnd
 			if (this.nombrePrestador == '') {
 				this.$swal({
@@ -372,7 +373,7 @@ export default {
 		
 			else {
 				axios.post('manicuristas', {
-				nombreManicurista: this.nombrePrestador,
+				nombreManicurista: nombre,
 				documentoManicurista: this.documento,
 				restTime: restTime,
 				restDay: this.restDay
