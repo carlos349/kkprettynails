@@ -353,6 +353,7 @@ export default {
         },
 		registroPrestador(){
 			const nombre = this.nombrePrestador.replace(/\s*$/,"");
+			const document = this.documento.replace(/\s*$/,"");
 			const restTime = this.restTime+"/"+this.restTimeEnd
 			if (this.nombrePrestador == '') {
 				this.$swal({
@@ -374,7 +375,7 @@ export default {
 			else {
 				axios.post('manicuristas', {
 				nombreManicurista: nombre,
-				documentoManicurista: this.documento,
+				documentoManicurista:documento,
 				restTime: restTime,
 				restDay: this.restDay
 			})
@@ -407,6 +408,8 @@ export default {
 			$('#ModalCreateEmploye').modal('show')
 		},
 		actualizarPrestador(){
+			const nombre = this.nombrePrestadorEdit.replace(/\s*$/,"");
+			const documento = this.documentoPrestadorEdit.replace(/\s*$/,"");
 			const restTime = this.restTimeEdit+"/"+this.restTimeEndEdit
 			if (this.nombrePrestadorEdit == '') {
 				this.$swal({
@@ -434,8 +437,8 @@ export default {
 			}
 			else{
 				axios.put('manicuristas/' + this.idPrestadorEdit, {
-				nombre: this.nombrePrestadorEdit,
-				documento: this.documentoPrestadorEdit,
+				nombre: nombre,
+				documento: documento,
 				porcentaje: this.porcentajePrestadorEdit,
 				restTime: restTime,
 				restDay: this.restDayEdit
