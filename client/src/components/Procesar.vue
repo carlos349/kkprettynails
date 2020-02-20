@@ -532,17 +532,6 @@ import Autocomplete from 'vuejs-auto-complete'
 			instagramCliente: '',
 		 }
 	 },
-	 beforeCreate() {
-     if (!localStorage.getItem('userToken')) {
-			 this.$swal({
-				 type: 'error',
-				 title: 'URL restringida',
-				 showConfirmButton: false,
-				 timer: 1500
-			 })
-       router.push({name: 'Login'})
-     }
-  	},
  	created(){
 		this.getManicuristas();
 		this.intervalM();

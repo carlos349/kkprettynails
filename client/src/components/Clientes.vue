@@ -305,8 +305,8 @@ export default {
 			router.push({name: 'Login'})
 		}else{
 			setTimeout(() => {
-          EventBus.$emit('logged-out', true)
-        }, 500);
+				EventBus.$emit('logged-out', true)
+			}, 500);
 		}
     },
     created(){

@@ -132,7 +132,7 @@
 	import axios from 'axios'
 	import router from '../router'
 	import Autocomplete from 'vuejs-auto-complete'
-
+	import EventBus from './EventBus'
   export default {
 	components: {
 		Autocomplete

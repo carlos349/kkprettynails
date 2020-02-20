@@ -200,6 +200,7 @@ import axios from 'axios'
 import LineChart from '../plugins/LineChart.js'
 import router from '../router'
 import DatePick from 'vue-date-pick';
+import EventBus from './EventBus'
 import 'vue-date-pick/dist/vueDatePick.css';
 import { Datetime } from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.css'
@@ -298,7 +299,7 @@ export default {
         EventBus.$emit('logged-out', true)
       }, 500);
     }
- },
+  },
   created(){
     this.getVentas();
     this.totales(0);
