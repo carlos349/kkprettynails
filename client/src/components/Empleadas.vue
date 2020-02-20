@@ -118,10 +118,10 @@
 					<div class="form-group">
 						<label>Día libre</label>
 						<select class="form-control inputsLender w-100" v-model="restDayEdit" >
-							<option style="color:black;" selected value="Seleccione el dia">Seleccione el dia</option>
+							<option style="color:black;" selected value="Seleccione el dia">Seleccione el día</option>
 							<option style="color:black;" value="1">Lunes</option>
 							<option style="color:black;" value="2">Martes</option>
-							<option style="color:black;" value="3">Miercoles</option>
+							<option style="color:black;" value="3">Miércoles</option>
 							<option style="color:black;" value="4">Jueves</option>
 							<option style="color:black;" value="5">Viernes</option>
 							<option style="color:black;" value="6">Sábado</option>
@@ -178,7 +178,7 @@
 							<option style="color:black;" selected value="Seleccione el dia">Seleccione el día</option>
 							<option style="color:black;" value="1">Lunes</option>
 							<option style="color:black;" value="2">Martes</option>
-							<option style="color:black;" value="3">Miercoles</option>
+							<option style="color:black;" value="3">Miércoles</option>
 							<option style="color:black;" value="4">Jueves</option>
 							<option style="color:black;" value="5">Viernes</option>
 							<option style="color:black;" value="6">Sábado</option>
@@ -374,7 +374,6 @@ export default {
 				axios.post('manicuristas', {
 				nombreManicurista: this.nombrePrestador,
 				documentoManicurista: this.documento,
-				porcentajeManicurista: this.porcentaje,
 				restTime: restTime,
 				restDay: this.restDay
 			})
@@ -389,7 +388,6 @@ export default {
 					this.getManicuristas()
 					this.nombrePrestador = ''
 					this.documento = ''
-					this.porcentaje = ''
 					$('#ModalCreateEmploye').modal('hide')
 					this.emitMethod()
 				}else{

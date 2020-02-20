@@ -37,17 +37,17 @@
 								</div>
 								<div class="form-group">
 									<label>Correo</label>
-									<input v-on:click="EditDataEmail()" v-model="email" type="text" class="form-control w-100 inputsProfile" placeholder="Escriba su correo">
-								</div>
-								<div class="form-group">
-									<label>Contraseña</label>
-									<input v-on:click="EditDataEmail()" type="text" class="form-control w-100 inputsProfile" value="***********"  readonly>
+									<input v-model="email" type="text" class="form-control w-100 inputsProfile" placeholder="Escriba su correo">
 								</div>
 								<div class="form-group">
 									<label>Imagen de perfil</label>
 									<input type="file" id="file" ref="file" v-on:change="handleFileUpload" class="btn w-100 btn-img" style="cursor:pointer;">
 								</div>
-								<button class="btn addPerfil w-100">Editar datos</button>
+								<button class="btn addPerfil w-100 mb-2">Editar datos</button>
+								
+								
+									<input type="button" v-on:click="openModal" class="btn w-100 btn-img" value="Cambiar contraseña">
+								
 							</form>	
 						</div>
 					</div>
@@ -214,22 +214,26 @@
 			</div>
 		<div class="modal fade" id="ModalEditPass" tabindex="-1"  role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered"  >
-		    <div class="modal-content p-3" v-bind:style="{ 'background-color': '#ffffff'}">
-		      <div class="modal-header" v-bind:style="{ 'background-color': '#1F5673'}">
-		        <h5 class="modal-title text-white font-weight-bold" id="exampleModalCenterTitle">Registrar cliente</h5>
+		    <div class="modal-content" v-bind:style="{ 'background-color': '#ffffff'}">
+		      <div class="modal-header" v-bind:style="{ 'background-color': 'rgb(107, 178, 229)'}">
+		        <h4 class="modal-title text-white font-weight-bold" id="exampleModalCenterTitle">Registrar cliente</h4>
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-		          <span aria-hidden="true" class="text-white" v-bind:style="{ 'font-size': '1.5em'}">&times;</span>
+		          <span aria-hidden="true" v-bind:style="{ 'font-size': '1.5em'}">&times;</span>
 		        </button>
 		      </div>
 		      <div  class="modal-body">
-		        <form v-on:submit.prevent="EditPass">
+		        <form v-on:submit.prevent="EditPass" class="p-3">
 					<div class="form-group">
 						<label for="name">Contraseña antigua</label>
-						<input v-model="lastPass" type="password" class="form-control inputs" placeholder="Antigua contraseña">
+						<input v-model="lastPass" type="password" class="form-control inputsProfile w-100" placeholder="Antigua contraseña">
 					</div>
 					<div class="form-group">
 						<label for="identidad">Nueva contraseña</label>
-						<input v-model="newPass" type="password" class="form-control inputs" placeholder="Nueva contraseña">
+						<input v-model="newPass" type="password" class="form-control inputsProfile w-100" placeholder="Nueva contraseña">
+					</div>
+					<div class="form-group">
+						<label for="identidad">Verifique contraseña</label>
+						<input v-model="newPassVerify" type="password" class="form-control inputsProfile w-100" placeholder="Nueva contraseña">
 					</div>
 					<button class="btn w-100 addPerfil">Agregar cliente</button>
 				</form>
@@ -329,6 +333,7 @@
 				changeEmail: true,
 				lastPass: '',
 				newPass:'',
+				newPassVerify:'',
 				image: '',
 				file: '',
 				ventas:[],
@@ -526,41 +531,53 @@
 				}
 			}, 
 			async EditPass(){
-				const config = {headers: {'x-access-token': localStorage.userToken}}
-				try{
-					const pass = await axios.put('users/changePass/'+this.id, {
-						newPass:this.newPass,
-						lastPass: this.lastPass
-					}, config)
-					if (pass.data.status == 'ok') {
-						this.$swal({
-							type: 'success',
-							title: 'Contraseña cambiada',
-							showConfirmButton: false,
-							timer: 1500
-						})
-						this.newPass = ''
-						this.lastPass = ''
+				if (this.newPassVerify == this.newPass) {
+					const config = {headers: {'x-access-token': localStorage.userToken}}
+					try{
+						const pass = await axios.put('users/changePass/'+this.id, {
+							newPass:this.newPass,
+							lastPass: this.lastPass
+						}, config)
+						if (pass.data.status == 'ok') {
+							this.$swal({
+								type: 'success',
+								title: 'Contraseña cambiada',
+								showConfirmButton: false,
+								timer: 1500
+							})
+							this.newPass = ''
+							this.lastPass = ''
+							this.newPassVerify = ''
+							$('#ModalEditPass').modal('hide')
+						}else{
+							this.$swal({
+								type: 'error',
+								title: 'Contraseña incorrecta',
+								showConfirmButton: false,
+								timer: 1500
+							})
+							this.newPass = ''
+							this.lastPass = ''
+						}
+					}catch(err)  {
 						$('#ModalEditPass').modal('hide')
-					}else{
 						this.$swal({
 							type: 'error',
-							title: 'Contraseña incorrecta',
+							title: 'Acceso invalido, ingrese de nuevo, si el problema persiste comuniquese con el proveedor del servicio',
 							showConfirmButton: false,
-							timer: 1500
+							timer: 2500
 						})
-						this.newPass = ''
-						this.lastPass = ''
+						router.push({name: 'Login'})
 					}
-				}catch(err)  {
-					this.$swal({
-						type: 'error',
-						title: 'Acceso invalido, ingrese de nuevo, si el problema persiste comuniquese con el proveedor del servicio',
-						showConfirmButton: false,
-						timer: 2500
-					})
-					router.push({name: 'Login'})
+				}else{
+						this.$swal({
+							type: 'error',
+							title: 'Las contraseñas deben conincidir',
+							showConfirmButton: false,
+							timer: 2500
+						})
 				}
+				
 			},
 			openModal(){
 				$('#ModalEditPass').modal('show')

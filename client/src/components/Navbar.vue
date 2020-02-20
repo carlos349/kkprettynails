@@ -309,12 +309,9 @@ export default {
 		})
 		EventBus.$on('ChangeImage', status => {
 			this.image = endPoint.imgEndpoint+status
-			console.log(status)
-			console.log(this.image)
 		})
 		EventBus.$on('logged-out', status => {
 			this.showNav = status
-			console.log(status)
 		})
 		const User = localStorage.getItem('logged-in')
 		this.auth = User
