@@ -167,5 +167,8 @@
 		color: black !important;
 		outline: none !important;
 	}
+	@viewport {
+        zoom: 67% !important;
+      }
 
 </style>
