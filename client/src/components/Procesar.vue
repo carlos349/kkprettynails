@@ -163,7 +163,7 @@
 								/>
 								
 							</div>
-							<input type="hidden" class="form-control text-center manicuristaFocus inputsVenta p-1" v-model="pagoEfectivoSinformato" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="Débito" >
+							<input type="hidden" class="form-control text-center manicuristaFocus inputsVenta p-1" v-model="pagoEfectivo" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="Débito" >
 						</div>
 						<div class="col-sm-4">
 						<div class="input-group input-group-lg mb-2 ">
@@ -176,13 +176,13 @@
 							<currency-input
 									v-model="pagoTransf"
 									locale="de"
-									placeholder="Trasnferencia"
+									placeholder="Transferencia"
 									class="inputsVenta form-control text-center manicuristaFocus"
 									v-on:click="erasedFormat('pagoTransf')"
 								/>
 							
 						</div>
-						<input type="hidden" class="form-control text-center manicuristaFocus inputsVenta p-1" v-model="pagoTransfSinformato" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="Débito" >
+						<input type="hidden" class="form-control text-center manicuristaFocus inputsVenta p-1" v-model="pagoTransf" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="Débito" >
 					</div>
 					<div class="col-sm-4">
 						<div class="input-group input-group-lg mb-2 ">
@@ -202,7 +202,7 @@
 								/>
 							
 						</div>
-						<input type="hidden" class="form-control text-center manicuristaFocus inputsVenta p-1" v-model="pagoOtrosSinformato" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="Débito" >
+						<input type="hidden" class="form-control text-center manicuristaFocus inputsVenta p-1" v-model="pagoOtros" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="Débito" >
 					</div>
 					<div class="col-sm-4 mx-auto">
 						<div class="input-group input-group-lg mb-2 ">
@@ -220,7 +220,7 @@
 								/>
 							
 						</div>
-						<input type="hidden" class="form-control text-center manicuristaFocus inputsVenta p-1" v-model="pagoRedCCreditoSinformato" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="Débito" >
+						<input type="hidden" class="form-control text-center manicuristaFocus inputsVenta p-1" v-model="pagoRedCCredito" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="Débito" >
 					</div>
 					<div class="col-sm-4 mx-auto">
 						<div class="input-group input-group-lg mb-2 ">
@@ -238,7 +238,7 @@
 								/>	
 
 						</div>
-						<input type="hidden" class="form-control text-center manicuristaFocus inputsVenta p-1" v-model="pagoRedCDebitoSinformato" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="Débito" >
+						<input type="hidden" class="form-control text-center manicuristaFocus inputsVenta p-1" v-model="pagoRedCDebito" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="Débito" >
 					</div>
 					
 
@@ -494,11 +494,11 @@ import Autocomplete from 'vuejs-auto-complete'
 			pagoRedCCredito: '',
 			pagoTransf: '',
 			nombreCliente: '',
-			pagoEfectivoSinformato: '',
-			pagoOtrosSinformato: '',
-			pagoRedCDebitoSinformato: '',
-			pagoRedCCreditoSinformato: '',
-			pagoTransfSinformato: '',
+			pagoEfectivo: '',
+			pagoOtros: '',
+			pagoRedCDebito: '',
+			pagoRedCCredito: '',
+			pagoTransf: '',
 			nombreClienteRegister:'',
 			precio: '0',
 			fechaVenta:'fecha',
@@ -815,7 +815,7 @@ import Autocomplete from 'vuejs-auto-complete'
 			if(this.descuento > 0){
 				const descuento = parseFloat(this.descuento) / 100
 				const porcentaje = 1 - parseFloat(descuento)
-				const precioConDescuento = parseFloat(this.subTotal) * parseFloat(porcentaje)
+				const precioConDescuento = parseFloat(this.subTotal) * parseFloat(porcentaje) + this.diseño
 				
 				this.total = "$"+ this.formatPrice(precioConDescuento)
 				this.totalSinFormato = precioConDescuento
@@ -843,7 +843,7 @@ import Autocomplete from 'vuejs-auto-complete'
 			if(this.descuento === ''){
 				this.total = "$"+this.formatPrice(precioTotal)
 			}else{
-				const precioConDescuento = parseFloat(this.subTotal) * parseFloat(porcentaje)
+				const precioConDescuento = parseFloat(this.subTotal) * parseFloat(porcentaje) +this.diseño
 				this.total = "$"+this.formatPrice(precioConDescuento)
 				this.totalSinFormato = precioConDescuento
 			}
@@ -948,87 +948,87 @@ import Autocomplete from 'vuejs-auto-complete'
 			}
 			else{
 				if (tipo == "efectivo") {
-					this.pagoEfectivoSinformato = this.totalSinFormato
+					this.pagoEfectivo = this.totalSinFormato
 					this.pagoEfectivo = this.totalSinFormato
 				}
 				if (tipo == "transferencia") {
-					this.pagoTransfSinformato = this.totalSinFormato
+					this.pagoTransf = this.totalSinFormato
 					this.pagoTransf = this.totalSinFormato
 				}
 				if (tipo == "otros") {
-					this.pagoOtrosSinformato = this.totalSinFormato
+					this.pagoOtros = this.totalSinFormato
 					this.pagoOtros = this.totalSinFormato
 				}
 				if (tipo == "credito") {
-					this.pagoRedCCreditoSinformato = this.totalSinFormato
+					this.pagoRedCCredito = this.totalSinFormato
 					this.pagoRedCCredito = this.totalSinFormato
 				}
 				if (tipo == "debito") {
-					this.pagoRedCDebitoSinformato = this.totalSinFormato
+					this.pagoRedCDebito = this.totalSinFormato
 					this.pagoRedCDebito = this.totalSinFormato
 				}
 			}
 		},
 		erasedFormat(type){
 			if(type == 'pagoEfectivo'){
-				this.pagoEfectivoSinformato = ''
+				this.pagoEfectivo = ''
 				this.pagoEfectivo = ''
 			}
 			if(type == 'pagoOtros'){
-				this.pagoOtrosSinformato =''
+				this.pagoOtros =''
 				this.pagoOtros = ''
 			}
 			if(type == 'pagoTransf'){
-				this.pagoTransfSinformato = ''
+				this.pagoTransf = ''
 				this.pagoTransf = ''
 			}
 			if(type == 'pagoRedCDebito'){
-				this.pagoRedCDebitoSinformato = ''
+				this.pagoRedCDebito = ''
 				this.pagoRedCDebito = ''
 			}
 			if(type == 'pagoRedCCredito'){
-				this.pagoRedCCreditoSinformato = ''
+				this.pagoRedCCredito = ''
 				this.pagoRedCCredito = ''
 			}
 		},
 		formato(type){
 			if(type == 'pagoEfectivo'){
-				this.pagoEfectivoSinformato = this.pagoEfectivo
+				this.pagoEfectivo = this.pagoEfectivo
 				this.pagoEfectivo = '$ '+this.formatPrice(this.pagoEfectivo)
 			}
 			if(type == 'pagoOtros'){
-				this.pagoOtrosSinformato = this.pagoOtros
+				this.pagoOtros = this.pagoOtros
 				this.pagoOtros = '$ '+this.formatPrice(this.pagoOtros)
 			}
 			if(type == 'pagoTransf'){
-				this.pagoTransfSinformato = this.pagoTransf
+				this.pagoTransf = this.pagoTransf
 				this.pagoTransf = '$ '+this.formatPrice(this.pagoTransf)
 			}
 			if(type == 'pagoRedCDebito'){
-				this.pagoRedCDebitoSinformato = this.pagoRedCDebito
+				this.pagoRedCDebito = this.pagoRedCDebito
 				this.pagoRedCDebito = '$ '+this.formatPrice(this.pagoRedCDebito)
 			}
 			if(type == 'pagoRedCCredito'){
-				this.pagoRedCCreditoSinformato = this.pagoRedCCredito
+				this.pagoRedCCredito = this.pagoRedCCredito
 				this.pagoRedCCredito ='$ '+ this.formatPrice(this.pagoRedCCredito)
 			}
 			
 		},
 		procesar() {
-			if (this.pagoEfectivoSinformato == '') {
-				this.pagoEfectivoSinformato = 0
+			if (this.pagoEfectivo == '') {
+				this.pagoEfectivo = 0
 			}
-			if (this.pagoOtrosSinformato == '') {
-				this.pagoOtrosSinformato = 0
+			if (this.pagoOtros == '') {
+				this.pagoOtros = 0
 			}
-			if (this.pagoTransfSinformato == '') {
-				this.pagoTransfSinformato = 0
+			if (this.pagoTransf == '') {
+				this.pagoTransf = 0
 			}
-			if (this.pagoRedCDebitoSinformato == '') {
-				this.pagoRedCDebitoSinformato = 0
+			if (this.pagoRedCDebito == '') {
+				this.pagoRedCDebito = 0
 			}
-			if (this.pagoRedCCreditoSinformato == '') {
-				this.pagoRedCCreditoSinformato = 0
+			if (this.pagoRedCCredito == '') {
+				this.pagoRedCCredito = 0
 			}
 			if (this.descuento == '') {
 				this.descuento = 0
@@ -1036,7 +1036,7 @@ import Autocomplete from 'vuejs-auto-complete'
 			if (this.diseño == '') {
 				this.diseño = 0
 			}
-			const totalFormadePago = parseFloat(this.pagoEfectivoSinformato) + parseFloat(this.pagoOtrosSinformato) + parseFloat(this.pagoTransfSinformato) + parseFloat(this.pagoRedCDebitoSinformato) + parseFloat(this.pagoRedCCreditoSinformato)
+			const totalFormadePago = parseFloat(this.pagoEfectivo) + parseFloat(this.pagoOtros) + parseFloat(this.pagoTransf) + parseFloat(this.pagoRedCDebito) + parseFloat(this.pagoRedCCredito)
 			console.log(totalFormadePago)
 			if (this.nombreCliente != '' && this.maniSelect != '') {
 				if (this.totalSinFormato == totalFormadePago ) {
@@ -1044,11 +1044,11 @@ import Autocomplete from 'vuejs-auto-complete'
 						cliente: this.nombreCliente,
 						manicurista: this.maniSelect,
 						servicios: this.serviciosSelecionados,
-						pagoEfectivo:this.pagoEfectivoSinformato,
-						pagoOtros:this.pagoOtrosSinformato,
-						pagoRedCDebito:this.pagoRedCDebitoSinformato,
-						pagoRedCCredito:this.pagoRedCCreditoSinformato,
-						pagoTransf:this.pagoTransfSinformato,
+						pagoEfectivo:this.pagoEfectivo,
+						pagoOtros:this.pagoOtros,
+						pagoRedCDebito:this.pagoRedCDebito,
+						pagoRedCCredito:this.pagoRedCCredito,
+						pagoTransf:this.pagoTransf,
 						descuento:this.descuento,
 						fecha:this.fechaVenta,
 						total: this.totalSinFormato,
@@ -1099,6 +1099,9 @@ import Autocomplete from 'vuejs-auto-complete'
 					if (this.pagoEfectivo == 0) {
 						this.pagoEfectivo = ''
 					}
+					if (this.pagoTransf == 0) {
+						this.pagoTransf = ''
+					}
 					if (this.pagoOtros == 0) {
 						this.pagoOtros = ''
 					}
@@ -1133,11 +1136,11 @@ import Autocomplete from 'vuejs-auto-complete'
 			this.pagoRedCDebito = ''
 			this.pagoRedCCredito = ''
 			this.pagoTransf = ''
-			this.pagoEfectivoSinformato = ''
-			this.pagoOtrosSinformato = ''
-			this.pagoRedCDebitoSinformato = ''
-			this.pagoRedCCreditoSinformato = ''
-			this.pagoTransfSinformato = ''
+			this.pagoEfectivo = ''
+			this.pagoOtros = ''
+			this.pagoRedCDebito = ''
+			this.pagoRedCCredito = ''
+			this.pagoTransf = ''
 			this.maniSelect = ''
 			this.nombreCliente = ''
 			this.resto  = 0

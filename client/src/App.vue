@@ -36,4 +36,7 @@
   .menuVer{
     z-index:2;
   }
+  @viewport {
+        zoom: 67% !important;
+      }
 </style>
