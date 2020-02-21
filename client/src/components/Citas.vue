@@ -346,10 +346,17 @@
               </li>
 
             </ul><br>
-            <button v-bind:class="selectedEvent.class" v-if="selectedEvent.process == true || status == 3" type="button" class="btn font-weight-bold btn-style col-4" v-on:click="borrarCita(selectedEvent.id)">Borrar cita</button>
-            <button v-bind:class="selectedEvent.class" v-else type="button" class="btn font-weight-bold btn-style col-12" v-on:click="borrarCita(selectedEvent.id)">Borrar cita</button>
-            <button v-bind:class="selectedEvent.class" v-if="selectedEvent.process == true || status == 3" type="button" class="btn font-weight-bold btn-style col-3" v-on:click="cerraCita(selectedEvent.id)">Cerrar cita</button>
-            <button v-bind:class="selectedEvent.class" v-if="selectedEvent.process == true || status == 3" type="button" class="btn font-weight-bold btn-style col-4" v-on:click="processSale(selectedEvent.id, 'process')">Procesar venta</button>
+            <button v-bind:class="selectedEvent.class" v-if="selectedEvent.process == true && status == 2 " type="button" class="btn font-weight-bold btn-style col-4" v-on:click="borrarCita(selectedEvent.id)">Borrar cita</button>
+            <button v-bind:class="selectedEvent.class" v-else-if="selectedEvent.process != true && status != 2" type="button" class="btn font-weight-bold btn-style col-12" v-on:click="borrarCita(selectedEvent.id)">Borrar cita</button>
+
+            <button v-bind:class="selectedEvent.class" v-if="selectedEvent.process == true && status == 1" type="button" class="btn font-weight-bold btn-style col-4" v-on:click="borrarCita(selectedEvent.id)">Borrar cita</button>
+            <button v-bind:class="selectedEvent.class" v-else-if="selectedEvent.process != true && status != 1" type="button" class="btn font-weight-bold btn-style col-12" v-on:click="borrarCita(selectedEvent.id)">Borrar cita</button>
+
+            <button v-bind:class="selectedEvent.class" v-if="selectedEvent.process == true && status == 2" type="button" class="btn font-weight-bold btn-style col-3" v-on:click="cerraCita(selectedEvent.id)">Cerrar cita</button>
+            <button v-bind:class="selectedEvent.class" v-if="selectedEvent.process == true && status == 1" type="button" class="btn font-weight-bold btn-style col-3" v-on:click="cerraCita(selectedEvent.id)">Cerrar cita</button>
+
+            <button v-bind:class="selectedEvent.class" v-if="selectedEvent.process == true && status == 1" type="button" class="btn font-weight-bold btn-style col-4" v-on:click="processSale(selectedEvent.id, 'process')">Procesar venta</button>
+            <button v-bind:class="selectedEvent.class" v-if="selectedEvent.process == true && status == 2 " type="button" class="btn font-weight-bold btn-style col-4" v-on:click="processSale(selectedEvent.id, 'process')">Procesar venta</button>
             
             </div>
 		    </div>
@@ -917,7 +924,7 @@ import router from '../router'
               let arrayEvents = {
                 start: formatDate,
                 end: formatDateTwo,
-                title: res.data[index].services[0]+" - "+res.data[index].employe,
+                title: res.data[index].services[0].servicio+" - "+res.data[index].employe,
                 content: res.data[index].client,
                 class: res.data[index].class,
                 cliente: res.data[index].client,

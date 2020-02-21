@@ -933,6 +933,7 @@ import Autocomplete from 'vuejs-auto-complete'
 						}
 						this.total = '$'+this.formatPrice(subTotal)
 						this.totalSinFormato = subTotal
+						this.subTotal = subTotal
 					})
 				})
 			})
@@ -1072,6 +1073,7 @@ import Autocomplete from 'vuejs-auto-complete'
 							
 							$(".buscar").val('')
 							EventBus.$emit('reloadCitas', 'process')
+							EventBus.$emit('reloadVenta', 'process')
 						}else if(res.data.status == "no-cash"){
 							this.$swal({
 								type: 'error',
