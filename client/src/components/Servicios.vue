@@ -193,7 +193,7 @@
 						</div>
 						<div class="form-group row">
 							<label for="name">Comisión</label>
-							<input v-model="comisionServicio" type="text" class="inputServi w-100" placeholder="Comisión">
+							<input v-model="comisionServicioEdit" type="text" class="inputServi w-100" placeholder="Comisión">
 						</div>
 						<div class="form-group row" style="margin-top:-15px;">
 							<div class="w-100">
@@ -332,7 +332,8 @@
 				TotalServicios:'0',
 				TotalCantidadServicios:'0',
 				TotalPrestadores: '0',
-				comisionServicio: 0
+				comisionServicio: '',
+				comisionServicioEdit: ''
 			}
 		},
 		beforeCreate() {
@@ -407,7 +408,7 @@
 						axios.post('servicios', {
 							nombreServicio: this.nombreServi,
 							precioServicio: this.precioServi,
-							comisionServicio: this.comisionServicio,
+							comisionServicio: this.comisionServicioEdit,
 							tiempoServicio: this.tiempoServi,
 							prestadores: this.prestadoresSeleccionados
 
@@ -424,7 +425,7 @@
 								this.nombreServi = ''
 								this.precioServi = ''
 								this.searching = ''
-								this.comisionServicio = ''
+								this.comisionServicioEdit = ''
 								this.tiempoServi = 'Seleccione el tiempo'
 								this.prestadoresSeleccionados = []
 								$('.checkFirst').prop('checked', false)

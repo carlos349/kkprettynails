@@ -118,10 +118,10 @@
 					<div class="form-group">
 						<label>Día libre</label>
 						<select class="form-control inputsLender w-100" v-model="restDayEdit" >
-							<option style="color:black;" selected value="Seleccione el dia">Seleccione el dia</option>
+							<option style="color:black;" selected value="Seleccione el dia">Seleccione el día</option>
 							<option style="color:black;" value="1">Lunes</option>
 							<option style="color:black;" value="2">Martes</option>
-							<option style="color:black;" value="3">Miercoles</option>
+							<option style="color:black;" value="3">Miércoles</option>
 							<option style="color:black;" value="4">Jueves</option>
 							<option style="color:black;" value="5">Viernes</option>
 							<option style="color:black;" value="6">Sábado</option>
@@ -178,7 +178,7 @@
 							<option style="color:black;" selected value="Seleccione el dia">Seleccione el día</option>
 							<option style="color:black;" value="1">Lunes</option>
 							<option style="color:black;" value="2">Martes</option>
-							<option style="color:black;" value="3">Miercoles</option>
+							<option style="color:black;" value="3">Miércoles</option>
 							<option style="color:black;" value="4">Jueves</option>
 							<option style="color:black;" value="5">Viernes</option>
 							<option style="color:black;" value="6">Sábado</option>
@@ -352,6 +352,8 @@ export default {
             router.push({name:'reporteprestador'})
         },
 		registroPrestador(){
+			const nombre = this.nombrePrestador.replace(/\s*$/,"");
+			const document = this.documento.replace(/\s*$/,"");
 			const restTime = this.restTime+"/"+this.restTimeEnd
 			if (this.nombrePrestador == '') {
 				this.$swal({
@@ -372,9 +374,8 @@ export default {
 		
 			else {
 				axios.post('manicuristas', {
-				nombreManicurista: this.nombrePrestador,
-				documentoManicurista: this.documento,
-				porcentajeManicurista: this.porcentaje,
+				nombreManicurista: nombre,
+				documentoManicurista:documento,
 				restTime: restTime,
 				restDay: this.restDay
 			})
@@ -389,7 +390,6 @@ export default {
 					this.getManicuristas()
 					this.nombrePrestador = ''
 					this.documento = ''
-					this.porcentaje = ''
 					$('#ModalCreateEmploye').modal('hide')
 					this.emitMethod()
 				}else{
@@ -408,6 +408,8 @@ export default {
 			$('#ModalCreateEmploye').modal('show')
 		},
 		actualizarPrestador(){
+			const nombre = this.nombrePrestadorEdit.replace(/\s*$/,"");
+			const documento = this.documentoPrestadorEdit.replace(/\s*$/,"");
 			const restTime = this.restTimeEdit+"/"+this.restTimeEndEdit
 			if (this.nombrePrestadorEdit == '') {
 				this.$swal({
@@ -435,8 +437,8 @@ export default {
 			}
 			else{
 				axios.put('manicuristas/' + this.idPrestadorEdit, {
-				nombre: this.nombrePrestadorEdit,
-				documento: this.documentoPrestadorEdit,
+				nombre: nombre,
+				documento: documento,
 				porcentaje: this.porcentajePrestadorEdit,
 				restTime: restTime,
 				restDay: this.restDayEdit

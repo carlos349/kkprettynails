@@ -136,6 +136,7 @@
 <script type="text/javascript">
 	import axios from 'axios'
 	import router from '../router'
+	import EventBus from './EventBus'
 export default {
 	data(){
 		return {

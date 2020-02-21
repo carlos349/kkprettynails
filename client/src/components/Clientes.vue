@@ -305,8 +305,8 @@ export default {
 			router.push({name: 'Login'})
 		}else{
 			setTimeout(() => {
-          EventBus.$emit('logged-out', true)
-        }, 500);
+				EventBus.$emit('logged-out', true)
+			}, 500);
 		}
     },
     created(){
@@ -504,6 +504,7 @@ export default {
 						$('.autocomplete-input').val('')
 						$('#ModalCreateClient').modal('hide')
 						this.emitMethodTwo()
+						$('.ifCheck').prop('checked', false)
 					}else{
 						this.$swal({
 							type: 'error',

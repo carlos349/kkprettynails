@@ -92,7 +92,7 @@
 	import LineChart from '../plugins/LineChart.js'
 	import DatePick from 'vue-date-pick';
 	import 'vue-date-pick/dist/vueDatePick.css';
-
+	import EventBus from './EventBus'
 	class Expenses{
 		constructor(expenses, figure) {
 			this.expenses = expenses;

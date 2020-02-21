@@ -40,7 +40,7 @@
 <script>
   import LineChart from '../plugins/LineChart.js'
   import axios from 'axios'
-
+  import EventBus from './EventBus'
   class Participacion {
     constructor (nombre, participacion) {
       this.cliente = nombre

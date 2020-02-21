@@ -132,7 +132,7 @@
 	import axios from 'axios'
 	import router from '../router'
 	import Autocomplete from 'vuejs-auto-complete'
-
+	import EventBus from './EventBus'
   export default {
 	components: {
 		Autocomplete
@@ -340,7 +340,6 @@
 			}
 		},
 		validadorIgualE(){
-			console.log("y entonc?")
 			if (this.emailConfirm != this.email) {
 				this.emailValidator = false
 			}
@@ -349,7 +348,6 @@
 			}
 		},
 		validadorIgualP(){
-			console.log("y entonc?")
 			if (this.passwordConfirm != this.password) {
 				this.passwordValidator = false
 			}

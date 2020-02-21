@@ -93,7 +93,7 @@ export default {
             inspector: false
         }
     }, 
-    BeforeCreate(){
+    beforeCreate(){
         if (!localStorage.getItem('userToken')) {
  			 this.$swal({
  				 type: 'error',
