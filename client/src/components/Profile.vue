@@ -97,21 +97,21 @@
 					<div v-if="status == 3" class="col-sm-12">
 						<div  class="row pl-1">
 							<div class="col-sm-4 ">
-								<div class="first metricss">
+								<div class="first metricss p-1 pl-3 mb-2">
 									<p><b>Total de ventas</b> </p>
 									<h3>{{ventas.length}}</h3>
 								</div>
 							
 							</div>	
 							<div class="col-sm-4">
-								<div class="metricss first">
+								<div class="metricss first p-1 pl-3 mb-2">
 									<p><b>Comision total</b> </p>
 									<h3>$ {{formatPrice(yourComision)}}</h3>
 								</div>
 								
 							</div>
 							<div class="col-sm-4 ">
-								<div class="metricss first">
+								<div class="metricss first p-1 pl-3 mb-2">
 									<p><b>Adelantos</b> </p>
 									<h3>$ {{formatPrice(advancement)}}</h3>
 								</div>

@@ -54,6 +54,7 @@ manicurista.post('/', (req, res) => {
     documento: req.body.documentoManicurista,
     restTime: req.body.restTime,
     restDay: req.body.restDay,
+    comision:0,
     advancement:0,
     class: '',
     date: new Date()

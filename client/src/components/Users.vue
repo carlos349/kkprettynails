@@ -115,7 +115,7 @@
 										:results-display="formattedDisplay"
 										@selected="addDistributionGroup">
 									</autocomplete>
-									<span v-on:click="clearInput" style="position:absolute;top:65px;left:35px;background-color:#FBF5F3;">{{prestador}}</span>
+									<span v-on:click="clearInput" style="position:absolute;top:55px;left:35px;background-color:#FBF5F3;">{{prestador}}</span>
 								</div>
 							</div>
 							<button class="btn w-100 add" v-on:click="editarEstado(idSelect, 3, 'no-prestador')">Vincular</button>
@@ -133,6 +133,7 @@
 	import router from '../router'
 	import Autocomplete from 'vuejs-auto-complete'
 	import EventBus from './EventBus'
+	import jwtDecode from 'jwt-decode'
   export default {
 	components: {
 		Autocomplete
@@ -235,31 +236,95 @@
 		},
 
 		editarEstado(id, status, type){
-			console.log(type)
-			if (type == 'prestador') {
-				$('#ModalLinkLender').modal('show')
-				this.idSelect = id
+			const token = localStorage.userToken
+			const decoded = jwtDecode(token)
+			const idDecoded = decoded._id
+			const ifStatus = decoded.status
+			if (idDecoded == id && ifStatus == 1) {
+				this.$swal({
+					title: '¿Está seguro de cambiarse el estado?',
+					text: '¡Si no hay otro gerente registrado, no podrás regresar tu estado!',
+					type: 'warning',
+					showCancelButton: true,
+					confirmButtonText: 'Estoy seguro',
+					cancelButtonText: 'No, evitar acción',
+					showCloseButton: true,
+					showLoaderOnConfirm: true
+				}).then(result => {
+					if (result.value) {
+						if (type == 'prestador') {
+							$('#ModalLinkLender').modal('show')
+							this.idSelect = id
+						}else{
+							const config = {headers: {'x-access-token': localStorage.userToken}}
+							axios.put('users/'+id, {
+								status: status,
+								employe: this.prestador
+							}, config)
+							.then(res => {
+								if (idDecoded == id) {
+									EventBus.$emit('change-status', status)
+									localStorage.setItem('logged-in', status)
+									setTimeout(() => {
+										router.push({name: 'Citas'})
+									}, 1000);
+									
+								}
+								this.getUsers()
+								this.prestador = ''
+								$('#ModalLinkLender').modal('hide')
+							})
+							.catch(err => {
+								this.$swal({
+									type: 'error',
+									title: 'Acceso invalido, ingrese de nuevo, si el problema persiste comuniquese con el proveedor del servicio',
+									showConfirmButton: false,
+									timer: 2500
+								})
+								router.push({name: 'Login'})
+							})
+						}
+					}else{
+						this.$swal({
+							type: 'info',
+							title: 'Acción cancelada',
+							showConfirmButton: false,
+							timer: 1500
+						})
+					}
+				})
 			}else{
-				const config = {headers: {'x-access-token': localStorage.userToken}}
-				axios.put('users/'+id, {
-					status: status,
-					employe: this.prestador
-				}, config)
-				.then(res => {
-					this.getUsers()
-					this.prestador = ''
-					$('#ModalLinkLender').modal('hide')
-				})
-				.catch(err => {
-					this.$swal({
-						type: 'error',
-						title: 'Acceso invalido, ingrese de nuevo, si el problema persiste comuniquese con el proveedor del servicio',
-						showConfirmButton: false,
-						timer: 2500
+				if (type == 'prestador') {
+					$('#ModalLinkLender').modal('show')
+					this.idSelect = id
+				}else{
+					const config = {headers: {'x-access-token': localStorage.userToken}}
+					axios.put('users/'+id, {
+						status: status,
+						employe: this.prestador
+					}, config)
+					.then(res => {
+						if (idDecoded == id) {
+							EventBus.$emit('change-status', status)
+							localStorage.setItem('logged-in', status)
+							router.push({name: 'Citas'})
+						}
+						this.getUsers()
+						this.prestador = ''
+						$('#ModalLinkLender').modal('hide')
 					})
-					router.push({name: 'Login'})
-				})
+					.catch(err => {
+						this.$swal({
+							type: 'error',
+							title: 'Acceso invalido, ingrese de nuevo, si el problema persiste comuniquese con el proveedor del servicio',
+							showConfirmButton: false,
+							timer: 2500
+						})
+						router.push({name: 'Login'})
+					})
+				}
 			}
+			
 		},
 		handleFileUpload(){
 			this.file = this.$refs.file.files[0];
@@ -360,36 +425,56 @@
 			return dateFormat.getDate()+"-"+(dateFormat.getMonth() + 1)+"-"+dateFormat.getFullYear()+" "+" ("+ dateFormat.getHours()+":"+ dateFormat.getMinutes()+")"
 		},
 		eliminarUsuario(id, admin){
-			if(admin == 1){
-				this.$swal({
-					type: 'error',
-					title: 'No puede borrar un gerente',
-					showConfirmButton: false,
-					timer: 1500
-				})
-			}else{
-				const configToken = {headers: {'x-access-token': localStorage.userToken}}
-				axios.delete('users/' + id, configToken)
-				.then(res => {
+			this.$swal({
+				title: '¿Está seguro de borrar usuario?',
+				text: 'No puedes revertir esta acción',
+				type: 'warning',
+				showCancelButton: true,
+				confirmButtonText: 'Estoy seguro',
+				cancelButtonText: 'No, evitar acción',
+				showCloseButton: true,
+				showLoaderOnConfirm: true
+			}).then((result) => {
+				if(result.value) {
+					if(admin == 1){
+						this.$swal({
+							type: 'error',
+							title: 'No puede borrar un gerente',
+							showConfirmButton: false,
+							timer: 1500
+						})
+					}else{
+						const configToken = {headers: {'x-access-token': localStorage.userToken}}
+						axios.delete('users/' + id, configToken)
+						.then(res => {
+							this.$swal({
+								type: 'success',
+								title: res.data.first_name+' '+res.data.last_name+' ha sido Borrado',
+								showConfirmButton: false,
+								timer: 1500
+							})
+							
+							this.getUsers()
+						})
+						.catch(err => {
+							this.$swal({
+								type: 'error',
+								title: 'Acceso invalido, ingrese de nuevo, si el problema persiste comuniquese con el proveedor del servicio',
+								showConfirmButton: false,
+								timer: 2500
+							})
+							router.push({name: 'Login'})
+						})
+					}
+				} else {
 					this.$swal({
-						type: 'success',
-						title: res.data.first_name+' '+res.data.last_name+' ha sido Borrado',
+						type: 'info',
+						title: 'Acción cancelada',
 						showConfirmButton: false,
 						timer: 1500
 					})
-					
-					this.getUsers()
-				})
-				.catch(err => {
-					this.$swal({
-						type: 'error',
-						title: 'Acceso invalido, ingrese de nuevo, si el problema persiste comuniquese con el proveedor del servicio',
-						showConfirmButton: false,
-						timer: 2500
-					})
-					router.push({name: 'Login'})
-				})
-			}
+				}
+			})
 		}
     }
   }

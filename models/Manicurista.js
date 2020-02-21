@@ -14,6 +14,9 @@ const manicuristaSchema = new Schema({
   restDay: {
     type:Number
   },
+  comision: {
+    type:Number
+  },
   advancement: {
     type:Number
   },
