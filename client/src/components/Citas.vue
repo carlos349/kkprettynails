@@ -1,16 +1,16 @@
 <template id="">
   <div class="container-fluid">
-    <div class="row">
+    <div class="row mt-1">
         <div style="padding-left:2%;" id="calen" class="col-sm-12">
-          <div style="" class="col-sm-12 mx-auto text-center p-1">
+          <div v-if="status == 1 || status == 2" class="col-sm-12 mx-auto text-center p-1">
             <div class="row">
               <div class="col-sm-6">
                 <button  data-toggle="modal" class="generar" data-target=".genCita">Generar cita <font-awesome-icon style="float:right;margin-top:2px;margin-right:5px;font-size:1.2em" icon="tasks" /></button>
               </div>
               <div class="col-sm-6">
-                <select v-if="status == 1 || status == 2" id="manicuristas" v-model="empByCita" v-on:change="getCitasByEmploye()"  class="generar Two" name="manicuristas">
-                  <option v-if="sectionDelete" selected="true" >{{empByCita}}</option>
-                  <option>Todos</option>
+                <select id="manicuristas" v-model="empByCita" v-on:change="getCitasByEmploye()"  class="generar Two" name="manicuristas">
+                  <option v-if="sectionDelete" selected="true" >Manicuristas</option>
+                  <option selected="true">Todos</option>
                   <option  v-for="manicurista in manicuristas" v-bind:key="manicurista._id">
                       {{manicurista.nombre}}
                     </option>
@@ -363,7 +363,7 @@
 		  </div>
 		</div>
    
-    <div class="boxDates">
+    <div class="boxDates" v-if="status == 1 || status == 2">
       <button class="CierreDia btn-whiteDates btn-animation-1" v-on:click="daySaleClose">
         <font-awesome-icon icon="cloud-upload-alt" />
       </button>
@@ -461,7 +461,7 @@ import router from '../router'
         clientsSelect: '',
         arregloClient: [],
         duracion: 0,
-        empByCita : 'Manicurista',
+        empByCita : 'Manicuristas',
         bloquesHora : [],
         culito : [],
         historicals: [],
