@@ -36,6 +36,11 @@
 				</div>
 			</div>
       <div class="row">
+        <div v-on:click="toggleFilters()" class="filterTablesVentas mx-auto">
+						
+						<font-awesome-icon  icon="search" /> 
+						
+					</div>
         <div class="col-md-3">
           <div class="pt-3 pb-3 " style="padding-left:20%;">
             <date-pick class="theme-blue w-100 SalesInputs"
@@ -99,12 +104,7 @@
 
         <div class="row">
 					<div class="col-md-12">
-            <div v-on:click="toggleFilters()" class="filterTablesVentas">
-						
-						<font-awesome-icon  icon="search" /> 
-						<font-awesome-icon class="arrowFilter" icon="level-down-alt" />
-						<font-awesome-icon style="display:none" class="arrowFilter" icon="level-up-alt" />
-					</div>
+            
             <div class="shadow">	
               <v-client-table class="text-center tableVentas"  :data="ventas" :columns="columns" :options="optionsT">
                 <div slot="print"  slot-scope="props">
@@ -233,7 +233,7 @@ export default {
       columns:['fecha' , 'servicios' , 'cliente' , 'lender' , 'descuentoo' , 'comisionn' , 'locall', 'totall', 'print'],
 			optionsT: {
 				filterByColumn: true,
-        perPage: 9,
+        perPage: 8,
 				texts: {
 					filter: "Filtrar:",
 					filterBy: 'Filtrar por {column}',
@@ -765,6 +765,9 @@ export default {
   .metricTotalSales{
     margin-top: 3%;
   }
+  .metricTotalSales p{
+    font-size: 1.4vw;
+  }
   .ant{
     opacity: .8;
   }
@@ -871,7 +874,7 @@ box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
 }
 .tableVentas{
   height: 70.5vh;
-		font-size: 1em;
+		font-size: 1.4vw;
 		-webkit-transition: all 0.5s ease-out;
  
 }
@@ -920,12 +923,11 @@ box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
 		-webkit-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
 		-moz-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
 		box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
-		top: -8.2%;
-		left: 1.5%;
+		font-size: 1.4vw !important;
 		color: azure;
-		position: absolute;
-		padding: 15px;
-		border-radius:5px 5px 0 0;
+	  height: 6vh;
+    padding: 10px;
+		border-radius:5px;
 		-webkit-transition: all 0.5s ease-out; 
 	}
 	.filterTablesVentas:hover{

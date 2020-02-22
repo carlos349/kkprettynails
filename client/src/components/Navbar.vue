@@ -1,6 +1,6 @@
 <template>
 <div>
-	<div v-if="showNav"  v-on:click="marcarNav()" v-bind:style="{ 'background-color': 'rgba(238, 238, 238, 0.623)', 'height': '100vh', 'position': 'fixed', 'z-index' : '1000', 'color': 'black !important' }"  class=" pl-2 menuVer navS" v-on:mouseenter="mouseOver()" v-on:mouseleave="mouseLeave()">
+	<div v-if="showNav"  v-on:click="marcarNav()" v-bind:style="{ 'background-color': 'rgba(238, 238, 238, 0.623)', 'height': '167vh', 'position': 'fixed', 'z-index' : '1000', 'color': 'black !important' }"  class=" pl-2 menuVer navS" v-on:mouseenter="mouseOver()" v-on:mouseleave="mouseLeave()">
 		<div style="border-bottom:1.5px solid  rgba(91, 91, 90, .5);" class="p-3  text-center col-md-12"><img src="../assets/logoNew.png" class="logoNonHover"  alt=""></div>
 
 			<div style="border-bottom:1.5px solid  rgba(91, 91, 90, .5);color:black" class=" p-2 pb-1 pt-1 mx-auto col-md-12 paddingName">

@@ -28,8 +28,7 @@
 					<div v-on:click="toggleFilters()" class="filterTablesServis">
 						
 						<font-awesome-icon  icon="search" /> 
-						<font-awesome-icon class="arrowFilter" icon="level-down-alt" />
-						<font-awesome-icon style="display:none" class="arrowFilter" icon="level-up-alt" />
+						
 					</div>
 					<v-client-table class="text-center tableServis"  :data="servicios" :columns="columns" :options="optionsT">
 						<p slot="prestadoress"  slot-scope="props">{{props.row.prestadores.length}}</p>
@@ -132,15 +131,31 @@
 						</div>
 					<div class="form-group row mt-4">
 						<input type="text" v-model="searchingTwo" id="myInputServEdit" v-on:keyup="myFunctionServEdit()" class="inputServi w-100 buscar" placeholder="Buscar prestadores"/>
+						<table class="table mt-2 table-light table-borderless table-striped">
+							<tbody>
+								<tr >
+										<td class="font-weight-bold">
+											Marcar todos
+										</td>
+										<td class="font-weight-bold text-right">
+											<label class="conCheck mb-3 col-sm-2">
+											<input  class="desMarc" v-on:click="presSelectAll()" type="checkbox">
+											<span class="checkmark"></span>
+											</label>
+										</td>
+									</tr>
+							</tbody>
+						</table>
 						<div class="ListaProcesar maxHeightEdit w-100">
 							<table class="table table-light table-borderless table-striped" id="myTableServEdit">
 								<tbody>
+									
 									<tr v-for="(manicurista, index) of manicuristas" >
 										<td class="font-weight-bold">
 											{{manicurista.nombre}}
 										</td>
 										<td class="font-weight-bold text-right">
-											<label class="conCheck col-sm-2">
+											<label class="conCheck mb-3 col-sm-2">
 											<input :id="manicurista._id" class="desMarc" v-on:click="presSelectTwo(manicurista._id,index)" type="checkbox">
 											<span class="checkmark"></span>
 											</label>
@@ -643,6 +658,19 @@
 			toggleFilters(){
 				$(".VueTables__filters-row").toggle('slow')
 				$(".arrowFilter").toggle('slow')
+			},
+			presSelectAll(){
+				if ($(".desMarc").prop("checked") == true) {
+					console.log("maldita sea")
+					$(".desMarc").prop("checked",true);
+				}
+				else{
+					$(".desMarc").prop("checked",false);
+				}
+				
+					
+				
+				
 			}
 		},
 		computed: {
@@ -867,7 +895,7 @@
 	.botonCrearServicio{
 		z-index:100;
 		position: absolute;
-		top: 93%;
+		top: 130%;
 		right: 1%;
 		padding: 5px;
 		width: 21.9%;
@@ -883,7 +911,7 @@
 	.botonOcultarInfoServis{
 		z-index:100;
 		position: absolute;
-		top: 98.8%;
+		top: 140%;
 		right: 50.6%;
 		padding: 5px;
 		

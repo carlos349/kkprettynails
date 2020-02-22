@@ -30,8 +30,7 @@
 						<div v-on:click="toggleFilters()" class="filterTablesClients">
 						
 						<font-awesome-icon  icon="search" /> 
-						<font-awesome-icon class="arrowFilter" icon="level-down-alt" />
-						<font-awesome-icon style="display:none" class="arrowFilter" icon="level-up-alt" />
+						
 					</div>
 					<v-client-table class="text-center tablaClients"  :data="clients" :columns="columns" :options="optionsT">
 						<button slot="edit"  slot-scope="props" v-on:click="pasarDatosEdit(props.row.nombre, props.row.identidad, props.row.correoCliente, props.row.instagramCliente, props.row._id)" class=" btn btn-colorsEditClient w-100"><font-awesome-icon icon="edit" /></button>
@@ -692,7 +691,7 @@ export default {
     .botonCrearCliente{
 		z-index:100;
 		position: absolute;
-		top: 89%;
+		top: 130%;
 		right: 1%;
 		padding: 5px;
 		width: 21.9%;
@@ -708,7 +707,7 @@ export default {
 	.botonCrearCorreo{
 		z-index:100;
 		position: absolute;
-		top: 95%;
+		top: 140%;
 		right: 1%;
 		padding: 5px;
 		width: 21.9%;
@@ -724,7 +723,7 @@ export default {
 	.botonOcultarInfoClient{
 		z-index:100;
 		position: absolute;
-		top: 93.5%;
+		bottom: -50%;
 		right: 50.6%;
 		padding: 5px;
 		

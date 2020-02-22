@@ -20,8 +20,7 @@
 					<div v-on:click="toggleFilters()" class="filterTablesPerso">
 						
 						<font-awesome-icon  icon="search" /> 
-						<font-awesome-icon class="arrowFilter" icon="level-down-alt" />
-						<font-awesome-icon style="display:none" class="arrowFilter" icon="level-up-alt" />
+						
 					</div>
 					<button class="botonCrearPrestador" v-on:click="openModalCreateEmploye">
 						Registrar prestador
@@ -725,7 +724,7 @@ export default {
 	.botonCrearPrestador{
 		z-index:100;
 		position: absolute;
-		top: 92%;
+		top: 130%;
 		right: 1%;
 		padding: 5px;
 		width: 21.9%;
@@ -741,7 +740,7 @@ export default {
 	.botonOcultarInfoPrestadores{
 		z-index:100;
 		position: absolute;
-		top: 99.4%;
+		top: 140%;
 		right: 50.6%;
 		padding: 5px;
 		

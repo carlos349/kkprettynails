@@ -36,7 +36,8 @@
   .menuVer{
     z-index:2;
   }
-  @viewport {
-        zoom: 67% !important;
-      }
+  .modal-backdrop{
+    width: 167vw;
+    height: 167vh;;
+  }
 </style>
