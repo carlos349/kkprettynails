@@ -10,7 +10,7 @@
               <div class="col-sm-6">
                 <select v-if="status == 1 || status == 2" id="manicuristas" v-model="empByCita" v-on:change="getCitasByEmploye()"  class="generar Two" name="manicuristas">
                   <option v-if="sectionDelete" selected="true" >{{empByCita}}</option>
-                  <option>Todos</option>
+                  <option >Todos</option>
                   <option  v-for="manicurista in manicuristas" v-bind:key="manicurista._id">
                       {{manicurista.nombre}}
                     </option>
@@ -49,7 +49,7 @@
             </div>
             <div class="col-md-12 p-3 processOne">
               <div class="col-md-12 text-center p-2" style="font-size:1.2em;color:#353535">Selecciona los servicios a utlizar</div>
-              <div style="height:40vh;overflow:hidden;overflow-x: hidden;overflow-y:scroll;background-color:#6BB2E5;border-radius:5px;border:2px solid #353535" class="scroll row p-3" >
+              <div style="height:66.8vh;overflow:hidden;overflow-x: hidden;overflow-y:scroll;background-color:#6BB2E5;border-radius:5px;border:2px solid #353535" class="scroll row p-3" >
                 <div class="col-md-6" v-for="(servicio,index) of servicios">
                   <div class="p-2 servPretty" v-on:click="marcarServicio(servicio.prestadores,servicio.nombre,servicio.tiempo,servicio.comision,servicio.precio,index)">
                     <div class="row">
@@ -76,7 +76,7 @@
                   <img class="imgMani ml-3" src="../assets/silueta-mujer.jpg" alt="">
                 </div>
               </div>
-              <div style="height:50vh;overflow:hidden;overflow-x: hidden;
+              <div style="height:100%;overflow:hidden;overflow-x: hidden;
 		          overflow-y:scroll;background-color: #6BB2E5;border-radius:5px;border:2px solid #353535" class="scroll row horas" >
                       <div class="col-sm-12">
                         <div class="row  mb-2">
@@ -1718,10 +1718,11 @@ import router from '../router'
   }
   .processTwo{
     display:none;
-    height: 62vh;
+    height: 90vh;
   }
   .processThree{
     display: none;
+    height: 90vh;
   }
   .processPerso{
     display: none;
@@ -1735,7 +1736,8 @@ import router from '../router'
 
   .imgMani{
     border:4px solid rgba(14, 11, 11, 0.219);
-    width:5%;
+    width:5vw;
+    height: 10vh;
     padding: 5px;
     border-radius:5px;
   }
@@ -1773,7 +1775,7 @@ import router from '../router'
     color: white;
     border-radius: 5px;
     height: auto; 
-    max-height: 50vh;
+    max-height: 70vh;
     overflow: hidden scroll; 
      
     border-radius: 5px;
@@ -2336,7 +2338,7 @@ import router from '../router'
 
 .horaPred{
   border-bottom: 1px solid rgba(0, 0, 0, 0.281);
-  height: 4vh;
+  height: 5.5vh;
   border-radius: 5px;
   background-color: rgba(245, 238, 238, 0.507)
 }
@@ -2350,7 +2352,7 @@ import router from '../router'
 
 .horaOcupada{
   border-bottom: 1px solid rgba(0, 0, 0, 0.281);
-  height: 4vh;
+  height: 5.5vh;
   text-align: center;
   background-color: rgba(201, 93, 98, 0.9);
   border-radius: 5px;
@@ -2358,7 +2360,7 @@ import router from '../router'
 }
 .horaDisp{
  border-bottom: 1px solid rgba(0, 0, 0, 0.281);
-  height: 4vh;
+  height: 5.5vh;
   text-align: center;
   background-color:#7ec365;
   border-radius: 5px;
@@ -2368,7 +2370,7 @@ import router from '../router'
 }
 .horaDisp:hover{
   border-bottom: 1px solid rgba(0, 0, 0, 0.281);
-  height: 4vh;
+  height: 5.5vh;
   text-align: center;
   background-color:white;
   border-radius: 5px;
@@ -2377,7 +2379,7 @@ import router from '../router'
 }
  .horaCero{
   border-bottom: 1px solid rgba(0, 0, 0, 0.281);
-  height: 4vh;
+  height: 5.5vh;
   text-align: center;
   background-color:rgba(248, 245, 245, 0.144);
   border-radius: 5px;
@@ -2387,7 +2389,7 @@ import router from '../router'
 
 .horaSelect{
   
-  height: 4vh;
+  height: 5.5vh;
   text-align: center;
   background-color:#2db67c;
   border-radius: 0px 5px 0px 0px  ;

@@ -1,8 +1,8 @@
 <template>
   <div class="container-fluid row pt-5">
-    <div class="col-md-4">
+    <div style="height:auto" class="col-md-4">
 		<h2 class="p-3 m-0" v-bind:style="{ 'background-color': 'rgba(238, 238, 238, 0.623)', 'color':'#1C1C1C', 'border-radius':'5px 5px 0 0'}">Registrar usuario</h2>
-		<div class="formsUsers m-0" v-bind:style="{ 'background-color': '#fff'}">
+		<div class="formsUsers m-0" v-bind:style="{ 'background-color': '#fff', 'height' : 'auto'}">
 			<form v-on:submit.prevent="register">
 				<div class="form-group">
 					<label for="name">Nombre del usuario <span style="color:red;">*</span></label>
@@ -486,7 +486,7 @@
 		padding: 20px;
 		overflow-x: hidden;
 		overflow-y:scroll;
-		max-height: 90vh;
+		max-height: 150.3vh;
 		height:auto;
 		border-radius:0 0 5px 5px;
 	}

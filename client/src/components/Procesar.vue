@@ -409,7 +409,7 @@ box-shadow: 0px 0px 22px 5px rgba(65,67,97,1);">
 		    </div>
 		  </div>
 		</div>
-		<div v-bind:style="{  'height': '5vh', 'z-index' : '1000' }" v-on:click="verificacionCliente"  class="p-2 menuVerVentas navSVenta" v-on:mouseenter="mouseOverVenta('textOne',0)" v-on:mouseleave="mouseLeaveVenta('textOne',0)">
+		<div v-bind:style="{  'height': '7vh', 'z-index' : '1000' }" v-on:click="verificacionCliente"  class="p-2 menuVerVentas navSVenta" v-on:mouseenter="mouseOverVenta('textOne',0)" v-on:mouseleave="mouseLeaveVenta('textOne',0)">
 			<div class="row">
 				<div class="col-sm-2">
 					<font-awesome-icon class="icons" style="color:#6BB2E5;font-size:1.6em" icon="user-plus" />
@@ -419,7 +419,7 @@ box-shadow: 0px 0px 22px 5px rgba(65,67,97,1);">
 				</div>
 			</div>	
         </div>
-		<div v-bind:style="{  'height': '5vh', 'z-index' : '1000' }" v-on:click="addService" class="p-2 menuVerServi navSServi" v-on:mouseenter="mouseOverVenta('textTwo',1)" v-on:mouseleave="mouseLeaveVenta('textTwo',1)">
+		<div v-bind:style="{  'height': '7vh', 'z-index' : '1000' }" v-on:click="addService" class="p-2 menuVerServi navSServi" v-on:mouseenter="mouseOverVenta('textTwo',1)" v-on:mouseleave="mouseLeaveVenta('textTwo',1)">
 			<div class="row">
 				<div class="col-sm-2">
 					<font-awesome-icon class="icons" style="color:#6BB2E5;font-size:2em" icon="folder-plus" />
@@ -429,7 +429,7 @@ box-shadow: 0px 0px 22px 5px rgba(65,67,97,1);">
 				</div>
 			</div>
         </div>
-		<div v-bind:style="{  'height': '5vh', 'z-index' : '1000' }" v-on:click="borrarServicios()" class="p-2 menuVerRedo navSRedo" v-on:mouseenter="mouseOverVenta('textThree',2)" v-on:mouseleave="mouseLeaveVenta('textThree',2)">
+		<div v-bind:style="{  'height': '7vh', 'z-index' : '1000' }" v-on:click="borrarServicios()" class="p-2 menuVerRedo navSRedo" v-on:mouseenter="mouseOverVenta('textThree',2)" v-on:mouseleave="mouseLeaveVenta('textThree',2)">
 			<div class="row">
 				<div class="col-sm-2">
 					<font-awesome-icon class="icons" style="color:#6BB2E5;font-size:2em" icon="redo" />
