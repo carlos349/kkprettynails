@@ -119,7 +119,7 @@
 								<button v-else style="width:100%;" v-on:click="reporteVenta(props.row._id)" class=" btn btn-danger"><font-awesome-icon icon="copy" /></button>
 								</div> -->
 								
-								
+
 								<p slot="descuentoo" slot-scope="props">{{props.row.descuento}}%</p>
 								<p slot="clientNombre" slot-scope="props">{{justName(props.row.cliente)}}</p>
 								<p slot="comisionn" slot-scope="props">{{formatPrice(props.row.comision)}}</p>
@@ -432,7 +432,7 @@
 				return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
 			},
 			justName(value){
-				const split = value.split('-')
+				const split = value.split('/')
 				return split[0]
 			},
 			async getYourSales(){
