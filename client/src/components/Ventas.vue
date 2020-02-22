@@ -612,6 +612,11 @@ export default {
       }
 		}
 	},
+  mounted() {
+		EventBus.$on('reloadVenta', status => {
+      this.getVentas()
+		})
+	}
 }
 </script>
 <style media="screen">

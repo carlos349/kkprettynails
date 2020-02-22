@@ -352,7 +352,7 @@ export default {
         },
 		registroPrestador(){
 			const nombre = this.nombrePrestador.replace(/\s*$/,"");
-			const document = this.documento.replace(/\s*$/,"");
+			const documento = this.documento.replace(/\s*$/,"");
 			const restTime = this.restTime+"/"+this.restTimeEnd
 			if (this.nombrePrestador == '') {
 				this.$swal({

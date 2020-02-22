@@ -28,11 +28,11 @@
 						<div class="formsProfile mt-2 mb-3" v-bind:style="{ 'background-color': '#fff'}">
 							<form v-on:submit.prevent="editProfile">
 								<div class="form-group">
-									<label>Primer nombre</label>
+									<label>Nombres</label>
 									<input v-model="first_name" type="text" class="form-control w-100 inputsProfile" placeholder="Escriba su nombre">
 								</div>
 								<div class="form-group">
-									<label>Segundo nombre</label>
+									<label>Apellidos</label>
 									<input v-model="last_name" type="text" class="form-control w-100 inputsProfile" placeholder="Escriba su apellido">
 								</div>
 								<div class="form-group">
@@ -57,61 +57,55 @@
 				
 				<div class="">
 					<div v-if="status == 2" >
-			<div class="col-md-12 row sectionMetricssExpense mb-3">
-            <div class="col-md-6 col-sm-12 ">
-                <div class="metricssExpensePerfil firstExpensesPerfil">
-                    <p class="text-center">Monto del fondo de caja</p>
-                    <h2 class="text-center">{{formatPrice(fund)}}</h2>
-                </div>
-            </div>
-            <div class="col-md-6 col-sm-12">
-                <div class="metricssExpensePerfil firstExpensesPerfil">
-                    <p class="text-center">Nombre del cajero</p>
-                    <h2 class="text-center">{{checker}}</h2>
-                </div>
-            </div>
-			<v-client-table  class="text-center tablePerfilVenta w-100 mt-2"  :data="dataChecker" :columns="columns" :options="optionsT">
-							<div slot="print"  slot-scope="props">
-							<button v-if="props.row.status" style="width:100%;" v-on:click="reporteVenta(props.row._id)" class=" btn btn-colorsPrint"><font-awesome-icon icon="copy" /></button>
-							<button v-else style="width:100%;" v-on:click="reporteVenta(props.row._id)" class=" btn btn-danger"><font-awesome-icon icon="copy" /></button>
+						<div class="col-md-12 row sectionMetricssExpense mb-3">
+						<div class="col-md-6 col-sm-12 ">
+							<div class="metricssExpensePerfil firstExpensesPerfil">
+								<p class="text-center">Monto del fondo de caja</p>
+								<h2 class="text-center">{{formatPrice(fund)}}</h2>
 							</div>
-							
-							<p slot="servicios" slot-scope="props">{{props.row.servicios}}</p>
-							<p slot="descuentoo" slot-scope="props">{{props.row.descuento}}%</p>
-							<p slot="clientNombre" slot-scope="props">{{justName(props.row.cliente)}}</p>
-							<p slot="comisionn" slot-scope="props">{{formatPrice(props.row.comision)}}</p>
-							<p slot="locall" slot-scope="props">{{formatPrice(props.row.ganancialocal)}}</p>
-							<p slot="totall" slot-scope="props">{{formatPrice(props.row.total)}}</p>
-							<!-- <a slot="edit" slot-scope="props" class="fa fa-edit" :href="pasarDatosEdit(props.row.nombre, props.row.identidad, props.row.correoCliente, props.row.instagramCliente, props.row._id)">Hola </a> -->
-						</v-client-table>
+						</div>
+						<div class="col-md-6 col-sm-12">
+							<div class="metricssExpensePerfil firstExpensesPerfil">
+								<p class="text-center">Nombre del cajero</p>
+								<h2 class="text-center">{{checker}}</h2>
+							</div>
+						</div>
+							<v-client-table  class="text-center tablePerfilVenta w-100 mt-2"  :data="dataChecker" :columns="columns" :options="optionsT">
+								<!-- <div slot="print"  slot-scope="props">
+								<button v-if="props.row.status" style="width:100%;" v-on:click="reporteVenta(props.row._id)" class=" btn btn-colorsPrint"><font-awesome-icon icon="copy" /></button>
+								<button v-else style="width:100%;" v-on:click="reporteVenta(props.row._id)" class=" btn btn-danger"><font-awesome-icon icon="copy" /></button>
+								</div>
+								 -->
+								<p slot="servicios" slot-scope="props">{{props.row.servicios}}</p>
+								<p slot="descuentoo" slot-scope="props">{{props.row.descuento}}%</p>
+								<p slot="clientNombre" slot-scope="props">{{justName(props.row.cliente)}}</p>
+								<p slot="comisionn" slot-scope="props">{{formatPrice(props.row.comision)}}</p>
+								<p slot="locall" slot-scope="props">{{formatPrice(props.row.ganancialocal)}}</p>
+								<p slot="totall" slot-scope="props">{{formatPrice(props.row.total)}}</p>
+								<!-- <a slot="edit" slot-scope="props" class="fa fa-edit" :href="pasarDatosEdit(props.row.nombre, props.row.identidad, props.row.correoCliente, props.row.instagramCliente, props.row._id)">Hola </a> -->
+							</v-client-table>
         </div>
 
-		<div class="boxCloses">
-			
-
-			<button class="CierreDia btn-whiteDates btn-animation-1" v-on:click="daySaleClose">
-				<font-awesome-icon icon="cloud-upload-alt" />
-			</button>
-		</div>
-		</div>
+		
+			</div>
 					<div v-if="status == 3" class="col-sm-12">
 						<div  class="row pl-1">
 							<div class="col-sm-4 ">
-								<div class="first metricss">
+								<div class="first metricss p-1 pl-3 mb-2">
 									<p><b>Total de ventas</b> </p>
 									<h3>{{ventas.length}}</h3>
 								</div>
 							
 							</div>	
 							<div class="col-sm-4">
-								<div class="metricss first">
+								<div class="metricss first p-1 pl-3 mb-2">
 									<p><b>Comision total</b> </p>
 									<h3>$ {{formatPrice(yourComision)}}</h3>
 								</div>
 								
 							</div>
 							<div class="col-sm-4 ">
-								<div class="metricss first">
+								<div class="metricss first p-1 pl-3 mb-2">
 									<p><b>Adelantos</b> </p>
 									<h3>$ {{formatPrice(advancement)}}</h3>
 								</div>
@@ -120,10 +114,10 @@
 							
 						</div>
 							<v-client-table v-if="link != ''" class="text-center tablePerfilVenta"  :data="ventas" :columns="columns" :options="optionsT">
-								<div slot="print"  slot-scope="props">
+								<!-- <div slot="print"  slot-scope="props">
 								<button v-if="props.row.status" style="width:100%;" v-on:click="reporteVenta(props.row._id)" class=" btn btn-colorsPrint"><font-awesome-icon icon="copy" /></button>
 								<button v-else style="width:100%;" v-on:click="reporteVenta(props.row._id)" class=" btn btn-danger"><font-awesome-icon icon="copy" /></button>
-								</div>
+								</div> -->
 								
 								
 								<p slot="descuentoo" slot-scope="props">{{props.row.descuento}}%</p>
@@ -216,7 +210,7 @@
 		  <div class="modal-dialog modal-dialog-centered"  >
 		    <div class="modal-content" v-bind:style="{ 'background-color': '#ffffff'}">
 		      <div class="modal-header" v-bind:style="{ 'background-color': 'rgb(107, 178, 229)'}">
-		        <h4 class="modal-title text-white font-weight-bold" id="exampleModalCenterTitle">Registrar cliente</h4>
+		        <h4 class="modal-title text-white font-weight-bold" id="exampleModalCenterTitle">Cambiar contraseña</h4>
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 		          <span aria-hidden="true" v-bind:style="{ 'font-size': '1.5em'}">&times;</span>
 		        </button>
@@ -235,15 +229,24 @@
 						<label for="identidad">Verifique contraseña</label>
 						<input v-model="newPassVerify" type="password" class="form-control inputsProfile w-100" placeholder="Nueva contraseña">
 					</div>
-					<button class="btn w-100 addPerfil">Agregar cliente</button>
+					<button class="btn w-100 addPerfil">Cambiar</button>
 				</form>
 		      </div>
 		    </div>
 		  </div>
 		</div>
 		
-		
+		<div v-if="status == 2 || status == 1" class="boxCloses">
+			<button class="CierreDia btn-whiteDates btn-animation-1" v-on:click="daySaleClose">
+				<font-awesome-icon icon="cloud-upload-alt" />
+			</button>
+		</div>
 		<div v-if="inspector && status == 2" class="boxFunds">
+            <button class="FondoDia btn-whiteFunds btn-animation-1" v-on:click="openFunds">
+                <font-awesome-icon icon="cash-register" />
+            </button>
+        </div>
+		<div v-if="inspector && status == 1" class="boxFunds">
             <button class="FondoDia btn-whiteFunds btn-animation-1" v-on:click="openFunds">
                 <font-awesome-icon icon="cash-register" />
             </button>
@@ -292,7 +295,7 @@
 			const decoded = jwtDecode(token)
 			
 			return {
-				columns:['fecha' , 'servicios' , 'clientNombre' , 'descuentoo' , 'comisionn' , 'totall', 'print'],
+				columns:['fecha' , 'servicios' , 'clientNombre' , 'descuentoo' , 'comisionn' , 'totall'],
 				optionsT: {
 					filterByColumn: false,
 					texts: {
@@ -308,8 +311,7 @@
 						descuentoo: 'Descuento ',
 						comisionn: 'Comision ',
 						locall: 'Local ',
-						totall: 'Total',
-						print: 'Reporte'
+						totall: 'Total'
 					},
 					pagination: { chunk:10 },
 					pagination: { dropdown:true },
@@ -758,7 +760,15 @@
 					})
 				})
 			},
+		},
+		mounted() {
+			EventBus.$on('reloadVenta', status => {
+				console.log('status')
+				this.getYourSales()
+				this.getDataChecker()
+			})
 		}
+		
 	}
 </script>
 <style>
