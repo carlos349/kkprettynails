@@ -43,7 +43,8 @@
 					<div class="tab-content tab-contentServis" id="myTabContent">
 					<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
 						<v-client-table class="text-center tablaClients pt-2"  :data="clients" :columns="columns" :options="optionsT">
-						<button slot="edit"  slot-scope="props" v-on:click="pasarDatosEdit(props.row.nombre, props.row.identidad, props.row.correoCliente, props.row.instagramCliente, props.row._id)" class=" btn btn-colorsEditClient w-100"><font-awesome-icon icon="edit" /></button>
+							<button slot="edit"  slot-scope="props" v-on:click="pasarDatosEdit(props.row.nombre, props.row.identidad, props.row.correoCliente, props.row.instagramCliente, props.row._id)" class=" btn btn-colorsEditClient w-100"><font-awesome-icon icon="edit" /></button>
+							<button slot="delete"  slot-scope="props" v-on:click="deleteClient(props.row._id)" class=" btn btn-danger w-100"><font-awesome-icon icon="trash" /></button>
 						</v-client-table>
 					</div>
 					<div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
