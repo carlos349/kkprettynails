@@ -217,6 +217,14 @@ clients.get('/dataDiscount/:ident', async (req, res) => {
     res.json(Client)
 })
 
+clients.put('/deleteClient/:id', async (req, res) => {
+    const Client = await Cliente.findByIdAndDelete(req.params.id)
+    if (Client) {
+        res.json({status: 'ok'})
+    }
+    res.json({status: 'bad'})
+})
+
 clients.post('/', (req, res) => {
     let recommender = req.body.recomendador
     let finalRecommender = ''

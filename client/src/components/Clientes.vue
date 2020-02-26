@@ -38,7 +38,22 @@
 								<font-awesome-icon class="mr-2" icon="mail-bulk" />Correo a clientes</a>
 						</li>	
 						
+<<<<<<< HEAD
 					</ul>
+=======
+						<font-awesome-icon  icon="search" /> 
+						
+					</div>
+					<v-client-table class="text-center tablaClients"  :data="clients" :columns="columns" :options="optionsT">
+						<button slot="edit"  slot-scope="props" v-on:click="pasarDatosEdit(props.row.nombre, props.row.identidad, props.row.correoCliente, props.row.instagramCliente, props.row._id)" class=" btn btn-colorsEditClient w-100"><font-awesome-icon icon="edit" /></button>
+						<button slot="delete"  slot-scope="props" v-on:click="deleteClient(props.row._id)" class=" btn btn-danger w-100"><font-awesome-icon icon="trash" /></button>
+					</v-client-table>
+				</div>
+			</div>
+			<div style="margin-top:0.9%" class="col-sm-12 row collapse" id="collapseExample">
+				<div class="col-md-4" style="margin-top:20px;">
+				<div class="row">
+>>>>>>> 5642068e16a66705ab3cb9eeb8e265d4a672fd22
 					
 					<div class="tab-content tab-contentServis" id="myTabContent">
 					<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
@@ -302,7 +317,7 @@ export default {
 	},
     data(){
         return {
-			columns:['nombre' , 'identidad' , 'recomendacion' , 'recomendaciones' , 'ultimaFecha' , 'fecha' , 'edit'],
+			columns:['nombre' , 'identidad' , 'recomendacion' , 'recomendaciones' , 'ultimaFecha' , 'fecha' , 'edit', 'delete'],
 			optionsT: {
 				filterByColumn: true,
 				perPage: 7,
@@ -318,7 +333,8 @@ export default {
 					recomendaciones: 'Recomendaciones ',
 					ultimaFecha: 'Última atención ',
 					fecha: 'Fecha ',
-					edit: 'Editar datos'
+					edit: 'Editar',
+					delete: 'Borrar'
 				},
 				pagination: { chunk:10 },
 				pagination: { dropdown:true },
@@ -479,10 +495,11 @@ export default {
 							showConfirmButton: false,
 							timer: 1500
 						})
+						$('#ModalEditClient').modal('hide')
 						this.getClients();
 						this.arrayUsers();
 						this.ServicesQuantityChartFunc();
-						$('#ModalEditClient').modal('hide')
+						
 						this.emitMethodTwo()
 					}else{
 						this.$swal({
@@ -618,7 +635,45 @@ export default {
 				else{
 					this.toggleFilter = false
 				}
-			}
+			},
+		deleteClient(id){
+			this.$swal({
+				title: '¿Está seguro de borrar el cliente?',
+				text: 'No puedes revertir esta acción',
+				type: 'warning',
+				showCancelButton: true,
+				confirmButtonText: 'Estoy seguro',
+				cancelButtonText: 'No, evitar acción',
+				showCloseButton: true,
+				showLoaderOnConfirm: true
+			}).then((result) => {
+				if(result.value) {
+					axios.put('clients/deleteClient/'+id)
+					.then(res => {
+						if (res.data.status == 'ok') {
+							this.$swal({
+								type: 'success',
+								title: 'Borrado con exito',
+								showConfirmButton: false,
+								timer: 1500
+							})
+							this.getClients();
+							this.getClientsThree()
+							this.ServicesQuantityChartFunc();
+							this.emitMethodTwo()
+						}
+					})
+				}
+				else{
+					this.$swal({
+						type: 'info',
+						title: 'Acción cancelada',
+						showConfirmButton: false,
+						timer: 1500
+					})
+				}
+			})
+		}
 	},
 	computed: {
 		myStyles () {
