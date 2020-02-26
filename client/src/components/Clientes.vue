@@ -21,11 +21,12 @@
 						<li class="nav-item">
 							<a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true"><font-awesome-icon class="mr-2" icon="table" />Tabla de datos</a>
 						</li>
-						<li class="nav-item">
-							<a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false"><font-awesome-icon class="mr-2" icon="plus" />Registro</a>
-						</li>
+						
 						<li class="nav-item">
 							<a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false"><font-awesome-icon class="mr-2" icon="chart-line" />Métricas</a>
+						</li>
+						<li class="navButtonClients" v-on:click="openModalCreateClient">
+							<a class="nav-link" ><font-awesome-icon class="mr-2" icon="plus" />Registro</a>
 						</li>
 						<li class="navButtonClients" v-on:click="toggleFilters()">
 							<a class="nav-link" >

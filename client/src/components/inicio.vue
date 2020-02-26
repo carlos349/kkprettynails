@@ -1,5 +1,12 @@
 <template>
+<div>
     <h1>Incio pagina web</h1>
+    <router-link style="text-decoration: none !important;" class=" " to="/gastos">
+						<button class="btn btn-success">Ingresar</button>
+				</router-link>
+    
+</div>
+    
 </template>
 <script>
 import EventBus from './EventBus'

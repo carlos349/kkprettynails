@@ -17,11 +17,12 @@
 						<li class="nav-item">
 							<a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true"><font-awesome-icon class="mr-2" icon="table" />Tabla de datos</a>
 						</li>
-						<li class="nav-item">
-							<a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false"><font-awesome-icon class="mr-2" icon="plus" />Registro</a>
-						</li>
+						
 						<li class="nav-item">
 							<a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false"><font-awesome-icon class="mr-2" icon="chart-line" />Métricas</a>
+						</li>
+						<li class="navButtonPerso" v-on:click="openModalCreateEmploye">
+							<a class="nav-link" ><font-awesome-icon class="mr-2" icon="plus" />Registro</a>
 						</li>
 						<li class="navButtonPerso" v-on:click="toggleFilters()">
 							<a class="nav-link" >
@@ -44,52 +45,10 @@
 						<button slot="report" style="width:100%;"  slot-scope="props" v-on:click="sacarReporte(props.row._id)" class=" btn btn-colorsPrintLender"><font-awesome-icon icon="copy" /></button>
 					</v-client-table></div>
 						<div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-							<form v-on:submit.prevent="actualizarPrestador" style="background-color:white" class="p-3">
-								<div class="form-group">
-									<label for="name">Nombre del prestador</label>
-									<input v-model="nombrePrestadorEdit" type="text" class="form-control inputsLender w-100" placeholder="Nombre del prestador">
-								</div>
-								<div class="form-group">
-									<label for="name">Documento de identificación</label>
-									<input v-model="documentoPrestadorEdit" type="numbre" class="form-control inputsLender w-100" placeholder="Identificación" v-on:change="changeRutEdit()" v-on:click="changeToEdit()">
-								</div>
-								<div class="form-group row">
-									<label for="name" class="col-12">Horario de descanso</label>
-									<select class="form-control col-5 ml-3 inputsLender" v-model="restTimeEdit" >
-										<option style="color:black;" selected value="Seleccione el tiempo">Seleccione el tiempo</option>
-										<option style="color:black;" value="12:00">12:00</option>
-										<option style="color:black;" value="12:30">12:30</option>
-										<option style="color:black;" value="13:00">13:00</option>
-										<option style="color:black;" value="13:30">13:30</option>
-										<option style="color:black;" value="14:00">14:00</option>
-									</select>
-									<select class="form-control col-6 ml-1 inputsLender" v-model="restTimeEndEdit" >
-										<option style="color:black;" selected value="Seleccione el tiempo">Seleccione el tiempo</option>
-										<option style="color:black;" value="12:30">12:30</option>
-										<option style="color:black;" value="13:00">13:00</option>
-										<option style="color:black;" value="13:30">13:30</option>
-										<option style="color:black;" value="14:00">14:00</option>
-										<option style="color:black;" value="14:30">14:30</option>
-									</select>
-								</div>
-								<div class="form-group">
-									<label>Día libre</label>
-									<select class="form-control inputsLender w-100" v-model="restDayEdit" >
-										<option style="color:black;" selected value="Seleccione el dia">Seleccione el día</option>
-										<option style="color:black;" value="1">Lunes</option>
-										<option style="color:black;" value="2">Martes</option>
-										<option style="color:black;" value="3">Miércoles</option>
-										<option style="color:black;" value="4">Jueves</option>
-										<option style="color:black;" value="5">Viernes</option>
-										<option style="color:black;" value="6">Sábado</option>
-										<option style="color:black;" value="0">Domingo</option>
-									</select>
-								</div>
-								<button class="btn w-100 add">Editar prestador</button>
-							</form>
+							
 						</div>
 						<div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-							<div style="margin-top:1.8%" class="col-sm-12 row" >
+							<div style="margin-top:1.8%" class="col-sm-12 row" id="collapseExample">
 								<div class="col-md-4" style="margin-top:20px;">
 									
 									<div>
@@ -135,7 +94,63 @@
 			</div>
 			
 		</div>
-		
+		<div class="modal fade" id="ModalEditPrestador" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		  <div class="modal-dialog modal-dialog-centered" role="document">
+		    <div  class="modal-content ">
+		      <div class="modal-header" v-bind:style="{ 'background-color': 'rgb(107, 178, 229)'}">
+		        <h5 class="modal-title font-weight-bold text-white" id="exampleModalCenterTitle">Editar Prestador</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true" class="text-white">&times;</span>
+		        </button>
+		      </div>
+		      <div class="modal-body letters">
+				<form v-on:submit.prevent="actualizarPrestador" class="p-3">
+					<div class="form-group">
+						<label for="name">Nombre del prestador</label>
+						<input v-model="nombrePrestadorEdit" type="text" class="form-control inputsLender w-100" placeholder="Nombre del prestador">
+					</div>
+					<div class="form-group">
+						<label for="name">Documento de identificación</label>
+						<input v-model="documentoPrestadorEdit" type="numbre" class="form-control inputsLender w-100" placeholder="Identificación" v-on:change="changeRutEdit()" v-on:click="changeToEdit()">
+					</div>
+					<div class="form-group row">
+						<label for="name" class="col-12">Horario de descanso</label>
+						<select class="form-control col-5 ml-3 inputsLender" v-model="restTimeEdit" >
+							<option style="color:black;" selected value="Seleccione el tiempo">Seleccione el tiempo</option>
+							<option style="color:black;" value="12:00">12:00</option>
+							<option style="color:black;" value="12:30">12:30</option>
+							<option style="color:black;" value="13:00">13:00</option>
+							<option style="color:black;" value="13:30">13:30</option>
+							<option style="color:black;" value="14:00">14:00</option>
+						</select>
+						<select class="form-control col-6 ml-1 inputsLender" v-model="restTimeEndEdit" >
+							<option style="color:black;" selected value="Seleccione el tiempo">Seleccione el tiempo</option>
+							<option style="color:black;" value="12:30">12:30</option>
+							<option style="color:black;" value="13:00">13:00</option>
+							<option style="color:black;" value="13:30">13:30</option>
+							<option style="color:black;" value="14:00">14:00</option>
+							<option style="color:black;" value="14:30">14:30</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label>Día libre</label>
+						<select class="form-control inputsLender w-100" v-model="restDayEdit" >
+							<option style="color:black;" selected value="Seleccione el dia">Seleccione el día</option>
+							<option style="color:black;" value="1">Lunes</option>
+							<option style="color:black;" value="2">Martes</option>
+							<option style="color:black;" value="3">Miércoles</option>
+							<option style="color:black;" value="4">Jueves</option>
+							<option style="color:black;" value="5">Viernes</option>
+							<option style="color:black;" value="6">Sábado</option>
+							<option style="color:black;" value="0">Domingo</option>
+						</select>
+					</div>
+					<button class="btn w-100 add">Editar prestador</button>
+				</form>
+		      </div>
+		    </div>
+		  </div>
+		</div>
 		<div class="modal fade" id="ModalCreateEmploye" tabindex="-1"  role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered"  >
 		    <div class="modal-content " v-bind:style="{ 'background-color': '#ffffff'}">
@@ -430,14 +445,7 @@ export default {
 						timer: 1500
 					})
 			}
-			else if (this.porcentajePrestadorEdit == '') {
-				this.$swal({
-						type: 'error',
-						title: 'Debe escribir el porcentaje del prestador',
-						showConfirmButton: false,
-						timer: 1500
-					})
-			}
+			
 			else{
 				axios.put('manicuristas/' + this.idPrestadorEdit, {
 				nombre: nombre,
