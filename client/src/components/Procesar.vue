@@ -821,7 +821,7 @@ import Autocomplete from 'vuejs-auto-complete'
 				this.totalSinFormato = precioConDescuento
 			}
 			 if(this.descuento == '' || this.descuento == 0){
-				 if (this.diseño != '') {
+				 if (this.diseño == '') {
 					this.totalSinFormato = this.subTotal
 					this.total = "$" + this.formatPrice(this.subTotal)
 				 }
