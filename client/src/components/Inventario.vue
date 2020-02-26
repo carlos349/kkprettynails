@@ -452,7 +452,7 @@ export default {
 		padding: 20px;
 		overflow-x: hidden;
 		overflow-y:scroll;
-		max-height: 90vh;
+		max-height: 150vh;
 		height:auto;
 		border-radius:0 0 5px 5px;
 	}

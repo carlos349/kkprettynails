@@ -495,7 +495,8 @@ import router from '../router'
         sectionDeleteTwo: true,
         recomend:'',
         clienteID:'',
-        descuento:false
+        descuento:false,
+        servicioCitaShow:[]
       }
     },
     beforeCreate() {
@@ -533,7 +534,7 @@ import router from '../router'
         const split = decoded.linkLender.split("/")
         this.lender = split[0]
         this.status = decoded.status
-        console.log(this.lender)
+        
       },
       formatDate(date) {
 				let dateFormat = new Date(date)
@@ -556,7 +557,7 @@ import router from '../router'
         
       },
       formattedDisplay (result) {
-        console.log(result)
+        
         return result.nombre+' / '+result.identidad
       },
       noresult(result){
@@ -572,9 +573,9 @@ import router from '../router'
           this.clientsSelect = group.display
         }, 100);
         const sp = group.display.split(" / ")
-        console.log(sp)
+      
         for (let f = 0; f < this.clients.length; f++) {
-          console.log(this.clients[f].identidad)
+          
           
           if (this.clients[f].identidad == sp[1]) {
             this.nombreClienteRegister = this.clients[f].nombre
@@ -591,7 +592,7 @@ import router from '../router'
         
       },
       formattedDisplayTwo (result) {
-        console.log(result)
+        
         return result.nombre+' / '+result.identidad
       },
       addDistributionGroupTwo (group) {
@@ -639,7 +640,7 @@ import router from '../router'
         
         var fechaBloq = this.fecha
         this.bloquesHora = []
-          console.log(fechaBloq)
+         
           axios.post('citas/getBlocks', {
             employe: this.manicuristaFinal,
             date: fechaBloq,
@@ -746,11 +747,11 @@ import router from '../router'
         }
         if ($('#ifCheck').prop('checked')) {
           ifCheck = 0
-          console.log('entre')
+         
         }else{
           ifCheck = 1
         }
-        console.log(ifCheck)
+        
         
 				axios.post('clients', {
 					nombre:fullName,
@@ -790,7 +791,7 @@ import router from '../router'
 			},
       onEventClick(event, e){
         this.selectedEvent = event
-        console.log(event)
+       
         $('#myModalCitasDescripcion').modal('show')
         const split = event.cliente.split('/')
         const splitTwo = split[1].split(' ')
@@ -804,7 +805,7 @@ import router from '../router'
           }
           this.historicals = []
           this.historicals = res.data[0].historical
-          console.log(this.historicals)
+          
         })
         e.stopPropagation()
       },
@@ -813,7 +814,7 @@ import router from '../router'
           this.events = []
           axios.get('citas/' + this.lender)
           .then(res => {
-            console.log(res.data)
+            
             for (let index = 0; index < res.data.length; index++) {
               let dateNow = new Date(res.data[index].date)
               let formatDate = ''
@@ -953,9 +954,10 @@ import router from '../router'
 				})
 			},
       marcarServicio(prestadores,nombre,tiempo, comision, precio,index){
-        console.log(prestadores)
+        
         if (this.servicioCita == '') {
           this.servicioCita.push({'servicio': nombre, 'comision': comision, 'precio': precio})
+          this.servicioCitaShow.push(nombre)
           for (let index = 0; index < prestadores.length; index++) {
             this.manicuristaCita.push(prestadores[index])
           }
@@ -964,17 +966,18 @@ import router from '../router'
           var counter = $("#p"+index).text()
           var inspector = true
           var inspector2 = false
-          
-          // for (let index = 0; index < this.servicioCita.length; index++) {
-          //   if (this.servicioCita[index] == nombre || this.servicioCita[index] == nombre + "("+ counter +")" ) {
-          //     this.servicioCita.splice(index,1)
-          //     this.servicioCita.push(nombre+ "(" + (parseFloat(counter) +1) + ")")
-          //     inspector = false
-          //     break  
-          //   }
-          // }
+          for (let index = 0; index < this.servicioCita.length; index++) {
+            if (this.servicioCita[index].servicio == nombre || this.servicioCita[index].servicio == nombre + "("+ counter +")" ) {
+              this.servicioCitaShow.splice(index,1)
+              this.servicioCitaShow.push(nombre+ "(" + (parseFloat(counter) +1) + ")")
+              inspector = false
+              
+              break  
+            }
+          }
           if (inspector == true) {
             this.servicioCita.push({'servicio': nombre, 'comision': comision, 'precio': precio})
+            this.servicioCitaShow.push(nombre)
           }  
           
             for (let c = 0; c < prestadores.length; c++) {
@@ -991,7 +994,7 @@ import router from '../router'
             } 
              
         }
-        console.log(this.servicioCita)
+        
         this.duracion = parseFloat(this.duracion) + parseFloat(tiempo)
         $("#redo").show()
         $(".Sig").addClass("marcar")
@@ -1002,12 +1005,17 @@ import router from '../router'
       redo(){
         $("#redo").hide()
         this.servicioCita = []
+        this.servicioCitaShow = []
         this.manicuristaCita = []
+        $(".manis").css("display","none")
+        this.maniBloque = "Seleccione un prestador"
         $(".serviInfoPrestadores").text(0)
         $(".Sig").removeClass("marcar")
         $(".Sig").prop("disabled", true)
+        this.manicuristaFinal = ''
+        this.sectionDeleteTwo = true
         this.duracion = 0
-        
+        this.bloquesHora = []
       },
 
       
@@ -1025,7 +1033,7 @@ import router from '../router'
                 if (this.manicuristas[c]._id == this.manicuristaCita[i] ) {
                   
                   this.maniAzar.push(this.manicuristas[c])
-                  console.log(this.maniAzar)
+                
                 }               
               }
             }
@@ -1056,11 +1064,23 @@ import router from '../router'
             $(".processThree").show()
         }
         else if ($(".processThree").css("display") == "block") {
+          let pretty = ''
+
+          for (let index = 0; index < this.servicioCitaShow.length; index++) {
+            if (index == 0) {
+               pretty = this.servicioCitaShow[index]
+            }
+            else{
+               pretty = pretty + " / " + this.servicioCitaShow[index]
+            }
+            
+            
+          }
           
           this.$swal({
           title: 'Confirma tu cita',
           type: 'success',
-          html: `<h6><b>Servicio:</b>  ${this.servicioCita[0].servicio}</h6> <h6><b>Diseño:</b> ${this.design}</h6> <h6><b>Cliente:</b> ${this.clientsSelect}</h6> <h6><b>Fecha:</b> ${this.fecha}</h6> <h6><b>Personal:</b> ${this.manicuristaFinal}</h6><h6><b>Entrada:</b> ${this.hora}</h6> <h6><b>Salida:</b> ${this.salida}</h6>`,
+          html: `<h6><b>Servicio:</b>  ${pretty}</h6> <h6><b>Diseño:</b> ${this.design}</h6> <h6><b>Cliente:</b> ${this.clientsSelect}</h6> <h6><b>Fecha:</b> ${this.fecha}</h6> <h6><b>Personal:</b> ${this.manicuristaFinal}</h6><h6><b>Entrada:</b> ${this.hora}</h6> <h6><b>Salida:</b> ${this.salida}</h6>`,
           showCancelButton: true,
           confirmButtonText: 'Si',
           cancelButtonText: 'No',
@@ -1134,7 +1154,7 @@ import router from '../router'
           $(".Ant").prop("disabled", true)
         }
         else if($(".processThree").css("display") == "block"){
-          this.manicuristaFinal = ''
+          
           $(".imgMani").removeClass("maniMarcado")
           $(".processTwo").show()
           $(".processThree").hide()
@@ -1179,6 +1199,9 @@ import router from '../router'
               showConfirmButton: false,
               timer: 1500
             })
+            $(".formUser").hide()
+            $(".del").hide()
+            $(".recomendador").hide()
             $(".Sig").removeClass("marcar")
             $(".Sig").text("Siguiente")
             $(".Sig").prop("disabled", true)
@@ -1197,6 +1220,8 @@ import router from '../router'
             this.manicuristaCita = []
             this.manicuristaFinal = ''
             this.events = []
+            this.servicioCitaShow = []
+            this.sectionDeleteTwo = true
             $(".imgMani").removeClass("maniMarcado")
             this.min = ''
             this.class = ''
@@ -1214,6 +1239,13 @@ import router from '../router'
             $(".serviInfoPrestadores").text(0)
             $('#myModal').modal('hide')
             this.getCitas();
+            setTimeout(() => {
+              console.log(this.empByCita)
+              if (this.empByCita != 'Manicuristas') {
+                this.getCitasByEmploye()
+              }
+            }, 500);
+            
           }else if(res.data.status == 'cita ocupada'){
             this.$swal({
               type: 'error',
@@ -1266,6 +1298,8 @@ import router from '../router'
         $('#clo').toggleClass("clo")
       },
       selectManic(){
+            $(".Sig").removeClass("marcar")
+            $(".Sig").prop("disabled", true)
         for (let index = 0; index < this.maniAzar.length; index++) {
           if (this.maniAzar[index].nombre == this.maniBloque) {
             this.manicuristaFinal = this.maniAzar[index].nombre
@@ -1286,7 +1320,7 @@ import router from '../router'
         
       },
       selectMonth(){
-        if ($(".clientB").children().children().val() == '' && this.fecha == '' ) {
+        if (this.clientsSelect == '' && this.fecha == '' ) {
           this.$swal({
 						  type: 'error',
 						  title: 'Debes seleccionar un cliente y una fecha',
@@ -1304,7 +1338,7 @@ import router from '../router'
             })
             return false
         }
-        else if ($(".clientB").children().children().val() == '') {
+        else if (this.clientsSelect == '') {
           this.$swal({
 						  type: 'error',
 						  title: 'Debes seleccionar un cliente',
@@ -1465,7 +1499,7 @@ import router from '../router'
                       const transferenciaManual = $('.classTransferencia').val()
                       const otrosManual = $('.classOtros').val()
                       const totalManual = parseFloat(efectivoManual) + parseFloat(redCompreDManual) + parseFloat(redCompreCManual) + parseFloat(transferenciaManual) + parseFloat(otrosManual)
-                      console.log(totalManual)
+                     
                       if (fondoManual == '' || efectivoManual == '' || redCompreDManual == '' || redCompreCManual == '' || otrosManual == '' || totalManual == '' || transferenciaManual == '') {
                         this.$swal({
                           type: 'error',
@@ -1551,9 +1585,7 @@ import router from '../router'
           })
         })
       },
-      pruebaKey(){
-        console.log('hola')
-      },
+      
       formatPrice(value) {
 				let val = (value/1).toFixed(2).replace('.', ',')
 				return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
@@ -1575,7 +1607,7 @@ import router from '../router'
     mounted(){
       EventBus.$on('reloadCitas', status => {
         this.getCitas()
-        console.log(status)
+        
       })
     }
   }

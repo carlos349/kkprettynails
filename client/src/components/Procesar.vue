@@ -16,7 +16,7 @@
 							:results-display="formattedDisplay"
 							@selected="addDistributionGroup">
 							</autocomplete>
-							<span v-on:click="clearInput" style="position:absolute;top:20px;left:50px;background-color:white;width:75%;">{{nombreCliente}}</span>
+							<span v-on:click="clearInput" style="position:absolute;top:20px;left:50px;background-color:white;width:80%;">{{nombreCliente}}</span>
 						</div>
 
 
