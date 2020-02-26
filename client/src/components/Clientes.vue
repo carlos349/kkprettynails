@@ -17,66 +17,126 @@
 			</div>
             <div class="col-md-12">
 				<div class="">
-					<button class="botonOcultarInfoClient" data-toggle="collapse" v-on:click="scrollBot()" data-target="#collapseExample">
-						 <font-awesome-icon class="arrowBot" icon="arrow-circle-down" /> 	
-						  <font-awesome-icon style="display:none" class="arrowUp" icon="arrow-circle-up" /> 
-					</button>	
-					<button class="botonCrearCliente" v-on:click="openModalCreateClient">
-							Registrar cliente
-						</button>
-						<button class="botonCrearCorreo" v-on:click="showTemplates">
-							Correos a clientes 
-						</button>
-						<div v-on:click="toggleFilters()" class="filterTablesClients">
+					<ul class="nav nav-tabs tabClients w-100" id="myTab" role="tablist">
+						<li class="nav-item">
+							<a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true"><font-awesome-icon class="mr-2" icon="table" />Tabla de datos</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false"><font-awesome-icon class="mr-2" icon="plus" />Registro</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false"><font-awesome-icon class="mr-2" icon="chart-line" />Métricas</a>
+						</li>
+						<li class="navButtonClients" v-on:click="toggleFilters()">
+							<a class="nav-link" >
+								<font-awesome-icon style="color:rgba(238, 238, 238, 0.623) !important" v-if="toggleFilter == false" class="mr-2" icon="filter" />
+								<font-awesome-icon v-else class="mr-2" icon="filter" />Filtrar</a>
+						</li>	
+						<li class="navButtonClients" v-on:click="showTemplates">
+							<a class="nav-link" >
+								
+								<font-awesome-icon class="mr-2" icon="mail-bulk" />Correo a clientes</a>
+						</li>	
 						
-						<font-awesome-icon  icon="search" /> 
-						
-					</div>
-					<v-client-table class="text-center tablaClients"  :data="clients" :columns="columns" :options="optionsT">
-						<button slot="edit"  slot-scope="props" v-on:click="pasarDatosEdit(props.row.nombre, props.row.identidad, props.row.correoCliente, props.row.instagramCliente, props.row._id)" class=" btn btn-colorsEditClient w-100"><font-awesome-icon icon="edit" /></button>
-					</v-client-table>
-				</div>
-			</div>
-			<div style="margin-top:0.9%" class="col-sm-12 row collapse" id="collapseExample">
-				<div class="col-md-4" style="margin-top:20px;">
-				<div class="row">
+					</ul>
 					
-					<div class="tablaClients col-12">
-						<table  class="table tablaClients table-dark shadow" style="color:#fff !important;border-radius:5px; background-color: rgba(238, 238, 238, 0.623) !important" >
-							<thead class="theadClients">
-								<tr>
-									<th>
-										Cliente
-									</th>
-									<th class="text-right">
-										Atenciones
-									</th>				
-								</tr>
-							</thead>
-						</table>
-						<div class="ListaPrestadorTwo">
-							<table class="table table-light table-borderless table-striped">
-								<tbody>
-									<tr v-for="clientTwo in clientTwos" v-bind:key="clientTwo._id">
-										<td class="font-weight-bold">
-											{{clientTwo.nombre}}
-										</td>
-										<td class="font-weight-bold text-right">
-											{{clientTwo.participacion}}
-										</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
+					<div class="tab-content tab-contentServis" id="myTabContent">
+					<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+						<v-client-table class="text-center tablaClients pt-2"  :data="clients" :columns="columns" :options="optionsT">
+						<button slot="edit"  slot-scope="props" v-on:click="pasarDatosEdit(props.row.nombre, props.row.identidad, props.row.correoCliente, props.row.instagramCliente, props.row._id)" class=" btn btn-colorsEditClient w-100"><font-awesome-icon icon="edit" /></button>
+						</v-client-table>
 					</div>
+					<div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+						<form v-on:submit.prevent="registroCliente" style="background-color:white" class="p-3">
+					<div class="form-group" style="margin-bottom:-5px;">
+						<label class="containeer">
+							<input class="ifCheck" type="checkbox" >
+							<span class="checkmark"></span>
+							<h6 style="font-size:17px;" class="w-100 mt-1">¿Desea agregar descuento de primera visita?</h6>	
+						</label>
+					</div>
+					<div class="form-group">
+						<label for="name">Nombre del cliente <span style="color:red;"> *</span></label>
+						<input v-model="nombreCliente" type="text" class="form-control inputsClient w-100" placeholder="Nombre y apellido" requerid>
+					</div>
+					<div class="form-group">
+						<label for="identidad">Información de contacto<span style="color:red;"> *</span></label>
+						<input v-model="identidadCliente" type="text" class="form-control inputsClient w-100" placeholder="Registre contacto" requerid>
+					</div>
+					<div class="form-group">
+						<label for="identidad">Contacto adicional <span style="color:blue;">+</span></label>
+						<input v-model="correoCliente" type="text" class="form-control inputsClient w-100" placeholder="Registre adicional" >
+					</div>
+					<div class="form-group">
+						<label for="identidad">Contacto adicional <span style="color:blue;">+</span></label>
+						<input v-model="instagramCliente" type="text" class="form-control inputsClient w-100" placeholder="Registre adicional" >
+					</div>
+                    <div class="form-group">
+                        <label for="recomendacion">Registre recomendador</label>
+						<div v-on:click="clearInput">
+							<autocomplete
+							ref="autocomplete"
+							placeholder="Buscar cliente"
+							:source="arregloClients"
+							input-class="form-control esteqlq"
+							results-property="data"
+							:results-display="formattedDisplay"
+							@selected="addDistributionGroup">
+							</autocomplete>
+							<span v-on:click="clearInput" style="position:absolute;top:458px;left:70px;background-color:white;width:70%;">{{recomendador}}</span>
+						</div>
+						
+                    </div>
+					<button class="btn w-100 add">Agregar cliente</button>
+				</form>
+					</div>
+					<div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+						<div style="margin-top:0.9%" class="col-sm-12 row">
+							<div class="col-md-4" style="margin-top:20px;">
+								<div class="row">
+									
+									<div class="tablaClients col-12">
+										<table  class="table tablaClients table-dark shadow" style="color:#fff !important;border-radius:5px; background-color: rgba(238, 238, 238, 0.623) !important" >
+											<thead class="theadClients">
+												<tr>
+													<th>
+														Cliente
+													</th>
+													<th class="text-right">
+														Atenciones
+													</th>				
+												</tr>
+											</thead>
+										</table>
+										<div class="ListaPrestadorTwo">
+											<table class="table table-light table-borderless table-striped">
+												<tbody>
+													<tr v-for="clientTwo in clientTwos" v-bind:key="clientTwo._id">
+														<td class="font-weight-bold">
+															{{clientTwo.nombre}}
+														</td>
+														<td class="font-weight-bold text-right">
+															{{clientTwo.participacion}}
+														</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-8 chart">
+								<div class="small">
+									<line-chart v-if="loaded" :chartdata="chartdata" :options="options" :styles="myStyles"/>
+								</div>
+							</div>
+							</div>
+					</div>
+					</div>
+											
 				</div>
 			</div>
-			<div class="col-md-8 chart">
-				<div class="small">
-					<line-chart v-if="loaded" :chartdata="chartdata" :options="options" :styles="myStyles"/>
-				</div>
-			</div>
-			</div>
+			
 			
         </div>
         <div class="modal fade" id="ModalCreateClient" tabindex="-1"  role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -290,7 +350,8 @@ export default {
 			instagramCliente:'',
 			correoClienteEditar: '',
 			instagramClienteEditar: '',
-			recomend: ''
+			recomend: '',
+			toggleFilter: false
         }
     },
     beforeCreate() {
@@ -551,7 +612,12 @@ export default {
 		},
 		toggleFilters(){
 				$(".VueTables__filters-row").toggle('slow')
-				$(".arrowFilter").toggle('slow')
+				if (this.toggleFilter == false) {
+					this.toggleFilter = true
+				}
+				else{
+					this.toggleFilter = false
+				}
 			}
 	},
 	computed: {
@@ -640,7 +706,7 @@ export default {
 	.ListaPrestadorTwo{
 		overflow-x: hidden;
 		overflow-y:scroll;
-		max-height: 240px;
+		max-height: 90vh;
 		height:auto;
 		border-radius:5px;
 	}
@@ -971,5 +1037,19 @@ export default {
 	.page-link{
 	color: black !important;
 	background-color: rgba(238, 238, 238, 0.623) !important;
-}
+	}
+	.tabClients a{
+		background-color: rgba(238, 238, 238, 0.623);
+		color: #353535 !important;
+		font-weight: bold;
+	}
+	.tabClients .navButtonClients{
+		float: right !important;
+	}
+	.navButtonClients a{
+		cursor: pointer;
+		background-color: #353535;
+		color: white !important;
+	}
+	
 </style>

@@ -1,6 +1,10 @@
 <template>
     <div class="container-fluid">
-      
+      <div v-on:click="toggleFilters()" class="filterTablesVentas">
+						
+						<font-awesome-icon  icon="search" /> 
+						
+					</div>
       
       <div class="col-md-12 row sectionMetricssSales">
         <div class="reiniarFiltrosVentas">
@@ -36,11 +40,7 @@
 				</div>
 			</div>
       <div class="row">
-        <div v-on:click="toggleFilters()" class="filterTablesVentas mx-auto">
-						
-						<font-awesome-icon  icon="search" /> 
-						
-					</div>
+        
         <div class="col-md-3">
           <div class="pt-3 pb-3 " style="padding-left:20%;">
             <date-pick class="theme-blue w-100 SalesInputs"
@@ -928,12 +928,14 @@ box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
 		-webkit-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
 		-moz-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
 		box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
-		font-size: 1.4vw !important;
+		top: 22%;
+		left: 1.5%;
+    z-index: 1000;
 		color: azure;
-	  height: 6vh;
-    padding: 10px;
-		border-radius:5px;
-		-webkit-transition: all 0.5s ease-out; 
+		position: absolute;
+		padding: 15px;
+		border-radius:5px 5px 0 0;
+		-webkit-transition: all 0.5s ease-out;  
 	}
 	.filterTablesVentas:hover{
 		color: #353535;

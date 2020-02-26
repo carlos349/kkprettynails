@@ -8,15 +8,9 @@
                 <button  data-toggle="modal" class="generar" data-target=".genCita">Generar cita <font-awesome-icon style="float:right;margin-top:2px;margin-right:5px;font-size:1.2em" icon="tasks" /></button>
               </div>
               <div class="col-sm-6">
-<<<<<<< HEAD
-                <select v-if="status == 1 || status == 2" id="manicuristas" v-model="empByCita" v-on:change="getCitasByEmploye()"  class="generar Two" name="manicuristas">
-                  <option v-if="sectionDelete" selected="true" >{{empByCita}}</option>
-                  <option >Todos</option>
-=======
                 <select id="manicuristas" v-model="empByCita" v-on:change="getCitasByEmploye()"  class="generar Two" name="manicuristas">
                   <option v-if="sectionDelete" selected="true" >Manicuristas</option>
                   <option selected="true">Todos</option>
->>>>>>> fab3bcccc93cf88822880709f55f77a00c180d7f
                   <option  v-for="manicurista in manicuristas" v-bind:key="manicurista._id">
                       {{manicurista.nombre}}
                     </option>

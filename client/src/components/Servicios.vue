@@ -18,76 +18,96 @@
 			</div>
 			<div class="col-md-12 ">
 				<div class="">
-					<button class="botonOcultarInfoServis" data-toggle="collapse" v-on:click="scrollBot()" data-target="#collapseExample">
-						 <font-awesome-icon class="arrowBot" icon="arrow-circle-down" /> 	
-						  <font-awesome-icon style="display:none" class="arrowUp" icon="arrow-circle-up" /> 
-					</button>
-					<button class="botonCrearServicio" v-on:click="openModalCreateServices">
-						 Crear Servicio
-					</button>
-					<div v-on:click="toggleFilters()" class="filterTablesServis">
+					<ul class="nav nav-tabs tabServis w-100" id="myTab" role="tablist">
+						<li class="nav-item">
+							<a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true"><font-awesome-icon class="mr-2" icon="table" />Tabla de datos</a>
+						</li>
 						
-						<font-awesome-icon  icon="search" /> 
+						<li class="nav-item">
+							<a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false"><font-awesome-icon class="mr-2" icon="chart-line" />Métricas</a>
+						</li>
+						<li class="navButtonServis" v-on:click="openModalCreateServices">
+							<a class="nav-link" ><font-awesome-icon class="mr-2" icon="plus" />Registro</a>
+						</li>
+						<li class="navButtonServis" v-on:click="toggleFilters()">
+							<a class="nav-link" >
+								<font-awesome-icon style="color:rgba(238, 238, 238, 0.623) !important" v-if="toggleFilter == false" class="mr-2" icon="filter" />
+								<font-awesome-icon v-else class="mr-2" icon="filter" />Filtrar</a>
+						</li>	
+							
 						
-					</div>
-					<v-client-table class="text-center tableServis"  :data="servicios" :columns="columns" :options="optionsT">
-						<p slot="prestadoress"  slot-scope="props">{{props.row.prestadores.length}}</p>
-						<p slot="precio"  slot-scope="props">{{formatPrice(props.row.precio)}}</p>
-						<p slot="comision"  slot-scope="props">{{props.row.comision}}%</p>
-						<p slot="tiempoo"  slot-scope="props">{{props.row.tiempo}} min</p>
-						<div slot="activee"  slot-scope="props">
-							<button style="background-color:#E6E6EA;color:#618B25" v-on:click="desactivarServicio(props.row._id)" v-if="props.row.active" class="font-weight-bold btn btn-success w-100 p-0 m-0">Activo</button>
-							<button v-on:click="desactivarServicio(props.row._id)" v-if="!props.row.active" class="font-weight-bold btn btn-inactive w-100 p-0 m-0">Inactivo</button>
+					</ul>
+					<div class="tab-content" id="myTabContent">
+						<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+							<v-client-table class="text-center pt-2 tableServis"  :data="servicios" :columns="columns" :options="optionsT">
+								<p slot="prestadoress"  slot-scope="props">{{props.row.prestadores.length}}</p>
+								<p slot="precio"  slot-scope="props">{{formatPrice(props.row.precio)}}</p>
+								<p slot="comision"  slot-scope="props">{{props.row.comision}}%</p>
+								<p slot="tiempoo"  slot-scope="props">{{props.row.tiempo}} min</p>
+								<div slot="activee"  slot-scope="props">
+									<button style="background-color:#E6E6EA;color:#618B25" v-on:click="desactivarServicio(props.row._id)" v-if="props.row.active" class="font-weight-bold btn btn-success w-100 p-0 m-0">Activo</button>
+									<button v-on:click="desactivarServicio(props.row._id)" v-if="!props.row.active" class="font-weight-bold btn btn-inactive w-100 p-0 m-0">Inactivo</button>
+								</div>
+								<button style="background-color:#353535;color:white" slot="edit"  slot-scope="props"  v-on:click="pasarDatosEdit(props.row.nombre, props.row.tiempo, props.row.precio, props.row.prestadores, props.row._id, props.row.comision)" class="btn add w-100 p-0 m-0"><font-awesome-icon icon="edit" /></button>
+								<!-- <a slot="edit" slot-scope="props" class="fa fa-edit" :href="pasarDatosEdit(props.row.nombre, props.row.identidad, props.row.correoCliente, props.row.instagramCliente, props.row._id)">Hola </a> -->
+							</v-client-table>
 						</div>
-						<button style="background-color:#353535;color:white" slot="edit"  slot-scope="props"  v-on:click="pasarDatosEdit(props.row.nombre, props.row.tiempo, props.row.precio, props.row.prestadores, props.row._id, props.row.comision)" class="btn add w-100 p-0 m-0"><font-awesome-icon icon="edit" /></button>
-						<!-- <a slot="edit" slot-scope="props" class="fa fa-edit" :href="pasarDatosEdit(props.row.nombre, props.row.identidad, props.row.correoCliente, props.row.instagramCliente, props.row._id)">Hola </a> -->
-					</v-client-table>
+						<div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+							
+						</div>
+						<div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+						<div style="margin-top:0.5%" class="col-sm-12 row" >
+						
+							<div class="col-md-4" style="margin-top:20px;">
+							<div class="box">
+								
+							</div>
+							<div class="shadow">
+								<table  class="table" style="color:#353535 !important; background-color: rgba(238, 238, 238, 0.623)" >
+									<thead>
+										<tr>
+											<th>
+												Servicio
+											</th>
+											<th class="text-center">
+												Cantidad
+											</th>				
+										</tr>
+									</thead>
+								</table>
+								<div class="ListaTwo">
+									<table class="table table-light table-borderless table-striped">
+										<tbody>
+											<tr v-for="servicesQuantityPerMonth of servicesQuantityPerMonths">
+												<td class="font-weight-bold">
+													{{servicesQuantityPerMonth.nombre}}
+												</td>
+												<td class="font-weight-bold text-center">
+													{{servicesQuantityPerMonth.cantidad}}
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-8 chart">
+							<div class="small">
+								<line-chart v-bind:style="{ 'color': 'red !important'}" v-if="loaded" :chartdata="chartdata" :options="options" :styles="myStyles"/>
+							</div>
+						</div>
+									
+									
+								</div>
+						</div>
+					</div>
+					
+					
+					
 				</div>
 			</div>
 				
-					<div style="margin-top:0.5%" class="collapse col-sm-12 row" id="collapseExample">
-						
-							<div class="col-md-4" style="margin-top:20px;">
-				<div class="box">
 					
-				</div>
-				<div class="shadow">
-					<table  class="table" style="color:#353535 !important; background-color: rgba(238, 238, 238, 0.623)" >
-						<thead>
-							<tr>
-								<th>
-									Servicio
-								</th>
-								<th class="text-center">
-									Cantidad
-								</th>				
-							</tr>
-						</thead>
-					</table>
-					<div class="ListaTwo">
-						<table class="table table-light table-borderless table-striped">
-							<tbody>
-								<tr v-for="servicesQuantityPerMonth of servicesQuantityPerMonths">
-									<td class="font-weight-bold">
-										{{servicesQuantityPerMonth.nombre}}
-									</td>
-									<td class="font-weight-bold text-center">
-										{{servicesQuantityPerMonth.cantidad}}
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-8 chart">
-				<div class="small">
-					<line-chart v-bind:style="{ 'color': 'red !important'}" v-if="loaded" :chartdata="chartdata" :options="options" :styles="myStyles"/>
-				</div>
-			</div>
-						
-						
-					</div>
 			
 		</div>
 		<div class="modal fade" id="myModal2" tabindex="-1"  role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -215,6 +235,21 @@
 							<input type="text" v-model="searching" id="myInputServ" v-on:keyup="myFunctionServ()" class="inputServi buscar mt-4 mb-1 w-100" placeholder="Buscar prestadores"/>
 							<font-awesome-icon class="lupa-modalServices" icon="search"/></div>
 							<div class="ListaProcesar maxHeight">
+								<table class="table mt-2 table-light table-borderless table-striped">
+							<tbody>
+								<tr >
+										<td class="font-weight-bold">
+											Marcar todos
+										</td>
+										<td class="font-weight-bold text-right">
+											<label class="conCheck mb-3 col-sm-2">
+											<input  class="checkFirst" v-on:click="presSelectAllReg()" type="checkbox">
+											<span class="checkmark"></span>
+											</label>
+										</td>
+									</tr>
+							</tbody>
+						</table>
 								<table class="table table-light table-borderless table-striped" id="myTableServ">
 									<tbody>
 										<tr  v-for="(manicurista, index) of manicuristas" >
@@ -222,7 +257,7 @@
 												{{manicurista.nombre}}
 											</td>
 											<td class="text-right">
-												<label class="conCheck col-sm-2">
+												<label class="conCheck mb-3 col-sm-2">
 												<input :class="manicurista._id" class="checkFirst" v-on:click="presSelect(manicurista.documento,manicurista._id)" type="checkbox">
 												<span class="checkmark"></span>
 												</label>
@@ -348,7 +383,8 @@
 				TotalCantidadServicios:'0',
 				TotalPrestadores: '0',
 				comisionServicio: '',
-				comisionServicioEdit: ''
+				comisionServicioEdit: '',
+				toggleFilter:false
 			}
 		},
 		beforeCreate() {
@@ -657,7 +693,12 @@
 			},
 			toggleFilters(){
 				$(".VueTables__filters-row").toggle('slow')
-				$(".arrowFilter").toggle('slow')
+				if (this.toggleFilter == false) {
+					this.toggleFilter = true
+				}
+				else{
+					this.toggleFilter = false
+				}
 			},
 			presSelectAll(){
 				if ($(".desMarc").prop("checked") == true) {
@@ -666,11 +707,17 @@
 				}
 				else{
 					$(".desMarc").prop("checked",false);
-				}
-				
+				}	
+			},
+			presSelectAllReg(){
+				if ($(".checkFirst").prop("checked") == false) {
 					
-				
-				
+					$(".checkFirst").prop("checked",true);
+				}
+				else{
+					console.log("maldita sea")
+					$(".checkFirst").prop("checked",false);
+				}	
 			}
 		},
 		computed: {
@@ -748,7 +795,7 @@
 	.ListaTwo{
 		overflow-x: hidden;
 		overflow-y:scroll;
-		max-height: 310px;
+		max-height: 90vh;
 		height:auto;
 		border-radius:5px;
 	}
@@ -934,7 +981,7 @@
 	.lupa-modalServices{
 		position:absolute;
 		right:8%;
-		top:61%;
+		top:63%;
 		font-size:1.4em
 	}
 	
@@ -1051,5 +1098,18 @@
 	.page-link{
 	color: black !important;
 	background-color: rgba(238, 238, 238, 0.623) !important;
-}
+	}
+	.tabServis a{
+		background-color: rgba(238, 238, 238, 0.623);
+		color: #353535 !important;
+		font-weight: bold;
+	}
+	.tabServis .navButtonServis{
+		float: right !important;
+	}
+	.navButtonServis a{
+		cursor: pointer;
+		background-color: #353535;
+		color: white !important;
+	}
 </style>

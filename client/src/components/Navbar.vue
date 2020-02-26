@@ -357,7 +357,7 @@ export default {
     list-style-type: none;
     cursor:pointer;
     margin-left:-15%;
-    height:5vh;
+    height:8.35vh;
 	transition: all 0.5s ease-out;
 	color: black !important;
   }
@@ -378,7 +378,7 @@ export default {
     list-style-type: none;
     cursor:pointer;
     margin-left:-15%;
-    height:5vh;
+    height:8.35vh;
 	transition: all 0.5s ease-out;
 	color: black !important;
   }

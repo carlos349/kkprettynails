@@ -13,19 +13,27 @@
 			</div>
 			<div class="col-md-12">
 				<div>	
-					<button class="botonOcultarInfoPrestadores" data-toggle="collapse" v-on:click="scrollBot()" data-target="#collapseExample">
-						 <font-awesome-icon class="arrowBot" icon="arrow-circle-down" /> 	
-						  <font-awesome-icon style="display:none" class="arrowUp" icon="arrow-circle-up" />
-					</button>
-					<div v-on:click="toggleFilters()" class="filterTablesPerso">
+					<ul class="nav nav-tabs tabPerso w-100" id="myTab" role="tablist">
+						<li class="nav-item">
+							<a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true"><font-awesome-icon class="mr-2" icon="table" />Tabla de datos</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false"><font-awesome-icon class="mr-2" icon="plus" />Registro</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false"><font-awesome-icon class="mr-2" icon="chart-line" />Métricas</a>
+						</li>
+						<li class="navButtonPerso" v-on:click="toggleFilters()">
+							<a class="nav-link" >
+								<font-awesome-icon style="color:rgba(238, 238, 238, 0.623) !important" v-if="toggleFilter == false" class="mr-2" icon="filter" />
+								<font-awesome-icon v-else class="mr-2" icon="filter" />Filtrar</a>
+						</li>	
+							
 						
-						<font-awesome-icon  icon="search" /> 
-						
-					</div>
-					<button class="botonCrearPrestador" v-on:click="openModalCreateEmploye">
-						Registrar prestador
-					</button>
-					<v-client-table class="text-center tablePresta" :data="manicuristas" :columns="columns" :options="optionsT">
+					</ul>
+					<div class="tab-content" id="myTabContent">
+						<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+							<v-client-table class="text-center pt-2 tablePresta" :data="manicuristas" :columns="columns" :options="optionsT">
 						
 						<p slot="porcentaje"  slot-scope="props">{{props.row.porcentaje }}%</p>
 						<p slot="comision"  slot-scope="props">{{formatPrice(props.row.comision)}}</p>
@@ -34,105 +42,100 @@
 						<button slot="edit"  slot-scope="props" style="width:100%;" v-on:click="pasarDatosEdit(props.row.nombre,props.row.documento,props.row.porcentaje, props.row.restTime, props.row.restDay, props.row._id)" class=" btn btn-colorsEditLender"><font-awesome-icon icon="edit" /></button>
 						<button slot="delete" style="width:100%;"  slot-scope="props" v-on:click="deletePrestador(props.row._id)" class=" btn btn-colorsTrashLender"><font-awesome-icon icon="trash" /></button>
 						<button slot="report" style="width:100%;"  slot-scope="props" v-on:click="sacarReporte(props.row._id)" class=" btn btn-colorsPrintLender"><font-awesome-icon icon="copy" /></button>
-					</v-client-table>
-				</div>
-			</div>
-			<div style="margin-top:1.8%" class="collapse col-sm-12 row" id="collapseExample">
-			<div class="col-md-4" style="margin-top:20px;">
-				
-				<div>
-					<table  class="table mb-0" style="color:black !important; background-color: rgba(238, 238, 238, 0.623);border-radius:5px 5px 0 0 !important;border:none !important" >
-						<thead>
-							<tr>
-								<th style="border:none !important">
-									Prestador
-								</th>
-								<th  style="border:none !important" class="text-right">
-									Cantidad de servicios
-								</th>				
-							</tr>
-						</thead>
-					</table>
-					<div class="ListaPrestadorTwo mt-0">
-						<table class="table table-light table-striped">
-							<tbody>
-								<tr v-for="PrestadorQuantityPerMonth of PrestadorQuantityPerMonths">
-									<td class="font-weight-bold">
-										{{PrestadorQuantityPerMonth.nombre}}
-									</td>
-									<td class="font-weight-bold text-center">
-										{{PrestadorQuantityPerMonth.cantidad}}
-									</td>
-								</tr>
-							</tbody>
-						</table>
+					</v-client-table></div>
+						<div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+							<form v-on:submit.prevent="actualizarPrestador" style="background-color:white" class="p-3">
+								<div class="form-group">
+									<label for="name">Nombre del prestador</label>
+									<input v-model="nombrePrestadorEdit" type="text" class="form-control inputsLender w-100" placeholder="Nombre del prestador">
+								</div>
+								<div class="form-group">
+									<label for="name">Documento de identificación</label>
+									<input v-model="documentoPrestadorEdit" type="numbre" class="form-control inputsLender w-100" placeholder="Identificación" v-on:change="changeRutEdit()" v-on:click="changeToEdit()">
+								</div>
+								<div class="form-group row">
+									<label for="name" class="col-12">Horario de descanso</label>
+									<select class="form-control col-5 ml-3 inputsLender" v-model="restTimeEdit" >
+										<option style="color:black;" selected value="Seleccione el tiempo">Seleccione el tiempo</option>
+										<option style="color:black;" value="12:00">12:00</option>
+										<option style="color:black;" value="12:30">12:30</option>
+										<option style="color:black;" value="13:00">13:00</option>
+										<option style="color:black;" value="13:30">13:30</option>
+										<option style="color:black;" value="14:00">14:00</option>
+									</select>
+									<select class="form-control col-6 ml-1 inputsLender" v-model="restTimeEndEdit" >
+										<option style="color:black;" selected value="Seleccione el tiempo">Seleccione el tiempo</option>
+										<option style="color:black;" value="12:30">12:30</option>
+										<option style="color:black;" value="13:00">13:00</option>
+										<option style="color:black;" value="13:30">13:30</option>
+										<option style="color:black;" value="14:00">14:00</option>
+										<option style="color:black;" value="14:30">14:30</option>
+									</select>
+								</div>
+								<div class="form-group">
+									<label>Día libre</label>
+									<select class="form-control inputsLender w-100" v-model="restDayEdit" >
+										<option style="color:black;" selected value="Seleccione el dia">Seleccione el día</option>
+										<option style="color:black;" value="1">Lunes</option>
+										<option style="color:black;" value="2">Martes</option>
+										<option style="color:black;" value="3">Miércoles</option>
+										<option style="color:black;" value="4">Jueves</option>
+										<option style="color:black;" value="5">Viernes</option>
+										<option style="color:black;" value="6">Sábado</option>
+										<option style="color:black;" value="0">Domingo</option>
+									</select>
+								</div>
+								<button class="btn w-100 add">Editar prestador</button>
+							</form>
+						</div>
+						<div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+							<div style="margin-top:1.8%" class="col-sm-12 row" >
+								<div class="col-md-4" style="margin-top:20px;">
+									
+									<div>
+										<table  class="table mb-0" style="color:black !important; background-color: rgba(238, 238, 238, 0.623);border-radius:5px 5px 0 0 !important;border:none !important" >
+											<thead>
+												<tr>
+													<th style="border:none !important">
+														Prestador
+													</th>
+													<th  style="border:none !important" class="text-right">
+														Cantidad de servicios
+													</th>				
+												</tr>
+											</thead>
+										</table>
+										<div class="ListaPrestadorTwo mt-0">
+											<table class="table table-light table-striped">
+												<tbody>
+													<tr v-for="PrestadorQuantityPerMonth of PrestadorQuantityPerMonths">
+														<td class="font-weight-bold">
+															{{PrestadorQuantityPerMonth.nombre}}
+														</td>
+														<td class="font-weight-bold text-center">
+															{{PrestadorQuantityPerMonth.cantidad}}
+														</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-8 chart">
+									<div class="small">
+										<line-chart v-if="loaded" :chartdata="chartdata" :options="options" :styles="myStyles"/>
+									</div>
+								</div>
+								</div>
+						</div>
 					</div>
+					
+					
 				</div>
 			</div>
-			<div class="col-md-8 chart">
-				<div class="small">
-					<line-chart v-if="loaded" :chartdata="chartdata" :options="options" :styles="myStyles"/>
-				</div>
-			</div>
-			</div>
+			
 		</div>
-		<div class="modal fade" id="ModalEditPrestador" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-		  <div class="modal-dialog modal-dialog-centered" role="document">
-		    <div  class="modal-content ">
-		      <div class="modal-header" v-bind:style="{ 'background-color': 'rgb(107, 178, 229)'}">
-		        <h5 class="modal-title font-weight-bold text-white" id="exampleModalCenterTitle">Editar Prestador</h5>
-		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-		          <span aria-hidden="true" class="text-white">&times;</span>
-		        </button>
-		      </div>
-		      <div class="modal-body letters">
-				<form v-on:submit.prevent="actualizarPrestador" class="p-3">
-					<div class="form-group">
-						<label for="name">Nombre del prestador</label>
-						<input v-model="nombrePrestadorEdit" type="text" class="form-control inputsLender w-100" placeholder="Nombre del prestador">
-					</div>
-					<div class="form-group">
-						<label for="name">Documento de identificación</label>
-						<input v-model="documentoPrestadorEdit" type="numbre" class="form-control inputsLender w-100" placeholder="Identificación" v-on:change="changeRutEdit()" v-on:click="changeToEdit()">
-					</div>
-					<div class="form-group row">
-						<label for="name" class="col-12">Horario de descanso</label>
-						<select class="form-control col-5 ml-3 inputsLender" v-model="restTimeEdit" >
-							<option style="color:black;" selected value="Seleccione el tiempo">Seleccione el tiempo</option>
-							<option style="color:black;" value="12:00">12:00</option>
-							<option style="color:black;" value="12:30">12:30</option>
-							<option style="color:black;" value="13:00">13:00</option>
-							<option style="color:black;" value="13:30">13:30</option>
-							<option style="color:black;" value="14:00">14:00</option>
-						</select>
-						<select class="form-control col-6 ml-1 inputsLender" v-model="restTimeEndEdit" >
-							<option style="color:black;" selected value="Seleccione el tiempo">Seleccione el tiempo</option>
-							<option style="color:black;" value="12:30">12:30</option>
-							<option style="color:black;" value="13:00">13:00</option>
-							<option style="color:black;" value="13:30">13:30</option>
-							<option style="color:black;" value="14:00">14:00</option>
-							<option style="color:black;" value="14:30">14:30</option>
-						</select>
-					</div>
-					<div class="form-group">
-						<label>Día libre</label>
-						<select class="form-control inputsLender w-100" v-model="restDayEdit" >
-							<option style="color:black;" selected value="Seleccione el dia">Seleccione el día</option>
-							<option style="color:black;" value="1">Lunes</option>
-							<option style="color:black;" value="2">Martes</option>
-							<option style="color:black;" value="3">Miércoles</option>
-							<option style="color:black;" value="4">Jueves</option>
-							<option style="color:black;" value="5">Viernes</option>
-							<option style="color:black;" value="6">Sábado</option>
-							<option style="color:black;" value="0">Domingo</option>
-						</select>
-					</div>
-					<button class="btn w-100 add">Editar prestador</button>
-				</form>
-		      </div>
-		    </div>
-		  </div>
-		</div>
+		
 		<div class="modal fade" id="ModalCreateEmploye" tabindex="-1"  role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered"  >
 		    <div class="modal-content " v-bind:style="{ 'background-color': '#ffffff'}">
@@ -274,7 +277,8 @@ export default {
 			nombrePrestadorEdit: '',
 			documentoPrestadorEdit: '',
 			porcentajePrestadorEdit: '',
-			idPrestadorEdit: ''
+			idPrestadorEdit: '',
+			toggleFilter: false
 		}
 	},
 	beforeCreate() {
@@ -548,8 +552,14 @@ export default {
 		},
 		toggleFilters(){
 				$(".VueTables__filters-row").toggle('slow')
-				$(".arrowFilter").toggle('slow')
+				if (this.toggleFilter == false) {
+					this.toggleFilter = true
+				}
+				else{
+					this.toggleFilter = false
+				}
 			}
+
 		
 	},
 	computed: {
@@ -863,5 +873,18 @@ export default {
     padding-bottom: -1px;
     vertical-align: inherit !important;
     border-top: 1px solid #dee2e6;
+	}
+	.tabPerso a{
+		background-color: rgba(238, 238, 238, 0.623);
+		color: #353535 !important;
+		font-weight: bold;
+	}
+	.tabPerso .navButtonPerso{
+		float: right !important;
+	}
+	.navButtonPerso a{
+		cursor: pointer;
+		background-color: #353535;
+		color: white !important;
 	}
 </style>
