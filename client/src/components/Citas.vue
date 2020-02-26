@@ -2,13 +2,13 @@
   <div class="container-fluid">
     <div class="row mt-1">
         <div style="padding-left:2%;" id="calen" class="col-sm-12">
-          <div v-if="status == 1 || status == 2" class="col-sm-12 mx-auto text-center p-1">
-            <div class="row">
+          <div v-if="status == 1 || status == 2" class="col-sm-12 mx-auto text-center p-1 mb-5">
+            <div class="row fixed-top mt-1">
               <div class="col-sm-6">
                 <button  data-toggle="modal" class="generar" data-target=".genCita">Generar cita <font-awesome-icon style="float:right;margin-top:2px;margin-right:5px;font-size:1.2em" icon="tasks" /></button>
               </div>
               <div class="col-sm-6">
-                <select id="manicuristas" v-model="empByCita" v-on:change="getCitasByEmploye()"  class="generar Two" name="manicuristas">
+                <select id="manicuristas" v-model="empByCita" v-on:change="getCitasByEmploye()"  class="Two" name="manicuristas">
                   <option v-if="sectionDelete" selected="true" >Manicuristas</option>
                   <option selected="true">Todos</option>
                   <option  v-for="manicurista in manicuristas" v-bind:key="manicurista._id">
@@ -19,6 +19,7 @@
             </div>
           </div>
           <vue-cal
+            class="mt-5"
              :locale="locale"
              :events="events"
              :time-from="600 "
@@ -346,18 +347,19 @@
               </li>
 
             </ul><br>
-            <button v-bind:class="selectedEvent.class" v-if="selectedEvent.process == true && status == 2 " type="button" class="btn font-weight-bold btn-style col-4" v-on:click="borrarCita(selectedEvent.id)">Borrar cita</button>
-            <button v-bind:class="selectedEvent.class" v-else-if="selectedEvent.process != true && status != 2" type="button" class="btn font-weight-bold btn-style col-12" v-on:click="borrarCita(selectedEvent.id)">Borrar cita</button>
+              <div v-if="status != 3">
+                <button v-bind:class="selectedEvent.class" v-if="selectedEvent.process == true && status == 2 " type="button" class="btn font-weight-bold btn-style col-4" v-on:click="borrarCita(selectedEvent.id)">Borrar cita</button>
+                <button v-bind:class="selectedEvent.class" v-else-if="selectedEvent.process != true && status != 2" type="button" class="btn font-weight-bold btn-style col-12" v-on:click="borrarCita(selectedEvent.id)">Borrar cita</button>
 
-            <button v-bind:class="selectedEvent.class" v-if="selectedEvent.process == true && status == 1" type="button" class="btn font-weight-bold btn-style col-4" v-on:click="borrarCita(selectedEvent.id)">Borrar cita</button>
-            <button v-bind:class="selectedEvent.class" v-else-if="selectedEvent.process != true && status != 1" type="button" class="btn font-weight-bold btn-style col-12" v-on:click="borrarCita(selectedEvent.id)">Borrar cita</button>
+                <button v-bind:class="selectedEvent.class" v-if="selectedEvent.process == true && status == 1" type="button" class="btn font-weight-bold btn-style col-4" v-on:click="borrarCita(selectedEvent.id)">Borrar cita</button>
+                <button v-bind:class="selectedEvent.class" v-else-if="selectedEvent.process != true && status != 1" type="button" class="btn font-weight-bold btn-style col-12" v-on:click="borrarCita(selectedEvent.id)">Borrar cita</button>
 
-            <button v-bind:class="selectedEvent.class" v-if="selectedEvent.process == true && status == 2" type="button" class="btn font-weight-bold btn-style col-3" v-on:click="cerraCita(selectedEvent.id)">Cerrar cita</button>
-            <button v-bind:class="selectedEvent.class" v-if="selectedEvent.process == true && status == 1" type="button" class="btn font-weight-bold btn-style col-3" v-on:click="cerraCita(selectedEvent.id)">Cerrar cita</button>
+                <button v-bind:class="selectedEvent.class" v-if="selectedEvent.process == true && status == 2" type="button" class="btn font-weight-bold btn-style col-3" v-on:click="cerraCita(selectedEvent.id)">Cerrar cita</button>
+                <button v-bind:class="selectedEvent.class" v-if="selectedEvent.process == true && status == 1" type="button" class="btn font-weight-bold btn-style col-3" v-on:click="cerraCita(selectedEvent.id)">Cerrar cita</button>
 
-            <button v-bind:class="selectedEvent.class" v-if="selectedEvent.process == true && status == 1" type="button" class="btn font-weight-bold btn-style col-4" v-on:click="processSale(selectedEvent.id, 'process')">Procesar venta</button>
-            <button v-bind:class="selectedEvent.class" v-if="selectedEvent.process == true && status == 2 " type="button" class="btn font-weight-bold btn-style col-4" v-on:click="processSale(selectedEvent.id, 'process')">Procesar venta</button>
-            
+                <button v-bind:class="selectedEvent.class" v-if="selectedEvent.process == true && status == 1" type="button" class="btn font-weight-bold btn-style col-4" v-on:click="processSale(selectedEvent.id, 'process')">Procesar venta</button>
+                <button v-bind:class="selectedEvent.class" v-if="selectedEvent.process == true && status == 2 " type="button" class="btn font-weight-bold btn-style col-4" v-on:click="processSale(selectedEvent.id, 'process')">Procesar venta</button>
+              </div>
             </div>
 		    </div>
 		  </div>
@@ -1349,20 +1351,41 @@ import router from '../router'
       },
       
       borrarCita(id){
-        axios.delete('citas/' + id)
-        .then(res => {
-          if(res.data.status == 'Cita Eliminada'){
-            this.$swal({
-						  type: 'success',
-						  title: 'Cita eliminada',
-						  showConfirmButton: false,
-						  timer: 1500
-            })
-            this.events = []
-            $('#myModalCitasDescripcion').modal('hide')
-						this.getCitas();
-          }
-        })
+        this.$swal({
+				title: '¿Está seguro de borrar la cita?',
+				text: 'No puedes revertir esta acción',
+				type: 'warning',
+				showCancelButton: true,
+				confirmButtonText: 'Estoy seguro',
+				cancelButtonText: 'No, evitar acción',
+				showCloseButton: true,
+				showLoaderOnConfirm: true
+			}).then((result) => {
+				if(result.value) {
+          axios.delete('citas/' + id)
+          .then(res => {
+            if(res.data.status == 'Cita Eliminada'){
+              this.$swal({
+                type: 'success',
+                title: 'Cita eliminada',
+                showConfirmButton: false,
+                timer: 1500
+              })
+              this.events = []
+              $('#myModalCitasDescripcion').modal('hide')
+              this.getCitas();
+            }
+          })
+        }else{
+          this.$swal({
+						type: 'info',
+						title: 'Acción cancelada',
+						showConfirmButton: false,
+						timer: 1500
+					})
+        }
+      })
+        
       },
       daySaleClose(){
         axios.get('ventas/getFund')
@@ -1924,7 +1947,20 @@ import router from '../router'
     color:#001514;
   }
   .Two{
-    padding-bottom: 15px;
+    padding: 10px;
+    background-color: #353535;
+    border:none;
+    color: azure;
+    margin-bottom: 1%;
+    border-radius: 5px; 
+    padding: 13px;
+    width: 50%;
+    text-align: left;
+    -webkit-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+		-moz-box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+		box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
+    font-family: 'Roboto', sans-serif !important;
+    font-size: 1.4em;
   }
   .Two:hover{
     background-color: white;
