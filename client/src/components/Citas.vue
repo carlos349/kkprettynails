@@ -246,7 +246,6 @@
                                    <button  v-on:click="editCliente" style="display:none;background-color:#353535;color:white" class="btn w-75 mx-auto ag">Editar cliente</button>
                               <button  v-on:click="ingresoCliente" style="display:none;background-color:#353535;color:white" class="btn w-75 mx-auto mt-2 add del">Agregar cliente</button>
                                  </div>
-                              
                             </form>
                           </div>
                         </div>
@@ -348,19 +347,121 @@
 
             </ul><br>
               <div v-if="status != 3">
-                <button v-bind:class="selectedEvent.class" v-if="selectedEvent.process == true && status == 2 " type="button" class="btn font-weight-bold btn-style col-4" v-on:click="borrarCita(selectedEvent.id)">Borrar cita</button>
-                <button v-bind:class="selectedEvent.class" v-else-if="selectedEvent.process != true && status != 2" type="button" class="btn font-weight-bold btn-style col-12" v-on:click="borrarCita(selectedEvent.id)">Borrar cita</button>
+                <button v-bind:class="selectedEvent.class" v-if="selectedEvent.process == true && status == 2 " type="button" class="btn font-weight-bold btn-style col-5 mt-2 ml-4" v-on:click="borrarCita(selectedEvent.id)">Borrar cita</button>
+                <button v-bind:class="selectedEvent.class" v-else-if="selectedEvent.process != true && status != 2" type="button" class="btn font-weight-bold btn-style col-12 mt-2" v-on:click="borrarCita(selectedEvent.id)">Borrar cita</button>
 
-                <button v-bind:class="selectedEvent.class" v-if="selectedEvent.process == true && status == 1" type="button" class="btn font-weight-bold btn-style col-4" v-on:click="borrarCita(selectedEvent.id)">Borrar cita</button>
-                <button v-bind:class="selectedEvent.class" v-else-if="selectedEvent.process != true && status != 1" type="button" class="btn font-weight-bold btn-style col-12" v-on:click="borrarCita(selectedEvent.id)">Borrar cita</button>
+                <button v-bind:class="selectedEvent.class" v-if="selectedEvent.process == true && status == 1" type="button" class="btn font-weight-bold btn-style col-5 mt-2 ml-4" v-on:click="borrarCita(selectedEvent.id)">Borrar cita</button>
+                <button v-bind:class="selectedEvent.class" v-else-if="selectedEvent.process != true && status != 1" type="button" class="btn font-weight-bold btn-style col-12 mt-2" v-on:click="borrarCita(selectedEvent.id)">Borrar cita</button>
 
-                <button v-bind:class="selectedEvent.class" v-if="selectedEvent.process == true && status == 2" type="button" class="btn font-weight-bold btn-style col-3" v-on:click="cerraCita(selectedEvent.id)">Cerrar cita</button>
-                <button v-bind:class="selectedEvent.class" v-if="selectedEvent.process == true && status == 1" type="button" class="btn font-weight-bold btn-style col-3" v-on:click="cerraCita(selectedEvent.id)">Cerrar cita</button>
-
-                <button v-bind:class="selectedEvent.class" v-if="selectedEvent.process == true && status == 1" type="button" class="btn font-weight-bold btn-style col-4" v-on:click="processSale(selectedEvent.id, 'process')">Procesar venta</button>
-                <button v-bind:class="selectedEvent.class" v-if="selectedEvent.process == true && status == 2 " type="button" class="btn font-weight-bold btn-style col-4" v-on:click="processSale(selectedEvent.id, 'process')">Procesar venta</button>
+                <button v-bind:class="selectedEvent.class" v-if="selectedEvent.process == true && status == 2" type="button" class="btn font-weight-bold btn-style col-5 mt-2 ml-4" v-on:click="cerraCita(selectedEvent.id)">Cerrar cita</button>
+                <button v-bind:class="selectedEvent.class" v-if="selectedEvent.process == true && status == 1" type="button" class="btn font-weight-bold btn-style col-5 mt-2 ml-4" v-on:click="cerraCita(selectedEvent.id)">Cerrar cita</button>
+                <button v-bind:class="selectedEvent.class" v-if="selectedEvent.process == true && status == 1" type="button" class="btn font-weight-bold btn-style col-5 mt-2 ml-4" v-on:click="dataEdit(selectedEvent.id, selectedEvent.start, selectedEvent.end, selectedEvent.services, selectedEvent.cliente, selectedEvent.empleada, selectedEvent.class)">Editar cita</button>
+                <button v-bind:class="selectedEvent.class" v-if="selectedEvent.process == true && status == 2 " type="button" class="btn font-weight-bold btn-style col-5 mt-2 ml-4" v-on:click="dataEdit(selectedEvent.id, selectedEvent.start, selectedEvent.end, selectedEvent.services, selectedEvent.cliente, selectedEvent.empleada, selectedEvent.class)">Editar cita</button>
+                <button v-bind:class="selectedEvent.class" v-if="selectedEvent.process == true && status == 1" type="button" class="btn font-weight-bold btn-style col-5 mt-2 ml-4" v-on:click="processSale(selectedEvent.id, 'process')">Procesar venta</button>
+                <button v-bind:class="selectedEvent.class" v-if="selectedEvent.process == true && status == 2 " type="button" class="btn font-weight-bold btn-style col-5 mt-2 ml-4" v-on:click="processSale(selectedEvent.id, 'process')">Procesar venta</button>
+                
               </div>
             </div>
+
+		    </div>
+		  </div>
+		</div>
+
+    <div class="modal fade" id="myModalEditDate" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		  <div class="modal-dialog modal-dialog-centered" role="document">
+		    <div v-bind:style="{ 'background-color': '#ffffff'}" class="modal-content">
+		      <div class="modal-header" v-bind:class="selectedEvent.class">
+		        <h5 class="modal-title font-weight-bold" id="exampleModalCenterTitle">{{ selectedEvent.title }}</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true" >&times;</span>
+		        </button>
+		      </div>
+		      <div class="modal-body letters">
+            <div v-on:click="clearInputThree" class="col-12 completeCitas">
+              <autocomplete
+                ref="autocomplete"
+                placeholder="Buscar cliente"
+                results-property="data"
+                :source="clients"
+                input-class=" w-100 autocompleteCitas three p-2"
+                :results-display="formattedDisplayThree"
+                @selected="addDistributionGroupThree">
+              </autocomplete>
+              <span v-on:click="clearInputThree" style="position:absolute;top:12px;left:40px;background-color:#f7f7f7;width:80%;">{{clientEdit}}</span>
+            </div>
+            <div v-on:click="reloadBloques">
+              <date-pick
+              v-model="fechaEdit"
+              :isDateDisabled="isFutureDate"
+              :months="months"
+              :weekdays="Days"
+              :format="formatEdit" 
+              class="dateInputEdit"
+              ></date-pick> 
+            </div>
+            <h4 class="ml-3"><font-awesome-icon style="font-size:1.2em;color:#001514;" icon="clock" /> <strong style="ml-2 mb-2">{{startEdit}} / {{endEdit}}</strong> </h4>
+            <select v-model="lenderEdit" v-on:change="selectManicEdit()" class="Two w-100" name="manicuristas">
+              <option v-if="sectionDelete" selected="true" >{{lenderEdit}}</option>
+              <option  v-for="manicurista in manicuristas" v-if="manicurista.restDay != new Date(fechaEdit).getDay()" v-bind:key="manicurista._id">
+                  {{manicurista.nombre}}
+                </option>
+            </select>
+            <div class="maxHeightBloques w-100">
+              <div v-for="(bloque , index) of bloquesHoraEdit" >
+                <div v-if="bloque.validator == true" v-on:click="selectBloqEdit(bloque.Horario, index)" class="col-sm-12  horaDisp">
+                  <div class="row">
+                    <div class="col-sm-4 horaPred  text-center">
+                      <div class="col-sm-12 ">{{bloque.Horario}}</div>
+                    </div>
+                    <div class="col-sm-8 ">
+                      
+                      <div  class="col-sm-12">Disponible</div>
+                      
+                    </div>
+                  </div>
+                  
+                </div>
+                
+                <div v-else-if="bloque.validator == false" class="col-sm-12  horaOcupada">
+                  <div class="row">
+                    <div class="col-sm-4 horaPred  text-center">
+                      <div class="col-sm-12 ">{{bloque.Horario}}</div>
+                    </div>
+                    <div class="col-sm-8 ">
+                      <div  class="col-sm-12">Ocupado</div>  
+                      
+                    </div>
+                  </div>
+                  
+                </div>
+                <div v-else-if="bloque.validator == 'select'" class="col-sm-12  horaSelect">
+                  <div class="row">
+                    <div class="col-sm-4 horaPred  text-center">
+                      <div class="col-sm-12 ">{{bloque.Horario}}</div>
+                    </div>
+                    <div class="col-sm-8 ">
+                      <div  class="col-sm-12">Seleccionado</div>  
+                      
+                    </div>
+                  </div>
+                  
+                </div>
+                <div v-else-if="bloque.validator == 'nDisponible'" class="col-sm-12 horaCeroEdit">
+                  <div class="row">
+                    <div class="col-sm-4 horaPred  text-center">
+                      <div class="col-sm-12 ">{{bloque.Horario}}</div>
+                    </div>
+                    <div class="col-sm-8 ">
+                      
+                      <div  class="col-sm-12 ">No seleccionable</div>
+                    </div>
+                  </div>
+                  
+                </div>
+              </div> 
+            </div>
+            <button class="generar mt-2 w-100 text-center" v-on:click="editDate"> Editar cita</button>
+          </div>
 		    </div>
 		  </div>
 		</div>
@@ -471,6 +572,7 @@ import router from '../router'
         query:'',
         salidaMuestra: '',
         format: 'MM-DD-YYYY',
+        formatEdit: 'MM-DD-YYYY',
         Days:['Lun', 'Mar', 'Mier', 'Jue', 'Vie', 'Sab', 'Dom'],
 				months:[
 					'Enero', 'Febrero', 'Marzo', 'Abril',
@@ -496,7 +598,17 @@ import router from '../router'
         recomend:'',
         clienteID:'',
         descuento:false,
-        servicioCitaShow:[]
+        servicioCitaShow:[],
+        fechaEdit: '',
+        clientEdit:'',
+        startEdit:'',
+        endEdit: '',
+        lenderEdit: '',
+        classFinalEdit: '',
+        resTimeFinalEdit: '',
+        duracionEdit: '',
+        dateEditId: '',
+        bloquesHoraEdit: []
       }
     },
     beforeCreate() {
@@ -539,6 +651,10 @@ import router from '../router'
       formatDate(date) {
 				let dateFormat = new Date(date)
 				return dateFormat.getDate()+"-"+(dateFormat.getMonth() + 1)+"-"+dateFormat.getFullYear()
+			},
+      formatDateTwo(date) {
+				let dateFormat = new Date(date+' 10:00')
+				return (dateFormat.getMonth() + 1)+"-"+dateFormat.getDate()+"-"+dateFormat.getFullYear()
 			},
       searchClient(input){
 				if (input.length < 1) { return [] }
@@ -600,6 +716,15 @@ import router from '../router'
           this.recomend = group.display
         }, 100);
       },
+      formattedDisplayThree (result) {
+        
+        return result.nombre+' / '+result.identidad
+      },
+      addDistributionGroupThree (group) {
+        setTimeout(() => {
+          this.clientEdit = group.display
+        }, 100);
+      },
       processSale(id, type){
         if (type == 'process') {
           this.Process(id)
@@ -635,6 +760,28 @@ import router from '../router'
       clearInputTwo(){
         this.recomend = ''
         $('.two').focus()
+      },
+      clearInputThree(){
+        this.clientEdit = ''
+        $('.three').focus()
+      },
+      insertDateTwo(){
+        var fechaBloq = this.fecha
+        this.bloquesHoraEdit = []
+          axios.post('citas/getBlocks', {
+            employe: this.lenderEdit,
+            date: this.fechaEdit,
+            time: this.duracionEdit,
+            resTime:this.resTimeFinalEdit
+          })
+          .then(res => {
+            this.bloquesHoraEdit = res.data
+            
+            
+            })
+            .catch(err => {
+              console.log(err)
+            })
       },
       insertDate(){
         
@@ -1176,7 +1323,46 @@ import router from '../router'
           $(".Sig").addClass("marcar")
         }
       },
-      
+      editDate(){
+  
+        const split = this.startEdit.split(':')
+        const sort = split[0]+split[1]
+        
+        axios.put('citas/editDate/'+this.dateEditId, {
+          entrada: this.startEdit,
+          salida: this.endEdit,
+          sort: sort,
+          fecha: this.fechaEdit,
+          cliente: this.clientEdit,
+          class: this.classFinalEdit,
+          manicuristas: this.lenderEdit
+        })
+        .then(res => {
+          if (res.data.status == 'ok') {
+            this.$swal({
+              type: 'success',
+              title: 'Cita editada',
+              showConfirmButton: false,
+              timer: 1500
+            })
+            this.bloquesHoraEdit = []
+            this.getCitas();
+            setTimeout(() => {
+              if (this.empByCita != 'Manicuristas') {
+                this.getCitasByEmploye()
+              }
+            }, 500);
+            $('#myModalEditDate').modal('hide')
+          }else{
+            this.$swal({
+              type: 'error',
+              title: 'error al editar',
+              showConfirmButton: false,
+              timer: 1500
+            })
+          }
+        })
+      },
       registroCita(){
         
         const mani = this.manicuristaFinal
@@ -1199,53 +1385,7 @@ import router from '../router'
               showConfirmButton: false,
               timer: 1500
             })
-            $(".formUser").hide()
-            $(".del").hide()
-            $(".recomendador").hide()
-            $(".Sig").removeClass("marcar")
-            $(".Sig").text("Siguiente")
-            $(".Sig").prop("disabled", true)
-            $(".hora").prop("disabled", true)
-            $(".Ant").removeClass("marcar")
-            $(".Ant").prop("disabled", true)
-            $(".processThree").hide()
-            $(".processOne").show()
-            $(".wOne").addClass("marc")
-            $(".wThree").removeClass("marc")
-            $('.botonClient div input').val('')
-            $('.inputssDate input').val('Click para seleccionar fecha')
-            this.maniBloque = "Seleccione un prestador"
-            this.clientsSelect = ''
-            this.servicioCita = []
-            this.manicuristaCita = []
-            this.manicuristaFinal = ''
-            this.events = []
-            this.servicioCitaShow = []
-            this.sectionDeleteTwo = true
-            $(".imgMani").removeClass("maniMarcado")
-            this.min = ''
-            this.class = ''
-            this.hora = ''
-            this.sort = ''
-            this.fecha = 'Click para seleccionar fecha'
-            this.salida = ''
-            this.salidaMuestra = ''
-            this.duracion = 0
-            this.bloquesHora = []
-            this.result = ''
-            $("#Dat").val(0)
-            $("#Dat").prop("disabled", true)
-            $(".autocomplete-input").val('')
-            $(".serviInfoPrestadores").text(0)
-            $('#myModal').modal('hide')
-            this.getCitas();
-            setTimeout(() => {
-              console.log(this.empByCita)
-              if (this.empByCita != 'Manicuristas') {
-                this.getCitasByEmploye()
-              }
-            }, 500);
-            
+            this.reloadDate()
           }else if(res.data.status == 'cita ocupada'){
             this.$swal({
               type: 'error',
@@ -1257,6 +1397,54 @@ import router from '../router'
             console.log(res.data)
           }
         })
+      },
+      reloadDate(){
+        $(".formUser").hide()
+        $(".del").hide()
+        $(".recomendador").hide()
+        $(".Sig").removeClass("marcar")
+        $(".Sig").text("Siguiente")
+        $(".Sig").prop("disabled", true)
+        $(".hora").prop("disabled", true)
+        $(".Ant").removeClass("marcar")
+        $(".Ant").prop("disabled", true)
+        $(".processThree").hide()
+        $(".processOne").show()
+        $(".wOne").addClass("marc")
+        $(".wThree").removeClass("marc")
+        $('.botonClient div input').val('')
+        $('.inputssDate input').val('Click para seleccionar fecha')
+        this.maniBloque = "Seleccione un prestador"
+        this.clientsSelect = ''
+        this.servicioCita = []
+        this.manicuristaCita = []
+        this.manicuristaFinal = ''
+        this.events = []
+        this.servicioCitaShow = []
+        this.sectionDeleteTwo = true
+        $(".imgMani").removeClass("maniMarcado")
+        this.min = ''
+        this.class = ''
+        this.hora = ''
+        this.sort = ''
+        this.fecha = 'Click para seleccionar fecha'
+        this.salida = ''
+        this.salidaMuestra = ''
+        this.duracion = 0
+        this.bloquesHora = []
+        this.result = ''
+        $("#Dat").val(0)
+        $("#Dat").prop("disabled", true)
+        $(".autocomplete-input").val('')
+        $(".serviInfoPrestadores").text(0)
+        $('#myModal').modal('hide')
+        this.getCitas();
+        setTimeout(() => {
+          console.log(this.empByCita)
+          if (this.empByCita != 'Manicuristas') {
+            this.getCitasByEmploye()
+          }
+        }, 500);
       },
       modalCliente(){
         $('#myModalRegisterClient').modal('show')
@@ -1291,6 +1479,32 @@ import router from '../router'
             })
         
       },
+      selectBloqEdit(hora, i){
+        this.startEdit =this.bloquesHoraEdit[i].Horario
+        var sortSp = this.hora.split(":") 
+        this.sort = sortSp[0]+sortSp[1]
+        axios.post('citas/getBlocks', {
+            employe: this.lenderEdit,
+            date: this.fechaEdit,
+            time: this.duracionEdit,
+            resTime:this.resTimeFinalEdit
+          })
+          .then(res => {
+            
+            for (let index = 0 ; index <= this.duracionEdit / 15; index++) {
+          
+              res.data[i].validator = 'select'
+              this.endEdit = res.data[i].Horario
+              i++
+              
+            }
+            this.bloquesHoraEdit = res.data
+            })
+            .catch(err => {
+              console.log(err)
+            })
+        
+      },
       Menu() {
         $('#mySidenav').toggle('slow')
         $('#calen').toggleClass("col-sm-12")
@@ -1298,6 +1512,7 @@ import router from '../router'
         $('#clo').toggleClass("clo")
       },
       selectManic(){
+        console.log('hola')
             $(".Sig").removeClass("marcar")
             $(".Sig").prop("disabled", true)
         for (let index = 0; index < this.maniAzar.length; index++) {
@@ -1307,6 +1522,26 @@ import router from '../router'
             this.resTimeFinal = this.maniAzar[index].restTime
             $(".manis").css("display","block")
             this.insertDate()
+            break
+          }
+          
+        }
+
+        this.sectionDeleteTwo = false
+        // $(".Sig").prop("disabled", false)
+        // $(".Sig").addClass("marcar")
+        // $(".imgMani").removeClass("maniMarcado")
+        // $("#mani"+index).addClass("maniMarcado")
+        
+      },
+      selectManicEdit(){
+        console.log('hola')
+        for (let index = 0; index < this.manicuristas.length; index++) {
+          if (this.manicuristas[index].nombre == this.lenderEdit) {
+            this.lenderEdit = this.manicuristas[index].nombre
+            this.classFinalEdit = this.manicuristas[index].class
+            this.resTimeFinalEdit = this.manicuristas[index].restTime
+            this.insertDateTwo()
             break
           }
           
@@ -1602,7 +1837,33 @@ import router from '../router'
             this.selectedEvent.process = false
           }
         })
-      } 
+      }, 
+      dataEdit(id, start, end, services, cliente, empleada, classDate){
+        $('#myModalCitasDescripcion').modal('hide')
+        $('#myModalEditDate').modal('show')
+        const Datedate = this.dateSplit(start)
+      
+        const startDate = this.dateSplitHours(start)
+        const endDate = this.dateSplitHours(end)
+        const separStart = startDate.split(':')
+        const separEnd = endDate.split(':')
+        
+        const SumHours  = ((parseFloat(separEnd[0]) - parseFloat(separStart[0])) * 60)
+        const SumMinutes = parseFloat(separEnd[1]) - parseFloat(separStart[1])
+        const TotalMinutes = SumHours + SumMinutes
+        
+        this.clientEdit = cliente
+        this.fechaEdit = this.formatDateTwo(Datedate)
+        this.startEdit = startDate
+        this.endEdit = endDate
+        this.lenderEdit = empleada
+        this.classFinalEdit = classDate
+        this.duracionEdit = TotalMinutes
+        this.dateEditId = id
+      },
+      reloadBloques(){
+        this.bloquesHoraEdit = []
+      }
     },
     mounted(){
       EventBus.$on('reloadCitas', status => {
@@ -2455,6 +2716,14 @@ import router from '../router'
   color: rgba(248, 245, 245, 0.521);
   font-size: 1.5em;
 } 
+.horaCeroEdit{
+  border-bottom: 1px solid rgba(0, 0, 0, 0.281);
+  height: 5.5vh;
+  text-align: center;
+  background-color:rgba(248, 245, 245, 0.144);
+  border-radius: 5px;
+  font-size: 1.5em;
+} 
 
 .horaSelect{
   
@@ -2634,4 +2903,29 @@ import router from '../router'
     height: 8px;    /* Tamaño del scroll en horizontal */
     display: none;  /* Ocultar scroll */
 }
+.dateInputEdit{
+  width: 100%;
+  padding: 14px;
+}
+.dateInputEdit input{
+  background-color: transparent !important;
+		-webkit-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+		-moz-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+		box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
+		border: none !important;
+		border-radius: 5px;
+		padding: 10px;
+		width: 50% ;
+		color: black !important;
+    width: 100%;
+    font-size:16px;
+}
+.dateInputEdit .vdpClearInput{
+  display: none;
+}
+.maxHeightBloques{
+  max-height: 60vh;
+  overflow-y: scroll;
+}
+
 </style>
