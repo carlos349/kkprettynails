@@ -256,4 +256,36 @@ citas.delete('/:id', async (req, res) => {
 })
 
 
+citas.put('/editDate/:id', async (req, res) => {
+  const dateDate = new Date(req.body.fecha+' 10:00')
+  const data = {
+    entrada: req.body.entrada,
+    salida: req.body.salida,
+    sort: req.body.sort,
+    fecha: dateDate,
+    cliente: req.body.cliente,
+    class: req.body.class,
+    manicuristas: req.body.manicuristas,
+  }
+  console.log(data)
+  const editDate = await Citas.findByIdAndUpdate(req.params.id, {
+    $set: {
+      start: data.entrada,
+      end: data.salida,
+      sort: data.sort,
+      date:data.fecha,
+      client: data.cliente, 
+      class: data.class,
+      employe: data.manicuristas
+    }
+  })
+  if (editDate) {
+    res.json({status: 'ok'})
+  }
+  res.json({status: 'bad'})
+})
+
+
+
+
 module.exports = citas
