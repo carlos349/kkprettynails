@@ -1911,7 +1911,7 @@ import router from '../router'
     height: 100px;
   }
   .vuecal__header{background-color: rgba(238, 238, 238, 0.623);border-radius: 5px 5px 0 0;}
-  .vuecal__cell.today div .vuecal__cell-events-count, .vuecal__cell.current {background-color: #000 !important;}
+  .vuecal__cell.today div .vuecal__cell-events-count, .vuecal__cell.current {background-color: #353535 !important;}
   .vuecal:not(.vuecal--day-view) .vuecal__cell.selected {background-color: rgba(235, 255, 245, 0.4);}
   .vuecal__cell.selected:before {border-color: rgba(66, 185, 131, 0.5);}
   .vuecal__cell-date{color:#000;font-family: 'Raleway', sans-serif;
