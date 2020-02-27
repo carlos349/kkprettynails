@@ -225,7 +225,8 @@ manicurista.put('/ClosePrest/:id', (req, res) => {
 manicurista.get('/GetSalesPerMonth/:prestador', (req, res) => {
   const thisDate = new Date()
   const date = thisDate.getMonth()
-  const prest = req.params.prestador
+  const prest = req.params.prestador.split(':')
+  const lender = prest[0] + '/' + prest[1]
   let month  = 'month'
   let monthTwo = 'month'
   if (date === 0) {
@@ -282,7 +283,7 @@ manicurista.get('/GetSalesPerMonth/:prestador', (req, res) => {
     ]
   }
 
-  Venta.find({manicurista:prest})
+  Venta.find({manicurista:lender})
   .then(ventas => {
     
     for (let indexOne = 0; indexOne < chartdata.labels.length; indexOne++) {

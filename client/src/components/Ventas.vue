@@ -1,10 +1,6 @@
 <template>
     <div class="container-fluid">
-      <div v-on:click="toggleFilters()" class="filterTablesVentas">
-						
-						<font-awesome-icon  icon="search" /> 
-						
-					</div>
+      
       
       <div class="col-md-12 row sectionMetricssSales">
         <div class="reiniarFiltrosVentas">
@@ -234,6 +230,7 @@ export default {
 			optionsT: {
 				filterByColumn: true,
         perPage: 8,
+        perPageValues:[8,10,15,20,25,50],
 				texts: {
 					filter: "Filtrar:",
 					filterBy: 'Filtrar por {column}',
@@ -256,7 +253,16 @@ export default {
 				pagination: { edge: true },
 				sortIcon: {base:'fa' , up:'fa-sort-up', down:'fa-sort-down', is:'fa-sort'},
 				sortable: ['fecha'],
-				filterable: ['fecha']
+				filterable: ['fecha'],
+        texts: {
+                count: "Mostrando {from} - {to} de {count} Registros |{count} Registros|Un solo registro",
+                filter: "Filtro:",
+                limit: "Registros:",
+                page: "Pagina:",
+                noResults: "No se encuentran resultados",
+                filterBy: "Filtrar por {column}",
+                loading: 'Cargando...',
+            }
 			},
       venta: new Ventas(),
       ventas: [],
@@ -315,7 +321,7 @@ export default {
         let fechaBien = ''
         for (let index = 0; index < this.ventas.length; index++) {
           let fech = new Date(this.ventas[index].fecha)
-          fechaBien = fech.getDate() +"/"+ (fech.getMonth() + 1) +"/"+fech.getFullYear() +" "+" ("+ fech.getHours()+":"+ fech.getMinutes()+")"
+          fechaBien = fech.getDate() +"/"+ (fech.getMonth() + 1) +"/"+fech.getFullYear() +" "+" ("+ fech.getHours()+":"+ ('0'+fech.getMinutes()).slice(-2)+")"
           this.ventas[index].fecha = fechaBien
           let servicio = ''
           for (let indexTwo = 0; indexTwo < this.ventas[index].servicios.length; indexTwo++) {
@@ -824,14 +830,14 @@ box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
     box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
     -webkit-transition: all 0.5s ease-out;
 	}
-  .VueTables--client .row{
-		display:none
-	}
+ 
 	.VuePagination {
 		text-align: center;
 		display:block !important;
 	}
-
+  .VueTables__limit-field label{
+		display:inline-block;
+	}
 	.vue-title {
 		text-align: center;
 		margin-bottom: 10px;

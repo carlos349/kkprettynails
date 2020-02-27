@@ -328,7 +328,8 @@
 				columns:['nombre' , 'precio' , 'comision', 'tiempoo' , 'prestadoress' , 'activee' , 'edit'],
 				optionsT: {
 					filterByColumn: true,
-					perPage: 11,
+					perPage: 10,
+					perPageValues:[10,15,20,25,50],
 					texts: {
 						filter: "Filtrar:",
 						filterBy: 'Filtrar por {column}',
@@ -349,7 +350,16 @@
 					pagination: { edge: true },
 					sortIcon: {base:'fa' , up:'fa-sort-up', down:'fa-sort-down', is:'fa-sort'},
 					sortable: ['nombre', 'precio' , 'tiempoo'],
-					filterable: ['nombre', 'precio']
+					filterable: ['nombre', 'precio'],
+					texts: {
+                count: "Mostrando {from} - {to} de {count} Registros |{count} Registros|Un solo registro",
+                filter: "Filtro:",
+                limit: "Registros:",
+                page: "Pagina:",
+                noResults: "No se encuentran resultados",
+                filterBy: "Filtrar por {column}",
+                loading: 'Cargando...',
+            }
 				},
 				manicurista: new Manicurista(),
 				manicuristas: [],
@@ -751,8 +761,20 @@
 	.maxHeight{
 		max-height: 150px;
 	}
-	.maxHeightEdit{
+	.maxHeightEdit tbody{
 		max-height: 150px;
+	}
+	#myTableServEdit tbody::-webkit-scrollbar-thumb{
+		background: black !important;
+    border-radius: 4px !important;
+	}
+	#myTableServEdit tbody::-webkit-scrollbar {
+    width: 80px !important;     /* Tamaño del scroll en vertical */
+    height: 80px !important;    /* Tamaño del scroll en horizontal */
+   
+}
+	#myTableServEdit{
+			overflow-y: scroll !important;
 	}
 	.metricsServices h1{
 		float: right;
@@ -767,7 +789,7 @@
 		box-shadow: 0 0.46875rem 2.1875rem rgba(4,9,20,0.03), 0 0.9375rem 1.40625rem rgba(4,9,20,0.03), 0 0.25rem 0.53125rem rgba(4,9,20,0.05), 0 0.125rem 0.1875rem rgba(4,9,20,0.03);
 		padding: 20px;
 		padding-bottom:5px;
-		overflow-x: hidden;
+		overflow-x: scroll;
 		overflow-y:scroll;
 		max-height: 500px;
 		height:auto;
@@ -775,23 +797,15 @@
 		border-radius:5px;
 		border-radius:5px;
 	}
-	.forms::-webkit-scrollbar {
-		width: 8px;     /* Tamaño del scroll en vertical */
-		height: 8px;    /* Tamaño del scroll en horizontal */
-		display: none;  /* Ocultar scroll */
-	}
+	
 	.Lista{
-		overflow-x: hidden;
+		overflow-x: scroll;
 		overflow-y:scroll;
 		max-height: 440px;
 		height:auto;
 		border-radius:5px;
 	}
-	.Lista::-webkit-scrollbar {
-		width: 8px;     /* Tamaño del scroll en vertical */
-		height: 8px;    /* Tamaño del scroll en horizontal */
-		display: none;  /* Ocultar scroll */
-	}
+	
 	.ListaTwo{
 		overflow-x: hidden;
 		overflow-y:scroll;
@@ -821,11 +835,7 @@
     box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
     -webkit-transition: all 0.5s ease-out;
 	}
-	.ListaTwo::-webkit-scrollbar {
-		width: 8px;     /* Tamaño del scroll en vertical */
-		height: 8px;    /* Tamaño del scroll en horizontal */
-		display: none;  /* Ocultar scroll */
-	}
+	
 	
 	
 	.selectMani{
@@ -1045,12 +1055,8 @@
 	}
 
 	
-	.VueTables--client .row{
-		display:none
-	}
-	.VueTables__limit-field label{
-		display:none;
-	}
+	
+	
 	.VueTables--client .row .col-md-12{
 		padding: -10px;
 	}

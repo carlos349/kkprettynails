@@ -1,6 +1,7 @@
    aa<template>
     <div class="container">
         <div class="col-md-12 row sectionMetricReporte mb-5">
+            
             <div class="col-md-3 col-sm-12 metricsReporte mb-5">
                 <div>
                     <p class="text-center">Fecha</p>
@@ -22,6 +23,7 @@
         </div>
      
         <div class="datos mt-5 col-12 row" style="background-color:transparent !important">
+            <button v-on:click="back()" class="backCierre btn"><font-awesome-icon class="mr-2" icon="arrow-left" />Regresar</button>
             <div v-on:click="openModalEditIngreso()" class="editarIngManuales">
                 <font-awesome-icon icon="edit" /> Editar Ingresos Manuales
             </div>
@@ -385,7 +387,10 @@
             },
             sumaTotalEfectivo(signo){
                 this.totalEfectivoManual = this.ingresoFondoManual + this.efectivoManual - this.egresoManual
-            }
+            },
+            back(){
+            window.history.go(-1);
+        }
         }
     }
 </script>
@@ -446,6 +451,13 @@
 		padding: 10px;
 		width: 100% ;
 		color: black !important;
+    }
+    .backCierre{
+        position: absolute;
+        top: -10%;
+        
+        background-color: rgba(238, 238, 238, 0.623);
+        font-size: 1.4vw;
     }
    
 </style>
