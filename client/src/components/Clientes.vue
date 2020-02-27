@@ -213,15 +213,15 @@
 						<input v-model="nombreClienteEditar" type="text" class="form-control inputsClient w-100" placeholder="Nombre del prestador">
 					</div>
 					<div class="form-group">
-						<label for="identidad">Teléfono del cliente <span style="color:red;">*</span></label>
+						<label for="identidad">Información de contacto <span style="color:red;">*</span></label>
 						<input v-model="identidadClienteEditar" type="text" class="form-control inputsClient w-100" placeholder="Registre numero telefónico">
 					</div>
 					<div class="form-group">
-						<label for="identidad">Correo del cliente <span style="color:blue;">+</span></label>
+						<label for="identidad">Contacto adicional <span style="color:blue;">+</span></label>
 						<input v-model="correoClienteEditar" type="text" class="form-control inputsClient w-100" placeholder="Registre correo">
 					</div>
 					<div class="form-group">
-						<label for="identidad">Instagram del cliente <span style="color:blue;">+</span></label>
+						<label for="identidad">Contacto adicional <span style="color:blue;">+</span></label>
 						<input v-model="instagramClienteEditar" type="text" class="form-control inputsClient w-100" placeholder="Registre instagram">
 					</div>
                     <!-- <div class="form-group">
@@ -308,6 +308,7 @@ export default {
 			optionsT: {
 				filterByColumn: true,
 				perPage: 7,
+				perPageValues:[7,10,15,20,25,50],
 				texts: {
 					filter: "Filtrar:",
 					filterBy: 'Filtrar por {column}',
@@ -329,7 +330,16 @@ export default {
 				pagination: { edge: true },
 				sortIcon: {base:'fa' , up:'fa-sort-up', down:'fa-sort-down', is:'fa-sort'},
 				sortable: ['nombre', 'identidad' , 'recomendacion' , 'recomendaciones' , 'ultimaFecha' , 'fecha'],
-				filterable: ['nombre', 'identidad' , 'recomendacion' , 'recomendaciones' , 'ultimaFecha' , 'fecha']
+				filterable: ['nombre', 'identidad' , 'recomendacion' , 'recomendaciones' , 'ultimaFecha' , 'fecha'],
+				texts: {
+                count: "Mostrando {from} - {to} de {count} Registros |{count} Registros|Un solo registro",
+                filter: "Filtro:",
+                limit: "Registros:",
+                page: "Pagina:",
+                noResults: "No se encuentran resultados",
+                filterBy: "Filtrar por {column}",
+                loading: 'Cargando...',
+            }
 			},
 			clients: [],
 			clientTwos:[],
@@ -722,10 +732,10 @@ export default {
 	}
 	
 	.VueTables--client .row{
-		display:none
+		
 	}
 	.VueTables__limit-field label{
-		display:none;
+		display:inline-block;
 	}
 	.VueTables--client .row .col-md-12{
 		padding: -10px;

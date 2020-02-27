@@ -242,7 +242,8 @@ export default {
 			columns:['nombre' , 'documento' , 'comision' , 'advancement', 'rest', 'edit', 'delete', 'report'],
 			optionsT: {
 				filterByColumn: true,
-				perPage: 11,
+				perPage: 10,
+				perPageValues:[10,15,20,25,50],
 				texts: {
 					filter: "Filtrar:",
 					filterBy: 'Filtrar por {column}',
@@ -264,7 +265,16 @@ export default {
 				pagination: { edge: true },
 				sortIcon: {base:'fa' , up:'fa-sort-up', down:'fa-sort-down', is:'fa-sort'},
 				sortable: ['nombre', 'documento'],
-				filterable: ['nombre', 'documento']
+				filterable: ['nombre', 'documento'],
+				texts: {
+                count: "Mostrando {from} - {to} de {count} Registros |{count} Registros|Un solo registro",
+                filter: "Filtro:",
+                limit: "Registros:",
+                page: "Pagina:",
+                noResults: "No se encuentran resultados",
+                filterBy: "Filtrar por {column}",
+                loading: 'Cargando...',
+            }
 			},
 			manicurista: new Manicurista(),
 			manicuristas: [],
@@ -771,10 +781,10 @@ export default {
 		-webkit-transition: all 0.5s ease-out;
 		outline: none !important;
 	}
-	
-	.VueTables--client .row{
-		display:none
+	.VueTables__limit-field label{
+		display:inline-block;
 	}
+	
 	.VuePagination {
 		text-align: center;
 		display:block !important;
@@ -816,9 +826,7 @@ export default {
   content: "-";
 }
 
-[v-cloak] {
-  display:none;
-}
+
 .tablePresta th{
 	border:none !important;
 	}
@@ -895,4 +903,5 @@ export default {
 		background-color: #353535;
 		color: white !important;
 	}
+	
 </style>

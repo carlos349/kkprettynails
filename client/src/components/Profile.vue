@@ -238,19 +238,19 @@
 		
 		<div v-if="status == 2 || status == 1" class="boxCloses">
 			<button class="CierreDia btn-whiteDates btn-animation-1" v-on:click="daySaleClose">
-				<font-awesome-icon icon="cloud-upload-alt" />
+				<font-awesome-icon class="ml-2" icon="cloud-upload-alt" />
 			</button>
 		</div>
-		<div v-if="inspector && status == 2" class="boxFunds">
+		<div v-if="inspector && status == 2 || status == 1" class="boxFunds">
             <button class="FondoDia btn-whiteFunds btn-animation-1" v-on:click="openFunds">
                 <font-awesome-icon icon="cash-register" />
             </button>
         </div>
-		<div v-if="inspector && status == 1" class="boxFunds">
+		<!-- <div v-if="inspector && status == 1" class="boxFunds">
             <button class="FondoDia btn-whiteFunds btn-animation-1" v-on:click="openFunds">
                 <font-awesome-icon icon="cash-register" />
             </button>
-        </div>
+        </div> -->
 		<div class="modal fade" id="myModalRegisterFundss" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered" role="document">
 		    <div class="modal-content p-1" >
@@ -297,7 +297,9 @@
 			return {
 				columns:['fecha' , 'servicios' , 'clientNombre' , 'descuentoo' , 'comisionn' , 'totall'],
 				optionsT: {
-					filterByColumn: false,
+					filterByColumn: true,
+					perPage: 10,
+        			perPageValues:[10,15,20,25,50],
 					texts: {
 						filter: "Filtrar:",
 						filterBy: 'Filtrar por {column}',
@@ -319,7 +321,16 @@
 					pagination: { edge: true },
 					sortIcon: {base:'fa' , up:'fa-sort-up', down:'fa-sort-down', is:'fa-sort'},
 					sortable: ['fecha'],
-					filterable: ['fecha']
+					filterable: ['fecha'],
+					texts: {
+                count: "Mostrando {from} - {to} de {count} Registros |{count} Registros|Un solo registro",
+                filter: "Filtro:",
+                limit: "Registros:",
+                page: "Pagina:",
+                noResults: "No se encuentran resultados",
+                filterBy: "Filtrar por {column}",
+                loading: 'Cargando...',
+            }
 				},
 				nombreCaja:'',
 				montoCaja:'',	
@@ -799,8 +810,8 @@
 		letter-spacing: 1px;
 		border-radius:5px;
 	}
-	.VueTables--client .row{
-		display:none
+	.VueTables__limit-field label{
+		display:inline-block;
 	}
 	.VuePagination {
 		text-align: center;
@@ -930,10 +941,11 @@
 	}
 	.boxFunds{
     	position:fixed;
-		top:90%;
-		right:2%;
+		top:82%;
+		
+		right:2.35%;
 		z-index: 1000;
-		transform : translate(-50% ,-50%);
+		font-size: 2vw;
 	}
 	.FondoDia:link,
 	.FondoDia:visited{
@@ -1013,9 +1025,17 @@
 	.boxCloses{
     	position:fixed;
 		top:90%;
-		right:6%;
+		right:2%;
+		transition: all 1s;
 		z-index: 1000;
-		transform : translate(-50% ,-50%);
+		font-size: 2vw;
+		
+	}
+	.CierreDia:hover:before{
+		content: 'Cerrar dia '
+	}
+	.FondoDia:hover::before{
+		content: 'Fondo de caja '
 	}
 	.CierreDia:link,
 	.CierreDia:visited{
@@ -1027,7 +1047,8 @@
 		padding:20px 40px;
 		border-radius:100px;
 		display:inline-block;
-		transition: all .6s;
+		transition: all 1s;
+		
 	}
 
 	.btn-whiteDates{
@@ -1043,10 +1064,10 @@
 		outline: none !important;
 	}
 
-	.CierreDia:hover{
+	/* .CierreDia:hover{
 		box-shadow:0px 10px 10px #353535;
 		transform : translateY(-3px);
-	}
+	} */
 
 	.CierreDia:active{
 		box-shadow:0px 5px 10px #353535;

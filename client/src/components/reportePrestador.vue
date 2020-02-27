@@ -1,7 +1,9 @@
 <template>
     <div class="container">
+        
         <div class="row">
              <div class="recuadro col-sm-4 ml-4 mt-4" >
+                 <button v-on:click="back()" class="back btn"><font-awesome-icon class="mr-2" icon="arrow-left" />Regresar</button>
             <h1 class="text-left"><b>REPORTE PRESTADOR</b> </h1>
             <h3><b>Fecha:</b>  {{fecha}}</h3>
             <h3><b>Nombre:</b>  {{nameLender}}</h3>
@@ -18,8 +20,13 @@
             </center>
             
             </div>
-            <div class="col-sm-7 mt-4 ml-5">
-                <v-client-table class="text-center tablaReportesPersonal"  :data="sales" :columns="columns" :options="optionsT">
+            <div class="col-sm-7 mx-auto pt-1">
+                <div class="small">
+					<line-chart v-if="loaded" :chartdata="chartdata" :options="options" :styles="myStyles"/>
+				</div>
+            </div>
+            <div class="col-sm-12 mt-4 ml-5">
+                <v-client-table class="text-center tablaReportesPersonal"  :data="sales" :columns="columns" :options="optionsTR">
                 
                
                 <p slot="fecha" slot-scope="props">{{formatDate(props.row.fecha)}}</p>
@@ -31,18 +38,7 @@
             </div>
             
         </div>
-       
-        
-        <div class="row">
-            <div class="col-12">
-                <div class="small">
-					<line-chart v-if="loaded" :chartdata="chartdata" :options="options" :styles="myStyles"/>
-				</div>
-            </div>
-            <div class="col-12">
 
-            </div>
-        </div>
        
         <div class="modal fade" id="ModalEditPrestador" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered" role="document">
@@ -143,8 +139,9 @@
         data(){
             return{
                  columns:['fecha' , 'cliente' , 'comisionn' , 'totall'],
-			optionsT: {
+			optionsTR: {
 				filterByColumn: true,
+                perPage:9999999,
 				texts: {
 					filter: "Filtrar:",
 					filterBy: 'Filtrar por {column}',
@@ -156,14 +153,10 @@
                     comisionn: 'Comision ',
                     totall: 'Total',
 				},
-				pagination: { chunk:10 },
-				pagination: { dropdown:true },
-				pagination: { nav: 'fixed' },
-				pagination: { edge: true },
 				sortIcon: {base:'fa' , up:'fa-sort-up', down:'fa-sort-down', is:'fa-sort'},
 				sortable: ['fecha'],
 				filterable: ['']
-			},
+			    },
                 aperturaBanco: 0,
                 aperturaefectivo: 0,
                 aperturatotal: 0,
@@ -186,7 +179,8 @@
                 },
                 loaded: false,
                 chartdata: null,
-                height:360,
+                height:50,
+                width: 100,
                 reason:'',
                 totalAdvancement:'',
                 dateAdvancement: 'Click para elegr fecha',
@@ -228,6 +222,7 @@
                     this.codigo = resData.data._id
                     this.porcentaje = resData.data.porcentaje
                     this.nameLender = resData.data.nombre
+                    this.totalComisiones = resData.data.comision
                     const identificacion = resData.data.nombre+':'+resData.data.documento
                     axios.get('manicuristas/SalesByPrest/'+identificacion)
                     .then(res => {
@@ -236,11 +231,11 @@
                         let comisiones = 0
                         for (let index = 0; index < res.data.length; index++) {
                             totales = parseFloat(res.data[index].total) + parseFloat(totales)
-                            comisiones = parseFloat(res.data[index].comision) + parseFloat(comisiones)
+                            
                         }
                         this.totalVentas = totales
-                        this.totalComisiones = comisiones
-                        axios.get('/manicuristas/GetSalesPerMonth/'+this.identificacion)
+                        
+                        axios.get('/manicuristas/GetSalesPerMonth/'+identificacion)
                         .then(res => {	
                             const userlist = res.data
                             this.chartdata = userlist
@@ -386,13 +381,17 @@
             isFutureDate(date) {
             const currentDate = new Date();
             return date < currentDate;
+        },
+        back(){
+            window.history.go(-1);
         }
         },
         computed: {
             myStyles (){
                 return {
-                    height: `${this.height}px`,
-                    position: 'relative'
+                    height: `${this.height}vh`,
+                    position: 'relative',
+                    width: `${this.width}%`
                 }
             }
         }
@@ -409,6 +408,7 @@
     }
     .recuadro h3{
         margin-top: 4%;
+        
     }
     .datos{
         border: solid 2px #353535;
@@ -424,6 +424,7 @@
 		margin-top: 20px;
 		box-shadow: 0 0.46875rem 2.1875rem rgba(4,9,20,0.03), 0 0.9375rem 1.40625rem rgba(4,9,20,0.03), 0 0.25rem 0.53125rem rgba(4,9,20,0.05), 0 0.125rem 0.1875rem rgba(4,9,20,0.03);
 		border-radius: 5px;
+        width: 100% !important;
 	}
     label{
         color:black;
@@ -600,5 +601,12 @@
 		color: black !important;
 		width: 100%;
 		outline: none !important;
+    }
+    .back{
+        position: absolute;
+        top: 2%;
+        right: 2%;
+        background-color: rgba(238, 238, 238, 0.623);
+        font-size: 1.4vw;
     }
 </style>

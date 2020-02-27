@@ -336,11 +336,15 @@ export default {
 
     .boxDates{
     position:fixed;
-		top:90%;
-		right:2%;
-    z-index: 1000;
-    transform : translate(-50% ,-50%);
+		top:82%;
+		
+		right:2.35%;
+		z-index: 1000;
+		font-size: 2vw;
   }
+  .CierreDia:hover::before{
+		content: 'Fondo de caja '
+	}
   .CierreDia:link,
   .CierreDia:visited{
     text-decoration: none;

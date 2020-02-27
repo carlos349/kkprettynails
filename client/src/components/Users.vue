@@ -142,7 +142,7 @@
       return {
 		columns:['nombres' , 'email' , 'last' , 'edit' , 'delete'],
 		optionsT: {
-			filterByColumn: false,
+			filterByColumn: true,
 			texts: {
 				filter: "Filtrar:",
 				filterBy: 'Filtrar por {column}',
@@ -161,7 +161,16 @@
 			pagination: { edge: true },
 			sortIcon: {base:'fa' , up:'fa-sort-up', down:'fa-sort-down', is:'fa-sort'},
 			sortable: ['nombres', 'email'],
-			filterable: ['nombres', 'email']
+			filterable: ['nombres', 'email'],
+			texts: {
+                count: "Mostrando {from} - {to} de {count} Registros |{count} Registros|Un solo registro",
+                filter: "Filtro:",
+                limit: "Registros:",
+                page: "Pagina:",
+                noResults: "No se encuentran resultados",
+                filterBy: "Filtrar por {column}",
+                loading: 'Cargando...',
+            }
 		},
         users: [],
         first_name: '',
@@ -547,8 +556,8 @@
 		box-shadow: 1px 1px 10px -1px rgba(0,0,0,1);
 		-webkit-transition: all 0.5s ease-out;
 	}
-	.VueTables--client .row{
-		display:none
+	.VueTables__limit-field label{
+		display:inline-block;
 	}
 	.VuePagination {
 		text-align: center;

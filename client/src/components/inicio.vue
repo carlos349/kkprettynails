@@ -1,7 +1,7 @@
 <template>
 <div>
     <h1>Incio pagina web</h1>
-    <router-link style="text-decoration: none !important;" class=" " to="/gastos">
+    <router-link style="text-decoration: none !important;" class=" " to="/administracion">
 						<button class="btn btn-success">Ingresar</button>
 				</router-link>
     
