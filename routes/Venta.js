@@ -1024,7 +1024,7 @@ ventas.get('/dataChecker', (req, res) => {
 })
 
 ventas.get('/dataSectionManagement/:today', (req, res) => {
-  const dateDaily = req.params.today
+  const dateDaily = new Date(req.body.dateDaily)
   console.log(dateDaily)
   const dateDailyToday = dateDaily.getFullYear() +"-"+(dateDaily.getMonth() + 1)+"-"+dateDaily.getDate()
 
