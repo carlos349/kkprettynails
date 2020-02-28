@@ -431,7 +431,7 @@
 			async getDataManagement(){
 				const dateDaily = new Date()
 				try {
-					const dataManagement = await axios.get('ventas/dataSectionManagement/',{
+					const dataManagement = await axios.post('ventas/dataSectionManagement/',{
 						dateDaily: dateDaily
 					})
 					this.DailyManage = dataManagement.data.Daily
