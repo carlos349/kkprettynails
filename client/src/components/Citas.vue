@@ -4,10 +4,13 @@
         <div style="padding-left:2%;" id="calen" class="col-sm-12">
           <div v-if="status == 1 || status == 2" class="col-sm-12 mx-auto text-center p-1 mb-5">
             <div class="row fixed-top mt-1">
-              <div class="col-sm-6">
+              <div class="col-sm-5">
                 <button  data-toggle="modal" class="generar" data-target=".genCita">Generar cita <font-awesome-icon style="float:right;margin-top:2px;margin-right:5px;font-size:1.2em" icon="tasks" /></button>
               </div>
-              <div class="col-sm-6">
+              <div class="col-sm-2">
+                {{new Date()}}
+              </div>
+              <div class="col-sm-5">
                 <select id="manicuristas" v-model="empByCita" v-on:change="getCitasByEmploye()"  class="Two" name="manicuristas">
                   <option v-if="sectionDelete" selected="true" >Manicuristas</option>
                   <option selected="true">Todos</option>
@@ -347,18 +350,45 @@
 
             </ul><br>
               <div v-if="status != 3">
-                <button v-bind:class="selectedEvent.class" v-if="selectedEvent.process == true && status == 2 " type="button" class="btn font-weight-bold btn-style col-5 mt-2 ml-4" v-on:click="borrarCita(selectedEvent.id)">Borrar cita</button>
-                <button v-bind:class="selectedEvent.class" v-else-if="selectedEvent.process != true && status != 2" type="button" class="btn font-weight-bold btn-style col-12 mt-2" v-on:click="borrarCita(selectedEvent.id)">Borrar cita</button>
+                <div v-on:click="dataEdit(selectedEvent.id, selectedEvent.start, selectedEvent.end, selectedEvent.services, selectedEvent.cliente, selectedEvent.empleada, selectedEvent.class)" v-bind:style="{  'height': 'auto', 'z-index' : '1000' }"  class="p-2 menuCitaBorrar  navSCitaEdit" v-on:mouseenter="mouseOverVenta('textEdit',0)" v-on:mouseleave="mouseLeaveVenta('textEdit',0)">
+                  <div class="row">
+                    <div class="col-sm-2">
+                      <font-awesome-icon   style="color:#353535;font-size:1.6em" icon="edit" />
+                    </div>
+                    <div  class="col-sm-10 pl-4 pt-1 textEdit">
+                      <b>Editar cita</b>	
+                    </div>
+                  </div>	
+                </div>
 
-                <button v-bind:class="selectedEvent.class" v-if="selectedEvent.process == true && status == 1" type="button" class="btn font-weight-bold btn-style col-5 mt-2 ml-4" v-on:click="borrarCita(selectedEvent.id)">Borrar cita</button>
-                <button v-bind:class="selectedEvent.class" v-else-if="selectedEvent.process != true && status != 1" type="button" class="btn font-weight-bold btn-style col-12 mt-2" v-on:click="borrarCita(selectedEvent.id)">Borrar cita</button>
+                <div v-on:click="cerraCita(selectedEvent.id)" v-if="selectedEvent.process == true && status == 2 || selectedEvent.process == true &&status == 1" v-bind:style="{  'height': 'auto', 'z-index' : '1000' }"  class="p-2 menuCitaBorrar navSCitaEditar " v-on:mouseenter="mouseOverVenta('textClose',0)" v-on:mouseleave="mouseLeaveVenta('textClose',0)">
+                  <div class="row">
+                    <div class="col-sm-2">
+                      <font-awesome-icon   style="color:#fe4a49;font-size:1.6em" icon="window-close" />
+                    </div>
+                    <div  class="col-sm-10 pl-4 pt-1 textClose">
+                      <b>Cerrar cita</b>	
+                    </div>
+                  </div>	
+                </div>
+                
+                <div v-on:click="borrarCita(selectedEvent.id)" v-if="status == 1 || status == 2 " v-bind:style="{  'height': 'auto', 'z-index' : '1000' }"  class="p-2 menuCitaBorrar navSCitaCerrar" v-on:mouseenter="mouseOverVenta('textDelete',0)" v-on:mouseleave="mouseLeaveVenta('textDelete',0)">
+                  <div class="row">
+                    <div class="col-sm-2">
+                      <font-awesome-icon  style="color:#353535;font-size:1.6em" icon="trash" />
+                    </div>
+                    <div  class="col-sm-10 pl-4 pt-1 textDelete">
+                      <b>Borrar cita</b>	
+                    </div>
+                  </div>	
+                </div>
 
-                <button v-bind:class="selectedEvent.class" v-if="selectedEvent.process == true && status == 2" type="button" class="btn font-weight-bold btn-style col-5 mt-2 ml-4" v-on:click="cerraCita(selectedEvent.id)">Cerrar cita</button>
-                <button v-bind:class="selectedEvent.class" v-if="selectedEvent.process == true && status == 1" type="button" class="btn font-weight-bold btn-style col-5 mt-2 ml-4" v-on:click="cerraCita(selectedEvent.id)">Cerrar cita</button>
-                <button v-bind:class="selectedEvent.class" v-if="selectedEvent.process == true && status == 1" type="button" class="btn font-weight-bold btn-style col-5 mt-2 ml-4" v-on:click="dataEdit(selectedEvent.id, selectedEvent.start, selectedEvent.end, selectedEvent.services, selectedEvent.cliente, selectedEvent.empleada, selectedEvent.class)">Editar cita</button>
-                <button v-bind:class="selectedEvent.class" v-if="selectedEvent.process == true && status == 2 " type="button" class="btn font-weight-bold btn-style col-5 mt-2 ml-4" v-on:click="dataEdit(selectedEvent.id, selectedEvent.start, selectedEvent.end, selectedEvent.services, selectedEvent.cliente, selectedEvent.empleada, selectedEvent.class)">Editar cita</button>
-                <button v-bind:class="selectedEvent.class" v-if="selectedEvent.process == true && status == 1" type="button" class="btn font-weight-bold btn-style col-5 mt-2 ml-4" v-on:click="processSale(selectedEvent.id, 'process')">Procesar venta</button>
-                <button v-bind:class="selectedEvent.class" v-if="selectedEvent.process == true && status == 2 " type="button" class="btn font-weight-bold btn-style col-5 mt-2 ml-4" v-on:click="processSale(selectedEvent.id, 'process')">Procesar venta</button>
+                
+
+               
+               
+                <button v-bind:class="selectedEvent.class" v-if="selectedEvent.process == true && status == 1 || selectedEvent.process == true && status == 2" type="button" class="btn font-weight-bold btn-style col-10 mt-2 ml-4" v-on:click="processSale(selectedEvent.id, 'process')">Procesar venta</button>
+                
                 
               </div>
             </div>
@@ -1863,7 +1893,20 @@ import router from '../router'
       },
       reloadBloques(){
         this.bloquesHoraEdit = []
-      }
+      },
+      mouseOverVenta(clase,num){
+		// setTimeout(() => {
+			
+			$('.'+clase).show()
+			
+		
+		// }, 500);
+		
+		},
+		mouseLeaveVenta(clase,num){
+			$('.'+clase).hide()		
+		},
+		
     },
     mounted(){
       EventBus.$on('reloadCitas', status => {
@@ -2210,12 +2253,12 @@ import router from '../router'
 		box-shadow: 1px 1px 6px -1px rgba(0,0,0,1);
 		font-family: 'Roboto', sans-serif !important;
 		font-weight:600;
-		width: 100%;
+		width: 100% !important;
 		letter-spacing: 1px;
 		border-radius:5px;
 	}
 	.btn-style:hover{
-		background-color:#ccc;
+		background-color:#7ec365;
     
 		color:#001514;
 	}
@@ -2928,4 +2971,53 @@ import router from '../router'
   overflow-y: scroll;
 }
 
+.menuCitaBorrar:hover{
+	width: 35%;
+	right:-35%;
+	z-index:2;
+}
+
+.navSCitaEdit{
+	cursor: pointer;
+	width:7.5%;
+	top:3.5%;
+	right:-6.5%;
+  margin: auto;
+	background-color: white;
+	position: absolute;
+	border-radius: 0 5px 5px 0;
+}
+.navSCitaCerrar{
+  cursor: pointer;
+	width:7.5%;
+	top:10%;
+	right:-6.5%;
+  margin: auto;
+	background-color: white;
+	position: absolute;
+	border-radius: 0 5px 5px 0;
+}
+.navSCitaEditar{
+  cursor: pointer;
+	width:7.5%;
+	top:16.5%;
+	right:-6.5%;
+  margin: auto;
+	background-color: white;
+	position: absolute;
+	border-radius: 0 5px 5px 0;
+}
+.iconsProce{
+	padding-right: 5px;
+	border-right: 1px solid rgba(0, 0, 0, 0.404) ;
+}
+.textDelete{
+	display: none;
+}
+.textClose{
+  display: none;
+}
+.textEdit{
+  display: none
+}
 </style>

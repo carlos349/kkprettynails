@@ -1010,6 +1010,9 @@
 	th:nth-child(3) {
 	text-align: center;
 	}
+	.vue-pagination-ad {
+		text-align: center;
+	}
 
 	.VueTables__child-row-toggler {
 	width: 16px;

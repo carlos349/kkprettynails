@@ -440,11 +440,9 @@
 	}
 
 	
-	.VueTables--client .row{
-		display:none
-	}
+	
 	.VueTables__limit-field label{
-		display:none;
+		display:inline-block;
 	}
 	.VueTables--client .row .col-md-12{
 		padding: -10px;
