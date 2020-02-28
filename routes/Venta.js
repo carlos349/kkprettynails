@@ -1023,8 +1023,8 @@ ventas.get('/dataChecker', (req, res) => {
   })
 })
 
-ventas.get('/dataSectionManagement', (req, res) => {
-  const dateDaily = new Date()
+ventas.get('/dataSectionManagement/:today', (req, res) => {
+  const dateDaily = req.params.today
   console.log(dateDaily)
   const dateDailyToday = dateDaily.getFullYear() +"-"+(dateDaily.getMonth() + 1)+"-"+dateDaily.getDate()
 
