@@ -93,6 +93,7 @@
 	import DatePick from 'vue-date-pick';
 	import 'vue-date-pick/dist/vueDatePick.css';
 	import EventBus from './EventBus'
+	import vueCustomScrollbar from 'vue-custom-scrollbar'
 	class Expenses{
 		constructor(expenses, figure) {
 			this.expenses = expenses;
@@ -103,10 +104,14 @@
 	export default {
 		components: {
 			LineChart,
-			DatePick
+			DatePick,
+			vueCustomScrollbar
 		},
 		data(){
 			return {
+				settings: {
+        maxScrollbarLength: 60
+      },
 				columns:['expense' , 'date' , 'typee' , 'mountt' ],
 				optionsT: {
 					filterByColumn: true,
@@ -269,7 +274,10 @@
 			isFutureDate(date) {
             const currentDate = new Date();
             return date < currentDate;
-        }
+        },
+		scrollHanle(evt) {
+      console.log(evt)
+    }
 		},
 		computed: {
 			myStyles (){
@@ -289,7 +297,6 @@
 		font-weight:600;
 		width: 40%;
 	}
-	
 	.small{
 		background-color: #fff;
 		margin-top: 20px;

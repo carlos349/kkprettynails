@@ -37,7 +37,7 @@
 							<font-awesome-icon class="lupa-modal" icon="search"/>
 							</div>
 							</div>
-							<div class="ListaProcesar maxHeightInvent">
+							<vue-custom-scrollbar class="ListaProcesar maxHeightInvent">
 								<table class="table table-dark tableBg" id="myTableInvent">
 									<tbody>
 										<tr v-for="(servicio, index) in servicios" v-bind:key="servicio._id" >
@@ -53,7 +53,7 @@
 										</tr>
 									</tbody>
 								</table>
-							</div>
+							</vue-custom-scrollbar>
 							<button class="btn w-100 addInventario">Agregar</button>
 							</form>
 						</div>
@@ -105,7 +105,7 @@
 					</div>
 					<div class="form-group row" style="margin-top:-15px;">
 						<input type="text" id="myInputInventEdit" v-on:keyup="myFunctionInventEdit()" class="form-control buscar inputsInventario w-100 mt-2" placeholder="Seleccione Servicios"/>
-						<div class="ListaProcesar maxHeightEdit w-100">
+						<vue-custom-scrollbar class="ListaProcesar maxHeightEdit w-100">
 							<table class="table" id="myTableInventEdit">
 								<tbody>
 									<tr v-for="(servicio, index) of servicios" >
@@ -121,7 +121,7 @@
 									</tr>
 								</tbody>
 							</table>
-						</div>
+						</vue-custom-scrollbar>
 					</div>
 					<button class="btn btn-lg add btn-block" type="submit">Actualizar producto</button>
 		        </form>
@@ -137,7 +137,11 @@
 	import axios from 'axios'
 	import router from '../router'
 	import EventBus from './EventBus'
+	import vueCustomScrollbar from 'vue-custom-scrollbar'
 export default {
+	components:{
+		 vueCustomScrollbar
+	 },
 	data(){
 		return {
 			columns:['producto', 'fecha'  , 'marca' , 'gramoss' , 'cantidad' , 'montoo' , 'montoTotall', 'servicioss', 'edit'],
@@ -658,7 +662,7 @@ export default {
 		position:absolute;
 		color:#353535;
 		right:8%;
-		top:69.5%;
+		top:66.5%;
 		font-size:1.4em
 	}
 	

@@ -18,6 +18,7 @@
 			</div>
 			<div class="col-md-12 ">
 				<div class="">
+					
 					<ul class="nav nav-tabs tabServis w-100" id="myTab" role="tablist">
 						<li class="nav-item">
 							<a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true"><font-awesome-icon class="mr-2" icon="table" />Tabla de datos</a>
@@ -75,7 +76,7 @@
 										</tr>
 									</thead>
 								</table>
-								<div class="ListaTwo">
+								<vue-custom-scrollbar class="ListaTwo">
 									<table class="table table-light table-borderless table-striped">
 										<tbody>
 											<tr v-for="servicesQuantityPerMonth of servicesQuantityPerMonths">
@@ -88,7 +89,7 @@
 											</tr>
 										</tbody>
 									</table>
-								</div>
+								</vue-custom-scrollbar>
 							</div>
 						</div>
 						<div class="col-md-8 chart">
@@ -166,7 +167,7 @@
 									</tr>
 							</tbody>
 						</table>
-						<div class="ListaProcesar maxHeightEdit w-100">
+						<vue-custom-scrollbar class="ListaProcesar maxHeightEdit w-100">
 							<table class="table table-light table-borderless table-striped" id="myTableServEdit">
 								<tbody>
 									
@@ -183,7 +184,7 @@
 									</tr>
 								</tbody>
 							</table>
-						</div>
+						</vue-custom-scrollbar>
 					</div>
 					<button class="btn mx-auto add btn-block w-75" type="submit">Actualizar servicio</button>
 		        </form>
@@ -234,22 +235,23 @@
 							<div class="w-100">
 							<input type="text" v-model="searching" id="myInputServ" v-on:keyup="myFunctionServ()" class="inputServi buscar mt-4 mb-1 w-100" placeholder="Buscar prestadores"/>
 							<font-awesome-icon class="lupa-modalServices" icon="search"/></div>
-							<div class="ListaProcesar maxHeight">
-								<table class="table mt-2 table-light table-borderless table-striped">
-							<tbody>
-								<tr >
-										<td class="font-weight-bold">
-											Marcar todos
-										</td>
-										<td class="font-weight-bold text-right">
-											<label class="conCheck mb-3 col-sm-2">
-											<input  class="checkFirst" v-on:click="presSelectAllReg()" type="checkbox">
-											<span class="checkmark"></span>
-											</label>
-										</td>
-									</tr>
-							</tbody>
-						</table>
+							<table class="table mt-2 table-light table-borderless table-striped">
+									<tbody>
+										<tr >
+												<td class="font-weight-bold">
+													Marcar todos
+												</td>
+												<td class="font-weight-bold text-right">
+													<label class="conCheck mb-3 col-sm-2">
+													<input  class="checkFirst" v-on:click="presSelectAllReg()" type="checkbox">
+													<span class="checkmark"></span>
+													</label>
+												</td>
+											</tr>
+									</tbody>
+								</table>
+							<vue-custom-scrollbar class="ListaProcesar maxHeight">
+								
 								<table class="table table-light table-borderless table-striped" id="myTableServ">
 									<tbody>
 										<tr  v-for="(manicurista, index) of manicuristas" >
@@ -265,7 +267,7 @@
 										</tr>
 									</tbody>
 								</table>
-							</div>
+							</vue-custom-scrollbar >
 						</div>
 						<button class="btn w-100 add">Agregar</button>
 					</form>
@@ -283,6 +285,7 @@
 	import LineChart from '../plugins/LineChart.js'
 	import router from '../router'
 	import EventBus from './EventBus'
+	import vueCustomScrollbar from 'vue-custom-scrollbar'
 	class Manicurista{
 		constructor(nombre, documento, porcentaje, comision) {
 			this.nombre = nombre;
@@ -321,7 +324,8 @@
 	}
 	export default {
 		components: {
-			LineChart
+			LineChart,
+			vueCustomScrollbar
 		},
 		data() {
 			return {
@@ -712,21 +716,30 @@
 			},
 			presSelectAll(){
 				if ($(".desMarc").prop("checked") == true) {
-					console.log("maldita sea")
+					for (let index = 0; index < this.manicuristas.length; index++) {
+						this.prestadoresSeleccionadosTwos.push(this.manicuristas[index]._id)
+					}
+					
 					$(".desMarc").prop("checked",true);
 				}
 				else{
+					
+					this.prestadoresSeleccionadosTwos = []
 					$(".desMarc").prop("checked",false);
 				}	
 			},
 			presSelectAllReg(){
 				if ($(".checkFirst").prop("checked") == false) {
+					for (let index = 0; index < this.manicuristas.length; index++) {
+						this.prestadoresSeleccionados.push(this.manicuristas[index]._id)
+					}
 					
 					$(".checkFirst").prop("checked",true);
 				}
 				else{
 					console.log("maldita sea")
 					$(".checkFirst").prop("checked",false);
+					this.prestadoresSeleccionados= []
 				}	
 			}
 		},
@@ -991,7 +1004,7 @@
 	.lupa-modalServices{
 		position:absolute;
 		right:8%;
-		top:63%;
+		top:58%;
 		font-size:1.4em
 	}
 	

@@ -8,10 +8,12 @@
 <script>
   import Navbar from "./components/Navbar"
   import EventBus from './components/EventBus'
+  import vueCustomScrollbar from 'vue-custom-scrollbar'
   export default {
     name: 'App',
     components: {
-      'Navbar': Navbar
+      'Navbar': Navbar,
+      vueCustomScrollbar
     },
 
     methods: {
@@ -40,4 +42,17 @@
     width: 167vw;
     height: 167vh;;
   }
+  .animate {
+  transition-delay: .1s;
+  transition-duration: .25s;
+  transition-timing-function: ease-in;
+}
+ 
+.slide-up {
+  transform: translateY(0)
+}
+ 
+.slide-up.animate-active {
+  transform: translateY(-100px)
+}
 </style>
