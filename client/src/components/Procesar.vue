@@ -75,16 +75,16 @@
 						<tbody>
 							<tr v-for="(servicio, index) in servicios" v-bind:key="servicio._id">
 								<td style="border:none" v-if="servicio.active" class="font-weight-bold">
-									<button v-if="!inspector" type="button" class="w-75 btn procesar text-left" v-on:click="conteoServicio(servicio._id,servicio.nombre, servicio.precio, servicio.comision)" disabled>
+									<button v-if="!inspector" type="button" class="w-75 btn procesar text-left" v-on:click="conteoServicio(servicio._id,servicio.nombre, servicio.precio, servicio.comision, servicio.descuento)" disabled>
 									  {{servicio.nombre}} <span class="badge badge-light conteoServ mt-1 float-right" v-bind:class="formatClass(servicio.nombre)" v-bind:id="servicio._id">0</span>
 									</button>
 									<button  v-if="!inspector" type="button" class="w-20 btn btn-back  text-left"  disabled>
 									  <font-awesome-icon icon="times"/>
 									</button>
-									<button style="background-color:#6BB2E5" v-else type="button" class="w-75 btn procesar  text-left" v-on:click="conteoServicio(servicio._id ,servicio.nombre, servicio.precio, servicio.comision)">
+									<button style="background-color:#6BB2E5" v-else type="button" class="w-75 btn procesar  text-left" v-on:click="conteoServicio(servicio._id ,servicio.nombre, servicio.precio, servicio.comision, servicio.descuento)">
 									  {{servicio.nombre}} <span class="badge badge-light conteoServ mt-1 float-right" v-bind:class="formatClass(servicio.nombre)" v-bind:id="servicio._id">0</span>
 									</button>
-									<button style="background-color:#6BB2E5" v-if="inspector" type="button" class="w-20 btn btn-back  text-left" v-on:click="borrarServicio(servicio.nombre,index,servicio._id,servicio.precio)">
+									<button style="background-color:#6BB2E5" v-if="inspector" type="button" class="w-20 btn btn-back  text-left" v-on:click="borrarServicio(servicio.nombre,index,servicio._id,servicio.precio, servicio.descuento)">
 									  <font-awesome-icon icon="times"/>
 									</button>
 
@@ -781,7 +781,7 @@ import vueCustomScrollbar from 'vue-custom-scrollbar'
 				console.log(err)
 			})
 		},
-		borrarServicio(servicio,index,esto,precio){
+		borrarServicio(servicio,index,esto,precio, discount){
 			for (var i = 0; i < this.serviciosSelecionados.length; i++) {
 				console.log(i)
 				if (this.serviciosSelecionados[i].servicio == servicio ) {
@@ -836,7 +836,7 @@ import vueCustomScrollbar from 'vue-custom-scrollbar'
 				
 			}
 		},
-		conteoServicio(esto, servicio, precio, comision){
+		conteoServicio(esto, servicio, precio, comision, discount){
 			const descuento = parseFloat(this.descuento) / 100
 			const porcentaje = 1 - parseFloat(descuento)
 			const precioTotal = parseFloat(this.subTotal) + parseFloat(precio)
@@ -855,7 +855,7 @@ import vueCustomScrollbar from 'vue-custom-scrollbar'
 			const conteo = $("#"+esto).text()
 			const conteoTotal = parseFloat(conteo) + 1
 			$("#"+esto).text(conteoTotal)
-			const servicios = {'servicio': servicio, 'comision': comision, 'precio': precio}
+			const servicios = {'servicio': servicio, 'comision': comision, 'precio': precio, 'descuento': discount}
 			this.serviciosSelecionados.push(servicios)
 			
 			axios.put('ventas/updateServicesMonth/' + servicio)
@@ -916,7 +916,7 @@ import vueCustomScrollbar from 'vue-custom-scrollbar'
 					.then(res => {
 						var subTotal = 0
 						for (let index = 0; index < this.servicesProcess.length; index++) {
-							this.serviciosSelecionados.push({servicio: this.servicesProcess[index].servicio, comision: this.servicesProcess[index].comision, precio: this.servicesProcess[index].precio})
+							this.serviciosSelecionados.push({servicio: this.servicesProcess[index].servicio, comision: this.servicesProcess[index].comision, precio: this.servicesProcess[index].precio, descuento: this.servicesProcess[index].precio})
 							let valSpan = ''
 							let sumaVal = 0
 							for (let indexTwo = 0; indexTwo < res.data.length; indexTwo++) {
