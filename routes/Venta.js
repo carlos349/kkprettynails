@@ -813,7 +813,7 @@ ventas.post('/procesar', (req, res) => {
   }else{
     today = new Date(req.body.fecha)
   }
-  console.log(services)
+  
   var descuento = 100 - req.body.descuento
   var comisionTotal = 0
   for (let index = 0; index < services.length; index++) {
@@ -830,7 +830,6 @@ ventas.post('/procesar', (req, res) => {
     }
     comisionPerAmount = comisionDescuento * parseFloat('0.'+req.body.servicios[index].comision)
     comisionTotal = comisionTotal + comisionPerAmount
-    console.log(comisionTotal)
   }
   
   const total = req.body.total

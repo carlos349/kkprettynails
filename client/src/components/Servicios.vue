@@ -126,7 +126,7 @@
 						<label class="containeer">
 							<input class="ifCheckThree" type="checkbox" >
 							<span class="checkmark"></span>
-							<h6 style="font-size:17px;" class="w-100 mt-1">¿Desea agregar marca de descuento?</h6>	
+							<h6 style="font-size:17px;" class="w-100 mt-1">¿Desea que este servicio no lleve descuento?</h6>	
 						</label>
 					</div>
 					<div class="form-group row">
@@ -214,7 +214,7 @@
 							<label class="containeer">
 								<input class="ifCheckTwo" type="checkbox" >
 								<span class="checkmark"></span>
-								<h6 style="font-size:17px;" class="w-100 mt-1">¿Desea agregar marca de descuento?</h6>	
+								<h6 style="font-size:17px;" class="w-100 mt-1">¿Desea que este servicio no lleve descuento?</h6>	
 							</label>
 						</div>
 						<div class="form-group row">
