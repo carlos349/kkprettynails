@@ -2162,7 +2162,7 @@ import router from '../router'
 		top:90%;
 		right:2%;
     z-index: 1000;
-    transform : translate(-50% ,-50%);
+    
   }
   .CierreDia:link,
   .CierreDia:visited{
@@ -2192,18 +2192,20 @@ import router from '../router'
 
   .CierreDia:hover{
     box-shadow:0px 10px 10px rgba(0,0,0,0.2);
-    transform : translateY(-3px);
+    
   }
 
   .CierreDia:active{
     box-shadow:0px 5px 10px rgba(0,0,0,0.2);
-    transform:translateY(-1px);
+   
   }
 
   .btn-bottom-animation-1{
     animation:comeFromBottom 2s ease-out .8s;
   }
-
+  .CierreDia:hover:before{
+		content: 'Cerrar dia '
+	}
   .CierreDia::after{
     content:"";
     text-decoration: none;
