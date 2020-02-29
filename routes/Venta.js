@@ -1025,6 +1025,7 @@ ventas.get('/dataChecker', (req, res) => {
 
 ventas.post('/dataSectionManagement', (req, res) => {
   const dateDaily = new Date(req.body.dateDaily)
+  const dateDailyTwo = new Date(req.body.dateDaily)
   console.log(dateDaily)
   const dateDailyToday = dateDaily.getFullYear() +"-"+(dateDaily.getMonth() + 1)+"-"+dateDaily.getDate()
 
@@ -1036,11 +1037,11 @@ ventas.post('/dataSectionManagement', (req, res) => {
   dateWeekly.setDate(dateDaily.getDate() - dateDaily.getDay())
   const dateWeeklySince = dateWeekly.getFullYear() +"-"+(dateWeekly.getMonth() + 1)+"-"+dateWeekly.getDate()
  
-  const dateMonthly = new Date((dateDaily.getMonth() + 1)+'-01-'+dateDaily.getFullYear())
+  const dateMonthly = new Date((dateDailyTwo.getMonth() + 1)+'-01-'+dateDailyTwo.getFullYear())
   const dateMonthlySince = dateMonthly.getFullYear() +"-"+(dateMonthly.getMonth() + 1)+"-"+(dateMonthly.getDate() + 1)
   dateMonthly.setMonth(dateMonthly.getMonth() + 1)
   const dateMonthlyUntil = dateMonthly.getFullYear() +"-"+(dateMonthly.getMonth() + 1)+"-"+dateMonthly.getDate()
-  
+  console.log(dateMonthly)
   var dailyData = {
     Sale: 0,
     Services: 0,
