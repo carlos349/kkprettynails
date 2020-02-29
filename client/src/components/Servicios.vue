@@ -49,7 +49,7 @@
 									<button style="background-color:#E6E6EA;color:#618B25" v-on:click="desactivarServicio(props.row._id)" v-if="props.row.active" class="font-weight-bold btn btn-success w-100 p-0 m-0">Activo</button>
 									<button v-on:click="desactivarServicio(props.row._id)" v-if="!props.row.active" class="font-weight-bold btn btn-inactive w-100 p-0 m-0">Inactivo</button>
 								</div>
-								<button style="background-color:#353535;color:white" slot="edit"  slot-scope="props"  v-on:click="pasarDatosEdit(props.row.nombre, props.row.tiempo, props.row.precio, props.row.prestadores, props.row._id, props.row.comision)" class="btn add w-100 p-0 m-0"><font-awesome-icon icon="edit" /></button>
+								<button style="background-color:#353535;color:white" slot="edit"  slot-scope="props"  v-on:click="pasarDatosEdit(props.row.nombre, props.row.tiempo, props.row.precio, props.row.prestadores, props.row._id, props.row.comision, props.row.descuento)" class="btn add w-100 p-0 m-0"><font-awesome-icon icon="edit" /></button>
 								<!-- <a slot="edit" slot-scope="props" class="fa fa-edit" :href="pasarDatosEdit(props.row.nombre, props.row.identidad, props.row.correoCliente, props.row.instagramCliente, props.row._id)">Hola </a> -->
 							</v-client-table>
 						</div>
@@ -122,6 +122,13 @@
 		      </div>
 		      <div  class="modal-body ">
 		        <form v-on:submit.prevent="actualizacionServicios" class="p-3">
+					<div class="form-group" style="margin-bottom:-5px;">
+						<label class="containeer">
+							<input class="ifCheckThree" type="checkbox" >
+							<span class="checkmark"></span>
+							<h6 style="font-size:17px;" class="w-100 mt-1">¿Desea agregar marca de descuento?</h6>	
+						</label>
+					</div>
 					<div class="form-group row">
 						<label for="nombre">Nombre del servicio</label>
 						<input type="text" v-model="nombreServicio" class="inputServi w-100" name="nombreServicio" placeholder="Nombre del servicio" >
@@ -203,6 +210,13 @@
 		      </div>
 		      <div  class="modal-body ">
 		        <form v-on:submit.prevent="registroServicio" class="p-3">
+						<div class="form-group" style="margin-bottom:-5px;">
+							<label class="containeer">
+								<input class="ifCheckTwo" type="checkbox" >
+								<span class="checkmark"></span>
+								<h6 style="font-size:17px;" class="w-100 mt-1">¿Desea agregar marca de descuento?</h6>	
+							</label>
+						</div>
 						<div class="form-group row">
 							<label for="name">Nombre del servicio</label>
 							<input v-model="nombreServi" type="text" class="inputServi w-100" placeholder="Nombre servicio">
@@ -470,13 +484,19 @@
 							timer: 1500
 						})
 					}else{
+						var ifCheck
+						if ($('.ifCheckTwo').prop('checked')) {
+							ifCheck = true
+						}else{
+							ifCheck = false
+						}
 						axios.post('servicios', {
 							nombreServicio: this.nombreServi,
 							precioServicio: this.precioServi,
 							comisionServicio: this.comisionServicioEdit,
 							tiempoServicio: this.tiempoServi,
-							prestadores: this.prestadoresSeleccionados
-
+							prestadores: this.prestadoresSeleccionados,
+							descuento: ifCheck
 						})
 						.then(res => {
 							if(res.data.status == 'Servicio creado'){
@@ -494,6 +514,7 @@
 								this.tiempoServi = 'Seleccione el tiempo'
 								this.prestadoresSeleccionados = []
 								$('.checkFirst').prop('checked', false)
+								$('.ifCheckTwo').prop('checked', false)
 								this.emitMethod()
 							}else{
 								this.$swal({
@@ -574,6 +595,12 @@
 						timer: 1500
 					})
 				}else{
+					var ifCheck
+					if ($('.ifCheckThree').prop('checked')) {
+						ifCheck = true
+					}else{
+						ifCheck = false
+					}
 					const id = this.idServicioEditar
 					axios.put('servicios/' + id, {
 						nombreServicio: this.nombreServicio,
@@ -581,6 +608,7 @@
 						precioServicio: this.precioServicio,
 						comisionServicio: this.comisionServicio,
 						prestadores: this.prestadoresSeleccionadosTwos,
+						descuento: ifCheck
 					})
 					.then(res => {
 						console.log(res)
@@ -608,9 +636,12 @@
 					})
 				}
 			},
-			pasarDatosEdit(nombre,tiempo, precio, prestadores, id, comision){
+			pasarDatosEdit(nombre,tiempo, precio, prestadores, id, comision, descuento){
+				$('.ifCheckThree').prop('checked', false)
+				if (descuento) {
+					$('.ifCheckThree').prop('checked', true)
+				}
 				this.optionsT.filterByColumn = true
-				
 				this.prestadoresSeleccionadosTwos = []
 				$(".desMarc").prop("checked", false)
 				this.nombreServicio = nombre
@@ -1133,5 +1164,92 @@
 		cursor: pointer;
 		background-color: #353535;
 		color: white !important;
+	}
+	.containeer {
+        display: block;
+        position: relative;
+        padding-left: 35px;
+        
+        cursor: pointer;
+        font-size: 22px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+        /* Hide the browser's default checkbox */
+    .containeer input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+    }
+
+        /* Create a custom checkbox */
+    .containeer {
+		display: inline-block;
+		position: relative;
+		cursor: pointer;
+		font-size: 0.8em;
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+	}
+
+		/* Hide the browser's default checkbox */
+	.containeer input {
+		position: absolute;
+		opacity: 0;
+		cursor: pointer;
+		height: 0;
+		width: 0;
+	}
+
+/* Create a custom checkbox */
+	.checkmark {
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: 25px;
+		width: 25px;
+		background-color: #1F5673;
+	}
+
+	/* On mouse-over, add a grey background color */
+	.containeer:hover input ~ .checkmark {
+		background-color: #1F5673;
+	}
+
+	/* When the checkbox is checked, add a blue background */
+	.containeer input:checked ~ .checkmark {
+		background-color: #102229;
+	}
+
+	/* Create the checkmark/indicator (hidden when not checked) */
+	.checkmark:after {
+		content: "";
+		position: absolute;
+		display: none;
+	}
+
+	/* Show the checkmark when checked */
+	.containeer input:checked ~ .checkmark:after {
+		display: inline-block;
+	}
+
+	/* Style the checkmark/indicator */
+	.containeer .checkmark:after {
+		left: 9px;
+		top: 5px;
+		width: 5px;
+		height: 10px;
+		border: solid white;
+		border-width: 0 3px 3px 0;
+		-webkit-transform: rotate(45deg);
+		-ms-transform: rotate(45deg);
+		transform: rotate(45deg);
 	}
 </style>

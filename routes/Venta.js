@@ -171,17 +171,10 @@ ventas.get('/closingPerMonth', (req, res) => {
 })
 
 ventas.get('/Closing', (req, res) => {
-  const dateNow = new Date()
-  const month = dateNow.getMonth()
-  const closing = []
   Cierres.find()
   .then(cierres => {
-    for (let index = 0; index < cierres.length; index++) {
-      if (month === cierres[index].fecha.getMonth()) {
-        closing.push(cierres[index])
-      }
-    }
-    res.json(closing)
+
+    res.json(cierres)
   })
   .catch(err => {
     res.send(err)
@@ -321,7 +314,7 @@ ventas.get('/getFund', async (req, res) => {
   const idFunds = await cashFunds.find()
   res.status(200).json(idFunds)
 })
-
+https://apexcharts.com/vue-chart-demos/
 ventas.post('/closeDay/:name', async (req, res) => {
   const closeName = req.params.name
   const dateNow = new Date()
