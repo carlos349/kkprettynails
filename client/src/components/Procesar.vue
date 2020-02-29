@@ -69,7 +69,8 @@
 						</tr>
 					</thead>
 				</table>
-				<div class="ListaProcesar">
+				<vue-custom-scrollbar class="ListaProcesar">
+					
 					<table class="table  tableBg" id="myTable">
 						<tbody>
 							<tr v-for="(servicio, index) in servicios" v-bind:key="servicio._id">
@@ -95,7 +96,8 @@
 							
 						</tbody>
 					</table>
-				</div>
+					
+				</vue-custom-scrollbar>
 				<div class="row pt-3 shadowTop">
 					<div class="col-sm-6">
 						<div class="input-group input-group-lg mb-2">
@@ -359,7 +361,7 @@ box-shadow: 0px 0px 22px 5px rgba(65,67,97,1);">
 						</div>
 						<div class="form-group row" style="margin-top:-15px;">
 							<input type="text" id="myInputServFast" v-on:keyup="myFunctionServFast()" class="form-control buscar inputsVenta w-100 mt-2" placeholder="Buscar prestadores"/>
-							<div class="ListaProcesarServ maxHeight">
+							<vue-custom-scrollbar class="ListaProcesarServ maxHeight">
 								<table class="table tableBg" id="myTableServFast">
 									<tbody>
 										<tr v-for="(manicurista, index) of manicuristas" >
@@ -375,7 +377,7 @@ box-shadow: 0px 0px 22px 5px rgba(65,67,97,1);">
 										</tr>
 									</tbody>
 								</table>
-							</div>
+							</vue-custom-scrollbar>
 						</div>
 						<button class="btn w-100 addProce">Agregar</button>
 					</form>
@@ -447,6 +449,7 @@ import axios from 'axios'
 import router from '../router'
 import EventBus from './EventBus'
 import Autocomplete from 'vuejs-auto-complete'
+import vueCustomScrollbar from 'vue-custom-scrollbar'
 	class Manicurista{
 		constructor(nombre) {
 			this.nombre = nombre;
@@ -471,7 +474,8 @@ import Autocomplete from 'vuejs-auto-complete'
 	}
  export default{
 	 components:{
-		 Autocomplete
+		 Autocomplete,
+		 vueCustomScrollbar
 	 },
 	 data() {
 		 return {
@@ -1406,11 +1410,7 @@ import Autocomplete from 'vuejs-auto-complete'
 		max-height: 190px;
 		height:190px;
 	}
-	.ListaProcesar::-webkit-scrollbar {
-		width: 8px;     /* Tamaño del scroll en vertical */
-		height: 8px;    /* Tamaño del scroll en horizontal */
-		display: none;  /* Ocultar scroll */
-	}
+	
 	label{
 		color: black;
 	}
@@ -1448,11 +1448,7 @@ import Autocomplete from 'vuejs-auto-complete'
 		max-height: 190px;
 		height:190px;
 	}
-	.ListaProcesarServ::-webkit-scrollbar {
-		width: 8px;     /* Tamaño del scroll en vertical */
-		height: 8px;    /* Tamaño del scroll en horizontal */
-		display: none;  /* Ocultar scroll */
-	}
+	
 	.maxHeight{
 		max-height: 120px;
 		width: 100%;

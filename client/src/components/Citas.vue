@@ -1,7 +1,7 @@
-<template id="">
-  <div class="container-fluid">
+<template  id="">
+  <div  class="container-fluid">
     <div class="row mt-1">
-        <div style="padding-left:2%;" id="calen" class="col-sm-12">
+        <div  style="padding-left:2%;" id="calen" class="col-sm-12">
           <div v-if="status == 1 || status == 2" class="col-sm-12 mx-auto text-center p-1 mb-5">
             <div class="row fixed-top mt-1">
               <div class="col-sm-5">
@@ -293,7 +293,7 @@
     </div>
     <div class="modal fade" id="myModalCitasDescripcion" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered" role="document">
-		    <div v-bind:style="{ 'background-color': '#ffffff'}" class="modal-content">
+		    <div v-bind:style="{ 'background-color': '#ffffff'}"  class="modal-content">
 		      <div class="modal-header" v-bind:class="selectedEvent.class">
 		        <h5 class="modal-title font-weight-bold" id="exampleModalCenterTitle">{{ selectedEvent.title }}</h5>
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -399,14 +399,14 @@
 
     <div class="modal fade" id="myModalEditDate" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered" role="document">
-		    <div v-bind:style="{ 'background-color': '#ffffff'}" class="modal-content">
+		    <div v-bind:style="{ 'background-color': '#ffffff'}"  class="modal-content" >
 		      <div class="modal-header" v-bind:class="selectedEvent.class">
 		        <h5 class="modal-title font-weight-bold" id="exampleModalCenterTitle">{{ selectedEvent.title }}</h5>
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 		          <span aria-hidden="true" >&times;</span>
 		        </button>
 		      </div>
-		      <div class="modal-body letters">
+		      <div  class="modal-body letters">
             <div v-on:click="clearInputThree" class="col-12 completeCitas">
               <autocomplete
                 ref="autocomplete"
@@ -422,6 +422,7 @@
             <div v-on:click="reloadBloques">
               <date-pick
               v-model="fechaEdit"
+              :hasInputElement="false"
               :isDateDisabled="isFutureDate"
               :months="months"
               :weekdays="Days"
@@ -429,7 +430,7 @@
               class="dateInputEdit"
               ></date-pick> 
             </div>
-            <h4 class="ml-3"><font-awesome-icon style="font-size:1.2em;color:#001514;" icon="clock" /> <strong style="ml-2 mb-2">{{startEdit}} / {{endEdit}}</strong> </h4>
+            <h4 class="ml-3"><font-awesome-icon style="font-size:1.2em;color:#001514;" icon="clock" />  <span v-if="changeDateEdit == true" style="color:#fe4a49">Seleccione un nuevo horario</span> <strong v-else style="ml-2 mb-2">{{startEdit}} / {{endEdit}}</strong> </h4>
             <select v-model="lenderEdit" v-on:change="selectManicEdit()" class="Two w-100" name="manicuristas">
               <option v-if="sectionDelete" selected="true" >{{lenderEdit}}</option>
               <option  v-for="manicurista in manicuristas" v-if="manicurista.restDay != new Date(fechaEdit).getDay()" v-bind:key="manicurista._id">
@@ -638,7 +639,8 @@ import router from '../router'
         resTimeFinalEdit: '',
         duracionEdit: '',
         dateEditId: '',
-        bloquesHoraEdit: []
+        bloquesHoraEdit: [],
+        changeDateEdit:false
       }
     },
     beforeCreate() {
@@ -1354,7 +1356,8 @@ import router from '../router'
         }
       },
       editDate(){
-  
+        if (this.startEdit && this.endEdit != '') {
+          
         const split = this.startEdit.split(':')
         const sort = split[0]+split[1]
         
@@ -1392,6 +1395,15 @@ import router from '../router'
             })
           }
         })
+        }
+        else{
+          this.$swal({
+              type: 'error',
+              title: '¡Debes elegir un horario!',
+              showConfirmButton: false,
+              timer: 1500
+          })
+        }
       },
       registroCita(){
         
@@ -1520,7 +1532,7 @@ import router from '../router'
             resTime:this.resTimeFinalEdit
           })
           .then(res => {
-            
+            this.changeDateEdit = false
             for (let index = 0 ; index <= this.duracionEdit / 15; index++) {
           
               res.data[i].validator = 'select'
@@ -1872,7 +1884,7 @@ import router from '../router'
         $('#myModalCitasDescripcion').modal('hide')
         $('#myModalEditDate').modal('show')
         const Datedate = this.dateSplit(start)
-      
+        this.changeDateEdit = false
         const startDate = this.dateSplitHours(start)
         const endDate = this.dateSplitHours(end)
         const separStart = startDate.split(':')
@@ -1890,9 +1902,14 @@ import router from '../router'
         this.classFinalEdit = classDate
         this.duracionEdit = TotalMinutes
         this.dateEditId = id
+        this.selectManicEdit()
       },
       reloadBloques(){
+        this.changeDateEdit = true
+        this.startEdit = ''
+        this.endEdit = ''
         this.bloquesHoraEdit = []
+        this.selectManicEdit()
       },
       mouseOverVenta(clase,num){
 		// setTimeout(() => {
@@ -2145,7 +2162,7 @@ import router from '../router'
 		top:90%;
 		right:2%;
     z-index: 1000;
-    transform : translate(-50% ,-50%);
+    
   }
   .CierreDia:link,
   .CierreDia:visited{
@@ -2175,18 +2192,20 @@ import router from '../router'
 
   .CierreDia:hover{
     box-shadow:0px 10px 10px rgba(0,0,0,0.2);
-    transform : translateY(-3px);
+    
   }
 
   .CierreDia:active{
     box-shadow:0px 5px 10px rgba(0,0,0,0.2);
-    transform:translateY(-1px);
+   
   }
 
   .btn-bottom-animation-1{
     animation:comeFromBottom 2s ease-out .8s;
   }
-
+  .CierreDia:hover:before{
+		content: 'Cerrar dia '
+	}
   .CierreDia::after{
     content:"";
     text-decoration: none;
@@ -3020,4 +3039,21 @@ import router from '../router'
 .textEdit{
   display: none
 }
+
+/* Ponemos un color de fondo y redondeamos las esquinas del thumb */
+      .container-fluid::-webkit-scrollbar-thumb {
+          background: black !important;
+          border-radius: 4px !important;
+      }
+
+      /* Cambiamos el fondo y agregamos una sombra cuando esté en hover */
+      .container-fluid::-webkit-scrollbar-thumb:hover {
+          background: #b3b3b3 !important;
+          box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2) !important;
+      }
+
+      /* Cambiamos el fondo cuando esté en active */
+      .container-fluid::-webkit-scrollbar-thumb:active {
+          background-color: #999999 !important;
+      }
 </style>

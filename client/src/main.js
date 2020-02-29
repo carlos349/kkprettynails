@@ -12,6 +12,8 @@ import '@trevoreyre/autocomplete-vue/dist/style.css'
 import {ServerTable, ClientTable, Event} from 'vue-tables-2'
 import CKEditor from '@ckeditor/ckeditor5-vue';
 import VueCurrencyInput from 'vue-currency-input'
+import VueAnimate from 'vue-animate-scroll'
+import vueCustomScrollbar from 'vue-custom-scrollbar'
 // import 'vue-croppa/dist/vue-croppa.css'
 // import Croppa from 'vue-croppa'
 require("../node_modules/bootstrap/dist/css/bootstrap.css")
@@ -23,6 +25,8 @@ const pluginOptions = {
   globalOptions: { currency: {'prefix':'$ '},precision: 2, distractionFree:false, autoDecimalMode:true}
 }
 
+Vue.use(VueAnimate)
+Vue.use(vueCustomScrollbar)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.config.productionTip = false
 Vue.use(VueCurrencyInput, pluginOptions)
