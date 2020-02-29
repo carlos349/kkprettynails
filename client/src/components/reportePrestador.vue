@@ -378,8 +378,10 @@
                let dateFormat = new Date(date)
                return dateFormat.getDate()+"-"+(dateFormat.getMonth() + 1)+"-"+dateFormat.getFullYear()
             },
-            isFutureDate(date) {
+            
+        isFutureDate(date) {
             const currentDate = new Date();
+            currentDate.setDate(currentDate.getDate() - 1)
             return date < currentDate;
         },
         back(){
