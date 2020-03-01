@@ -286,6 +286,7 @@ clients.put('/:id', async (req, res, next) => {
         })
         if (!findClient) {
             try {
+                console.log(req.body.correoClienteEditar)
                 const updateClient = await Cliente.findByIdAndUpdate(req.params.id, {
                     $set: {
                       nombre:req.body.nombreClienteEditar,
@@ -308,7 +309,7 @@ clients.put('/:id', async (req, res, next) => {
                         $set: {
                           nombre:req.body.nombreClienteEditar,
                           identidad:req.body.identidadClienteEditar,
-                          correoCliente: req.body.correoClienteEdritar,
+                          correoCliente: req.body.correoClienteEditar,
                           instagramCliente: req.body.instagramClienteEditar
                         }
                     })
