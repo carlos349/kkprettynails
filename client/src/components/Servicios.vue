@@ -126,7 +126,7 @@
 						<label class="containeer">
 							<input class="ifCheckThree" type="checkbox" >
 							<span class="checkmark"></span>
-							<h6 style="font-size:17px;" class="w-100 mt-1">¿Desea que este servicio no lleve descuento?</h6>	
+							<h6 style="font-size:17px;" class="w-100 mt-1">¿Aplica descuento?</h6>	
 						</label>
 					</div>
 					<div class="form-group row">
@@ -214,7 +214,7 @@
 							<label class="containeer">
 								<input class="ifCheckTwo" type="checkbox" >
 								<span class="checkmark"></span>
-								<h6 style="font-size:17px;" class="w-100 mt-1">¿Desea que este servicio no lleve descuento?</h6>	
+								<h6 style="font-size:17px;" class="w-100 mt-1">¿Aplica descuento?</h6>	
 							</label>
 						</div>
 						<div class="form-group row">
@@ -370,14 +370,14 @@
 					sortable: ['nombre', 'precio' , 'tiempoo'],
 					filterable: ['nombre', 'precio'],
 					texts: {
-                count: "Mostrando {from} - {to} de {count} Registros |{count} Registros|Un solo registro",
-                filter: "Filtro:",
-                limit: "Registros:",
-                page: "Pagina:",
-                noResults: "No se encuentran resultados",
-                filterBy: "Filtrar por {column}",
-                loading: 'Cargando...',
-            }
+						count: "Mostrando {from} - {to} de {count} Registros |{count} Registros|Un solo registro",
+						filter: "Filtro:",
+						limit: "Registros:",
+						page: "Pagina:",
+						noResults: "No se encuentran resultados",
+						filterBy: "Filtrar por {column}",
+						loading: 'Cargando...',
+					}
 				},
 				manicurista: new Manicurista(),
 				manicuristas: [],
@@ -431,10 +431,10 @@
 			}
 		},
 		created(){
-			 this.getServicios();
-			 this.getManicuristas();
-			 this.ServicesQuantityPerMonthFunc();
-			 this.ServicesQuantityChartFunc();
+			this.getServicios();
+			this.getManicuristas();
+			this.ServicesQuantityPerMonthFunc();
+			this.ServicesQuantityChartFunc();
 			 
  		},
 		methods: {
@@ -486,9 +486,9 @@
 					}else{
 						var ifCheck
 						if ($('.ifCheckTwo').prop('checked')) {
-							ifCheck = true
-						}else{
 							ifCheck = false
+						}else{
+							ifCheck = true
 						}
 						axios.post('servicios', {
 							nombreServicio: this.nombreServi,
@@ -597,9 +597,9 @@
 				}else{
 					var ifCheck
 					if ($('.ifCheckThree').prop('checked')) {
-						ifCheck = true
-					}else{
 						ifCheck = false
+					}else{
+						ifCheck = true
 					}
 					const id = this.idServicioEditar
 					axios.put('servicios/' + id, {
@@ -638,7 +638,7 @@
 			},
 			pasarDatosEdit(nombre,tiempo, precio, prestadores, id, comision, descuento){
 				$('.ifCheckThree').prop('checked', false)
-				if (descuento) {
+				if (!descuento) {
 					$('.ifCheckThree').prop('checked', true)
 				}
 				this.optionsT.filterByColumn = true

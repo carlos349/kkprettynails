@@ -114,7 +114,7 @@
 								<font-awesome-icon style="font-size:1.5em;color:#6BB2E5" icon="tag"/>
 								
 							</div>
-							<input type="text" selectionEnd="%" inputmode="numeric" placeholder="0" v-model="descuento"  v-on:change="descuentoFunc" class="form-control manicuristaFocu inputsVenta text-center" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+							<input type="text" selectionEnd="%" id="validDicount" inputmode="numeric" placeholder="0" v-model="descuento"  v-on:change="descuentoFunc" class="form-control manicuristaFocu inputsVenta text-center" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
 							<div class="input-group-prepend w-25 inputsVenta">
 								<font-awesome-icon style="font-size:1.5em;color:#6BB2E5" icon="percent"/>
 								
@@ -816,24 +816,40 @@ import vueCustomScrollbar from 'vue-custom-scrollbar'
 
 		},
 		descuentoFunc(){
-			if(this.descuento > 0){
-				const descuento = parseFloat(this.descuento) / 100
-				const porcentaje = 1 - parseFloat(descuento)
-				const precioConDescuento = parseFloat(this.subTotal) * parseFloat(porcentaje) + this.diseño
-				
-				this.total = "$"+ this.formatPrice(precioConDescuento)
-				this.totalSinFormato = precioConDescuento
+			var discount = true 
+			for (let index = 0; index < this.serviciosSelecionados.length; index++) {
+				if (!this.serviciosSelecionados[index].descuento) {
+					discount = false
+					if(this.descuento > 0){
+						const descuento = parseFloat(this.descuento) / 100
+						const porcentaje = 1 - parseFloat(descuento)
+						const precioConDescuento = parseFloat(this.subTotal) * parseFloat(porcentaje) + this.diseño
+						
+						this.total = "$"+ this.formatPrice(precioConDescuento)
+						this.totalSinFormato = precioConDescuento
+					}
+					if(this.descuento == '' || this.descuento == 0){
+						if (this.diseño == '') {
+							this.totalSinFormato = this.subTotal
+							this.total = "$" + this.formatPrice(this.subTotal)
+						}
+						else{
+							this.totalSinFormato = this.subTotal + this.diseño
+							this.total = "$" + this.formatPrice(this.totalSinFormato)
+						}
+					}
+					break
+				}
 			}
-			 if(this.descuento == '' || this.descuento == 0){
-				 if (this.diseño == '') {
-					this.totalSinFormato = this.subTotal
-					this.total = "$" + this.formatPrice(this.subTotal)
-				 }
-				 else{
-					 this.totalSinFormato = this.subTotal + this.diseño
-					this.total = "$" + this.formatPrice(this.totalSinFormato)
-				 }
-				
+			if(discount){
+				this.descuento = ''
+				this.$swal({
+					type: 'info',
+					title: 'No se puede agregar a dichos servicios',
+					showConfirmButton: false,
+					timer: 1500
+				})
+
 			}
 		},
 		conteoServicio(esto, servicio, precio, comision, discount){
@@ -844,13 +860,21 @@ import vueCustomScrollbar from 'vue-custom-scrollbar'
 			this.precio = "$"+this.formatPrice(precioTotal)
 			this.subTotal = precioTotal
 			this.totalSinFormato = precioTotal
+			
 			if(this.descuento === ''){
 				this.total = "$"+this.formatPrice(precioTotal)
 			}else{
-				const precioConDescuento = parseFloat(this.subTotal) * parseFloat(porcentaje) +this.diseño
-				this.total = "$"+this.formatPrice(precioConDescuento)
-				this.totalSinFormato = precioConDescuento
+				this.total = "$"+this.formatPrice(precioTotal)
+				for (let index = 0; index < this.serviciosSelecionados.length; index++) {
+					if (!this.serviciosSelecionados[index].descuento) {
+						const precioConDescuento = parseFloat(this.subTotal) * parseFloat(porcentaje) +this.diseño
+						this.total = "$"+this.formatPrice(precioConDescuento)
+						this.totalSinFormato = precioConDescuento
+					}
+				}
 			}
+				
+			
 
 			const conteo = $("#"+esto).text()
 			const conteoTotal = parseFloat(conteo) + 1
@@ -1248,7 +1272,6 @@ import vueCustomScrollbar from 'vue-custom-scrollbar'
 			}
 			console.log(this.prestadoresSeleccionados)
 		},
-		
 		registroServicio(){
 			if (this.nombreServi == '' && this.precioServi == '' && this.tiempoServi == '') {
 				this.$swal({
