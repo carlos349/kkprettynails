@@ -55,7 +55,7 @@
               <div class="col-md-12 text-center p-2" style="font-size:1.2em;color:#353535">Selecciona los servicios a utlizar</div>
               <div style="height:66.8vh;overflow:hidden;overflow-x: hidden;overflow-y:scroll;background-color:#6BB2E5;border-radius:5px;border:2px solid #353535" class="scroll row p-3" >
                 <div class="col-md-6" v-for="(servicio,index) of servicios">
-                  <div class="p-2 servPretty" v-on:click="marcarServicio(servicio.prestadores,servicio.nombre,servicio.tiempo,servicio.comision,servicio.precio,index)">
+                  <div class="p-2 servPretty" v-on:click="marcarServicio(servicio.prestadores,servicio.nombre,servicio.tiempo,servicio.comision,servicio.precio,servicio.descuento,index)">
                     <div class="row">
                       <div class="serviInfo col-md-2"><font-awesome-icon icon="user-check" class="mr-2"/>{{servicio.prestadores.length}}</div>
                       <div class="serviInfo col-md-7">{{servicio.nombre}}</div>
@@ -382,21 +382,26 @@
                     </div>
                   </div>	
                 </div>
-
-                
-
-               
-               
+                <div v-on:click="endDate(selectedEvent.id, selectedEvent.cliente, selectedEvent.empleada, selectedEvent.services)" v-if="selectedEvent.process == true" v-bind:style="{  'height': 'auto', 'z-index' : '1000' }"  class="p-2 menuCitaBorrar navSCitaFinalizar" v-on:mouseenter="mouseOverVenta('textEnd',0)" v-on:mouseleave="mouseLeaveVenta('textEnd',0)">
+                  <div class="row">
+                    <div class="col-sm-2">
+                      <font-awesome-icon  style="color:#353535;font-size:1.6em" icon="calendar-check" />
+                    </div>
+                    <div  class="col-sm-10 pl-4 pt-1 textEnd">
+                      <b>Finalizar cita</b>	
+                    </div>
+                  </div>	
+                </div>
                 <button v-bind:class="selectedEvent.class" v-if="selectedEvent.process == true && status == 1 || selectedEvent.process == true && status == 2" type="button" class="btn font-weight-bold btn-style col-10 mt-2 ml-4" v-on:click="processSale(selectedEvent.id, 'process')">Procesar venta</button>
                 
                 
               </div>
+              
             </div>
 
 		    </div>
 		  </div>
 		</div>
-
     <div class="modal fade" id="myModalEditDate" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered" role="document">
 		    <div v-bind:style="{ 'background-color': '#ffffff'}"  class="modal-content" >
@@ -496,6 +501,58 @@
 		    </div>
 		  </div>
 		</div>
+    <div class="modal fade" id="myModalEndDate" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		  <div class="modal-dialog modal-dialog-centered" role="document">
+		    <div v-bind:style="{'background-color':'#ffffff'}"  class="modal-content" >
+		      <div class="modal-header" v-bind:style="{'background-color':'rgb(107, 178, 229)'}">
+		        <h5 class="modal-title font-weight-bold text-white" id="exampleModalCenterTitle">Finalizar cita</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true" >&times;</span>
+		        </button>
+		      </div>
+		      <div  class="modal-body letters">
+            <div class="form-group">
+							<label for="name">Registre el diseño</label>
+							<input v-model="designEndDate" type="text" class="form-control inputsVenta w-100" placeholder="Ingrese el monto">
+						</div>
+            <table class="table" v-bind:style="{ 'background-color': '#6BB2E5', 'border-radius' : '15px', 'border':'none !important'}" >
+              <thead>
+                <tr>
+                  <th style="border-radius:15px !important;border:none" class="text-left pl-4 text-white">
+                    
+                    <input autocomplete="off" style="outline:none !important;background-color:white !important" type="text" id="myInputDate" v-on:keyup="myFunctionDate()" class="form-control buscar inputsVenta w-75 text-white" placeholder="Filtrar servicios"/>
+                  </th>
+                  <th style="color:white;border:none" class="text-center pl-5 pb-3">
+                    Precio 
+                  </th>
+                </tr>
+              </thead>
+            </table>
+            <vue-custom-scrollbar class="ListaProcesar">
+              <table class="table tableBg" id="myTableDate">
+                <tbody>
+                  <tr v-for="(servicio, index) in servicios" v-bind:key="servicio._id">
+                    <td style="border:none" v-if="servicio.active" class="font-weight-bold">
+                      <button type="button" class="w-75 btn procesar text-left" v-on:click="conteoServicioDate(servicio._id,servicio.nombre, servicio.precio, servicio.comision, servicio.descuento, index)">
+                        {{servicio.nombre}} <span class="badge badge-light conteoServ mt-1 float-right" :class="servicio._id" v-bind:id="index+servicio._id">0</span>
+                      </button>
+                      <button type="button" class="w-20 btn btn-back  text-left" >
+                        <font-awesome-icon icon="times"/>
+                      </button>
+                      
+                    </td>
+                    <td style="border:none" v-if="servicio.active" class=" font-weight-bold  text-center">
+                      $ {{formatPrice(servicio.precio)}}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </vue-custom-scrollbar>
+            <button class="generar mt-2 w-100 text-center" v-on:click="endingDate()"> Finalizar</button>
+          </div>
+		    </div>
+		  </div>
+		</div>
    
     <div class="boxDates" v-if="status == 1 || status == 2">
       <button class="CierreDia btn-whiteDates btn-animation-1" v-on:click="daySaleClose">
@@ -523,7 +580,7 @@
   import jwtDecode from 'jwt-decode'
   import Autocomplete from 'vuejs-auto-complete'
   import EventBus from './EventBus'
-
+  import vueCustomScrollbar from 'vue-custom-scrollbar'
 import router from '../router'
   class Event {
     constructor (start, end, title, content) {
@@ -556,7 +613,8 @@ import router from '../router'
       DatePick,
       VueBootstrapTypeahead,
       Datetime,
-      Autocomplete
+      Autocomplete,
+      vueCustomScrollbar
     },
     data () {
       return {
@@ -640,7 +698,13 @@ import router from '../router'
         duracionEdit: '',
         dateEditId: '',
         bloquesHoraEdit: [],
-        changeDateEdit:false
+        changeDateEdit:false,
+        designEndDate:'',
+        serviciosSelecionadosDates: [],
+        endId: '',
+        endServices: '',
+        endClient: '',
+        endEmploye: ''
       }
     },
     beforeCreate() {
@@ -680,6 +744,66 @@ import router from '../router'
         this.status = decoded.status
         
       },
+      endingDate(){
+        const id = this.endId
+        axios.post('citas/endDate/'+id, {
+          services:this.serviciosSelecionadosDates,
+          client:this.endClient,
+          employe:this.endEmploye,
+          design: this.designEndDate
+        })
+        .then(res => {
+          if (res.data.status == 'ok') {
+            $('#myModalEndDate').modal('hide')
+            this.getCitas();
+            setTimeout(() => {
+              if (this.empByCita != 'Manicuristas') {
+                this.getCitasByEmploye()
+              }
+            }, 500);
+            this.$swal({
+              type: 'success',
+              title: 'Cita finalizada con exito',
+              showConfirmButton: false,
+              timer: 1500
+            })
+            this.designEndDate = ''
+          }
+        })
+      },
+      endDate(id, client, employe, services){
+        this.endId = ''
+        this.endServices = []
+        this.endClient = ''
+        this.endEmploye = ''
+        $('#myModalCitasDescripcion').modal('hide')
+        $('#myModalEndDate').modal('show')
+        this.endId = id
+        this.serviciosSelecionadosDates = services
+        this.endClient = client
+        this.endEmploye = employe
+        console.log(services)
+        axios.get('servicios')
+        .then(res => {
+          for (let index = 0; index < services.length; index++) {
+            
+            for (let indexTwo = 0; indexTwo < res.data.length; indexTwo++) {
+              console.log(services[index].servicio == res.data[indexTwo].nombre)
+              if (services[index].servicio == res.data[indexTwo].nombre) {
+                let valSpan = $(`.${res.data[indexTwo]._id}`).text()
+                let sumaVal = parseFloat(valSpan) + 1
+                $(`.${res.data[indexTwo]._id}`).text(sumaVal)
+              }
+            } 
+          }
+        })
+        // for (let index = 0; index < services.length; index++) {
+        //   if (services[index].) {
+            
+        //   }
+          
+        // }
+      },
       formatDate(date) {
 				let dateFormat = new Date(date)
 				return dateFormat.getDate()+"-"+(dateFormat.getMonth() + 1)+"-"+dateFormat.getFullYear()
@@ -688,6 +812,25 @@ import router from '../router'
 				let dateFormat = new Date(date+' 10:00')
 				return (dateFormat.getMonth() + 1)+"-"+dateFormat.getDate()+"-"+dateFormat.getFullYear()
 			},
+      myFunctionDate() {
+        console.log('aja')
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("myInputDate");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTableDate");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+          td = tr[i].getElementsByTagName("td")[0];
+          if (td) {
+            txtValue = td.textContent || td.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+            } else {
+            tr[i].style.display = "none";
+            }
+          }
+        }
+      },
       searchClient(input){
 				if (input.length < 1) { return [] }
 					return this.arregloClients.filter(manicurista => {
@@ -695,6 +838,15 @@ import router from '../router'
 						.startsWith(input.toLowerCase())
 				})
 			},
+      conteoServicioDate(esto, servicio, precio, comision, discount, index){
+        console.log(esto)
+        const conteo = $("#"+index+esto).text()
+        const conteoTotal = parseFloat(conteo) + 1
+        $("#"+index+esto).text(conteoTotal)
+        const servicios = {'servicio': servicio, 'comision': comision, 'precio': precio, 'descuento': discount}
+        this.serviciosSelecionadosDates.push(servicios)
+        console.log(this.serviciosSelecionadosDates)
+      },
       handleSubmitClient(result){
         this.clientsSelect = result
 			
@@ -1132,10 +1284,10 @@ import router from '../router'
 					this.servicios = res.data
 				})
 			},
-      marcarServicio(prestadores,nombre,tiempo, comision, precio,index){
+      marcarServicio(prestadores,nombre,tiempo, comision, precio,descuento,index){
         
         if (this.servicioCita == '') {
-          this.servicioCita.push({'servicio': nombre, 'comision': comision, 'precio': precio})
+          this.servicioCita.push({'servicio': nombre, 'comision': comision, 'precio': precio, 'descuento': descuento})
           this.servicioCitaShow.push(nombre)
           for (let index = 0; index < prestadores.length; index++) {
             this.manicuristaCita.push(prestadores[index])
@@ -1155,7 +1307,7 @@ import router from '../router'
             }
           }
           if (inspector == true) {
-            this.servicioCita.push({'servicio': nombre, 'comision': comision, 'precio': precio})
+            this.servicioCita.push({'servicio': nombre, 'comision': comision, 'precio': precio, 'descuento': descuento})
             this.servicioCitaShow.push(nombre)
           }  
           
@@ -3016,10 +3168,20 @@ import router from '../router'
 	position: absolute;
 	border-radius: 0 5px 5px 0;
 }
-.navSCitaEditar{
+.navSCitaFinalizar{
   cursor: pointer;
 	width:7.5%;
 	top:20%;
+	right:-6.5%;
+  margin: auto;
+	background-color: white;
+	position: absolute;
+	border-radius: 0 5px 5px 0;
+}
+.navSCitaEditar{
+  cursor: pointer;
+	width:7.5%;
+	top:29%;
 	right:-6.5%;
   margin: auto;
 	background-color: white;
@@ -3037,7 +3199,10 @@ import router from '../router'
   display: none;
 }
 .textEdit{
-  display: none
+  display: none;
+}
+.textEnd{
+  display: none;
 }
 
 /* Ponemos un color de fondo y redondeamos las esquinas del thumb */

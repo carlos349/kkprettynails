@@ -3,6 +3,7 @@ const citas = express.Router()
 const cors = require('cors');
 const Citas = require('../models/Citas')
 const Cliente = require('../models/Cliente')
+const closedDates = require('../models/closedDates')
 citas.use(cors())
 
 citas.get('/', async (req, res) => {
@@ -255,6 +256,91 @@ citas.delete('/:id', async (req, res) => {
   })
 })
 
+citas.post('/endDate/:id', (req, res) => {
+  const id = req.params.id
+
+  const split = req.body.client.split('/')
+  const splitTwo = split[1].split(' ')
+  
+  Cliente.find({identidad: splitTwo[1]})
+  .then(cliente => {
+    const ifRecomend = cliente[0].recomendaciones > 0 ? true : false
+    const ifFirst = cliente[0].participacion == 0 ? true : false
+    var discount = 0
+    if (ifRecomend) {
+      discount = 100 - 15
+    }else if(ifFirst){
+      discount = 100 - 10
+    }
+    var total = 0
+    var comision = 0
+    var comisionTotal = 0 
+    for (let index = 0; index < req.body.services.length; index++) {
+      let position = req.body.services[index]
+      if (!position.descuento) {
+        if (discount > 0) {
+          comision = parseFloat(position.precio) * parseFloat('0.'+discount)
+          comisionTotal = comision * parseFloat('0.'+position.comision) + comisionTotal
+          total = total + position.precio
+        }else{
+          comision = position.precio 
+          comisionTotal = comision * parseFloat('0.'+position.comision) + comisionTotal
+          total = total + position.precio
+        }
+      }else{
+          comision = parseFloat(position.precio) 
+          comisionTotal = comision * parseFloat('0.'+position.comision) + comisionTotal
+          total = total + position.precio
+      }
+    }
+
+    var totalLocal = total - comisionTotal
+    if (discount == 85) {
+      discount = 15
+    }else if(discount == 90){
+      discount = 10
+    }
+    const data = {
+      services: req.body.services,
+      client: req.body.client,
+      employe: req.body.employe,
+      design: req.body.design,
+      comision: comisionTotal,
+      totalLocal: totalLocal,
+      total: total + parseFloat(req.body.design),
+      descuento: discount,
+      date: new Date()
+    }
+    closedDates.create(data)
+    .then(closed => {
+      Citas.findByIdAndUpdate(id, {$set: {process: false}})
+      .then(end => {
+        if (discount == 85) {
+          Cliente.findOneAndUpdate({identidad: splitTwo[1]}, {
+            $inc: {recomendaciones: -1}
+          })
+          .then(recomend => {
+            res.json({status:'ok'})
+          })
+          .catch(err => {
+            res.send(err)
+          })
+        }else{
+          res.json({status:'ok'})
+        }
+      })
+      .catch(err => {
+        res.send(err)
+      })
+    })
+    .catch(err => {
+      res.send(err)
+    })
+  })
+  .catch(err => {
+    res.send(err)
+  })
+})
 
 citas.put('/editDate/:id', async (req, res) => {
   const dateDate = new Date(req.body.fecha+' 10:00')
