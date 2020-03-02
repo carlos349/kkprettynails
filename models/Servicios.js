@@ -14,6 +14,9 @@ const servicioSchema = new Schema({
   comision:{
     type:Number
   },
+  descuento: {
+    type: Boolean
+  },
   prestadores:{
     type:Array
   },

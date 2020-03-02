@@ -32,6 +32,7 @@ service.post('/', (req,res) => {
     tiempo:req.body.tiempoServicio,
     precio:req.body.precioServicio,
     comision:req.body.comisionServicio,
+    descuento: req.body.descuento,
     prestadores:req.body.prestadores,
     active:true
   }
@@ -98,6 +99,7 @@ service.put('/:id', (req, res) => {
         precio:req.body.precioServicio,
         comision:req.body.comisionServicio,
         prestadores:req.body.prestadores,
+        descuento: req.body.descuento
       }
     })
     .then(servicio => {

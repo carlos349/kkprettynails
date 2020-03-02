@@ -142,13 +142,13 @@ ventas.get('/findSalesByDate/:dates', async (req, res) => {
 ventas.get('/findSalesByDay/:dates', async (req, res) => {
   const dates = req.params.dates
   const splitDates = dates.split(':')
-  const desde = splitDates[0] + " 1:00"
-  const hasta = splitDates[1] + " 1:00"
-  console.log(desde)
+  const desde = splitDates[0]
+  const hasta = splitDates[1] 
+  
   console.log(hasta)
   try {
     const Sales = await Venta.find({fecha: { $gte: desde, $lte: hasta }})
-    console.log(Sales)
+
     if (Sales.length == 0) {
       res.json({status: 'no Sales'})
     }else{
@@ -171,17 +171,10 @@ ventas.get('/closingPerMonth', (req, res) => {
 })
 
 ventas.get('/Closing', (req, res) => {
-  const dateNow = new Date()
-  const month = dateNow.getMonth()
-  const closing = []
   Cierres.find()
   .then(cierres => {
-    for (let index = 0; index < cierres.length; index++) {
-      if (month === cierres[index].fecha.getMonth()) {
-        closing.push(cierres[index])
-      }
-    }
-    res.json(closing)
+
+    res.json(cierres)
   })
   .catch(err => {
     res.send(err)
@@ -321,7 +314,7 @@ ventas.get('/getFund', async (req, res) => {
   const idFunds = await cashFunds.find()
   res.status(200).json(idFunds)
 })
-
+https://apexcharts.com/vue-chart-demos/
 ventas.post('/closeDay/:name', async (req, res) => {
   const closeName = req.params.name
   const dateNow = new Date()
@@ -820,20 +813,23 @@ ventas.post('/procesar', (req, res) => {
   }else{
     today = new Date(req.body.fecha)
   }
-
+  
   var descuento = 100 - req.body.descuento
   var comisionTotal = 0
   for (let index = 0; index < services.length; index++) {
     let comisionPerAmount = 0
     let comisionDescuento = 0
-    if (descuento == 100) {
-      comisionDescuento = parseFloat(services[index].precio)
-    }else{
-      comisionDescuento = parseFloat(services[index].precio) * parseFloat('0.'+descuento)
+    if (services[index].descuento) {
+        comisionDescuento = parseFloat(services[index].precio)
+    }else{ 
+      if (descuento == 100) {
+        comisionDescuento = parseFloat(services[index].precio)
+      }else{
+        comisionDescuento = parseFloat(services[index].precio) * parseFloat('0.'+descuento)
+      }
     }
     comisionPerAmount = comisionDescuento * parseFloat('0.'+req.body.servicios[index].comision)
     comisionTotal = comisionTotal + comisionPerAmount
-    
   }
   
   const total = req.body.total

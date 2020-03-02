@@ -2841,8 +2841,8 @@ import router from '../router'
 	}
 .autocomplete__results{
 	outline: none !important;
-	overflow: hidden !important;
-	max-height: 100px !important;
+	overflow-y: scroll !important;
+	max-height: 300px !important;
 	background-color: white !important;
 	-webkit-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
 	-moz-box-shadow: inset 0px 0px 20px 4px rgba(0,0,0,0.11);
