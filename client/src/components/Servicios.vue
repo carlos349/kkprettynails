@@ -250,7 +250,7 @@
 											</tr>
 									</tbody>
 								</table>
-							<vue-custom-scrollbar class="ListaProcesar maxHeight">
+							<vue-custom-scrollbar :settings="settings" class="ListaProcesar maxHeight">
 								
 								<table class="table table-light table-borderless table-striped" id="myTableServ">
 									<tbody>
@@ -329,6 +329,9 @@
 		},
 		data() {
 			return {
+				settings:{
+					swipeEasing: false
+				},
 				columns:['nombre' , 'precio' , 'comision', 'tiempoo' , 'prestadoress' , 'activee' , 'edit'],
 				optionsT: {
 					filterByColumn: true,
@@ -1134,4 +1137,8 @@
 		background-color: #353535;
 		color: white !important;
 	}
+	.ps__rail-y {
+    display: block !important;
+    background-color: transparent !important;
+}
 </style>

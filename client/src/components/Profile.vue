@@ -1,29 +1,44 @@
 <template>
-	<div  class=" container-fluid p-3">
-		<div class="row">
+	<div style="height:100vh" class="container-fluid">
+		<div class="row ">
 			
-			<div style="background-color:rgba(238, 238, 238, 0.623);height:auto;border-radius:5px" class="col-sm-3 m-3 mt-0 mb-3">
-				<center>
-					<img class="infoBasic" style="width: 60%;height:30vh;" :src="image" alt="">
-				</center>
+			<div style="background-color:#353535;height:149.3vh;border-radius:5px" class="col-sm-3 ml-2">
+				<div class="col-sm-12 inforCargo">
+					<div  class="col-sm-12 m-1 p-1  text-center">
+					<h1 style="background-color:#ded22f;border-radius:10px;" v-if="status == 1"> Gerencia</h1>
+					<h1 v-if="status == 2"> Personal de caja</h1>
+					<h1 v-if="status == 3"> Prestador</h1>
+				</div>
+				</div>
+				<div class="col-sm-12 userInfo">
+					<div class="row">
+						<div class="col-sm-4">
+								<avatar username="Cris Sans" style="height100%" :src="image" :size="screen / 12"></avatar>
+								<!-- <img class="infoBasic " rounded="circle" style="width:100%;border-radius:30%" :src="image" alt=""> -->
+							
+						</div>
+						<div class="col-sm-6 infoUsers">
+							<p><b>{{first_name}} {{last_name}}</b></p>
+							<p>{{email}}</p>
+						</div>
+						<div class="col-sm-2">
+							
+							<font-awesome-icon v-tooltip="formatDate(access)" style="color:white;cursor:none" icon="history" />
+						</div>
+					</div>
+				</div>
 				
-				
-				<!-- <button class="btn m-1 w-75 ml-2 addPerfil" v-on:click="editImage">Editar foto de perfil</button> -->
-				<div  class="col-sm-12 m-1 p-1 text-left infoBasic">
-				<h1><b>{{first_name}} {{last_name}}</b></h1>
-				<h5>{{email}}</h5>
-				</div>
-				<div  class="col-sm-12 m-1 p-1  text-left infoBasic">
-					<h4 v-if="status == 1"> <b>Cargo:</b>  Gerencia</h4>
-					<h4 v-if="status == 2"> <b>Cargo:</b>  Personal de caja</h4>
-					<h4 v-if="status == 3"> <b>Cargo:</b>  Prestador</h4>
-				</div>
-				<div  class="col-sm-12 m-1  p-1 text-left infoBasic">
-					<h4><b>Última conexión:</b>  {{formatDate(access)}}</h4>
-					
-				</div>
-				<div>
-					<button class="btn addPerfil w-75 ml-5" data-toggle="collapse" data-target="#collapseEdit" aria-expanded="false" aria-controls="collapseExample">Editar datos</button>
+				<div class="col-sm-12 p-3">
+					<div class="row settings p-3" data-toggle="collapse" data-target="#collapseEdit" aria-expanded="false" aria-controls="collapseExample">
+						<div class="col-sm-4 p-3">
+							<font-awesome-icon  style="color:white;font-size:4.5vw;margin:auto" icon="cog" />
+						</div>
+						<div class="col-sm-8 text-white">
+							<br>
+							<p style="font-size:1.8vw">Ajustes de cuenta</p>
+							
+						</div>
+					</div>
 					<div class="collapse" id="collapseEdit">
 						<div class="formsProfile mt-2 mb-3" v-bind:style="{ 'background-color': '#fff'}">
 							<form v-on:submit.prevent="editProfile">
@@ -52,6 +67,13 @@
 						</div>
 					</div>
 				</div>
+				
+				<!-- <button class="btn m-1 w-75 ml-2 addPerfil" v-on:click="editImage">Editar foto de perfil</button> -->
+				<div  class="col-sm-12 m-1 p-1 text-left infoBasic">
+				
+				</div>
+
+
 			</div>
 			<div style="height:93vh;" class="col-md-8 mt-3 mx-auto infoBasic p-3">
 				
@@ -199,13 +221,7 @@
 				</div>
 				
 			</div>
-			
 		
-			<div class="container">
-				<div class="row p-5">
-					<div class="col-sm-12 mx-auto"></div>
-				</div>
-			</div>
 		<div class="modal fade" id="ModalEditPass" tabindex="-1"  role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered"  >
 		    <div class="modal-content" v-bind:style="{ 'background-color': '#ffffff'}">
@@ -285,10 +301,11 @@
 	import EventBus from './EventBus'
 	import LineChart from '../plugins/LineChart.js'
 	import endPoint from '../../config-endpoint/endpoint.js'
-	
+	import Avatar from 'vue-avatar'
 	export default {
 		components:{
-			LineChart
+			LineChart,
+			Avatar
 		},
 		data() {
 			const token = localStorage.userToken
@@ -358,7 +375,8 @@
 				dataChecker: [],
 				fund:0,
 				checker:'',
-				inspector: false
+				inspector: false,
+				screen: screen.width
 			}
 		},
 		beforeCreate() {
@@ -382,6 +400,7 @@
 			this.getDataManagement();
 			this.getDataChecker();
 			this.getFunds()
+			window.addEventListener("resize", this.myEventHandler);
 		},
 		methods: {
 			async getData() {
@@ -774,6 +793,9 @@
 					})
 				})
 			},
+			myEventHandler(e) {
+				this.screen = screen.width
+			}
 		},
 		mounted() {
 			EventBus.$on('reloadVenta', status => {
@@ -1134,5 +1156,129 @@
 	.firstExpensesPerfil{
 		background:rgba(238, 238, 238, 0.623); /* fallback for old browsers */
 		color:#353535;
-	} 
+	}
+	
+	.userInfo{
+		position: absolute;
+		bottom: 2%;
+		height: 15vh;
+	}
+	.infoUsers{
+		margin-top: 4%;
+		color: azure;
+		font-size: 1.2vw;
+	}
+	.settings:hover{
+		background-color: rgba(238, 238, 238, 0.623);
+		border-radius:5px;
+		cursor: pointer;
+	}
+	.tooltip {
+  display: block !important;
+  z-index: 10000;
+  font-size: 1.5vw;
+  width: auto
+}
+
+.tooltip .tooltip-inner {
+  background: black;
+  color: white;
+  border-radius: 16px;
+  padding: 5px 10px 4px;
+}
+
+.tooltip .tooltip-arrow {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  position: absolute;
+  margin: 5px;
+  border-color: black;
+  z-index: 1;
+}
+
+.tooltip[x-placement^="top"] {
+  margin-bottom: 5px;
+}
+
+.tooltip[x-placement^="top"] .tooltip-arrow {
+  border-width: 5px 5px 0 5px;
+  border-left-color: transparent !important;
+  border-right-color: transparent !important;
+  border-bottom-color: transparent !important;
+  bottom: -5px;
+  left: calc(50% - 5px);
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.tooltip[x-placement^="bottom"] {
+  margin-top: 5px;
+}
+
+.tooltip[x-placement^="bottom"] .tooltip-arrow {
+  border-width: 0 5px 5px 5px;
+  border-left-color: transparent !important;
+  border-right-color: transparent !important;
+  border-top-color: transparent !important;
+  top: -5px;
+  left: calc(50% - 5px);
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.tooltip[x-placement^="right"] {
+  margin-left: 5px;
+}
+
+.tooltip[x-placement^="right"] .tooltip-arrow {
+  border-width: 5px 5px 5px 0;
+  border-left-color: transparent !important;
+  border-top-color: transparent !important;
+  border-bottom-color: transparent !important;
+  left: -5px;
+  top: calc(50% - 5px);
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.tooltip[x-placement^="left"] {
+  margin-right: 5px;
+}
+
+.tooltip[x-placement^="left"] .tooltip-arrow {
+  border-width: 5px 0 5px 5px;
+  border-top-color: transparent !important;
+  border-right-color: transparent !important;
+  border-bottom-color: transparent !important;
+  right: -5px;
+  top: calc(50% - 5px);
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.tooltip.popover .popover-inner {
+  background: #f9f9f9;
+  color: black;
+  padding: 24px;
+  border-radius: 5px;
+  box-shadow: 0 5px 30px rgba(black, .1);
+}
+
+.tooltip.popover .popover-arrow {
+  border-color: #f9f9f9;
+}
+
+.tooltip[aria-hidden='true'] {
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity .15s, visibility .15s;
+}
+
+.tooltip[aria-hidden='false'] {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity .15s;
+}
+
 </style>

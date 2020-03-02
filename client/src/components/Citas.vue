@@ -2986,7 +2986,7 @@ import router from '../router'
   display: none;
 }
 .maxHeightBloques{
-  max-height: 60vh;
+  max-height: 45vh;
   overflow-y: scroll;
 }
 
@@ -2999,7 +2999,7 @@ import router from '../router'
 .navSCitaEdit{
 	cursor: pointer;
 	width:7.5%;
-	top:3.5%;
+	top:2%;
 	right:-6.5%;
   margin: auto;
 	background-color: white;
@@ -3009,7 +3009,7 @@ import router from '../router'
 .navSCitaCerrar{
   cursor: pointer;
 	width:7.5%;
-	top:10%;
+	top:11%;
 	right:-6.5%;
   margin: auto;
 	background-color: white;
@@ -3019,7 +3019,7 @@ import router from '../router'
 .navSCitaEditar{
   cursor: pointer;
 	width:7.5%;
-	top:16.5%;
+	top:20%;
 	right:-6.5%;
   margin: auto;
 	background-color: white;

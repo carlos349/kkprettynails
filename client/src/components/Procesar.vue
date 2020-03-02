@@ -1894,4 +1894,13 @@ import vueCustomScrollbar from 'vue-custom-scrollbar'
 		-ms-transform: rotate(45deg);
 		transform: rotate(45deg);
 	}
+	.ps__rail-y {
+    display: block !important;
+    background-color: transparent !important;
+	height: 191px !important;
+	}
+	.ps__thumb-y{
+		height: 72px !important;
+	}
+
 </style>
