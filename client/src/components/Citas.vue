@@ -37,75 +37,127 @@
         </div>
     </div>
       
-    <div class="modal fade citasFinish bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+    <div class="modal fade citasFinish bd-example-modal-xl" id="myModalEndDates" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-xl">
       <div  class="modal-content armarCita p-3" style="background-color:#6BB2E5;border-radius:5px">
         <div  class="container p-4" style="background-color:rgba(238, 238, 238, 0.623);border-radius:5px;">
-          <table class="table mt-2 table-light table-borderless table-striped">
-							<tbody>
-								<tr >
-										<td class="font-weight-bold">
-											Marcar todos
-										</td>
-										<td class="font-weight-bold text-right">
-											<label class="conCheck mb-3 col-sm-2">
-											<input  class="desMarc" v-on:click="presSelectAll()" type="checkbox">
-											<span class="checkmark"></span>
-											</label>
-										</td>
-									</tr>
-							</tbody>
-						</table> 
-            <table  class="table" style="color:#353535 !important; background-color: rgba(238, 238, 238, 0.623)" >
-									
-								</table>
-            <vue-custom-scrollbar class="ListaProcesar maxHeightEdit w-100">
-							<table class="table table-light table-borderless table-striped" id="myTableServEdit">
-                <thead>
-										<tr>
-											<th >
-												Fecha
-											</th>
-											<th >
-												Cliente
-											</th>	
-                      <th >
-												Prestador
-											</th>	
-                      <th >
-												Total
-											</th>
-                      <th >
-												
-											</th>					
-										</tr>
-									</thead>
-								<tbody>
-									
-									<tr v-for="(closed, index) of closedDates" >
-                    <td class="font-weight-bold">
-											{{formatDate(closed.date)}}
-										</td>
-										<td class="font-weight-bold">
-											{{closed.client}}
-										</td>
-                    <td class="font-weight-bold">
-											{{closed.employe}}
-										</td>
-                    <td class="font-weight-bold">
-											{{closed.totalLocal}}
-										</td>
+          <h1>Citas por procesar</h1>
+          <vue-custom-scrollbar class="ListaProcesar maxHeightEdit w-100">
+            <table class="table table-light table-borderless table-striped" id="myTableServEdit">
+              <thead>
+                <tr>
+                  <th >
+                    Fecha
+                  </th>
+                  <th >
+                    Cliente
+                  </th>	
+                  <th >
+                    Prestador
+                  </th>	
+                  <th >
+                    Total
+                  </th>
+                  <th class="text-center">
+                    Selección
+                  </th>					
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(closed, index) of closedDates" >
+                  <td class="font-weight-bold">
+                    {{formatDate(closed.date)}}
+                  </td>
+                  <td class="font-weight-bold">
+                    {{closed.client}}
+                  </td>
+                  <td class="font-weight-bold">
+                    {{closed.employe}}
+                  </td>
+                  <td class="font-weight-bold">
+                    {{closed.totalLocal}}
+                  </td>
+                  <td class="font-weight-bold text-center">
+                    <label class="conCheck mb-3 col-sm-2">
+                    <input :id="closed._id" class="desMarc" v-on:click="pressDate(closed._id,closed.services,closed.client,closed.employe,closed.design,closed.comision,closed.totalLocal,closed.total,closed.descuento,closed.date,index)" type="checkbox">
+                    <span class="checkmark"></span>
+                    </label>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </vue-custom-scrollbar>
+          <button class="generar mt-3 text-center w-25 float-right" v-on:click="processDates">Procesar citas</button>
+        </div>  
+      </div>
+      </div>
+    </div>
 
-										<td class="font-weight-bold text-right">
-											<label class="conCheck mb-3 col-sm-2">
-											<input :id="closed._id" class="desMarc" v-on:click="pressDate(closed._id,closed.services,closed.client,closed.employe,closed.design,closed.comision,closed.totalLocal,closed.total,closed.descuento,closed.date,index)" type="checkbox">
-											<span class="checkmark"></span>
-											</label>
-										</td>
-									</tr>
-								</tbody>
-							</table>
-						</vue-custom-scrollbar>
+    <div class="modal fade" id="myModalProcessEndDates" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+      <div  class="modal-content armarCita p-3" style="background-color:#6BB2E5;border-radius:5px">
+        <div  class="container p-4" style="background-color:rgba(238, 238, 238, 0.623);border-radius:5px;">
+          <h1>Citas por procesar</h1>
+          <div class="row">
+            <div class="col-6">
+              <div>
+                <p>{{formatClientEnd(this.clientClosedDates)}}</p>
+              </div>
+            </div>
+            <div class="col-6">
+              <div>
+                <p>{{this.employeClosedDates}}</p>
+              </div>
+            </div>
+          </div>
+          <vue-custom-scrollbar class="ListaProcesar maxHeightEdit w-100">
+            <table class="table table-light table-borderless table-striped" id="myTableServEdit">
+              <thead style="background-color:#6bb2e5;color:#fff;">
+                <tr>
+                  <th >
+                    Servicio
+                  </th>					
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="servicesClosedDate of servicesClosedDates"  :key="servicesClosedDate">
+                  <td class="font-weight-bold">
+                    {{servicesClosedDate.servicio}}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </vue-custom-scrollbar>
+          <div class="row pt-3 shadowTop">
+					<div class="col-sm-6">
+						<div class="input-group input-group-lg mb-2">
+							<div class="input-group-prepend text-center">
+								<span style="font-size:1.5em;color:#5a5a5a !important" class="inputsVenta w-100 text-white input-group-text text-center" id="inputGroup-sizing-lg">Total</span>
+							</div>
+							
+							<input style="font-size:1.5em;color:#5a5a5a !important" readonly type="text" disabled class="inputsVenta text-center w-100 form-control manicuristaFocus" v-model="totalClosedDates" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+						</div>
+					</div>
+					<div class="col-sm-3">
+						<div class="input-group input-group-lg mb-2 ">
+							<div class="input-group-prepend w-25 inputsVenta">
+								<font-awesome-icon style="font-size:1.5em;color:#6BB2E5" icon="tag"/>
+								
+							</div>
+							<input type="text" selectionEnd="%" id="validDicount" inputmode="numeric" placeholder="0" v-model="descuentoClosedDates"  class="form-control manicuristaFocu inputsVenta text-center" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" readonly>
+							<div class="input-group-prepend w-25 inputsVenta">
+								<font-awesome-icon style="font-size:1.5em;color:#6BB2E5" icon="percent"/>
+								
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-3">
+						<div class="input-group input-group-lg mb-2 ">
+							<input type="text" id="validDicount" inputmode="numeric" placeholder="0" v-model="designClosedDates"  class="form-control manicuristaFocu inputsVenta text-center" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" readonly>
+						</div>
+					</div>
+				</div>
+          <button class="generar mt-3 text-center w-25 float-right" v-on:click="processDates">Procesar</button>
         </div>  
       </div>
       </div>
@@ -779,7 +831,15 @@ import router from '../router'
         endClient: '',
         endEmploye: '',
         closedDates:[],
-        closedDatesArray:[]
+        closedDatesArray:[],
+        servicesClosedDates: [],
+        clientClosedDates: '',
+        employeClosedDates: '',
+        designClosedDates: 0,
+        comisionClosedDates: 0,
+        totalLocalClosedDates: 0,
+        totalClosedDates: 0,
+        descuentoClosedDates: 0
       }
     },
     beforeCreate() {
@@ -2096,7 +2156,16 @@ import router from '../router'
           })
         })
       },
-      
+      formatClientEnd(value){
+        if (value) {
+          const split = value.split('-')
+          var clients
+          for (let index = 0; index < split.length; index++) {
+            clients = index == 0 ? split[index] : clients + '\n'+ split[index] 
+          }
+          return clients
+        }
+      },
       formatPrice(value) {
 				let val = (value/1).toFixed(2).replace('.', ',')
 				return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
@@ -2153,26 +2222,51 @@ import router from '../router'
 		
 		// }, 500);
 		
-		},
-		mouseLeaveVenta(clase,num){
-			$('.'+clase).hide()		
-		},
-    pressDate(id,services,client,employe,design,comision,totalLocal,total,descuento,date){
-      if ($('#'+id).prop('checked')) {
-        this.closedDatesArray.push({id,services,client,employe,design,comision,totalLocal,total,descuento,date})
-        
-      }
-      else{
-        for (let i = 0; i < this.closedDatesArray.length; i++) {
-						if (this.closedDatesArray[i].id == id ) {
-							this.closedDatesArray.splice(i, 1)
-							break
-						}
-					}
-      }
-      console.log(this.closedDatesArray)
-    }
-		
+      },
+      mouseLeaveVenta(clase,num){
+        $('.'+clase).hide()		
+      },
+      pressDate(id,services,client,employe,design,comision,totalLocal,total,descuento,date){
+        if ($('#'+id).prop('checked')) {
+          this.closedDatesArray.push({id,services,client,employe,design,comision,totalLocal,total,descuento,date})
+          
+        }
+        else{
+          for (let i = 0; i < this.closedDatesArray.length; i++) {
+              if (this.closedDatesArray[i].id == id ) {
+                this.closedDatesArray.splice(i, 1)
+                break
+              }
+            }
+        }
+        console.log(this.closedDatesArray)
+      },
+      processDates(){
+        for (let index = 0; index < this.closedDatesArray.length; index++) {
+          const position = this.closedDatesArray[index]
+          for (let indexTwo = 0; indexTwo < position.services.length; indexTwo++) {
+            const positionTwo = position.services[indexTwo];
+            this.servicesClosedDates.push(positionTwo)
+          }
+          this.clientClosedDates = index == 0 ? position.client : this.clientClosedDates + ' - ' + position.client
+          this.employeClosedDates = index == 0 ? position.employe : this.employeClosedDates + ' / ' + position.employe
+          this.designClosedDates = parseFloat(this.designClosedDates) + parseFloat(position.design)
+          this.comisionClosedDates = parseFloat(this.comisionClosedDates) + parseFloat(position.comision)
+          this.totalLocalClosedDates = parseFloat(this.totalLocalClosedDates) + parseFloat(position.totalLocal)
+          this.totalClosedDates = parseFloat(this.totalClosedDates) + parseFloat(position.total)
+          this.descuentoClosedDates = index == 0 ? '('+position.employe + ' / ' + position.descuento+'%)' : this.descuentoClosedDates + ' - ' +  '('+position.employe + ' / ' + position.descuento+'%)'
+        }
+        $('#myModalEndDates').modal('hide')
+        $('#myModalProcessEndDates').modal('show')
+        console.log(this.servicesClosedDates)
+        console.log(this.clientClosedDates)
+        console.log(this.employeClosedDates)
+        console.log(this.designClosedDates)
+        console.log(this.comisionClosedDates)
+        console.log(this.totalLocalClosedDates)
+        console.log(this.totalClosedDates)
+        console.log(this.descuentoClosedDates)
+      },
     },
     mounted(){
       EventBus.$on('reloadCitas', status => {
