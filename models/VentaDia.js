@@ -12,7 +12,7 @@ const DaySaleSchema = new Schema({
 		type: Array
 	},
 	descuento: {
-		type: Number
+		type: String
 	},
 	ganancialocal: {
 		type: Number

@@ -12,13 +12,16 @@ const VentaSchema = new Schema({
 		type: Array
 	},
 	descuento: {
-		type: Number
+		type: String
 	},
 	ganancialocal: {
 		type: Number
 	},
 	comision: {
 		type: Number
+	},
+	EmployeComision: {
+		type: Array
 	},
 	pagoEfectivo: {
 		type: Number

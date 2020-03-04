@@ -103,11 +103,11 @@
               <div class="row mt-2">
                 <div class="col-sm-6 font-weight-bold text-center">
                   <h2 class="text-center mt-2 mb-4">-Clientes-</h2>
-                  <p v-for="client of clientClosedDates" style="font-size:1.1em"><b>{{client}}</b></p>
+                  <p v-for="client of clientClosedDatesSplit" style="font-size:1.1em"><b>{{client}}</b></p>
                 </div>
                 <div style="border-left: 1px solid rgba(238, 238, 238, .9)" class="col-sm-6 font-weight-bold text-center">
                   <h2 class="text-center mt-2 mb-4">-Empleados-</h2>
-                  <p v-for="employe of descuentoClosedDates" style="font-size:1.1em"><b>{{employe}}</b></p>
+                  <p v-for="employe of descuentoClosedDatesSplit" style="font-size:1.1em"><b>{{employe}}</b></p>
                 </div>
               </div>
             </div>
@@ -150,7 +150,7 @@
 					</div>
 				</div>
           
-          <button class="generar mt-3 text-center w-25 float-right" v-on:click="processSelected(servicesClosedDates,datesClientIdentification,employeClosedDates,designClosedDates,comisionClosedDates,totalLocalClosedDates,totalClosedDates,descuentoClosedDates,employeClosedDatesWithDiscount)">Procesar</button>
+          <button class="generar mt-3 text-center w-25 float-right" v-on:click="processSelected()">Procesar</button>
         </div>  
       </div>
       </div>
@@ -834,7 +834,8 @@ import router from '../router'
         totalClosedDates: 0,
         descuentoClosedDates: 0,
         employeClosedDatesWithDiscount: [],
-        datesClientIdentification:[]
+        datesClientIdentification:[],
+        endDatesId: []
       }
     },
     beforeCreate() {
@@ -2234,32 +2235,43 @@ import router from '../router'
             this.servicesClosedDates.push(positionTwo)
           }
           this.clientClosedDates = index == 0 ? position.client : this.clientClosedDates + ' - ' + position.client
-          this.clientClosedDates = this.clientClosedDates.split('-')
+          this.clientClosedDatesSplit = this.clientClosedDates.split('-')
           this.employeClosedDates = index == 0 ? position.employe : this.employeClosedDates + ' / ' + position.employe
           this.designClosedDates = parseFloat(this.designClosedDates) + parseFloat(position.design)
           this.comisionClosedDates = parseFloat(this.comisionClosedDates) + parseFloat(position.comision)
           this.totalLocalClosedDates = parseFloat(this.totalLocalClosedDates) + parseFloat(position.totalLocal)
           this.totalClosedDates = parseFloat(this.totalClosedDates) + parseFloat(position.total)
           this.descuentoClosedDates = index == 0 ? position.employe + ' / ' + position.descuento+'%' : this.descuentoClosedDates + ' - ' +position.employe + ' / ' + position.descuento+'%'
-          this.descuentoClosedDates = this.descuentoClosedDates.split('-')
+          this.descuentoClosedDatesSplit = this.descuentoClosedDates.split('-')
           this.employeClosedDatesWithDiscount.push({employe: position.employe, comision: position.comision})
-          console.log(this.clientClosedDates)
+          this.endDatesId.push(position.id)
           this.datesClientIdentification.push(position.client.split(' / ')[1])
           
         }
         $('#myModalEndDates').modal('hide')
         $('#myModalProcessEndDates').modal('show')
       },
-      processSelected(servicios, clientes, empleados, diseños, comision, totalLocal, total, descuento, descuentoEmploye){
-        console.log(servicios)
-        console.log(clientes)
-        console.log(empleados)
-        console.log(diseños)
-        console.log(comision)
-        console.log(totalLocal)
-        console.log(total)
-        console.log(descuento)
-        console.log(descuentoEmploye)
+      processSelected(){
+        axios.post('ventas/processEndDates', {
+          servicesClosedDates: this.servicesClosedDates,
+          clientClosedDates: this.clientClosedDates,
+          employeClosedDates: this.employeClosedDates,
+          designClosedDates: this.designClosedDates,
+          comisionClosedDates: this.comisionClosedDates,
+          totalLocalClosedDates: this.totalLocalClosedDates,
+          totalClosedDates: this.totalClosedDates,
+          descuentoClosedDates: this.descuentoClosedDates,
+          employeClosedDatesWithDiscount: this.employeClosedDatesWithDiscount,
+          datesClientIdentification: this.datesClientIdentification,
+          pagoEfectivo: 0,
+          pagoOtros: 0,
+          pagoRedCDebito: 0,
+          pagoRedCCredito: 0,
+          pagoTransf: 0,
+          endDatesId: this.endDatesId
+        }).then(res => {
+          console.log(res)
+        })
       }
     },
     mounted(){

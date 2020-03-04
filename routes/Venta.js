@@ -23,6 +23,7 @@ const November = require('../models/November')
 const December = require('../models/December')
 const cashFunds = require('../models/cashFund')
 const Citas = require('../models/Citas')
+const closedDates = require('../models/closedDates')
 ventas.use(cors())
 
 ventas.put('/updateServicesMonth/:service', (req, res) => {
@@ -802,6 +803,116 @@ ventas.put('/:id', async (req, res, next) => {
     res.json({status: 'bad'})
 })
 
+ventas.post('/processEndDates', (req, res) => {
+  const employeClosedDatesWithDiscount = req.body.employeClosedDatesWithDiscount
+  const clientClosedDatesId = req.body.datesClientIdentification
+  const endDatesId  = req.body.endDatesId
+  const venta = {
+    cliente: req.body.clientClosedDates,
+    manicurista: req.body.employeClosedDates,
+    servicios: req.body.servicesClosedDates,
+    comision: req.body.comisionClosedDates,
+    EmployeComision: employeClosedDatesWithDiscount,
+    pagoEfectivo:req.body.pagoEfectivo,
+    pagoOtros:req.body.pagoOtros,
+    pagoRedCDebito:req.body.pagoRedCDebito,
+    pagoRedCCredito:req.body.pagoRedCCredito,
+    pagoTransf:req.body.pagoTransf,
+    descuento:req.body.descuentoClosedDates,
+    ganancialocal: req.body.totalLocalClosedDates,
+    design: req.body.designClosedDates,
+    count: 0,
+    status: true,
+    total: req.body.totalClosedDates,
+
+    fecha: new Date()
+  }
+  const ventaDia = {
+    cliente: req.body.clientClosedDates,
+    manicurista: req.body.employeClosedDates,
+    servicios: req.body.servicesClosedDates,
+    comision: req.body.comisionClosedDates,
+    pagoEfectivo:req.body.pagoEfectivo,
+    pagoOtros:req.body.pagoOtros,
+    pagoRedCDebito:req.body.pagoRedCDebito,
+    pagoRedCCredito:req.body.pagoRedCCredito,
+    pagoTransf:req.body.pagoTransf,
+    descuento:req.body.descuentoClosedDates,
+    ganancialocal: req.body.totalLocalClosedDates,
+    design: req.body.designClosedDates,
+    status: true,
+    total: req.body.totalClosedDates,
+    idTableSales: '',
+    fecha: new Date()
+  }
+  cashFunds.find()
+  .then(have => {
+    if (have.length > 0) {
+      Venta.find()
+      .then(ifCount => {
+        if (ifCount.length > 0) {
+          Venta.find().sort({count: -1}).limit(1)
+          .then(Count => {
+            venta.count = parseFloat(Count[0].count) + 1
+            Venta.create(venta)
+            .then(sale => {
+              ventaDia.idTableSales = sale._id
+              for (let index = 0; index < employeClosedDatesWithDiscount.length; index++) {
+                console.log(employeClosedDatesWithDiscount[index].employe)
+                console.log(employeClosedDatesWithDiscount[index].comision)
+                Manicurista.updateOne({nombre:employeClosedDatesWithDiscount[index].employe},{
+                  $inc: {comision:employeClosedDatesWithDiscount[index].comision} 
+                })    
+                .then(aver => {})  
+              }
+              for (let indexTwo = 0; indexTwo < clientClosedDatesId.length; indexTwo++) {
+                Cliente.updateOne({identidad: clientClosedDatesId[indexTwo]},{
+                  $inc: {participacion: 1},
+                  $set: {ultimaFecha: new Date()},
+                  $push: {historical: ventaDia}
+                })
+                .then(aver => {}) 
+              }
+              for (let indexThree = 0; indexThree < endDatesId.length; indexThree++) {
+                closedDates.findByIdAndRemove(endDatesId[indexThree])
+                .then(aver => {}) 
+              }
+              VentaDia.create(ventaDia)
+              .then(dayDale => {
+                res.json({status: 'Venta registrada'})
+              })
+              .catch(err => {
+                res.send('Error:' + err)
+              })
+            })
+            .catch(err => {
+
+              res.send('Error:' + err)
+            })
+          })
+          .catch(err => {
+            res.send('Error:' + err)
+          })
+        }
+      })
+      .catch(err => {
+        res.send('Error:' + err)
+      })
+    }else{
+      cashFunds.create({
+        userRegister:'',
+        amount:0,
+        amountEgress:0,
+        quantity:0,
+        validator: false
+      }).then(createCash => {
+        res.json({status: 'no-cash'})
+      })
+    }
+  })
+
+})
+
 ventas.post('/procesar', (req, res) => {
   const ifProcess = req.body.ifProcess
   const services = req.body.servicios
@@ -844,6 +955,7 @@ ventas.post('/procesar', (req, res) => {
     manicurista: req.body.manicurista+"/"+documentoManicurista,
     servicios: req.body.servicios,
     comision: comision,
+    EmployeComision: [],
     pagoEfectivo:req.body.pagoEfectivo,
     pagoOtros:req.body.pagoOtros,
     pagoRedCDebito:req.body.pagoRedCDebito,
