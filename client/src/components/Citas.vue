@@ -839,7 +839,8 @@ import router from '../router'
         comisionClosedDates: 0,
         totalLocalClosedDates: 0,
         totalClosedDates: 0,
-        descuentoClosedDates: 0
+        descuentoClosedDates: 0,
+        employeClosedDatesWithDiscount: []
       }
     },
     beforeCreate() {
@@ -2255,6 +2256,7 @@ import router from '../router'
           this.totalLocalClosedDates = parseFloat(this.totalLocalClosedDates) + parseFloat(position.totalLocal)
           this.totalClosedDates = parseFloat(this.totalClosedDates) + parseFloat(position.total)
           this.descuentoClosedDates = index == 0 ? '('+position.employe + ' / ' + position.descuento+'%)' : this.descuentoClosedDates + ' - ' +  '('+position.employe + ' / ' + position.descuento+'%)'
+          this.employeClosedDatesWithDiscount.push({employe: position.employe, comision: position.comision})
         }
         $('#myModalEndDates').modal('hide')
         $('#myModalProcessEndDates').modal('show')
@@ -2266,6 +2268,7 @@ import router from '../router'
         console.log(this.totalLocalClosedDates)
         console.log(this.totalClosedDates)
         console.log(this.descuentoClosedDates)
+        console.log(this.employeClosedDatesWithDiscount)
       },
     },
     mounted(){
