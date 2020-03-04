@@ -16,6 +16,11 @@ citas.get('/getClients', async (req, res) => {
   res.json(client)
 })
 
+citas.get('/endingdates', async (req, res) => {
+  const client = await closedDates.find()
+  res.json(client)
+})
+
 citas.get('/:employe', async (req, res) => {
   const citasByEmploye = await Citas.find({'employe': req.params.employe})
   res.json(citasByEmploye)
@@ -371,6 +376,16 @@ citas.put('/editDate/:id', async (req, res) => {
   res.json({status: 'bad'})
 })
 
+citas.get('/endingdates', (req, res) => {
+ closedDates.find()
+ .then( closes => {
+   console.log(closes)
+   res.json(closes)
+ })
+  .catch(err => {
+    res.send(err)
+  })
+})
 
 
 

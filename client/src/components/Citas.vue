@@ -4,13 +4,13 @@
         <div  style="padding-left:2%;" id="calen" class="col-sm-12">
           <div v-if="status == 1 || status == 2" class="col-sm-12 mx-auto text-center p-1 mb-5">
             <div class="row fixed-top mt-1">
-              <div class="col-sm-5">
+              <div class="col-sm-4">
                 <button  data-toggle="modal" class="generar" data-target=".genCita">Generar cita <font-awesome-icon style="float:right;margin-top:2px;margin-right:5px;font-size:1.2em" icon="tasks" /></button>
               </div>
-              <div class="col-sm-2">
-                {{new Date()}}
+              <div class="col-sm-4">
+                <button  data-toggle="modal" class="generar ml-5" data-target=".citasFinish">Citas finalizadas <font-awesome-icon style="float:right;margin-top:2px;margin-right:5px;font-size:1.2em" icon="times" /></button>
               </div>
-              <div class="col-sm-5">
+              <div class="col-sm-4">
                 <select id="manicuristas" v-model="empByCita" v-on:change="getCitasByEmploye()"  class="Two" name="manicuristas">
                   <option v-if="sectionDelete" selected="true" >Manicuristas</option>
                   <option selected="true">Todos</option>
@@ -37,6 +37,79 @@
         </div>
     </div>
       
+    <div class="modal fade citasFinish bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-xl">
+      <div  class="modal-content armarCita p-3" style="background-color:#6BB2E5;border-radius:5px">
+        <div  class="container p-4" style="background-color:rgba(238, 238, 238, 0.623);border-radius:5px;">
+          <table class="table mt-2 table-light table-borderless table-striped">
+							<tbody>
+								<tr >
+										<td class="font-weight-bold">
+											Marcar todos
+										</td>
+										<td class="font-weight-bold text-right">
+											<label class="conCheck mb-3 col-sm-2">
+											<input  class="desMarc" v-on:click="presSelectAll()" type="checkbox">
+											<span class="checkmark"></span>
+											</label>
+										</td>
+									</tr>
+							</tbody>
+						</table> 
+            <table  class="table" style="color:#353535 !important; background-color: rgba(238, 238, 238, 0.623)" >
+									
+								</table>
+            <vue-custom-scrollbar class="ListaProcesar maxHeightEdit w-100">
+							<table class="table table-light table-borderless table-striped" id="myTableServEdit">
+                <thead>
+										<tr>
+											<th >
+												Fecha
+											</th>
+											<th >
+												Cliente
+											</th>	
+                      <th >
+												Prestador
+											</th>	
+                      <th >
+												Total
+											</th>
+                      <th >
+												
+											</th>					
+										</tr>
+									</thead>
+								<tbody>
+									
+									<tr v-for="(closed, index) of closedDates" >
+                    <td class="font-weight-bold">
+											{{formatDate(closed.date)}}
+										</td>
+										<td class="font-weight-bold">
+											{{closed.client}}
+										</td>
+                    <td class="font-weight-bold">
+											{{closed.employe}}
+										</td>
+                    <td class="font-weight-bold">
+											{{closed.totalLocal}}
+										</td>
+
+										<td class="font-weight-bold text-right">
+											<label class="conCheck mb-3 col-sm-2">
+											<input :id="closed._id" class="desMarc" v-on:click="pressDate(closed._id,closed.services,closed.client,closed.employe,closed.design,closed.comision,closed.totalLocal,closed.total,closed.descuento,closed.date,index)" type="checkbox">
+											<span class="checkmark"></span>
+											</label>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</vue-custom-scrollbar>
+        </div>  
+      </div>
+      </div>
+    </div>
 
     <div class="modal fade genCita bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-xl">
@@ -704,7 +777,9 @@ import router from '../router'
         endId: '',
         endServices: '',
         endClient: '',
-        endEmploye: ''
+        endEmploye: '',
+        closedDates:[],
+        closedDatesArray:[]
       }
     },
     beforeCreate() {
@@ -729,6 +804,7 @@ import router from '../router'
       this.getClients()
       this.getServicios()
       this.fechaMinima()
+      this.getClosed()
     },
     methods: {
       // arrayClient(){
@@ -1140,7 +1216,13 @@ import router from '../router'
         })
         e.stopPropagation()
       },
-      getCitas () {
+      getClosed() {
+        axios.get('citas/endingdates')
+        .then( res => {
+          this.closedDates = res.data
+        })
+      },
+      getCitas() {
         if (this.lender != '') {
           this.events = []
           axios.get('citas/' + this.lender)
@@ -2075,6 +2157,21 @@ import router from '../router'
 		mouseLeaveVenta(clase,num){
 			$('.'+clase).hide()		
 		},
+    pressDate(id,services,client,employe,design,comision,totalLocal,total,descuento,date){
+      if ($('#'+id).prop('checked')) {
+        this.closedDatesArray.push({id,services,client,employe,design,comision,totalLocal,total,descuento,date})
+        
+      }
+      else{
+        for (let i = 0; i < this.closedDatesArray.length; i++) {
+						if (this.closedDatesArray[i].id == id ) {
+							this.closedDatesArray.splice(i, 1)
+							break
+						}
+					}
+      }
+      console.log(this.closedDatesArray)
+    }
 		
     },
     mounted(){
