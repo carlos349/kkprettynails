@@ -97,7 +97,7 @@
       <div class="modal-dialog modal-lg">
       <div  class="modal-content armarCita p-3" style="background-color:#6BB2E5;border-radius:5px">
         <div  class="container p-4" style="background-color:rgba(238, 238, 238, 0.623);border-radius:5px;">
-          <h1>Citas por procesar</h1>
+          <h1>Datos de las citas seleccionadas</h1>
           <div class="row">
             <div class="col-6">
               <div>
