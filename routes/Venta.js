@@ -780,18 +780,20 @@ ventas.post('/verificacioncliente', (req, res) => {
 
 ventas.put('/:id', async (req, res, next) => {
     const id = req.params.id
-    const comision = '-'+req.body.comision 
-    const comisionFinal = parseFloat(comision)
-    const prestador = req.body.prestador
-    const split = prestador.split('/')
-    console.log(split[1])
+    const dataComision = req.body.employeComision
+    console.log(dataComision)
     const cancelSale = await Venta.findByIdAndUpdate(id, {
       $set: { status: false}
     })
     if (cancelSale) {
       const removeSale = await VentaDia.findOneAndRemove({idTableSales: id})
       if (removeSale) {
-        const removeComision = await Manicurista.updateOne({documento:split[1]},{$inc: {comision: comisionFinal}})
+        for (let index = 0; index < dataComision.length; index++) {
+          var comisionNega = '-'+dataComision[index].comision
+          var removeComision = await Manicurista.updateOne({nombre:dataComision[index].employe},{$inc: {comision: parseFloat(comisionNega)}})
+          console.log(removeComision)
+        }
+        
       
         if (removeComision) {
           res.status(200).json({status: 'ok'})
@@ -949,19 +951,24 @@ ventas.post('/procesar', (req, res) => {
   const gananciaTotal = totalParaComision - parseFloat(comisionTotal) 
   const comision = parseFloat(comisionTotal) + parseFloat(totalComisionDesign)
   const documentoManicurista = req.body.documentoManicurista
-
+  var discount
+  if (descuento == 100) {
+    discount = '0%'
+  }else{
+    discount = req.body.manicurista+ ' / '+ req.body.descuento+'%'
+  }
   const venta = {
     cliente: req.body.cliente,
     manicurista: req.body.manicurista+"/"+documentoManicurista,
     servicios: req.body.servicios,
     comision: comision,
-    EmployeComision: [],
+    EmployeComision: [{employe: req.body.manicurista, comision: comision}],
     pagoEfectivo:req.body.pagoEfectivo,
     pagoOtros:req.body.pagoOtros,
     pagoRedCDebito:req.body.pagoRedCDebito,
     pagoRedCCredito:req.body.pagoRedCCredito,
     pagoTransf:req.body.pagoTransf,
-    descuento:req.body.descuento,
+    descuento:discount,
     ganancialocal: gananciaTotal,
     design: req.body.diseno,
     count: 0,

@@ -117,7 +117,7 @@
                   
                 </div>
                 <p slot="lender" slot-scope="props">{{justName(props.row.manicurista)}}</p>
-                <p slot="descuentoo" slot-scope="props">{{props.row.descuento}}%</p>
+                <p slot="descuentoo" slot-scope="props">{{props.row.descuento}}</p>
                 <p slot="comisionn" slot-scope="props">{{formatPrice(props.row.comision)}}</p>
                 <p slot="locall" slot-scope="props">{{formatPrice(props.row.ganancialocal)}}</p>
                 <p slot="totall" slot-scope="props">{{formatPrice(props.row.total)}}</p>
@@ -141,9 +141,9 @@
             <div  class="modal-body row p-3">
               <div class="form-group col-md-12">
                 <h4> <b>N° Venta: </b> V-{{arreglo.count}}</h4>
-                <h4> <b>Prestador: </b> {{justName(arreglo.manicurista)}}</h4>
-                <h4> <b>Cliente:</b>  {{justNameTwo(arreglo.cliente)}}</h4>
-                <h4><b>Contacto: </b>{{justNameThree(arreglo.cliente)}}</h4>
+                <h4> <b>Prestador: </b> <span v-for="lenderArray of arreglo.manicurista">{{lenderArray}}<br></span> </h4>
+                <h4> <b>Cliente:</b> <span v-for="clientArray of arreglo.cliente">{{clientArray}}<br></span> </h4>
+                <!-- <h4><b>Contacto: </b>{{justNameThree(arreglo.cliente)}}</h4> -->
                 <br>
                 <div class="row text-center">
                   <div class="col-sm-6"> <h4> <b>Fecha:</b>  {{formatDate(arreglo.fecha)}}</h4></div>
@@ -175,8 +175,8 @@
                 
                 <li class="list-group-item" style="background-color: transparent !important">
                   <h3 class="text-center"><b>Detalle</b> </h3>
-                  <h5>Descuento: <span style="float:right;">  {{arreglo.descuento }}% </span></h5>
-                  <h5>Comisión: <span style="float:right;">$  {{ formatPrice(arreglo.comision) }}</span></h5>
+                  <h5>Descuento: <span style="float:right;" v-for="discountArray of arreglo.descuento">  {{discountArray }} </span></h5>
+                  <h5 class="mt-5">Comisión: <span style="float:right;">$  {{ formatPrice(arreglo.comision) }}</span></h5>
                   <h5>Diseño: <span style="float:right;"> {{ formatPrice(arreglo.design) }}</span></h5>
                   <h5>Local:<span style="float:right;"> $ {{ formatPrice(arreglo.ganancialocal) }}</span></h5>
                   <h5> <b>Total:</b> <span style="float:right;"><b>$ {{ formatPrice(arreglo.total) }}</b> </span></h5>
@@ -288,7 +288,8 @@ export default {
       fechaDesde: 'Desde',
       fechaHasta: 'Hasta',
       justOneDay: 'Filtrar día',
-      filterInspector: false
+      filterInspector: false,
+      
     }
   },
   beforeCreate() {
@@ -480,8 +481,8 @@ export default {
 		},
     async cancelSale(id){
         const cancelSale = await axios.put('/ventas/'+id, {
-          comision: this.arreglo.comision,
-          prestador: this.arreglo.manicurista
+          employeComision: this.arreglo.EmployeComision
+
         })
         if (cancelSale.data.status == 'ok') {
           this.$swal({
@@ -543,6 +544,10 @@ export default {
         try {
             const sale = await axios.get('ventas/getSale/'+id)
             this.arreglo = sale.data
+            this.arreglo.cliente = this.arreglo.cliente.split(' - ')
+            this.arreglo.manicurista = this.arreglo.manicurista.split(' / ')
+            this.arreglo.descuento = this.arreglo.descuento.split(' - ')
+            
             $('#modalDetalleSale').modal('show')
         } catch(err) {
               this.$swal({

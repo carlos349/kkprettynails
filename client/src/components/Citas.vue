@@ -594,7 +594,12 @@
                     </div>
                   </div>	
                 </div>
-                <div v-on:click="endDate(selectedEvent.id, selectedEvent.cliente, selectedEvent.empleada, selectedEvent.services)" v-if="selectedEvent.process == true" v-bind:style="{  'height': 'auto', 'z-index' : '1000' }"  class="p-2 menuCitaBorrar navSCitaFinalizar" v-on:mouseenter="mouseOverVenta('textEnd',0)" v-on:mouseleave="mouseLeaveVenta('textEnd',0)">
+                
+                <button v-bind:class="selectedEvent.class" v-if="selectedEvent.process == true && status == 1 || selectedEvent.process == true && status == 2" type="button" class="btn font-weight-bold btn-style col-10 mt-2 ml-4" v-on:click="processSale(selectedEvent.id, 'process')">Procesar venta</button>
+                
+                
+              </div>
+              <div v-on:click="endDate(selectedEvent.id, selectedEvent.cliente, selectedEvent.empleada, selectedEvent.services)" v-if="selectedEvent.process == true" v-bind:style="{  'height': 'auto', 'z-index' : '1000' }"  class="p-2 menuCitaBorrar navSCitaFinalizar" v-on:mouseenter="mouseOverVenta('textEnd',0)" v-on:mouseleave="mouseLeaveVenta('textEnd',0)">
                   <div class="row">
                     <div class="col-sm-2">
                       <font-awesome-icon  style="color:#353535;font-size:1.6em" icon="calendar-check" />
@@ -604,11 +609,6 @@
                     </div>
                   </div>	
                 </div>
-                <button v-bind:class="selectedEvent.class" v-if="selectedEvent.process == true && status == 1 || selectedEvent.process == true && status == 2" type="button" class="btn font-weight-bold btn-style col-10 mt-2 ml-4" v-on:click="processSale(selectedEvent.id, 'process')">Procesar venta</button>
-                
-                
-              </div>
-              
             </div>
 
 		    </div>
@@ -934,7 +934,9 @@ import router from '../router'
         pagoTransfDates:'',
         pagoOtrosDates:'',
         pagoRedCCreditoDates:'',
-        pagoRedCDebitoDates:''
+        pagoRedCDebitoDates:'',
+        clientClosedDatesSplit:[],
+        descuentoClosedDatesSplit:[]
       }
     },
     beforeCreate() {
@@ -992,6 +994,7 @@ import router from '../router'
                 this.getCitasByEmploye()
               }
             }, 500);
+            this.getClosed()
             this.$swal({
               type: 'success',
               title: 'Cita finalizada con exito',
@@ -999,6 +1002,11 @@ import router from '../router'
               timer: 1500
             })
             this.designEndDate = ''
+            this.serviciosSelecionadosDates = []
+            this.endClient = ''
+            this.endEmploye = ''
+            this.designEndDate = ''
+            $('.conteoServ').text('0')
           }
         })
       },
@@ -2405,13 +2413,13 @@ import router from '../router'
               this.closedDatesArray=[]
               this.servicesClosedDates= []
               this.clientClosedDates= ''
-              this.clientClosedDatesSplit = ''
+              this.clientClosedDatesSplit = '-'
               this.employeClosedDates= ''
               this.designClosedDates= 0
               this.comisionClosedDates= 0
               this.totalLocalClosedDates= 0
               this.totalClosedDates= 0
-              this.descuentoClosedDatesSplit= 0
+              this.descuentoClosedDatesSplit= []
               this.descuentoClosedDates= 0
               this.employeClosedDatesWithDiscount= []
               this.datesClientIdentification=[]
