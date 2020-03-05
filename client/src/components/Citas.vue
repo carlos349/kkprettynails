@@ -75,7 +75,7 @@
                     {{closed.employe}}
                   </td>
                   <td class="font-weight-bold">
-                    {{closed.totalLocal}}
+                    {{formatPrice(closed.total)}} $
                   </td>
                   <td class="font-weight-bold text-center">
                     <label class="conCheck mb-3 col-sm-2">
@@ -149,7 +149,101 @@
 						</div>
 					</div>
 				</div>
-          
+          <span class="spanInputs w-100 font-weight-bold text-center text-white input-group-text text-center" style="background-color: #6BB2E5 !important; color:white !important; border:none !important;padding-top:10px;border-radius:10px !important" ><h5 class="text-center w-100">Medios de pago</h5> </span>
+					<div class="input-group-prepend w-25 text-center">
+						
+					</div>
+					<div class="row pt-2 ">
+						<div class="col-sm-4">
+							<div style="background-color:white;border-radius:5px" class="input-group input-group-lg mb-2">
+								<div v-on:click="hundredPorcentDates('efectivo')" v-on:mouseenter="hundredMouseOver('efectivo')" v-on:mouseleave="hundredMouseNonOver('efectivo')" class="input-group-prepend text-center w-25 hundred">
+									<span class="inputsVenta  w-100  text-white input-group-text" id="inputGroup-sizing-lg">
+										<b class="efectivo" style="font-size:0.6em;display:none">100%</b>
+									<font-awesome-icon  class="efectivo" style="font-size:1em; color:#6BB2E5" icon="money-bill-wave"/>	
+									</span>
+									
+								</div>
+								<currency-input
+									v-model="pagoEfectivoDates"
+									locale="de"
+									placeholder="Efectivo"
+									class="inputsVenta form-control text-center manicuristaFocus"
+									v-on:click="erasedFormat('pagoEfectivo')"
+								/>
+								
+							</div>
+						</div>
+						<div class="col-sm-4">
+						<div style="background-color:white;border-radius:5px" class="input-group input-group-lg mb-2 ">
+							<div v-on:click="hundredPorcentDates('transferencia')" v-on:mouseenter="hundredMouseOver('transferencia')" v-on:mouseleave="hundredMouseNonOver('transferencia')" class="input-group-prepend hundred w-25 text-center">
+								<span class="inputsVenta w-100  text-white input-group-text" id="inputGroup-sizing-lg">
+									<b class="transferencia" style="font-size:0.6em;display:none">100%</b>
+									<font-awesome-icon class="transferencia" style="font-size:1em; color:#6BB2E5" icon="money-check-alt"/>
+								</span>
+							</div>
+							<currency-input
+									v-model="pagoTransfDates"
+									locale="de"
+									placeholder="Transferencia"
+									class="inputsVenta form-control text-center manicuristaFocus"
+									v-on:click="erasedFormat('pagoTransf')"
+								/>
+							
+						</div>
+					</div>
+					<div class="col-sm-4">
+						<div style="background-color:white;border-radius:5px" class="input-group input-group-lg mb-2 ">
+							<div v-on:click="hundredPorcentDates('otros')" v-on:mouseenter="hundredMouseOver('otros')" v-on:mouseleave="hundredMouseNonOver('otros')" class="input-group-prepend w-25 hundred">
+								<span class="input-group-text bg-light w-100  text-white inputsVenta" id="inputGroup-sizing-lg">
+									<b class="otros" style="font-size:0.6em;display:none">100%</b>
+									<font-awesome-icon class="otros" style="font-size:1em; color:#6BB2E5" icon="hand-holding-usd"/>
+								</span>
+								
+							</div>
+							<currency-input
+									v-model="pagoOtrosDates"
+									locale="de"
+									placeholder="Otros"
+									class="inputsVenta form-control text-center manicuristaFocus"
+									v-on:click="erasedFormat('pagoOtros')"
+								/>
+							
+						</div>
+					</div>
+					<div class="col-sm-4 mx-auto">
+						<div style="background-color:white;border-radius:5px" class="input-group input-group-lg mb-2 ">
+							<div v-on:click="hundredPorcentDates('credito')" v-on:mouseenter="hundredMouseOver('credito')" v-on:mouseleave="hundredMouseNonOver('credito')" class="input-group-prepend hundred w-25 p-0 ">
+								<span class="inputsVenta w-100 p-0 text-white input-group-text" id="inputGroup-sizing-lg">
+									<b class="credito pl-3" style="font-size:0.6em;display:none">100%</b>
+									<img style="width:98%;padding-left:1px" class="credito"  src="../assets/trans1.png" alt=""></span>
+							</div>
+							<currency-input
+									v-model="pagoRedCCreditoDates"
+									locale="de"
+									placeholder="Crédito"
+									class="inputsVenta form-control text-center manicuristaFocus"
+									v-on:click="erasedFormat('pagoRedCCredito')"
+								/>
+							
+						</div>
+					</div>
+					<div class="col-sm-4 mx-auto">
+						<div style="background-color:white;border-radius:5px" class="input-group input-group-lg mb-2 ">
+							<div  v-on:click="hundredPorcentDates('debito')" v-on:mouseenter="hundredMouseOver('debito')" v-on:mouseleave="hundredMouseNonOver('debito')" class="input-group-prepend w-25 p-0 hundred">
+								<span class="inputsVenta w-100 p-0 text-white input-group-text" id="inputGroup-sizing-lg">
+									<b class="debito pl-3" style="font-size:0.6em;display:none">100%</b>
+									<img class="debito" style="width:98%;padding-left:1px"  src="../assets/trans1.png" alt=""></span>
+							</div>
+							<currency-input
+									v-model="pagoRedCDebitoDates"
+									locale="de"
+									placeholder="Débito"
+									class="inputsVenta form-control text-center manicuristaFocus"
+									v-on:click="erasedFormat('pagoRedCDebito')"
+								/>	
+						</div>
+					</div>
+					</div>
           <button class="generar mt-3 text-center w-25 float-right" v-on:click="processSelected()">Procesar</button>
         </div>  
       </div>
@@ -835,7 +929,12 @@ import router from '../router'
         descuentoClosedDates: 0,
         employeClosedDatesWithDiscount: [],
         datesClientIdentification:[],
-        endDatesId: []
+        endDatesId: [],
+        pagoEfectivoDates:'',
+        pagoTransfDates:'',
+        pagoOtrosDates:'',
+        pagoRedCCreditoDates:'',
+        pagoRedCDebitoDates:''
       }
     },
     beforeCreate() {
@@ -2252,27 +2351,132 @@ import router from '../router'
         $('#myModalProcessEndDates').modal('show')
       },
       processSelected(){
-        axios.post('ventas/processEndDates', {
-          servicesClosedDates: this.servicesClosedDates,
-          clientClosedDates: this.clientClosedDates,
-          employeClosedDates: this.employeClosedDates,
-          designClosedDates: this.designClosedDates,
-          comisionClosedDates: this.comisionClosedDates,
-          totalLocalClosedDates: this.totalLocalClosedDates,
-          totalClosedDates: this.totalClosedDates,
-          descuentoClosedDates: this.descuentoClosedDates,
-          employeClosedDatesWithDiscount: this.employeClosedDatesWithDiscount,
-          datesClientIdentification: this.datesClientIdentification,
-          pagoEfectivo: 0,
-          pagoOtros: 0,
-          pagoRedCDebito: 0,
-          pagoRedCCredito: 0,
-          pagoTransf: 0,
-          endDatesId: this.endDatesId
-        }).then(res => {
-          console.log(res)
-        })
-      }
+        if (this.pagoEfectivoDates == '') {
+				this.pagoEfectivoDates = 0
+        }
+        if (this.pagoOtrosDates == '') {
+          this.pagoOtrosDates = 0
+        }
+        if (this.pagoTransfDates == '') {
+          this.pagoTransfDates = 0
+        }
+        if (this.pagoRedCDebitoDates == '') {
+          this.pagoRedCDebitoDates = 0
+        }
+        if (this.pagoRedCCreditoDates == '') {
+          this.pagoRedCCreditoDates = 0
+        }
+        if (this.descuentoDates == '') {
+          this.descuentoDates = 0
+        }
+        if (this.diseñoDates == '') {
+          this.diseñoDates = 0
+        }
+        const totalFormadePago = parseFloat(this.pagoEfectivoDates) + parseFloat(this.pagoOtrosDates) + parseFloat(this.pagoTransfDates) + parseFloat(this.pagoRedCDebitoDates) + parseFloat(this.pagoRedCCreditoDates)
+
+        if (this.totalClosedDates == totalFormadePago) {
+          axios.post('ventas/processEndDates', {
+            servicesClosedDates: this.servicesClosedDates,
+            clientClosedDates: this.clientClosedDates,
+            employeClosedDates: this.employeClosedDates,
+            designClosedDates: this.designClosedDates,
+            comisionClosedDates: this.comisionClosedDates,
+            totalLocalClosedDates: this.totalLocalClosedDates,
+            totalClosedDates: this.totalClosedDates,
+            descuentoClosedDates: this.descuentoClosedDates,
+            employeClosedDatesWithDiscount: this.employeClosedDatesWithDiscount,
+            datesClientIdentification: this.datesClientIdentification,
+            pagoEfectivo: this.pagoEfectivoDates,
+            pagoOtros: this.pagoOtrosDates,
+            pagoRedCDebito: this.pagoRedCDebitoDates,
+            pagoRedCCredito: this.pagoRedCCreditoDates,
+            pagoTransf: this.pagoTransfDates,
+            endDatesId: this.endDatesId
+          })
+          .then(res => {
+              if (res.data.status == "Venta registrada") {
+							this.$swal({
+								type: 'success',
+								title: 'Venta procesada',
+								showConfirmButton: false,
+								timer: 1500
+							})
+              this.closedDates=[]
+              this.closedDatesArray=[]
+              this.servicesClosedDates= []
+              this.clientClosedDates= ''
+              this.clientClosedDatesSplit = ''
+              this.employeClosedDates= ''
+              this.designClosedDates= 0
+              this.comisionClosedDates= 0
+              this.totalLocalClosedDates= 0
+              this.totalClosedDates= 0
+              this.descuentoClosedDatesSplit= 0
+              this.descuentoClosedDates= 0
+              this.employeClosedDatesWithDiscount= []
+              this.datesClientIdentification=[]
+              this.endDatesId= []
+              this.pagoEfectivoDates=''
+              this.pagoTransfDates=''
+              this.pagoOtrosDates=''
+              this.pagoRedCCreditoDates=''
+              this.pagoRedCDebitoDates=''
+              $('#myModalProcessEndDates').modal('hide')
+						}
+          })
+        }
+        else{
+					this.$swal({
+						type: 'error',
+						title: 'Total no coincide, con los montos en medios de pago',
+						showConfirmButton: false,
+						timer: 2000
+					})
+					if (this.pagoEfectivoDates == 0) {
+						this.pagoEfectivoDates = ''
+					}
+					if (this.pagoTransfDates == 0) {
+						this.pagoTransfDates = ''
+					}
+					if (this.pagoOtrosDates == 0) {
+						this.pagoOtrosDates = ''
+					}
+					if (this.pagoRedCDates == 0) {
+						this.pagoRedCDates = ''
+					}
+					if (this.pagoTransfDates == 0) {
+						this.pagoTransfDates = ''
+					}
+				}
+        
+      },
+      hundredPorcentDates(tipo){
+			if (this.pagoEfectivoDates != '' || this.pagoTransfDates != '' || this.pagoRedCCreditoDates != '' || this.pagoRedCDebitoDates != '' || this.pagoOtrosDates != '' ) {
+				this.$swal({
+					type: 'error',
+					title: '¡El monto sobrepasa el total!',
+					showConfirmButton: false,
+					timer: 2000
+				})
+			}
+			else{
+				if (tipo == "efectivo") {
+					this.pagoEfectivoDates = this.totalClosedDates
+				}
+				if (tipo == "transferencia") {
+					this.pagoTransfDates = this.totalClosedDates
+				}
+				if (tipo == "otros") {
+					this.pagoOtrosDates = this.totalClosedDates
+				}
+				if (tipo == "credito") {
+					this.pagoRedCCreditoDates = this.totalClosedDates
+				}
+				if (tipo == "debito") {
+					this.pagoRedCDebitoDates = this.totalClosedDates
+				}
+			}
+		},
     },
     mounted(){
       EventBus.$on('reloadCitas', status => {
