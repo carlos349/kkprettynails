@@ -481,8 +481,8 @@ export default {
 		},
     async cancelSale(id){
         const cancelSale = await axios.put('/ventas/'+id, {
-          comision: this.arreglo.comision,
-          prestador: this.arreglo.manicurista
+          employeComision: this.arreglo.EmployeComision
+
         })
         if (cancelSale.data.status == 'ok') {
           this.$swal({
