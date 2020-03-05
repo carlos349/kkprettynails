@@ -147,7 +147,7 @@
 						
 					</div>
 					<div class="row pt-2 ">
-						<div class="col-sm-4">
+						<div v-tooltip="'Efectivo'" class="col-sm-4">
 							<div class="input-group input-group-lg mb-2">
 								<div v-on:click="hundredPorcent('efectivo')" v-on:mouseenter="hundredMouseOver('efectivo')" v-on:mouseleave="hundredMouseNonOver('efectivo')" class="input-group-prepend text-center w-25 hundred">
 									<span class="inputsVenta  w-100  text-white input-group-text" id="inputGroup-sizing-lg">
@@ -160,6 +160,7 @@
 									v-model="pagoEfectivo"
 									locale="de"
 									placeholder="Efectivo"
+									
 									class="inputsVenta form-control text-center manicuristaFocus"
 									v-on:click="erasedFormat('pagoEfectivo')"
 								/>
@@ -167,7 +168,7 @@
 							</div>
 							<input type="hidden" class="form-control text-center manicuristaFocus inputsVenta p-1" v-model="pagoEfectivo" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="Débito" >
 						</div>
-						<div class="col-sm-4">
+						<div v-tooltip="'Transferencia'" class="col-sm-4">
 						<div class="input-group input-group-lg mb-2 ">
 							<div v-on:click="hundredPorcent('transferencia')" v-on:mouseenter="hundredMouseOver('transferencia')" v-on:mouseleave="hundredMouseNonOver('transferencia')" class="input-group-prepend hundred w-25 text-center">
 								<span class="inputsVenta w-100  text-white input-group-text" id="inputGroup-sizing-lg">
@@ -186,7 +187,7 @@
 						</div>
 						<input type="hidden" class="form-control text-center manicuristaFocus inputsVenta p-1" v-model="pagoTransf" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="Débito" >
 					</div>
-					<div class="col-sm-4">
+					<div v-tooltip="'Otros'" class="col-sm-4">
 						<div class="input-group input-group-lg mb-2 ">
 							<div v-on:click="hundredPorcent('otros')" v-on:mouseenter="hundredMouseOver('otros')" v-on:mouseleave="hundredMouseNonOver('otros')" class="input-group-prepend w-25 hundred">
 								<span class="input-group-text bg-light w-100  text-white inputsVenta" id="inputGroup-sizing-lg">
@@ -206,7 +207,7 @@
 						</div>
 						<input type="hidden" class="form-control text-center manicuristaFocus inputsVenta p-1" v-model="pagoOtros" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="Débito" >
 					</div>
-					<div class="col-sm-4 mx-auto">
+					<div v-tooltip="'Crédito'" class="col-sm-4 mx-auto">
 						<div class="input-group input-group-lg mb-2 ">
 							<div v-on:click="hundredPorcent('credito')" v-on:mouseenter="hundredMouseOver('credito')" v-on:mouseleave="hundredMouseNonOver('credito')" class="input-group-prepend hundred w-25 p-0 ">
 								<span class="inputsVenta w-100 p-0 text-white input-group-text" id="inputGroup-sizing-lg">
@@ -224,7 +225,7 @@
 						</div>
 						<input type="hidden" class="form-control text-center manicuristaFocus inputsVenta p-1" v-model="pagoRedCCredito" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="Débito" >
 					</div>
-					<div class="col-sm-4 mx-auto">
+					<div v-tooltip="'Débito'" class="col-sm-4 mx-auto">
 						<div class="input-group input-group-lg mb-2 ">
 							<div  v-on:click="hundredPorcent('debito')" v-on:mouseenter="hundredMouseOver('debito')" v-on:mouseleave="hundredMouseNonOver('debito')" class="input-group-prepend w-25 p-0 hundred">
 								<span class="inputsVenta w-100 p-0 text-white input-group-text" id="inputGroup-sizing-lg">
@@ -1925,5 +1926,112 @@ import vueCustomScrollbar from 'vue-custom-scrollbar'
 	.ps__thumb-y{
 		height: 72px !important;
 	}
+	.tooltip {
+  display: block !important;
+  z-index: 10000;
+  font-size: 1.6vw;
+  width: auto
+}
+
+.tooltip .tooltip-inner {
+  background: black;
+  color: white;
+  border-radius: 16px;
+  padding: 5px 10px 4px;
+}
+
+.tooltip .tooltip-arrow {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  position: absolute;
+  margin: 5px;
+  border-color: black;
+  z-index: 1;
+}
+
+.tooltip[x-placement^="top"] {
+  margin-bottom: 5px;
+}
+
+.tooltip[x-placement^="top"] .tooltip-arrow {
+  border-width: 5px 5px 0 5px;
+  border-left-color: transparent !important;
+  border-right-color: transparent !important;
+  border-bottom-color: transparent !important;
+  bottom: -5px;
+  left: calc(50% - 5px);
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.tooltip[x-placement^="bottom"] {
+  margin-top: 5px;
+}
+
+.tooltip[x-placement^="bottom"] .tooltip-arrow {
+  border-width: 0 5px 5px 5px;
+  border-left-color: transparent !important;
+  border-right-color: transparent !important;
+  border-top-color: transparent !important;
+  top: -5px;
+  left: calc(50% - 5px);
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.tooltip[x-placement^="right"] {
+  margin-left: 5px;
+}
+
+.tooltip[x-placement^="right"] .tooltip-arrow {
+  border-width: 5px 5px 5px 0;
+  border-left-color: transparent !important;
+  border-top-color: transparent !important;
+  border-bottom-color: transparent !important;
+  left: -5px;
+  top: calc(50% - 5px);
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.tooltip[x-placement^="left"] {
+  margin-right: 5px;
+}
+
+.tooltip[x-placement^="left"] .tooltip-arrow {
+  border-width: 5px 0 5px 5px;
+  border-top-color: transparent !important;
+  border-right-color: transparent !important;
+  border-bottom-color: transparent !important;
+  right: -5px;
+  top: calc(50% - 5px);
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.tooltip.popover .popover-inner {
+  background: #f9f9f9;
+  color: black;
+  padding: 24px;
+  border-radius: 5px;
+  box-shadow: 0 5px 30px rgba(black, .1);
+}
+
+.tooltip.popover .popover-arrow {
+  border-color: #f9f9f9;
+}
+
+.tooltip[aria-hidden='true'] {
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity .15s, visibility .15s;
+}
+
+.tooltip[aria-hidden='false'] {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity .15s;
+}
 
 </style>
