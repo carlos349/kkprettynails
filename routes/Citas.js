@@ -376,17 +376,6 @@ citas.put('/editDate/:id', async (req, res) => {
   res.json({status: 'bad'})
 })
 
-citas.get('/endingdates', (req, res) => {
- closedDates.find()
- .then( closes => {
-   console.log(closes)
-   res.json(closes)
- })
-  .catch(err => {
-    res.send(err)
-  })
-})
-
 
 
 module.exports = citas

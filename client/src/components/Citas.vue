@@ -934,7 +934,9 @@ import router from '../router'
         pagoTransfDates:'',
         pagoOtrosDates:'',
         pagoRedCCreditoDates:'',
-        pagoRedCDebitoDates:''
+        pagoRedCDebitoDates:'',
+        clientClosedDatesSplit:[],
+        descuentoClosedDatesSplit:[]
       }
     },
     beforeCreate() {
@@ -992,6 +994,7 @@ import router from '../router'
                 this.getCitasByEmploye()
               }
             }, 500);
+            this.getClosed()
             this.$swal({
               type: 'success',
               title: 'Cita finalizada con exito',
@@ -999,6 +1002,11 @@ import router from '../router'
               timer: 1500
             })
             this.designEndDate = ''
+            this.serviciosSelecionadosDates = []
+            this.endClient = ''
+            this.endEmploye = ''
+            this.designEndDate = ''
+            $('.conteoServ').text('0')
           }
         })
       },
@@ -2405,13 +2413,13 @@ import router from '../router'
               this.closedDatesArray=[]
               this.servicesClosedDates= []
               this.clientClosedDates= ''
-              this.clientClosedDatesSplit = ''
+              this.clientClosedDatesSplit = '-'
               this.employeClosedDates= ''
               this.designClosedDates= 0
               this.comisionClosedDates= 0
               this.totalLocalClosedDates= 0
               this.totalClosedDates= 0
-              this.descuentoClosedDatesSplit= 0
+              this.descuentoClosedDatesSplit= []
               this.descuentoClosedDates= 0
               this.employeClosedDatesWithDiscount= []
               this.datesClientIdentification=[]
