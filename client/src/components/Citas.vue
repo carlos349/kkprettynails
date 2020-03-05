@@ -99,20 +99,22 @@
         <div  class="container p-4" style="background-color:rgba(238, 238, 238, 0.623);border-radius:5px;">
           <h1>Datos de las citas seleccionadas</h1>
           <div class="row">
-            <div class="col-6">
-              <div>
-                <p>{{formatClientEnd(this.clientClosedDates)}}</p>
-              </div>
-            </div>
-            <div class="col-6">
-              <div>
-                <p>{{this.employeClosedDates}}</p>
+            <div class="col-sm-12"> 
+              <div class="row mt-2">
+                <div class="col-sm-6 font-weight-bold text-center">
+                  <h2 class="text-center mt-2 mb-4">-Clientes-</h2>
+                  <p v-for="client of clientClosedDates" style="font-size:1.1em"><b>{{client}}</b></p>
+                </div>
+                <div style="border-left: 1px solid rgba(238, 238, 238, .9)" class="col-sm-6 font-weight-bold text-center">
+                  <h2 class="text-center mt-2 mb-4">-Empleados-</h2>
+                  <p v-for="employe of descuentoClosedDates" style="font-size:1.1em"><b>{{employe}}</b></p>
+                </div>
               </div>
             </div>
           </div>
           <vue-custom-scrollbar class="ListaProcesar maxHeightEdit w-100">
             <table class="table table-light table-borderless table-striped" id="myTableServEdit">
-              <thead style="background-color:#6bb2e5;color:#fff;">
+              <thead style="background-color:#6bb2e5;color:#fff">
                 <tr>
                   <th >
                     Servicio
@@ -130,34 +132,25 @@
           </vue-custom-scrollbar>
           <div class="row pt-3 shadowTop">
 					<div class="col-sm-6">
-						<div class="input-group input-group-lg mb-2">
+						<div style="background-color:white !important; border-radius:5px" class="input-group input-group-lg mb-2">
 							<div class="input-group-prepend text-center">
 								<span style="font-size:1.5em;color:#5a5a5a !important" class="inputsVenta w-100 text-white input-group-text text-center" id="inputGroup-sizing-lg">Total</span>
 							</div>
 							
-							<input style="font-size:1.5em;color:#5a5a5a !important" readonly type="text" disabled class="inputsVenta text-center w-100 form-control manicuristaFocus" v-model="totalClosedDates" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+							<input style="font-size:1.5em;color:#5a5a5a !important" readonly type="text" disabled class="inputsVenta text-center w-100 form-control manicuristaFocus" v-model="this.formatPrice(totalClosedDates)+' $'" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
 						</div>
 					</div>
-					<div class="col-sm-3">
-						<div class="input-group input-group-lg mb-2 ">
-							<div class="input-group-prepend w-25 inputsVenta">
-								<font-awesome-icon style="font-size:1.5em;color:#6BB2E5" icon="tag"/>
-								
+					<div class="col-sm-6">
+						<div style="background-color:white !important; border-radius:5px" class="input-group input-group-lg mb-2 ">
+              <div class="input-group-prepend text-center">
+								<span style="font-size:1.5em;color:#5a5a5a !important" class="inputsVenta w-100 text-white input-group-text text-center" id="inputGroup-sizing-lg">Diseño</span>
 							</div>
-							<input type="text" selectionEnd="%" id="validDicount" inputmode="numeric" placeholder="0" v-model="descuentoClosedDates"  class="form-control manicuristaFocu inputsVenta text-center" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" readonly>
-							<div class="input-group-prepend w-25 inputsVenta">
-								<font-awesome-icon style="font-size:1.5em;color:#6BB2E5" icon="percent"/>
-								
-							</div>
-						</div>
-					</div>
-					<div class="col-sm-3">
-						<div class="input-group input-group-lg mb-2 ">
-							<input type="text" id="validDicount" inputmode="numeric" placeholder="0" v-model="designClosedDates"  class="form-control manicuristaFocu inputsVenta text-center" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" readonly>
+							<input style="font-size:1.5em;color:#5a5a5a !important" type="text" id="validDicount" inputmode="numeric" placeholder="0" v-model="this.formatPrice(designClosedDates) + ' $'"  class="form-control manicuristaFocu inputsVenta text-center" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" readonly>
 						</div>
 					</div>
 				</div>
-          <button class="generar mt-3 text-center w-25 float-right" v-on:click="processDates">Procesar</button>
+          
+          <button class="generar mt-3 text-center w-25 float-right" v-on:click="processSelected(servicesClosedDates,datesClientIdentification,employeClosedDates,designClosedDates,comisionClosedDates,totalLocalClosedDates,totalClosedDates,descuentoClosedDates,employeClosedDatesWithDiscount)">Procesar</button>
         </div>  
       </div>
       </div>
@@ -840,7 +833,8 @@ import router from '../router'
         totalLocalClosedDates: 0,
         totalClosedDates: 0,
         descuentoClosedDates: 0,
-        employeClosedDatesWithDiscount: []
+        employeClosedDatesWithDiscount: [],
+        datesClientIdentification:[]
       }
     },
     beforeCreate() {
@@ -2157,16 +2151,6 @@ import router from '../router'
           })
         })
       },
-      formatClientEnd(value){
-        if (value) {
-          const split = value.split('-')
-          var clients
-          for (let index = 0; index < split.length; index++) {
-            clients = index == 0 ? split[index] : clients + '\n'+ split[index] 
-          }
-          return clients
-        }
-      },
       formatPrice(value) {
 				let val = (value/1).toFixed(2).replace('.', ',')
 				return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
@@ -2250,26 +2234,33 @@ import router from '../router'
             this.servicesClosedDates.push(positionTwo)
           }
           this.clientClosedDates = index == 0 ? position.client : this.clientClosedDates + ' - ' + position.client
+          this.clientClosedDates = this.clientClosedDates.split('-')
           this.employeClosedDates = index == 0 ? position.employe : this.employeClosedDates + ' / ' + position.employe
           this.designClosedDates = parseFloat(this.designClosedDates) + parseFloat(position.design)
           this.comisionClosedDates = parseFloat(this.comisionClosedDates) + parseFloat(position.comision)
           this.totalLocalClosedDates = parseFloat(this.totalLocalClosedDates) + parseFloat(position.totalLocal)
           this.totalClosedDates = parseFloat(this.totalClosedDates) + parseFloat(position.total)
-          this.descuentoClosedDates = index == 0 ? '('+position.employe + ' / ' + position.descuento+'%)' : this.descuentoClosedDates + ' - ' +  '('+position.employe + ' / ' + position.descuento+'%)'
+          this.descuentoClosedDates = index == 0 ? position.employe + ' / ' + position.descuento+'%' : this.descuentoClosedDates + ' - ' +position.employe + ' / ' + position.descuento+'%'
+          this.descuentoClosedDates = this.descuentoClosedDates.split('-')
           this.employeClosedDatesWithDiscount.push({employe: position.employe, comision: position.comision})
+          console.log(this.clientClosedDates)
+          this.datesClientIdentification.push(position.client.split(' / ')[1])
+          
         }
         $('#myModalEndDates').modal('hide')
         $('#myModalProcessEndDates').modal('show')
-        console.log(this.servicesClosedDates)
-        console.log(this.clientClosedDates)
-        console.log(this.employeClosedDates)
-        console.log(this.designClosedDates)
-        console.log(this.comisionClosedDates)
-        console.log(this.totalLocalClosedDates)
-        console.log(this.totalClosedDates)
-        console.log(this.descuentoClosedDates)
-        console.log(this.employeClosedDatesWithDiscount)
       },
+      processSelected(servicios, clientes, empleados, diseños, comision, totalLocal, total, descuento, descuentoEmploye){
+        console.log(servicios)
+        console.log(clientes)
+        console.log(empleados)
+        console.log(diseños)
+        console.log(comision)
+        console.log(totalLocal)
+        console.log(total)
+        console.log(descuento)
+        console.log(descuentoEmploye)
+      }
     },
     mounted(){
       EventBus.$on('reloadCitas', status => {
