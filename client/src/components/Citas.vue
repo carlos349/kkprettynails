@@ -594,7 +594,12 @@
                     </div>
                   </div>	
                 </div>
-                <div v-on:click="endDate(selectedEvent.id, selectedEvent.cliente, selectedEvent.empleada, selectedEvent.services)" v-if="selectedEvent.process == true" v-bind:style="{  'height': 'auto', 'z-index' : '1000' }"  class="p-2 menuCitaBorrar navSCitaFinalizar" v-on:mouseenter="mouseOverVenta('textEnd',0)" v-on:mouseleave="mouseLeaveVenta('textEnd',0)">
+                
+                <button v-bind:class="selectedEvent.class" v-if="selectedEvent.process == true && status == 1 || selectedEvent.process == true && status == 2" type="button" class="btn font-weight-bold btn-style col-10 mt-2 ml-4" v-on:click="processSale(selectedEvent.id, 'process')">Procesar venta</button>
+                
+                
+              </div>
+              <div v-on:click="endDate(selectedEvent.id, selectedEvent.cliente, selectedEvent.empleada, selectedEvent.services)" v-if="selectedEvent.process == true" v-bind:style="{  'height': 'auto', 'z-index' : '1000' }"  class="p-2 menuCitaBorrar navSCitaFinalizar" v-on:mouseenter="mouseOverVenta('textEnd',0)" v-on:mouseleave="mouseLeaveVenta('textEnd',0)">
                   <div class="row">
                     <div class="col-sm-2">
                       <font-awesome-icon  style="color:#353535;font-size:1.6em" icon="calendar-check" />
@@ -604,11 +609,6 @@
                     </div>
                   </div>	
                 </div>
-                <button v-bind:class="selectedEvent.class" v-if="selectedEvent.process == true && status == 1 || selectedEvent.process == true && status == 2" type="button" class="btn font-weight-bold btn-style col-10 mt-2 ml-4" v-on:click="processSale(selectedEvent.id, 'process')">Procesar venta</button>
-                
-                
-              </div>
-              
             </div>
 
 		    </div>

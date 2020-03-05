@@ -940,7 +940,7 @@ import vueCustomScrollbar from 'vue-custom-scrollbar'
 					.then(res => {
 						var subTotal = 0
 						for (let index = 0; index < this.servicesProcess.length; index++) {
-							this.serviciosSelecionados.push({servicio: this.servicesProcess[index].servicio, comision: this.servicesProcess[index].comision, precio: this.servicesProcess[index].precio, descuento: this.servicesProcess[index].precio})
+							this.serviciosSelecionados.push({servicio: this.servicesProcess[index].servicio, comision: this.servicesProcess[index].comision, precio: this.servicesProcess[index].precio, descuento: this.servicesProcess[index].descuento})
 							let valSpan = ''
 							let sumaVal = 0
 							for (let indexTwo = 0; indexTwo < res.data.length; indexTwo++) {
@@ -962,6 +962,7 @@ import vueCustomScrollbar from 'vue-custom-scrollbar'
 						this.total = '$'+this.formatPrice(subTotal)
 						this.totalSinFormato = subTotal
 						this.subTotal = subTotal
+						console.log(this.serviciosSelecionados)
 					})
 				})
 			})
