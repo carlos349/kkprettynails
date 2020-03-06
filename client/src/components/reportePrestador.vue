@@ -277,13 +277,17 @@
                                 timer: 1500
                             })
                             this.getAdvancements();
+                            this.getClosing()
+                            $('#ModalEditPrestador').modal('hide')
                         }else{
                             this.$swal({
                                 type: 'info',
                                 title: 'Se resgistro el adelanto, pero no se registro en el cierre, ya que no hay un cierre de ventas para dicha fecha',
                                 showConfirmButton: true
                             })
+                            $('#ModalEditPrestador').modal('hide')
                             this.getAdvancements();
+                            this.getClosing()
                         }
                     })
                     .catch(err => {
@@ -307,6 +311,8 @@
                                 timer: 1500
                             })
                             this.getAdvancements();
+                            this.getClosing()
+                            $('#ModalEditPrestador').modal('hide')
                         }else{
                             this.$swal({
                                 type: 'info',
@@ -314,6 +320,8 @@
                                 showConfirmButton: true
                             })
                             this.getAdvancements();
+                            this.getClosing()
+                            $('#ModalEditPrestador').modal('hide')
                         }
                     })
                     .catch(err => {
