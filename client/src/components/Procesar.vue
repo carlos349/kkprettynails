@@ -940,6 +940,7 @@ import vueCustomScrollbar from 'vue-custom-scrollbar'
 					axios.get('servicios')
 					.then(res => {
 						var subTotal = 0
+						var desc = 0
 						for (let index = 0; index < this.servicesProcess.length; index++) {
 							this.serviciosSelecionados.push({servicio: this.servicesProcess[index].servicio, comision: this.servicesProcess[index].comision, precio: this.servicesProcess[index].precio, descuento: this.servicesProcess[index].descuento})
 							let valSpan = ''
@@ -956,12 +957,12 @@ import vueCustomScrollbar from 'vue-custom-scrollbar'
 						}
 						this.precio = '$'+this.formatPrice(subTotal)
 						if (this.descuento == 10) {
-							subTotal = subTotal * 0.90
+							desc = subTotal * 0.90
 						}else{
-							subTotal = subTotal
+							desc = subTotal
 						}
-						this.total = '$'+this.formatPrice(subTotal)
-						this.totalSinFormato = subTotal
+						this.total = '$'+this.formatPrice(desc)
+						this.totalSinFormato = desc
 						this.subTotal = subTotal
 						console.log(this.serviciosSelecionados)
 					})
@@ -1335,6 +1336,9 @@ import vueCustomScrollbar from 'vue-custom-scrollbar'
 		mounted() {
 			EventBus.$on('reload-services', status => {
 				this.getManicuristas()
+			})
+			EventBus.$on('borrar-services', status => {
+				this.borrarServicios()
 			})
 			EventBus.$on('process', id => {
 				this.getDataToDate(id)
