@@ -8,7 +8,7 @@
             <h3><b>Fecha:</b>  {{fecha}}</h3>
             <h3><b>Nombre:</b>  {{nameLender}}</h3>
             
-            <h3><b>Adelantos:</b>  {{formatPrice(advancements)}}</h3>
+            <h3><b>Adelantos:</b>  {{formatPrice(adv)}}</h3>
             <h3><b>Fecha de Inicio:</b> 11-02-2020</h3>
             <h3><b>Fecha de Salida:</b> 11-02-2020</h3>
             <h3><b>Comisión Total:</b> {{formatPrice(totalComisiones)}}</h3>
@@ -223,6 +223,7 @@
                     this.porcentaje = resData.data.porcentaje
                     this.nameLender = resData.data.nombre
                     this.totalComisiones = resData.data.comision
+                    this.adv = resData.data.advancement
                     const identificacion = resData.data.nombre+':'+resData.data.documento
                     axios.get('manicuristas/SalesByPrest/'+identificacion)
                     .then(res => {
@@ -276,13 +277,17 @@
                                 timer: 1500
                             })
                             this.getAdvancements();
+                            this.getClosing()
+                            $('#ModalEditPrestador').modal('hide')
                         }else{
                             this.$swal({
                                 type: 'info',
                                 title: 'Se resgistro el adelanto, pero no se registro en el cierre, ya que no hay un cierre de ventas para dicha fecha',
                                 showConfirmButton: true
                             })
+                            $('#ModalEditPrestador').modal('hide')
                             this.getAdvancements();
+                            this.getClosing()
                         }
                     })
                     .catch(err => {
@@ -306,6 +311,8 @@
                                 timer: 1500
                             })
                             this.getAdvancements();
+                            this.getClosing()
+                            $('#ModalEditPrestador').modal('hide')
                         }else{
                             this.$swal({
                                 type: 'info',
@@ -313,6 +320,8 @@
                                 showConfirmButton: true
                             })
                             this.getAdvancements();
+                            this.getClosing()
+                            $('#ModalEditPrestador').modal('hide')
                         }
                     })
                     .catch(err => {

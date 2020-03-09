@@ -8,7 +8,7 @@
                 <button  data-toggle="modal" class="generar" data-target=".genCita">Generar cita <font-awesome-icon style="float:right;margin-top:2px;margin-right:5px;font-size:1.2em" icon="tasks" /></button>
               </div>
               <div class="col-sm-4">
-                <button  data-toggle="modal" class="generar ml-5" data-target=".citasFinish">Citas finalizadas <font-awesome-icon style="float:right;margin-top:2px;margin-right:5px;font-size:1.2em" icon="times" /></button>
+                <button  data-toggle="modal" class="generar ml-5" v-on:click="reloadFinish()" data-target=".citasFinish">Citas finalizadas <font-awesome-icon style="float:right;margin-top:2px;margin-right:5px;font-size:1.2em" icon="times" /></button>
               </div>
               <div class="col-sm-4">
                 <select id="manicuristas" v-model="empByCita" v-on:change="getCitasByEmploye()"  class="Two" name="manicuristas">
@@ -1149,9 +1149,11 @@ import router from '../router'
         }, 100);
       },
       processSale(id, type){
+        EventBus.$emit('borrar-services')
         if (type == 'process') {
           this.Process(id)
           $('#myModalCitasDescripcion').modal('hide')
+          
           setTimeout(() => {
             $('#procesarVentas span').click()
           }, 500);
@@ -1159,6 +1161,7 @@ import router from '../router'
       },
       Process(id){
         EventBus.$emit('process', id)
+        
       },
       clearInput(){
         
@@ -1879,7 +1882,7 @@ import router from '../router'
         $('#myModal').modal('hide')
         this.getCitas();
         setTimeout(() => {
-          console.log(this.empByCita)
+          
           if (this.empByCita != 'Manicuristas') {
             this.getCitasByEmploye()
           }
@@ -1951,7 +1954,7 @@ import router from '../router'
         $('#clo').toggleClass("clo")
       },
       selectManic(){
-        console.log('hola')
+      
             $(".Sig").removeClass("marcar")
             $(".Sig").prop("disabled", true)
         for (let index = 0; index < this.maniAzar.length; index++) {
@@ -1974,7 +1977,7 @@ import router from '../router'
         
       },
       selectManicEdit(){
-        console.log('hola')
+        
         for (let index = 0; index < this.manicuristas.length; index++) {
           if (this.manicuristas[index].nombre == this.lenderEdit) {
             this.lenderEdit = this.manicuristas[index].nombre
@@ -2332,9 +2335,33 @@ import router from '../router'
               }
             }
         }
-        console.log(this.closedDatesArray)
+        
+      },
+      reloadFinish(){
+              // this.closedDates=[]
+              this.closedDatesArray=[]
+              this.servicesClosedDates= []
+              this.clientClosedDates= ''
+              this.clientClosedDatesSplit = '-'
+              this.employeClosedDates= ''
+              this.designClosedDates= 0
+              this.comisionClosedDates= 0
+              this.totalLocalClosedDates= 0
+              this.totalClosedDates= 0
+              this.descuentoClosedDatesSplit= []
+              this.descuentoClosedDates= 0
+              this.employeClosedDatesWithDiscount= []
+              this.datesClientIdentification=[]
+              this.endDatesId= []
+              this.pagoEfectivoDates=''
+              this.pagoTransfDates=''
+              this.pagoOtrosDates=''
+              this.pagoRedCCreditoDates=''
+              this.pagoRedCDebitoDates=''
+        $('.desMarc').prop('checked' , false)
       },
       processDates(){
+              
         for (let index = 0; index < this.closedDatesArray.length; index++) {
           const position = this.closedDatesArray[index]
           for (let indexTwo = 0; indexTwo < position.services.length; indexTwo++) {

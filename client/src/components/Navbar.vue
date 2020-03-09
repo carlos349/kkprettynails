@@ -246,6 +246,7 @@ export default {
 		},
 		processOpen(){
 			$('#myModalThree').modal('show')
+			// EventBus.$emit('borrar-services')
 		},
 		marcarNav(name){
 			setTimeout(() => {
