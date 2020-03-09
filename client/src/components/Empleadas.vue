@@ -40,7 +40,7 @@
 						<p slot="comision"  slot-scope="props">{{formatPrice(props.row.comision)}}</p>
 						<p slot="advancement"  slot-scope="props">{{formatPrice(props.row.advancement)}}</p>
 						<p slot="rest"  slot-scope="props">{{formatPrice(props.row.comision - props.row.advancement)}}</p>
-						<button slot="edit"  slot-scope="props" style="width:100%;" v-on:click="pasarDatosEdit(props.row.nombre,props.row.documento,props.row.porcentaje, props.row.restTime, props.row.restDay, props.row._id)" class=" btn btn-colorsEditLender"><font-awesome-icon icon="edit" /></button>
+						<button slot="edit"  slot-scope="props" style="width:100%;" v-on:click="pasarDatosEdit(props.row.nombre,props.row.documento,props.row.porcentaje, props.row.restTime, props.row.restDay, props.row._id, props.row.comision)" class=" btn btn-colorsEditLender"><font-awesome-icon icon="edit" /></button>
 						<button slot="delete" style="width:100%;"  slot-scope="props" v-on:click="deletePrestador(props.row._id)" class=" btn btn-colorsTrashLender"><font-awesome-icon icon="trash" /></button>
 						<button slot="report" style="width:100%;"  slot-scope="props" v-on:click="sacarReporte(props.row._id)" class=" btn btn-colorsPrintLender"><font-awesome-icon icon="copy" /></button>
 					</v-client-table></div>
@@ -112,6 +112,15 @@
 					<div class="form-group">
 						<label for="name">Documento de identificación</label>
 						<input v-model="documentoPrestadorEdit" type="numbre" class="form-control inputsLender w-100" placeholder="Identificación" v-on:change="changeRutEdit()" v-on:click="changeToEdit()">
+					</div>
+					<div class="form-group">
+						<label for="name">Comisión del mes</label>
+						<currency-input
+							v-model="comisionEdit"
+							locale="de"
+							placeholder="Comision"
+							class="form-control inputsLender w-100"
+						/>
 					</div>
 					<div class="form-group row">
 						<label for="name" class="col-12">Horario de descanso</label>
@@ -289,6 +298,7 @@ export default {
 			restDayEdit: 'Seleccione el dia',
 			documento:'',
 			porcentaje:'',
+			comisionEdit: 0,
 			idManicuristaEditar: '',
 			PrestadorQuantityPerMonths: [],
 			loaded: false,
@@ -458,36 +468,37 @@ export default {
 			
 			else{
 				axios.put('manicuristas/' + this.idPrestadorEdit, {
-				nombre: nombre,
-				documento: documento,
-				porcentaje: this.porcentajePrestadorEdit,
-				restTime: restTime,
-				restDay: this.restDayEdit
-			})
-			.then(res => {
-				if(res.data.status == "Manicurista Editada"){
-					this.$swal({
-						type: 'success',
-						title: 'Prestador actualizado',
-						showConfirmButton: false,
-						timer: 1500
-					})
-					$('#ModalEditPrestador').modal('hide')
-					this.getManicuristas()
-					this.emitMethod()
-				}else{
-					this.$swal({
-						type: 'error',
-						title: 'Prestador ya existe',
-						showConfirmButton: false,
-						timer: 1500
-					})
-				}
-			})
+					nombre: nombre,
+					documento: documento,
+					porcentaje: this.porcentajePrestadorEdit,
+					restTime: restTime,
+					restDay: this.restDayEdit,
+					comision: this.comisionEdit
+				})
+				.then(res => {
+					if(res.data.status == "Manicurista Editada"){
+						this.$swal({
+							type: 'success',
+							title: 'Prestador actualizado',
+							showConfirmButton: false,
+							timer: 1500
+						})
+						$('#ModalEditPrestador').modal('hide')
+						this.getManicuristas()
+						this.emitMethod()
+					}else{
+						this.$swal({
+							type: 'error',
+							title: 'Prestador ya existe',
+							showConfirmButton: false,
+							timer: 1500
+						})
+					}
+				})
 			}
 			
 		},
-		pasarDatosEdit(nombre, documento, porcentaje, restTime, restDay, id){
+		pasarDatosEdit(nombre, documento, porcentaje, restTime, restDay, id, comision){
 			if (restTime) {
 				const splitRest = restTime.split('/')
 				this.restTimeEdit = splitRest[0]
@@ -504,7 +515,7 @@ export default {
 			this.nombrePrestadorEdit = nombre
 			this.documentoPrestadorEdit = documento
 			this.porcentajePrestadorEdit = porcentaje
-			
+			this.comisionEdit = comision
 			
 			this.idPrestadorEdit = id
 			$('#ModalEditPrestador').modal('show')
