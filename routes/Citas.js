@@ -158,9 +158,10 @@ citas.post('/getBlocks', (req,res) => {
     for (let j = 0; j < bloques.length; j++) {
       if (sepRes[0] == bloques[j].Horario) {
         bloques[j].validator = false
-        for (let l = 0; l < 10; l++) {
+        for (let l = 0; l < 1000; l++) {
           bloques[j+l].validator = false
           if (bloques[j+l].Horario == sepRes[1]) {
+            bloques[j+l].validator = true
             insp = true
             break
           }
