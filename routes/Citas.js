@@ -125,8 +125,9 @@ citas.post('/getBlocks', (req,res) => {
       var minutes = parseInt(separ[1])
       var hours = parseInt(separ[0])
       var prueba = hours+":"+minutes
+      var ind = parseFloat(index) + parseFloat(1)
       for (let indexTwo = 0; indexTwo < totalFor; indexTwo++) {
-        if (indexTwo == 0 && prueba != '10:0' ) {
+        if (indexTwo == 0 && prueba != '10:0' && timelineBlock[index][2] == false) {
           if (minutes == 0) {
             minutes = "00"
           }
