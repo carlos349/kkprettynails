@@ -124,9 +124,22 @@ citas.post('/getBlocks', (req,res) => {
       var input, output
       var minutes = parseInt(separ[1])
       var hours = parseInt(separ[0])
-      
+      var prueba = hours+":"+minutes
       for (let indexTwo = 0; indexTwo < totalFor; indexTwo++) {
-        if (last) {
+        if (indexTwo == 0 && prueba != '10:0' ) {
+          if (minutes == 0) {
+            minutes = "00"
+          }
+          output = hours+":"+minutes
+          bloques.push({Horario:output , validator: 'nDisponible'})
+          minutes = parseInt(minutes) + 15
+          if (minutes == 60) {
+            hours++
+            minutes = "00"
+          }
+        }
+        else {
+          if (last) {
           if (minutes == 0) {
             minutes = "00"
           }
@@ -148,7 +161,9 @@ citas.post('/getBlocks', (req,res) => {
             hours++
             minutes = "00"
           }
-        } 
+          } 
+        }
+        
       } 
     }
     console.log(timelineBlock)
