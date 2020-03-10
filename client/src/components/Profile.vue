@@ -2,7 +2,7 @@
 	<div style="height:100vh" class="container-fluid">
 		<div class="row ">
 			
-			<div style="background-color:#353535;height:149.3vh;border-radius:5px" class="col-sm-3 ml-2">
+			<div style="background-color:#353535;height:149.3vh;border-radius:5px" class="col-sm-3">
 				<div class="col-sm-12 inforCargo">
 					<div  class="col-sm-12 m-1 p-1  text-center">
 					<h1 style="background-color:#ded22f;border-radius:10px;" v-if="status == 1"> Gerencia</h1>
@@ -75,9 +75,9 @@
 
 
 			</div>
-			<div style="height:93vh;" class="col-md-8 mt-3 mx-auto infoBasic p-3">
+			<div style="height:93vh;" class="col-md-9 mt-3 mx-auto infoBasic">
 				
-				<div class="">
+				<div class="p-3">
 					<div v-if="status == 2" >
 						<div class="col-md-12 row sectionMetricssExpense mb-3">
 						<div class="col-md-6 col-sm-12 ">
@@ -99,11 +99,14 @@
 								</div>
 								 -->
 								<p slot="servicios" slot-scope="props">{{props.row.servicios}}</p>
-								<p slot="descuentoo" slot-scope="props">{{props.row.descuento}}%</p>
+								<p slot="descuentoo" slot-scope="props">{{props.row.descuento}}</p>
 								<p slot="clientNombre" slot-scope="props">{{justName(props.row.cliente)}}</p>
 								<p slot="comisionn" slot-scope="props">{{formatPrice(props.row.comision)}}</p>
 								<p slot="locall" slot-scope="props">{{formatPrice(props.row.ganancialocal)}}</p>
-								<p slot="totall" slot-scope="props">{{formatPrice(props.row.total)}}</p>
+								<div slot="totall" slot-scope="props">
+									<p>{{formatPrice(props.row.total)}}</p>
+									<button class="addPerfil w-75 mx-auto" v-on:click="erasedSale(props.row._id, props.row.EmployeComision)">Anular venta</button>
+								</div>
 								<!-- <a slot="edit" slot-scope="props" class="fa fa-edit" :href="pasarDatosEdit(props.row.nombre, props.row.identidad, props.row.correoCliente, props.row.instagramCliente, props.row._id)">Hola </a> -->
 							</v-client-table>
         </div>
@@ -142,11 +145,13 @@
 								</div> -->
 								
 
-								<p slot="descuentoo" slot-scope="props">{{props.row.descuento}}%</p>
+								<p slot="descuentoo" slot-scope="props">{{props.row.descuento}}</p>
 								<p slot="clientNombre" slot-scope="props">{{justName(props.row.cliente)}}</p>
 								<p slot="comisionn" slot-scope="props">{{formatPrice(props.row.comision)}}</p>
 								<p slot="locall" slot-scope="props">{{formatPrice(props.row.ganancialocal)}}</p>
 								<p slot="totall" slot-scope="props">{{formatPrice(props.row.total)}}</p>
+								
+								
 								
 							</v-client-table>
 					</div>
@@ -316,7 +321,7 @@
 				optionsT: {
 					filterByColumn: true,
 					perPage: 10,
-        			perPageValues:[10,15,20,25,50],
+					perPageValues:[10,15,20,25,50],
 					texts: {
 						filter: "Filtrar:",
 						filterBy: 'Filtrar por {column}',
@@ -337,17 +342,15 @@
 					pagination: { nav: 'fixed' },
 					pagination: { edge: true },
 					sortIcon: {base:'fa' , up:'fa-sort-up', down:'fa-sort-down', is:'fa-sort'},
-					sortable: ['fecha'],
-					filterable: ['fecha'],
 					texts: {
-                count: "Mostrando {from} - {to} de {count} Registros |{count} Registros|Un solo registro",
-                filter: "Filtro:",
-                limit: "Registros:",
-                page: "Pagina:",
-                noResults: "No se encuentran resultados",
-                filterBy: "Filtrar por {column}",
-                loading: 'Cargando...',
-            }
+						count: "Mostrando {from} - {to} de {count} Registros |{count} Registros|Un solo registro",
+						filter: "Filtro:",
+						limit: "Registros:",
+						page: "Pagina:",
+						noResults: "No se encuentran resultados",
+						filterBy: "Filtrar por {column}",
+						loading: 'Cargando...',
+					}
 				},
 				nombreCaja:'',
 				montoCaja:'',	
@@ -447,6 +450,42 @@
 					}
 				})
 			},
+			erasedSale(id, employeComision){
+				this.$swal({
+					title: '¿Está seguro de anular esta venta?',
+					text: '¡Esta acción no se puede revertir!',
+					type: 'warning',
+					showCancelButton: true,
+					confirmButtonText: 'Estoy seguro',
+					cancelButtonText: 'No, evitar acción',
+					showCloseButton: true,
+					showLoaderOnConfirm: true
+				}).then(result => {
+					if (result.value) {
+						axios.put('ventas/'+id, {
+							employeComision: employeComision
+						}).then(res => {
+							if (res.data.status == 'ok') {
+								this.$swal({
+									type: 'success',
+									title: 'Venta anulada con exito',
+									showConfirmButton: false,
+									timer: 1500
+								})
+								this.getDataChecker()
+							}
+						})
+					}else{
+						this.$swal({
+							type: 'info',
+							title: 'Acción cancelada',
+							showConfirmButton: false,
+							timer: 1500
+						})
+					}
+				})
+				
+			},
 			async getDataManagement(){
 				const dateDaily = new Date()
 				try {
@@ -511,17 +550,18 @@
 				const dataChecker = await axios.get('ventas/dataChecker')
 				this.dataChecker = dataChecker.data
 				let fechaBien = ''
-					for (let index = 0; index < this.dataChecker.length; index++) {
-						let fech = new Date(this.dataChecker[index].fecha)
-						fechaBien = fech.getDate() +"/"+ (fech.getMonth() + 1) +"/"+fech.getFullYear() +" "+" ("+ fech.getHours()+":"+ fech.getMinutes()+")"
-						this.dataChecker[index].fecha = fechaBien
-						let servicio = ''
-						
-						for (let indexTwo = 0; indexTwo < this.dataChecker[index].servicios.length; indexTwo++) {
-							servicio = servicio +'\n'+ this.dataChecker[index].servicios[indexTwo].servicio
-						}
-						this.dataChecker[index].servicios = servicio
+				for (let index = 0; index < this.dataChecker.length; index++) {
+					let fech = new Date(this.dataChecker[index].fecha)
+					fechaBien = fech.getDate() +"/"+ (fech.getMonth() + 1) +"/"+fech.getFullYear() +" "+" ("+ fech.getHours()+":"+ fech.getMinutes()+")"
+					this.dataChecker[index].fecha = fechaBien
+					let servicio = ''
+					
+					for (let indexTwo = 0; indexTwo < this.dataChecker[index].servicios.length; indexTwo++) {
+						servicio = servicio +'\n'+ this.dataChecker[index].servicios[indexTwo].servicio
 					}
+					this.dataChecker[index].servicios = servicio
+					
+				}
 			},
 			emitMethod(image) {
 				console.log(image)

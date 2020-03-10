@@ -196,7 +196,8 @@ manicurista.put('/:id', (req, res) => {
       nombre: req.body.nombre,
       documento: req.body.documento, 
       restTime: req.body.restTime,
-      restDay: req.body.restDay
+      restDay: req.body.restDay,
+      comision: req.body.comision
     }
   })
   .then(manicurista => {
@@ -206,6 +207,7 @@ manicurista.put('/:id', (req, res) => {
     res.send('error: ' + err)
   })
 })
+
 
 manicurista.put('/ClosePrest/:id', (req, res) => {
   Manicurista.findByIdAndUpdate(req.params.id, {

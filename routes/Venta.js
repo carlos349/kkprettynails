@@ -793,8 +793,6 @@ ventas.put('/:id', async (req, res, next) => {
           var removeComision = await Manicurista.updateOne({nombre:dataComision[index].employe},{$inc: {comision: parseFloat(comisionNega)}})
           console.log(removeComision)
         }
-        
-      
         if (removeComision) {
           res.status(200).json({status: 'ok'})
         }
@@ -1129,7 +1127,13 @@ ventas.get('/dataChecker', (req, res) => {
 
   dateDaily.setDate(dateDaily.getDate() + 1)
   const dailyTomorrow = dateDaily.getFullYear() +"-"+(dateDaily.getMonth() + 1)+"-"+dateDaily.getDate()
-  Venta.find({fecha: { $gte: dateDailyToday, $lte: dailyTomorrow }})
+  Venta.find({
+    $and: 
+      [
+        {fecha: { $gte: dateDailyToday, $lte: dailyTomorrow }},
+        {status: true}
+      ]
+  })
   .then(dataSales => {
     res.json(dataSales)
   })
