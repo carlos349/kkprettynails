@@ -124,9 +124,23 @@ citas.post('/getBlocks', (req,res) => {
       var input, output
       var minutes = parseInt(separ[1])
       var hours = parseInt(separ[0])
-      
+      var prueba = hours+":"+minutes
+      var ind = parseFloat(index) + parseFloat(1)
       for (let indexTwo = 0; indexTwo < totalFor; indexTwo++) {
-        if (last) {
+        if (indexTwo == 0 && prueba != '10:0' && timelineBlock[index][2] == false) {
+          if (minutes == 0) {
+            minutes = "00"
+          }
+          output = hours+":"+minutes
+          bloques.push({Horario:output , validator: 'nDisponible'})
+          minutes = parseInt(minutes) + 15
+          if (minutes == 60) {
+            hours++
+            minutes = "00"
+          }
+        }
+        else {
+          if (last) {
           if (minutes == 0) {
             minutes = "00"
           }
@@ -148,7 +162,9 @@ citas.post('/getBlocks', (req,res) => {
             hours++
             minutes = "00"
           }
-        } 
+          } 
+        }
+        
       } 
     }
     console.log(timelineBlock)
@@ -158,9 +174,10 @@ citas.post('/getBlocks', (req,res) => {
     for (let j = 0; j < bloques.length; j++) {
       if (sepRes[0] == bloques[j].Horario) {
         bloques[j].validator = false
-        for (let l = 0; l < 10; l++) {
+        for (let l = 0; l < 1000; l++) {
           bloques[j+l].validator = false
           if (bloques[j+l].Horario == sepRes[1]) {
+            bloques[j+l].validator = true
             insp = true
             break
           }
