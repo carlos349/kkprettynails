@@ -16,6 +16,9 @@ const UserSchema = new Schema({
 		type:String,
 		required:true
 	},
+	about: {
+		type:String,
+	},
 	status: {
 		type:Number,
 		required:true

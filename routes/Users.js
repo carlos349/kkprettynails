@@ -82,6 +82,7 @@ users.post('/editData/:id', upload.single("image"), async (req, res, next) => {
 	const firstName = req.body.first_name  
 	const lastName = req.body.last_name 
 	const Mail = req.body.email
+	const about = req.body.about
 	if(req.file){
 		const images = req.file.filename
 		const change = await User.findByIdAndUpdate(id, {
@@ -89,19 +90,21 @@ users.post('/editData/:id', upload.single("image"), async (req, res, next) => {
 				first_name: firstName,
 				last_name: lastName,
 				email:Mail,
+				about:about,
 				userImage: images
 			}
 		})
-		res.json({status:change})
+		res.json({status:change, image:images})
 	}else{
 		const change = await User.findByIdAndUpdate(id, {
 			$set: {
 				first_name: firstName,
 				last_name: lastName,
-				email:Mail
+				email:Mail,
+				about: about
 			}
 		})
-		res.json({status:change})
+		res.json({status:change, image: ''})
 	}
 })
 
@@ -235,6 +238,7 @@ users.post('/register', async (req, res, next) => {
 		last_name: req.body.last_name,
 		email: req.body.email,
 		password: req.body.password,
+		about: '',
 		status: 2,
 		linkLender: '',
 		userImage: '',
@@ -285,6 +289,7 @@ users.post('/login', (req, res) => {
 						first_name: user.first_name,
 						last_name: user.last_name,
 						email: user.email,
+						about: user.about,
 						status: user.status,
 						userImage: user.userImage,
 						LastAccess: user.LastAccess,

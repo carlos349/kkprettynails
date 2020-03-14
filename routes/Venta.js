@@ -957,7 +957,7 @@ ventas.post('/procesar', (req, res) => {
   }
   const venta = {
     cliente: req.body.cliente,
-    manicurista: req.body.manicurista+"/"+documentoManicurista,
+    manicurista: req.body.manicurista+" / "+documentoManicurista,
     servicios: req.body.servicios,
     comision: comision,
     EmployeComision: [{employe: req.body.manicurista, comision: comision}],
