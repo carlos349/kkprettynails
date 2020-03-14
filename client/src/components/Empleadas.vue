@@ -196,6 +196,10 @@
 							<option style="color:black;" value="13:00">13:00</option>
 							<option style="color:black;" value="13:30">13:30</option>
 							<option style="color:black;" value="14:00">14:00</option>
+							<option style="color:black;" value="13:00">14:30</option>
+							<option style="color:black;" value="13:30">15:00</option>
+							<option style="color:black;" value="14:00">15:30</option>
+							<option style="color:black;" value="14:00">16:00</option>
 						</select>
 						<select class="form-control col-6 ml-2 inputsLender" v-model="restTimeEnd" >
 							<option style="color:black;" selected value="Seleccione el tiempo">Seleccione el tiempo</option>
@@ -204,6 +208,10 @@
 							<option style="color:black;" value="13:30">13:30</option>
 							<option style="color:black;" value="14:00">14:00</option>
 							<option style="color:black;" value="14:30">14:30</option>
+							<option style="color:black;" value="13:30">15:00</option>
+							<option style="color:black;" value="14:00">15:30</option>
+							<option style="color:black;" value="14:00">16:00</option>
+							<option style="color:black;" value="14:00">16:30</option>
 						</select>
 					</div>
 					<div class="form-group">
