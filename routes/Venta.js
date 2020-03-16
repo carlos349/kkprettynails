@@ -1308,27 +1308,23 @@ ventas.get('/GetSalesPerMonth', (req, res) => {
   }
   
   let chartdata = {
-    labels: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31],
-    datasets: [ 
+    categories: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31],
+    series: [ 
       {
-        label: monthTwo,
-        backgroundColor: 'rgba(31, 86, 115, .8)',
+        name: monthTwo,
         data: [],
-        fontColor: 'red'
       },
       {
-        label: month,
-        backgroundColor: 'rgba(14, 48, 66, .8)',
+        name: month,
         data: [],
-        fontColor: 'red'
       }
     ]
   }
 
   Venta.find()
   .then(ventas => {
-    for (let indexOne = 0; indexOne < chartdata.labels.length; indexOne++) {
-      let datasets = chartdata.labels[indexOne]
+    for (let indexOne = 0; indexOne < chartdata.categories.length; indexOne++) {
+      let datasets = chartdata.categories[indexOne]
       let sumDay = 0
       let sumDayTwo = 0
       for (let index = 0; index < ventas.length; index++) {
@@ -1344,15 +1340,15 @@ ventas.get('/GetSalesPerMonth', (req, res) => {
         }
       }
       if (sumDayTwo == 0) {
-        chartdata.datasets[0].data.push('0')
+        chartdata.series[0].data.push('0')
       }else{
-        chartdata.datasets[0].data.push(sumDayTwo)
+        chartdata.series[0].data.push(sumDayTwo)
       }
 
       if (sumDay == 0) {
-        chartdata.datasets[1].data.push('0')
+        chartdata.series[1].data.push('0')
       }else{
-        chartdata.datasets[1].data.push(sumDay)
+        chartdata.series[1].data.push(sumDay)
       }
     }
     res.json(chartdata)

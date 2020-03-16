@@ -114,7 +114,8 @@ manicurista.post('/registerAdvancement', (req, res) => {
 
   dateNow.setDate(dateNow.getDate() + 1)
   const formatDateTwo = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()
-
+  const type = req.body.check ? 'Bonus' : 'Advancement'
+  console.log(type)
   const dataAdvancement = {
     prest: req.body.prest,
     name: req.body.name,
@@ -123,8 +124,8 @@ manicurista.post('/registerAdvancement', (req, res) => {
     date: req.body.date
   }
    const dataExpense = {
-    expense:req.body.reason,
-    type: req.body.check,
+    expense:req.body.reason + ' / ' + req.body.name,
+    type: type,
     figure:req.body.total,
     date: req.body.date
    }
@@ -133,36 +134,12 @@ manicurista.post('/registerAdvancement', (req, res) => {
     .then(expense => {
       Manicurista.findByIdAndUpdate(req.body.prest, { $inc: { advancement: req.body.total }})
       .then(update => {
-        if (req.body.check == 'Bonus') {
-          Cierres.findOneAndUpdate({fecha: { $gte: formatDate, $lte: formatDateTwo }},
-            { $inc : { gastos: req.body.total }
-          })
-          .then(close => {
-            if (close) {
-              res.json({status: 'ok'})
-            }else{
-              res.json({status: 'bad'})
-            }
-          })
-          .catch(err => {
-            res.send(err)
-          })
+        if (req.body.check) {
+          res.json({status: 'bonus'})
         }else{
           Advancement.create(dataAdvancement)
           .then(advancement => {
-            Cierres.findOneAndUpdate({fecha: { $gte: formatDate, $lte: formatDateTwo }},
-              { $inc : { gastos: req.body.total }
-            })
-            .then(close => {
-              if (close) {
-                res.json({status: 'ok'})
-              }else{
-                res.json({status: 'bad'})
-              }
-            })
-            .catch(err => {
-              res.send(err)
-            })
+            res.json({status: 'advancement'})
           })
           .catch(err => {
             res.send(err)
