@@ -918,11 +918,14 @@ ventas.post('/procesar', (req, res) => {
   const services = req.body.servicios
   let clientEdit = req.body.cliente
   const finalClient = clientEdit.split(" / ")
-  let today = ''
-  if (req.body.fecha == 'fecha') {
-    today = new Date()
+
+  var today
+  if (req.body.processDate) {
+    today = new Date(req.body.fecha+ ' 10:00')
   }else{
-    today = new Date(req.body.fecha)
+    const dateformat = new Date(req.body.fecha)
+    const dateDailyToday = dateformat.getFullYear() +"-"+(dateformat.getMonth() + 1)+"-"+dateformat.getDate()
+    today = new Date(dateDailyToday+ ' 10:00')
   }
   
   var descuento = 100 - req.body.descuento
