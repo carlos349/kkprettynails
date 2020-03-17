@@ -132,11 +132,11 @@ manicurista.post('/registerAdvancement', (req, res) => {
 
     Expenses.create(dataExpense)
     .then(expense => {
-      Manicurista.findByIdAndUpdate(req.body.prest, { $inc: { advancement: req.body.total }})
-      .then(update => {
-        if (req.body.check) {
-          res.json({status: 'bonus'})
-        }else{
+      if (req.body.check) {
+        res.json({status: 'bonus'})
+      }else{
+        Manicurista.findByIdAndUpdate(req.body.prest, { $inc: { advancement: req.body.total }})
+        .then(update => {
           Advancement.create(dataAdvancement)
           .then(advancement => {
             res.json({status: 'advancement'})
@@ -144,11 +144,11 @@ manicurista.post('/registerAdvancement', (req, res) => {
           .catch(err => {
             res.send(err)
           })
-        }
-      })
-      .catch(err => {
-        res.send(err)
-      })
+        })
+        .catch(err => {
+          res.send(err)
+        })
+      }
     })
     .catch(err => {
       res.send(err)
