@@ -65,8 +65,7 @@ manicurista.get('/findCancelSales', async (req, res, next) => {
   if (manicuristas) {
     let total = 0
     for (let index = 0; index < manicuristas.length; index++) {
-      const element = manicuristas[index];
-      total = manicuristas[index].total
+      total = total + manicuristas[index].total 
     }
     res.json(total)
   }
