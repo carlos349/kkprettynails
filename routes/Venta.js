@@ -258,36 +258,48 @@ ventas.get('/totalSales/:month', async (req, res) => {
 
   console.log(formatDatePrev)
   console.log(formatDateTwoPrev)
-  const SalesMonth = await Venta.find({
+  Venta.find({
     $and: [
       {
         fecha: { $gte: formatDate, $lte: formatDateTwo }
+      },
+      {
+        status: true
       }
     ]   
   })
-  if (SalesMonth) {
-    let total = 0
+  .then(SalesMonth => {
+    console.log(SalesMonth.length)
     for (let index = 0; index < SalesMonth.length; index++) {
       totalLocal = totalLocal + SalesMonth[index].ganancialocal 
       gananciaTotal = gananciaTotal + SalesMonth[index].total
     }
     gananciaNeta = totalLocal * 0.10
-    const SalesMonthPrev = await Venta.find({
+    Venta.find({
       $and: [
         {
           fecha: { $gte: formatDatePrev, $lte: formatDateTwoPrev }
+        },
+        {
+          status: true
         }
       ]   
-    })
-    if (SalesMonthPrev) {
-      for (let index = 0; index < SalesMonthPrev.length; index++) {
-        localAnterior = totalLocal + SalesMonthPrev[index].ganancialocal 
-        totalAnterior = gananciaTotal + SalesMonthPrev[index].total
+    }).then(SalesMonthPrev => {
+      console.log(SalesMonthPrev.length)
+      for (let indexTwo = 0; indexTwo < SalesMonthPrev.length; indexTwo++) {
+        localAnterior = localAnterior + SalesMonthPrev[indexTwo].ganancialocal 
+        totalAnterior = totalAnterior + SalesMonthPrev[indexTwo].total
       }
       netaAnterior = localAnterior * 0.10
       res.json({totalLocal: totalLocal, gananciaNeta: gananciaNeta, gananciaTotal: gananciaTotal, localAnterior: localAnterior, netaAnterior: netaAnterior, totalAnterior: totalAnterior })
-    }
-  }
+    })
+    .catch(err => {
+      res.send(err)
+    })
+  })
+  .catch(err => {
+    res.send(err)
+  })
 
 })
 
@@ -295,7 +307,7 @@ ventas.get('/getFund', async (req, res) => {
   const idFunds = await cashFunds.find()
   res.status(200).json(idFunds)
 })
-https://apexcharts.com/vue-chart-demos/
+
 ventas.post('/closeDay/:name', async (req, res) => {
   const closeName = req.params.name
   const dateNow = new Date()
