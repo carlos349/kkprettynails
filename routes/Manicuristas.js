@@ -49,6 +49,30 @@ manicurista.get('/advancementsProfile/:data', async (req, res, next) => {
   res.json(data)
 })
 
+manicurista.get('/findCancelSales', async (req, res, next) => {
+  const dateNow = new Date()
+  const formatDate = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+'-1'
+  const formatDateTwo = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-31"
+  
+  const manicuristas = await Venta.find({
+    $and: [
+      {
+        fecha: { $gte: formatDate, $lte: formatDateTwo }
+      },
+      {status: false}
+    ]   
+  })
+  if (manicuristas) {
+    let total = 0
+    for (let index = 0; index < manicuristas.length; index++) {
+      const element = manicuristas[index];
+      total = manicuristas[index].total
+    }
+    res.json(total)
+  }
+  
+})
+
 manicurista.post('/', (req, res) => {
   const dataManicurista = {
     nombre: req.body.nombreManicurista,

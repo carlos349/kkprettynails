@@ -24,6 +24,8 @@ const December = require('../models/December')
 const cashFunds = require('../models/cashFund')
 const Citas = require('../models/Citas')
 const closedDates = require('../models/closedDates')
+const Expenses = require('../models/Expenses')
+const GetWeeks = require('../models/getWeek')
 ventas.use(cors())
 
 ventas.put('/updateServicesMonth/:service', (req, res) => {
@@ -128,7 +130,7 @@ ventas.get('/findSalesByDate/:dates', async (req, res) => {
   
   try {
     const Sales = await Venta.find({fecha: { $gte: desde, $lte: hasta }})
-    console.log(Sales.length)
+    
     if (Sales.length == 0) {
       res.json({status: 'no Sales'})
     }else{
@@ -146,7 +148,7 @@ ventas.get('/findSalesByDay/:dates', async (req, res) => {
   const desde = splitDates[0]
   const hasta = splitDates[1] 
   
-  console.log(hasta)
+  
   try {
     const Sales = await Venta.find({fecha: { $gte: desde, $lte: hasta }})
 
@@ -231,39 +233,7 @@ ventas.get('/getClosingDay', (req, res) => {
   })
 })
 
-ventas.get('/totalSales/:month', (req, res) => {
-  const month = req.params.month
-  const december = 11
-  
-  const dateNow = new Date()
-  const formatDate = dateNow.getFullYear() +"-"+(parseFloat(month) + parseFloat(1))+"-"+"1"
-  const formatDateTwo = dateNow.getFullYear() +"-"+(month - 1)+"-"+"1"
-
-  const formatDateFor = dateNow.getFullYear() +"-"+month+"-"+"10"
-  const formatDateTwoFor = dateNow.getFullYear() +"-"+(month - 1)+"-"+"10"
-
-  if (month == 1) {
-    formatDateTwo = dateNow.getFullYear() +"-"+december+"-"+"1"
-  }
-  let getMonth = new Date(formatDateFor)
-  let getMonthPrev = new Date(formatDateTwoFor)
-
-  if (month == 0) {
-    getMonth = dateNow.getMonth()
-    if (getMonth == 1) {
-      getMonthPrev = 11
-    }else{
-      getMonthPrev = getMonth - 1
-    }
-  }else{
-    getMonth = getMonth.getMonth()
-    if (getMonth == 1) {
-      getMonthPrev = 11
-    }else{
-      getMonthPrev = getMonthPrev.getMonth()
-    }
-  }
-  
+ventas.get('/totalSales/:month', async (req, res) => {
   var totalLocal = 0
   var gananciaNeta = 0
   var gananciaTotal = 0
@@ -271,42 +241,52 @@ ventas.get('/totalSales/:month', (req, res) => {
   var netaAnterior = 0
   var totalAnterior = 0
 
-  if (month == 0) {
-    Venta.find()
-    .then(resp => {
-      for (let index = 0; index < resp.length; index++) {
-        var fechL = new Date(resp[index].fecha)
-        if (getMonth == fechL.getMonth()) {
-          totalLocal = totalLocal + resp[index].ganancialocal 
-          gananciaTotal = gananciaTotal + resp[index].total
-        }else if (getMonthPrev == fechL.getMonth()) {
-          localAnterior = localAnterior + resp[index].ganancialocal
-          totalAnterior = totalAnterior + resp[index].total
-        }
+  const dateNow = new Date()
+  const formatDate = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+'-1'
+  const formatDateTwo = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-31"
+  var formatDatePrev, formatDateTwoPrev
+  if (dateNow.getMonth() == 0) {
+    formatDatePrev = dateNow.getFullYear() +"-12-1"
+    formatDateTwoPrev = dateNow.getFullYear() +"-12-31"
+  }else{
+    formatDatePrev = dateNow.getFullYear() +"-"+dateNow.getMonth()+'-1'
+    formatDateTwoPrev = dateNow.getFullYear() +"-"+dateNow.getMonth()+"-31"
+  }
+
+  console.log(formatDate)
+  console.log(formatDateTwo)
+
+  console.log(formatDatePrev)
+  console.log(formatDateTwoPrev)
+  const SalesMonth = await Venta.find({
+    $and: [
+      {
+        fecha: { $gte: formatDate, $lte: formatDateTwo }
       }
-      gananciaNeta = totalLocal * 0.10 
+    ]   
+  })
+  if (SalesMonth) {
+    let total = 0
+    for (let index = 0; index < SalesMonth.length; index++) {
+      totalLocal = totalLocal + SalesMonth[index].ganancialocal 
+      gananciaTotal = gananciaTotal + SalesMonth[index].total
+    }
+    gananciaNeta = totalLocal * 0.10
+    const SalesMonthPrev = await Venta.find({
+      $and: [
+        {
+          fecha: { $gte: formatDatePrev, $lte: formatDateTwoPrev }
+        }
+      ]   
+    })
+    if (SalesMonthPrev) {
+      for (let index = 0; index < SalesMonthPrev.length; index++) {
+        localAnterior = totalLocal + SalesMonthPrev[index].ganancialocal 
+        totalAnterior = gananciaTotal + SalesMonthPrev[index].total
+      }
       netaAnterior = localAnterior * 0.10
       res.json({totalLocal: totalLocal, gananciaNeta: gananciaNeta, gananciaTotal: gananciaTotal, localAnterior: localAnterior, netaAnterior: netaAnterior, totalAnterior: totalAnterior })
-    })
-  }else{
-    Venta.find({
-      fecha: { $gte: formatDateTwo, $lte: formatDate  }
-    })
-    .then(resp => {
-      for (let index = 0; index < resp.length; index++) {
-        var fechL = new Date(resp[index].fecha)
-        if (getMonth == fechL.getMonth()) {
-          totalLocal = totalLocal + resp[index].ganancialocal 
-          gananciaNeta = gananciaNeta + resp[index].ganancianeta
-          gananciaTotal = gananciaTotal + resp[index].total
-        }else if (getMonthPrev == fechL.getMonth()) {
-          localAnterior = localAnterior + resp[index].ganancialocal
-          netaAnterior = netaAnterior + resp[index].ganancianeta
-          totalAnterior = totalAnterior + resp[index].total
-        }
-      }
-      res.json({totalLocal: totalLocal, gananciaNeta: gananciaNeta, gananciaTotal: gananciaTotal, localAnterior: localAnterior, netaAnterior: netaAnterior, totalAnterior: totalAnterior})
-    })
+    }
   }
 
 })
@@ -781,7 +761,6 @@ ventas.post('/verificacioncliente', (req, res) => {
 ventas.put('/:id', async (req, res, next) => {
     const id = req.params.id
     const dataComision = req.body.employeComision
-    console.log(dataComision)
     const cancelSale = await Venta.findByIdAndUpdate(id, {
       $set: { status: false}
     })
@@ -791,7 +770,6 @@ ventas.put('/:id', async (req, res, next) => {
         for (let index = 0; index < dataComision.length; index++) {
           var comisionNega = '-'+dataComision[index].comision
           var removeComision = await Manicurista.updateOne({nombre:dataComision[index].employe},{$inc: {comision: parseFloat(comisionNega)}})
-          console.log(removeComision)
         }
         if (removeComision) {
           res.status(200).json({status: 'ok'})
@@ -858,8 +836,6 @@ ventas.post('/processEndDates', (req, res) => {
             .then(sale => {
               ventaDia.idTableSales = sale._id
               for (let index = 0; index < employeClosedDatesWithDiscount.length; index++) {
-                console.log(employeClosedDatesWithDiscount[index].employe)
-                console.log(employeClosedDatesWithDiscount[index].comision)
                 Manicurista.updateOne({nombre:employeClosedDatesWithDiscount[index].employe},{
                   $inc: {comision:employeClosedDatesWithDiscount[index].comision} 
                 })    
@@ -945,13 +921,13 @@ ventas.post('/procesar', (req, res) => {
     comisionPerAmount = comisionDescuento * parseFloat('0.'+req.body.servicios[index].comision)
     comisionTotal = comisionTotal + comisionPerAmount
   }
-  
   const total = req.body.total
   const totalComisionDesign = parseFloat(req.body.diseno) * 0.50
   const totalParaComision = req.body.totalSinDesign + totalComisionDesign
   const gananciaTotal = totalParaComision - parseFloat(comisionTotal) 
   const comision = parseFloat(comisionTotal) + parseFloat(totalComisionDesign)
   const documentoManicurista = req.body.documentoManicurista
+  
   var discount
   if (descuento == 100) {
     discount = '0%'
@@ -977,7 +953,7 @@ ventas.post('/procesar', (req, res) => {
     total: total,
     fecha: today
   }
-
+  
   const ventaDia = {
     cliente: req.body.cliente,
     manicurista: req.body.manicurista,
@@ -1064,7 +1040,6 @@ ventas.post('/procesar', (req, res) => {
                 $inc: {comision:ventas.comision}
               })
               .then(comision => {
-                console.log(comision)
                 Cliente.updateOne({identidad: finalClient[1]},{
                   $inc: {participacion: 1},
                   $set: {ultimaFecha: today},
@@ -1148,7 +1123,7 @@ ventas.get('/dataChecker', (req, res) => {
 ventas.post('/dataSectionManagement', (req, res) => {
   const dateDaily = new Date(req.body.dateDaily)
   const dateDailyTwo = new Date(req.body.dateDaily)
-  console.log(dateDaily)
+  
   const dateDailyToday = dateDaily.getFullYear() +"-"+(dateDaily.getMonth() + 1)+"-"+dateDaily.getDate()
 
   dateDaily.setDate(dateDaily.getDate() + 1)
@@ -1163,7 +1138,7 @@ ventas.post('/dataSectionManagement', (req, res) => {
   const dateMonthlySince = dateMonthly.getFullYear() +"-"+(dateMonthly.getMonth() + 1)+"-"+(dateMonthly.getDate() + 1)
   dateMonthly.setMonth(dateMonthly.getMonth() + 1)
   const dateMonthlyUntil = dateMonthly.getFullYear() +"-"+(dateMonthly.getMonth() + 1)+"-"+dateMonthly.getDate()
-  console.log(dateMonthly)
+  
   var dailyData = {
     Sale: 0,
     Services: 0,
@@ -1270,55 +1245,19 @@ ventas.get('/GetSalesPerMonth', (req, res) => {
   const thisDate = new Date()
   const date = thisDate.getMonth()
   
-  let month  = 'month'
-  let monthTwo = 'month'
-  if (date === 0) {
-    month = 'Enero'
-    monthTwo = 'Diciembre'
-  }else if (date === 1) {
-    month = 'Febrero'
-    monthTwo = 'Enero'
-  }else if (date === 2) {
-    month = 'Marzo'
-    monthTwo = 'Febrero'
-  }else if (date === 3) {
-    month = 'Abril'
-    monthTwo = 'Marzo'
-  }else if (date === 4) {
-    month = 'Mayo'
-    monthTwo = 'Abril'
-  }else if (date === 5) {
-    month = 'Junio'
-    monthTwo = 'Mayo'
-  }else if (date === 6) {
-    month = 'Julio'
-    monthTwo = 'Junio'
-  }else if (date === 7) {
-    month = 'Agosto'
-    monthTwo = 'Julio'
-  }else if (date === 8) {
-    month = 'Septiembre'
-    monthTwo = 'Agosto'
-  }else if (date === 9) {
-    month = 'Octubre'
-    monthTwo = 'Septiembre'
-  }else if (date === 10) {
-    month = 'Noviembre'
-    monthTwo = 'Octubre'
-  }else if (date === 11) {
-    month = 'Deciembre'
-    monthTwo = 'Noviembre'
-  }
-  
   let chartdata = {
     categories: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31],
     series: [ 
       {
-        name: monthTwo,
+        name: 'Gastos',
         data: [],
       },
       {
-        name: month,
+        name: 'Ganancia local' ,
+        data: [],
+      },
+      {
+        name: 'Total ventas' ,
         data: [],
       }
     ]
@@ -1332,29 +1271,44 @@ ventas.get('/GetSalesPerMonth', (req, res) => {
       let sumDayTwo = 0
       for (let index = 0; index < ventas.length; index++) {
         if (datasets === ventas[index].fecha.getDate() && date === ventas[index].fecha.getMonth()) {
-          sumDay = parseFloat(ventas[index].total) + parseFloat(sumDay)
+          if (ventas[index].status) {
+            sumDay = parseFloat(ventas[index].total) + parseFloat(sumDay)
+            sumDayTwo = parseFloat(ventas[index].ganancialocal) + parseFloat(sumDayTwo)
+          }
         }
       }
-      for (let indexTwo = 0; indexTwo < ventas.length; indexTwo++) {
-        if (datasets === ventas[indexTwo].fecha.getDate() && date - 1 === ventas[indexTwo].fecha.getMonth()) {
-          sumDayTwo = parseFloat(ventas[indexTwo].total) + parseFloat(sumDayTwo)
-        }else if (datasets === ventas[indexTwo].fecha.getDate() && ventas[indexTwo].fecha.getMonth() == 11) {
-          sumDayTwo = parseFloat(ventas[indexTwo].total) + parseFloat(sumDayTwo)
-        }
-      }
+      
       if (sumDayTwo == 0) {
-        chartdata.series[0].data.push('0')
+        chartdata.series[1].data.push('0')
       }else{
-        chartdata.series[0].data.push(sumDayTwo)
+        chartdata.series[1].data.push(sumDayTwo)
       }
 
       if (sumDay == 0) {
-        chartdata.series[1].data.push('0')
+        chartdata.series[2].data.push('0')
       }else{
-        chartdata.series[1].data.push(sumDay)
+        chartdata.series[2].data.push(sumDay)
       }
     }
-    res.json(chartdata)
+    Expenses.find()
+    .then(expense => {
+      for (let indexOne = 0; indexOne < chartdata.categories.length; indexOne++) {
+        let datasets = chartdata.categories[indexOne]
+        let sumDayThree = 0
+        for (let index = 0; index < expense.length; index++) {
+          if (datasets === expense[index].date.getDate() && date === expense[index].date.getMonth()) {
+            sumDayThree = parseFloat(expense[index].figure) + parseFloat(sumDayThree)
+          }
+        }
+
+        if (sumDayThree == 0) {
+          chartdata.series[0].data.push('0')
+        }else{
+          chartdata.series[0].data.push(sumDayThree)
+        }
+      }
+      res.json(chartdata)
+    })
   })
 })
 
@@ -1370,17 +1324,47 @@ ventas.put('/editarIngManual/:id', (req,res) => {
     otros : req.body.otros,
     total : req.body.totalEfectivo + req.body.credito + req.body.debito +  req.body.transferencia + req.body.otros
   }
-Cierres.findByIdAndUpdate(req.params.id, {
-  $set:{manual:data}
-})
-.then(cierres => {
-  res.json({status: 'ok'})
-})
-.catch(err => {
-  res.send(err)
-})
+  Cierres.findByIdAndUpdate(req.params.id, {
+    $set:{manual:data}
+  })
+  .then(cierres => {
+    res.json({status: 'ok'})
+  })
+  .catch(err => {
+    res.send(err)
+  })
 })
 
-
+ventas.get('/setFirstDateOfWeekend', (req, res) => {
+  GetWeeks.find()
+  .then(getWeek => {
+    if(getWeek.length > 0){
+      const dateWeek = getWeek[0].date
+      const id = getWeek[0]._id
+      if (dateWeek.getDay() == 1) {
+        GetWeeks.findByIdAndUpdate(id, {
+          $set: {
+            date: new Date()
+          }
+        })
+        .then(newDateWeek => {
+          res.json({status: 'new week'})
+        })
+        .catch(err => {
+          res.send(err)
+        })
+      }else{
+        res.json({status: 'no new week'})
+      }
+    }else{
+      GetWeeks.create({date: new Date()})
+      .then(cretaeWeek => {
+      })
+      .catch(err => {
+        res.send(err)
+      })
+    }
+  })
+})
 module.exports = ventas
 
