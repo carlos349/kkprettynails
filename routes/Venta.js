@@ -1360,13 +1360,13 @@ ventas.get('/setFirstDateOfWeekend', (req, res) => {
           }
         })
         .then(newDateWeek => {
-          res.json({status: 'new week'})
+          res.json({status: 'ok'})
         })
         .catch(err => {
           res.send(err)
         })
       }else{
-        res.json({status: 'no new week'})
+        res.json({status: 'ok'})
       }
     }else{
       GetWeeks.create({date: new Date()})
@@ -1378,5 +1378,97 @@ ventas.get('/setFirstDateOfWeekend', (req, res) => {
     }
   })
 })
+
+ventas.get('/weekMetrics', (req, res) => {
+  GetWeeks.find()
+  .then(getWeek => {
+    
+    const dateWeek = getWeek[0].date
+    const Monday = dateWeek.getDate()
+    dateWeek.setDate(dateWeek.getDate() + 1)
+    const Thuestday = dateWeek.getDate()
+    dateWeek.setDate(dateWeek.getDate() + 1)
+    const Wednesday = dateWeek.getDate()
+    dateWeek.setDate(dateWeek.getDate() + 1)
+    const Thursday = dateWeek.getDate()
+    dateWeek.setDate(dateWeek.getDate() + 1)
+    const Friday = dateWeek.getDate()
+    dateWeek.setDate(dateWeek.getDate() + 1)
+    const Saturday = dateWeek.getDate()
+    dateWeek.setDate(dateWeek.getDate() + 1)
+    const Sunday = dateWeek.getDate()
+    const arrayDates = [
+      Monday,
+      Thuestday,
+      Wednesday,
+      Thursday,
+      Friday,
+      Saturday,
+      Sunday
+    ]
+
+    console.log(arrayDates)
+    dateWeek.setDate(dateWeek.getDate() - 6)
+    const formatDate = dateWeek.getFullYear() +"-"+(dateWeek.getMonth() + 1)+"-"+dateWeek.getDate()
+    dateWeek.setDate(dateWeek.getDate() + 6)
+    const formatDateTwo = dateWeek.getFullYear() +"-"+(dateWeek.getMonth() + 1)+"-"+dateWeek.getDate()
+    
+    console.log(formatDate)
+    console.log(formatDateTwo)
+    Venta.find({
+      $and: [
+        {fecha: {$gte: formatDate, $lte: formatDateTwo}},
+        {status: true}
+      ]
+    }).sort({fecha: 1})
+    .then(Sales => {
+      let chartdata = {
+        categories: ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo'],
+        seriesTotal: [ 
+          {
+            name: 'Ventas promedio',
+            data: [],
+          }
+        ],
+        seriesServices: [
+          {
+            name: 'Servicios promedio',
+            data: [],
+          }
+        ]
+      }
+      for (let indexTwo = 0; indexTwo < arrayDates.length; indexTwo++) {
+        let sumTotal = 0
+        let sumServices = 0
+        let quantity = 0
+        let Total = 0
+        let Services = 0
+        // let quantityServices = 0
+        for (let index = 0; index < Sales.length; index++) {
+          if (Sales[index].fecha.getDate() == arrayDates[indexTwo]) {
+            sumTotal = sumTotal + Sales[index].total 
+            quantity++
+            sumServices = sumServices + Sales[index].servicios.length
+          }
+        } 
+        if (quantity == 0) {
+          chartdata.seriesTotal[0].data.push('0')
+          chartdata.seriesServices[0].data.push('0')
+        }else{ 
+          Total = sumTotal / quantity
+          Services = sumServices / quantity
+          chartdata.seriesTotal[0].data.push(Total.toFixed(2))
+          chartdata.seriesServices[0].data.push(Services.toFixed(2))
+        }
+      }
+      console.log(chartdata)
+      res.json(chartdata)
+    })
+  })
+  .catch(err => {
+    res.send(err)
+  })
+})
+
 module.exports = ventas
 
