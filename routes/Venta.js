@@ -1587,14 +1587,14 @@ ventas.get('/quantityProductionPerLender/:date', async (req, res) => {
                 sumDay = sales[index].total + sumDay
               }
             }else{
-              if (name) {
+              
                 chartdata.series[indexTwo].data.push({total: sumDay, date: dateFormatPrev})
                 sumDay = 0
                 sumDay = sales[index].total
                 if ((index+1) == sales.length) {
                   chartdata.series[indexTwo].data.push({total: sumDay, date: dateFormat})
                 }
-              }
+              
             }
           }else{
             sumDay = sales[index].total
