@@ -222,7 +222,8 @@ manicurista.put('/ClosePrest/:id', (req, res) => {
   Manicurista.findByIdAndUpdate(req.params.id, {
     $set: {
       comision:0,
-      advancement:0
+      advancement:0,
+      bonus:0
     }
   })
   .then(manicurista => {
