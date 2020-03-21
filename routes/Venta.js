@@ -240,6 +240,8 @@ ventas.get('/totalSales/:month', async (req, res) => {
   var localAnterior = 0
   var netaAnterior = 0
   var totalAnterior = 0
+  var totalComision = 0
+  var totalComisionAnterior = 0
 
   const dateNow = new Date()
   const formatDate = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+'-1'
@@ -269,10 +271,11 @@ ventas.get('/totalSales/:month', async (req, res) => {
     ]   
   })
   .then(SalesMonth => {
-    console.log(SalesMonth.length)
+    console.log(SalesMonth)
     for (let index = 0; index < SalesMonth.length; index++) {
       totalLocal = totalLocal + SalesMonth[index].ganancialocal 
       gananciaTotal = gananciaTotal + SalesMonth[index].total
+      totalComision = totalComision + SalesMonth[index].comision
     }
     gananciaNeta = totalLocal * 0.10
     Venta.find({
@@ -285,13 +288,16 @@ ventas.get('/totalSales/:month', async (req, res) => {
         }
       ]   
     }).then(SalesMonthPrev => {
-      console.log(SalesMonthPrev.length)
+      
       for (let indexTwo = 0; indexTwo < SalesMonthPrev.length; indexTwo++) {
         localAnterior = localAnterior + SalesMonthPrev[indexTwo].ganancialocal 
         totalAnterior = totalAnterior + SalesMonthPrev[indexTwo].total
+        totalComisionAnterior = totalComisionAnterior + SalesMonthPrev[indexTwo].comision
+        
       }
       netaAnterior = localAnterior * 0.10
-      res.json({totalLocal: totalLocal, gananciaNeta: gananciaNeta, gananciaTotal: gananciaTotal, localAnterior: localAnterior, netaAnterior: netaAnterior, totalAnterior: totalAnterior })
+      console.log("aqui")
+      res.json({totalLocal: totalLocal, gananciaNeta: gananciaNeta, gananciaTotal: gananciaTotal, localAnterior: localAnterior, netaAnterior: netaAnterior, totalAnterior: totalAnterior, comision:totalComision, comisionAnterior:totalComisionAnterior })
     })
     .catch(err => {
       res.send(err)
