@@ -1576,10 +1576,11 @@ ventas.get('/quantityProductionPerLender/:date', async (req, res) => {
             datePrev = sales[index - 1].fecha
             dateFormatPrev = datePrev.getFullYear()+'-'+(datePrev.getMonth() + 1)+'-'+datePrev.getDate()
           }
-          let name
+          let name = false
           for (let indexThree = 0; indexThree < sales[index].EmployeComision.length; indexThree++) {
             name = lenders[indexTwo].nombre == sales[index].EmployeComision[indexThree].employe ? true : false
           }
+          console.log(name)
           if (index > 0 ) {
             if (dateFormat == dateFormatPrev) {
               if (name) {
