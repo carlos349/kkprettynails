@@ -1555,7 +1555,6 @@ ventas.get('/quantityProductionPerLender/:date', async (req, res) => {
   const split = req.params.date.split(':')
   let quantity = []
   let chartdata = {
-    categories: ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo'],
     series: [],
   }
   const sales = await Venta.find({$and: [
@@ -1587,17 +1586,69 @@ ventas.get('/quantityProductionPerLender/:date', async (req, res) => {
                 sumDay = sales[index].total + sumDay
               }
             }else{
-              
-                chartdata.series[indexTwo].data.push({total: sumDay, date: dateFormatPrev})
-                sumDay = 0
-                sumDay = sales[index].total
-                if ((index+1) == sales.length) {
-                  chartdata.series[indexTwo].data.push({total: sumDay, date: dateFormat})
-                }
-              
+              chartdata.series[indexTwo].data.push({total: sumDay, date: dateFormatPrev})
+              sumDay = 0
+              sumDay = sales[index].total
+              if ((index+1) == sales.length) {
+                chartdata.series[indexTwo].data.push({total: sumDay, date: dateFormat})
+              }
             }
           }else{
             sumDay = sales[index].total
+          }
+        }
+      }
+      res.json({chartdata: chartdata})
+    }
+  }
+})
+
+ventas.get('/quantityComissionPerLender/:date', async (req, res) => {
+  const split = req.params.date.split(':')
+  let quantity = []
+  let chartdata = {
+    series: [],
+  }
+  const sales = await Venta.find({$and: [
+    {fecha: {$gte:split[0] , $lte: split[1]}},
+    {status: true}
+  ]}).sort({fecha: 1})
+  if (sales) {
+    const lenders = await Manicurista.find()
+    if (lenders) {
+      for (let indexTwo = 0; indexTwo < lenders.length; indexTwo++) {
+        chartdata.series.push({name: lenders[indexTwo].nombre, data: []})
+        var sumDay = 0
+        for (let index = 0; index < sales.length; index++) {
+          let date = sales[index].fecha
+          let dateFormat = date.getFullYear()+'-'+(date.getMonth() + 1)+'-'+date.getDate()
+          let datePrev, dateFormatPrev
+          if (index > 0) {
+            datePrev = sales[index - 1].fecha
+            dateFormatPrev = datePrev.getFullYear()+'-'+(datePrev.getMonth() + 1)+'-'+datePrev.getDate()
+          }
+          let name = false
+          let totalComission = 0
+          for (let indexThree = 0; indexThree < sales[index].EmployeComision.length; indexThree++) {
+            name = lenders[indexTwo].nombre == sales[index].EmployeComision[indexThree].employe ? true : false
+            totalComission = lenders[indexTwo].nombre == sales[index].EmployeComision[indexThree].employe ? sales[index].comision : 0
+          }
+          
+          if (index > 0 ) {
+            if (dateFormat == dateFormatPrev) {
+              if (name) {
+                sumDay = totalComission + sumDay
+              }
+            }else{
+              chartdata.series[indexTwo].data.push({total: sumDay, date: dateFormatPrev})
+              sumDay = 0
+              sumDay = totalComission
+              if ((index+1) == sales.length) {
+                chartdata.series[indexTwo].data.push({total: sumDay, date: dateFormat})
+              }
+            }
+          }else{
+            sumDay = totalComission
           }
         }
       }
