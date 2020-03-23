@@ -329,27 +329,4 @@ clients.put('/:id', async (req, res, next) => {
     
 })
 
-clients.get('/getTopTenBestClients', (req, res) => {
-    
-    let chartdata = {
-        labels: [],
-        datasets: [ 
-          {
-            label: 'Top 10 mejores clientes',
-            backgroundColor: 'rgba(31, 86, 115, .8)',
-            data: []
-          }
-        ]
-      }
-
-    Cliente.find().sort({participacion: -1}).limit(10)
-    .then(topClients => {
-        for (let indexTwo = 0; indexTwo < topClients.length; indexTwo++) {
-            chartdata.labels.push(topClients[indexTwo].nombre)
-            chartdata.datasets[0].data.push(topClients[indexTwo].participacion)
-          }
-          res.json(chartdata)
-    })
-})
-
 module.exports = clients
