@@ -80,6 +80,7 @@ manicurista.post('/', (req, res) => {
     restDay: req.body.restDay,
     comision:0,
     advancement:0,
+    bonus:0,
     class: '',
     date: new Date()
   }
@@ -156,8 +157,15 @@ manicurista.post('/registerAdvancement', (req, res) => {
     Expenses.create(dataExpense)
     .then(expense => {
       if (req.body.check) {
-        res.json({status: 'bonus'})
-      }else{
+        Manicurista.findByIdAndUpdate(req.body.prest, { $inc: { bonus: req.body.total }})
+        .then(update => {
+          res.json({status: 'bonus'})
+        })
+        .catch(err => {
+          res.send(err)
+        })
+      }
+      else{
         Manicurista.findByIdAndUpdate(req.body.prest, { $inc: { advancement: req.body.total }})
         .then(update => {
           Advancement.create(dataAdvancement)
@@ -214,7 +222,8 @@ manicurista.put('/ClosePrest/:id', (req, res) => {
   Manicurista.findByIdAndUpdate(req.params.id, {
     $set: {
       comision:0,
-      advancement:0
+      advancement:0,
+      bonus:0
     }
   })
   .then(manicurista => {
