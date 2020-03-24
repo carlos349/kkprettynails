@@ -90,9 +90,11 @@ metrics.get('/dailyExpenseGainTotal/:date', async (req, res) => {
     for (let index = 0; index < sales.length; index++) {
       let date = sales[index].fecha
       let dateFormat = date.getFullYear()+'-'+(date.getMonth() + 1)+'-'+date.getDate()
-      let datePrev, dateFormatPrev
+      let dateTimeFormat = date.getTime()
+      let datePrev, dateFormatPrev, dateTimeFormatPrev
       if (index > 0) {
         datePrev = sales[index - 1].fecha
+        dateTimeFormatPrev = datePrev.getTime()
         dateFormatPrev = datePrev.getFullYear()+'-'+(datePrev.getMonth() + 1)+'-'+datePrev.getDate()
       }
       if (index > 0 ) {
@@ -100,15 +102,15 @@ metrics.get('/dailyExpenseGainTotal/:date', async (req, res) => {
           sumTotal = sales[index].total + sumTotal
           sumGain = sales[index].ganancialocal + sumGain
         }else{
-          series[0].data.push({total: sumTotal, date: dateFormatPrev})
-          series[1].data.push({total: sumGain, date: dateFormatPrev})
+          series[0].data.push([dateTimeFormatPrev, sumTotal])
+          series[1].data.push([dateTimeFormatPrev, sumGain])
           sumTotal = 0
           sumGain = 0
           sumTotal = sales[index].total
           sumGain = sales[index].ganancialocal
           if ((index+1) == sales.length) {
-            series[0].data.push({total: sumTotal, date: dateFormat})
-            series[1].data.push({total: sumGain, date: dateFormat})
+            series[0].data.push([dateTimeFormat, sumTotal])
+            series[1].data.push([dateTimeFormat, sumGain])
           }
         }
       }else{
@@ -116,8 +118,39 @@ metrics.get('/dailyExpenseGainTotal/:date', async (req, res) => {
         sumGain = sales[index].ganancialocal
       }
     }
+    const expenses = await Expenses.find({
+      date: {$gte:split[0] , $lte: split[1]}
+    })
+    if (expenses) {
+      var sumExpense = 0
+      for (let indexTwo = 0; indexTwo < expenses.length; indexTwo++) {
+        let date = sales[indexTwo].fecha
+        let dateFormat = date.getFullYear()+'-'+(date.getMonth() + 1)+'-'+date.getDate()
+        let dateTimeFormat = date.getTime()
+        let datePrev, dateFormatPrev, dateTimeFormatPrev
+        if (indexTwo > 0) {
+          datePrev = sales[indexTwo - 1].fecha
+          dateTimeFormatPrev = datePrev.getTime()
+          dateFormatPrev = datePrev.getFullYear()+'-'+(datePrev.getMonth() + 1)+'-'+datePrev.getDate()
+        }
+        if (indexTwo > 0 ) {
+          if (dateFormat == dateFormatPrev) {
+            sumExpense = expenses[indexTwo].figure + sumExpense
+          }else{
+            series[2].data.push([dateTimeFormatPrev, sumExpense])
+            sumExpense = 0
+            sumExpense = expenses[indexTwo].figure
+            if ((indexTwo+1) == expenses.length) {
+              series[2].data.push([dateTimeFormat, sumExpense])
+            }
+          }
+        }else{
+          sumExpense = expenses[indexTwo].figure
+        }
+      }
+      res.json({series:series})
+    }
     
-    res.json({series:series})
   }
 })
 
