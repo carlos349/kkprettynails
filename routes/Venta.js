@@ -1388,6 +1388,13 @@ ventas.get('/setFirstDateOfWeekend', (req, res) => {
   })
 })
 
+ventas.get('/deleteSales/:dates', async (req, res) => {
+  const split = req.params.dates.split(':')
+  const sales = await Venta.deleteMany({
+    fecha: {$gte:split[0] , $lte: split[1]}
+  })
+  console.log(sales)
+})
 
 module.exports = ventas
 
