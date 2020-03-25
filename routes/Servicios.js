@@ -34,6 +34,7 @@ service.post('/', (req,res) => {
     comision:req.body.comisionServicio,
     descuento: req.body.descuento,
     prestadores:req.body.prestadores,
+    productos:req.body.productos,
     active:true
   }
   Servicio.findOne({
@@ -99,6 +100,7 @@ service.put('/:id', (req, res) => {
         precio:req.body.precioServicio,
         comision:req.body.comisionServicio,
         prestadores:req.body.prestadores,
+        productos:req.body.productos,
         descuento: req.body.descuento
       }
     })

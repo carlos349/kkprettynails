@@ -9,17 +9,11 @@ inventory.get('/', async (req, res) => {
     res.json(products)
 })
 inventory.put('/:id', (req, res) => {
-    const totalAmount = parseFloat(req.body.amount) * parseFloat(req.body.quantity) 
     Inventory.findByIdAndUpdate(req.params.id, {
         $set: {
             producto:req.body.product,
-            marca:req.body.brand,
-            gramos:req.body.grams,
-            cantidad:req.body.quantity,
-            monto:req.body.amount,
-            montoTotal:totalAmount,
-            servicios:req.body.services,
-            serviciosId: req.body.serviceId
+            cantidad:req.body.cantidad,
+            monto:req.body.monto
         }
       })
       .then(servicio => {
@@ -29,19 +23,24 @@ inventory.put('/:id', (req, res) => {
         res.send('error: ' + err)
       })
 })
-
+inventory.put('/addMore/:id', (req, res) => {
+    Inventory.findByIdAndUpdate(req.params.id, {
+        $inc: {entry:req.body.entry}
+      })
+      .then(servicio => {
+        res.json({status: 'ok'})
+      })
+      .catch(err => {
+        res.send('error: ' + err)
+      })
+})
 inventory.post('/', (req, res) => {
-    const totalAmount = parseFloat(req.body.amount) * parseFloat(req.body.quantity)
     const product = {
         producto: req.body.product,
-        marca: req.body.brand,
-        gramos: req.body.grams,
         cantidad: req.body.quantity,
-        monto: req.body.amount,
-        montoTotal: totalAmount,
-        servicios: req.body.services,
-        serviciosId: req.body.servicesId,
-        fecha: new Date()
+        monto: req.body.price,
+        entry: 0,
+        consume:0
     }
     
     Inventory.findOne({
@@ -63,6 +62,14 @@ inventory.post('/', (req, res) => {
     .catch(err => {
         res.send(err)
     })
+})
+
+inventory.put('/deleteItem/:id', async (req, res) => {
+    const item = await Inventory.findByIdAndDelete(req.params.id)
+    if (item) {
+        res.json({status: 'ok'})
+    }
+    res.json({status: 'bad'})
 })
 
 module.exports = inventory
