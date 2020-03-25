@@ -228,10 +228,10 @@ clients.put('/deleteClient/:id', async (req, res) => {
 clients.post('/', (req, res) => {
     let recommender = req.body.recomendador
     let finalRecommender = ''
-    if (recommender == '') {
+    if (recommender == null) {
         finalRecommender = 'Ninguno'
     }else{
-        let reco = recommender.split("-")
+        let reco = recommender.split(" / ")
         finalRecommender = reco[1]
     }
     const today = new Date()
