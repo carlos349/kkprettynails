@@ -673,12 +673,10 @@ metrics.get('/dailyAveragePerDay/:date', async (req, res) => {
         totals[1].data[date].Quantity = totals[1].data[date].Quantity + 1
       }
     }
-    var fixed = 0
     console.log(totals[0].data)
     for (let indexTwo = 0; indexTwo < 6; indexTwo++) {
-      series[0].data.push((parseFloat(totals[0].data[indexTwo].sum) / parseFloat(totals[0].data[indexTwo].Quantity)).toFixed(2)) 
-      fixed = parseFloat(totals[1].data[indexTwo].sum) / parseFloat(totals[1].data[indexTwo].Quantity)
-      series[1].data.push(parseFloat(fixed.toFixed(2)))
+      series[0].data.push((totals[0].data[indexTwo].sum / totals[0].data[indexTwo].Quantity).toFixed(2)) 
+      series[1].data.push(totals[1].data[indexTwo].sum / totals[1].data[indexTwo].Quantity)
       dataTable.push({Dia: categories[indexTwo], Servicios: series[1].data[indexTwo], Produccion: series[0].data[indexTwo]})
     }
     res.json({series:series, categories:categories, dataTable: dataTable})
