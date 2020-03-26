@@ -633,10 +633,10 @@ metrics.get('/dailyAveragePerDay/:date', async (req, res) => {
   let categories = ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado']
   let totals = [ 
     {
-      data:[{sum: 0, Quantity: 0}, {sum: 0, Quantity: 0}, {sum: 0, Quantity: 0}, {sum: 0, Quantity: 0}, {sum: 0, Quantity: 0}, {sum: 0, Quantity: 0}, {sum: 0, Quantity: 0}, {sum: 0, Quantity: 0}]
+      data:[{sum: 0, Quantity: 0}, {sum: 0, Quantity: 0}, {sum: 0, Quantity: 0}, {sum: 0, Quantity: 0}, {sum: 0, Quantity: 0}, {sum: 0, Quantity: 0}, {sum: 0, Quantity: 0}]
     },
     {
-      data:[{sum: 0, Quantity: 0}, {sum: 0, Quantity: 0}, {sum: 0, Quantity: 0}, {sum: 0, Quantity: 0}, {sum: 0, Quantity: 0}, {sum: 0, Quantity: 0}, {sum: 0, Quantity: 0}, {sum: 0, Quantity: 0}]
+      data:[{sum: 0, Quantity: 0}, {sum: 0, Quantity: 0}, {sum: 0, Quantity: 0}, {sum: 0, Quantity: 0}, {sum: 0, Quantity: 0}, {sum: 0, Quantity: 0}, {sum: 0, Quantity: 0}]
     }
   ]
   let series = [
@@ -674,7 +674,7 @@ metrics.get('/dailyAveragePerDay/:date', async (req, res) => {
       }
     }
     console.log(totals[0].data)
-    for (let indexTwo = 0; indexTwo < 6; indexTwo++) {
+    for (let indexTwo = 0; indexTwo < 7; indexTwo++) {
       if (totals[0].data[indexTwo].sum == 0) {
         series[0].data.push(0) 
         series[1].data.push(0)
