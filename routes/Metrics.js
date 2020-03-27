@@ -15,6 +15,60 @@ metrics.get('/top', async (req, res) => {
   res.json(participacion)
 })
 
+metrics.get('/dailyDesign/:date', async (req, res) => {
+  const split = req.params.date.split(':')
+  let series = [
+    {
+      name:"Venta total",
+      data: []
+    }
+  ]
+  let dataTable = []
+  const dateGood = new Date(split[1])
+  dateGood.setDate(dateGood.getDate() + 1)
+  const finalDate = dateGood.getFullYear()+'-'+(dateGood.getMonth() + 1)+'-'+dateGood.getDate()
+  const sales = await Venta.find({$and: [
+    {fecha: {$gte:split[0] , $lte: finalDate}},
+    {status: true}
+  ]}).sort({fecha: 1})
+  if (sales) {
+    var sumDay = 0
+    for (let index = 0; index < sales.length; index++) {
+      let date = sales[index].fecha
+      let dateFormat = date.getFullYear()+'-'+(date.getMonth() + 1)+'-'+date.getDate()
+      let dateTimeFormat = date.getTime()
+      let datePrev, dateFormatPrev, dateTimeFormatPrev
+      if (index > 0) {
+        datePrev = sales[index - 1].fecha
+        dateTimeFormatPrev = datePrev.getTime()
+        dateFormatPrev = datePrev.getFullYear()+'-'+(datePrev.getMonth() + 1)+'-'+datePrev.getDate()
+      }
+
+      if (index > 0 ) {
+        if (dateFormat == dateFormatPrev) {
+          sumDay = sales[index].design + sumDay
+          if ((index+1) == sales.length) {
+            series[0].data.push([dateTimeFormat, sumDay])
+            dataTable.push({fecha: dateFormat, total: sumDay})
+          }
+        }else{
+          series[0].data.push([dateTimeFormatPrev,sumDay])
+          dataTable.push({fecha: dateFormatPrev, total: sumDay})
+          sumDay = 0
+          sumDay = sales[index].design
+          if ((index+1) == sales.length) {
+            series[0].data.push([dateTimeFormat, sumDay])
+            dataTable.push({fecha: dateFormat, total: sumDay})
+          }
+        }
+      }else{
+        sumDay = sales[index].design
+      }
+    }
+    res.json({series:series, dataTable: dataTable})
+  }
+})
+
 metrics.get('/dailyProduction/:date', async (req, res) => {
   const split = req.params.date.split(':')
   let series = [
@@ -517,6 +571,71 @@ metrics.post('/detailPerLender/:date', async (req, res) => {
       }else{
         sumDayProduction = totalProduction
         sumDayComission = totalComision
+        sumDayServices = totalServices
+      }
+    }
+    res.json({series: series, dataTable: dataTable})
+  }
+})
+
+metrics.post('/detailPerService/:date', async (req, res) => {
+  const split = req.params.date.split(':')
+  const service = req.body.service
+  console.log(service)
+  let quantity = []
+  let series = [
+    {
+      name: service, 
+      data: []
+    }
+  ]
+  let dataTable = []
+  const dateGood = new Date(split[1])
+  dateGood.setDate(dateGood.getDate() + 1)
+  const finalDate = dateGood.getFullYear()+'-'+(dateGood.getMonth() + 1)+'-'+dateGood.getDate()
+  const sales = await Venta.find({$and: [
+    {fecha: {$gte:split[0] , $lte: finalDate}},
+    {status: true}
+  ]}).sort({fecha: 1})
+  if (sales) {
+    var sumDayServices = 0
+    for (let index = 0; index < sales.length; index++) {
+      let date = sales[index].fecha
+      let dateFormat = date.getFullYear()+'-'+(date.getMonth() + 1)+'-'+date.getDate()
+      let dateTimeFormat = date.getTime()
+      let datePrev, dateFormatPrev
+      if (index > 0) {
+        datePrev = sales[index - 1].fecha
+        dateTimeFormatPrev = datePrev.getTime()
+        dateFormatPrev = datePrev.getFullYear()+'-'+(datePrev.getMonth() + 1)+'-'+datePrev.getDate()
+      }
+      let name = false
+      let totalServices = 0
+      for (let indexThree = 0; indexThree < sales[index].servicios.length; indexThree++) {
+        name = service == sales[index].servicios[indexThree].servicio ? true : false
+        totalServices = service == sales[index].servicios[indexThree].servicio ? totalServices + sales[index].servicios[indexThree].precio : totalServices
+      }
+      
+      if (index > 0 ) {
+        if (dateFormat == dateFormatPrev) {
+          if (name) {
+            sumDayServices = totalServices + sumDayServices
+            if ((index+1) == sales.length) {
+              series[0].data.push([dateTimeFormat, sumDayServices])
+              dataTable.push({Fecha: dateFormat, total: sumDayServices})
+            }
+          }
+        }else{
+          series[0].data.push([dateTimeFormatPrev, sumDayServices])
+          dataTable.push({Fecha: dateFormatPrev, total: sumDayServices})
+          sumDayServices = 0
+          sumDayServices = totalServices
+          if ((index+1) == sales.length) {
+            series[0].data.push([dateTimeFormat, sumDayServices])
+            dataTable.push({Fecha: dateFormat, total: sumDayServices})
+          }
+        }
+      }else{
         sumDayServices = totalServices
       }
     }
