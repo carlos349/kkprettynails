@@ -1,15 +1,12 @@
 const mongoose = require('mongoose');
-const { Schema } = mongoose;
+const {Schema} = mongoose;
 
 const InventorySchema = new Schema ({
     producto: {
       type: String
     },
-    marca: {
-      type: String
-    },
-    gramos: {
-      type: Number
+    type: {
+      type:String
     },
     cantidad: {
       type: Number
@@ -17,18 +14,17 @@ const InventorySchema = new Schema ({
     monto: {
       type: Number
     },
-    montoTotal: {
+    entry: {
       type: Number
     },
-    servicios:{
-      type: Object
+    consume: {
+      type: Number,
     },
-    serviciosId:{
-      type: Object
+    history: {
+      type: Array,
     },
-    fecha: {
-      type: Date,
-      default: Date.now
+    total: {
+      type: Number,
     }
   })
   
