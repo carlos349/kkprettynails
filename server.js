@@ -4,6 +4,8 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const app = express()
 const mongoose = require('mongoose')
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
 
 mongoose.connect('mongodb://localhost/kkprettynails-database', {
 			useNewUrlParser: true,
@@ -12,6 +14,17 @@ mongoose.connect('mongodb://localhost/kkprettynails-database', {
 		.then(db => console.log('DB in connected'))
 		.catch(err => console.error(err))
 
+io.on('connection', socket  => {
+  socket.emit('news', { hello: 'world' });
+  socket.on('Login', data => {
+    socket.emit('ItsLogued', data);
+  });
+  socket.on('FinalyDate', data => {
+	  console.log('finalizo')
+	  socket.emit('getFinalyDates', data);
+  })
+  console.log('Socket connected')
+});
 
 // settings
 app.set('port', process.env.PORT || 4200)
@@ -41,6 +54,6 @@ app.use('/clients', require('./routes/Clients.js'))
 app.use('/static', express.static(__dirname + '/public'));
 
 // server in listened
-app.listen(app.get('port'), () => {
+server.listen(app.get('port'), () => {
 	console.log('Server on port: ', app.get('port'))
 })
