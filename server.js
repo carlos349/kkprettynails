@@ -14,16 +14,12 @@ mongoose.connect('mongodb://localhost/kkprettynails-database', {
 		.then(db => console.log('DB in connected'))
 		.catch(err => console.error(err))
 
+//Websockets
 io.on('connection', socket  => {
-  socket.emit('news', { hello: 'world' });
-  socket.on('Login', data => {
-    socket.emit('ItsLogued', data);
-  });
-  socket.on('FinalyDate', data => {
-	  console.log('finalizo')
-	  socket.emit('getFinalyDates', data);
+  socket.on('sendNotification', data => {
+	  console.log(data)
+	  io.emit('notify', data);
   })
-  console.log('Socket connected')
 });
 
 // settings
@@ -47,6 +43,7 @@ app.use('/citas', require('./routes/Citas.js'))
 app.use('/expenses', require('./routes/Expenses.js'))
 app.use('/inventario', require('./routes/Inventario.js'))
 app.use('/clients', require('./routes/Clients.js'))
+app.use('/notifications', require('./routes/Notifications.js'))
 
 
 //Static files
