@@ -4,6 +4,8 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const app = express()
 const mongoose = require('mongoose')
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
 
 mongoose.connect('mongodb://localhost/kkprettynails-database', {
 			useNewUrlParser: true,
@@ -12,6 +14,13 @@ mongoose.connect('mongodb://localhost/kkprettynails-database', {
 		.then(db => console.log('DB in connected'))
 		.catch(err => console.error(err))
 
+//Websockets
+io.on('connection', socket  => {
+  socket.on('sendNotification', data => {
+	  console.log(data)
+	  io.emit('notify', data);
+  })
+});
 
 // settings
 app.set('port', process.env.PORT || 4200)
@@ -34,6 +43,7 @@ app.use('/citas', require('./routes/Citas.js'))
 app.use('/expenses', require('./routes/Expenses.js'))
 app.use('/inventario', require('./routes/Inventario.js'))
 app.use('/clients', require('./routes/Clients.js'))
+app.use('/notifications', require('./routes/Notifications.js'))
 
 
 //Static files
@@ -41,6 +51,6 @@ app.use('/clients', require('./routes/Clients.js'))
 app.use('/static', express.static(__dirname + '/public'));
 
 // server in listened
-app.listen(app.get('port'), () => {
+server.listen(app.get('port'), () => {
 	console.log('Server on port: ', app.get('port'))
 })

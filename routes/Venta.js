@@ -789,12 +789,9 @@ ventas.put('/:id', async (req, res, next) => {
           var comisionNega = '-'+dataComision[index].comision
           var removeComision = await Manicurista.updateOne({nombre:dataComision[index].employe},{$inc: {comision: parseFloat(comisionNega)}})
         }
-        if (removeComision) {
-          res.status(200).json({status: 'ok'})
-        }
-        res.json({status: 'bad'})
+        res.status(200).json({status: 'ok'})
       }  
-      res.json({status: 'bad'})
+      res.status(200).json({status: 'ok'})
     }
     res.json({status: 'bad'})
 })

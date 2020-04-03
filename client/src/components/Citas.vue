@@ -1616,8 +1616,6 @@ import router from '../router'
                 }               
               }
             }
-            
-           
               $(".Sig").removeClass("marcar")
             $(".Sig").prop("disabled", true)
             $(".Sig").text("Crear")
@@ -1626,10 +1624,6 @@ import router from '../router'
             $(".processTwo").hide()
             $(".processThree").show()
             }
-            
-          
-           
-          
         }
 
         else if ($(".processPerso").css("display") == "block") {
@@ -1908,7 +1902,7 @@ import router from '../router'
           .then(res => {
             
             for (let index = 0 ; index <= this.duracion /15; index++) {
-          
+              
               res.data[i].validator = 'select'
               this.salida = res.data[i].Horario
               i++
