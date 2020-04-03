@@ -18,6 +18,7 @@ inventory.get('/getHistory', async (req, res) => {
     const history = await History.find()
     res.json(history)
 })
+
 inventory.put('/:id', (req, res) => {
     Inventory.findByIdAndUpdate(req.params.id, {
         $set: {
