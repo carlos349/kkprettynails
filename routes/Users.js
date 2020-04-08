@@ -25,6 +25,12 @@ const upload = multer({
 
 users.get('/createSuperuser', async (req, res, next) => {
 	console.log(credentials)
+	const access = [
+		{
+			ruta: 'usuarios',
+			validaciones: ['editar', 'registrar']
+		}
+	]
 	const today = new Date()
 	const userData = {
 		first_name: 'admin',
@@ -32,6 +38,7 @@ users.get('/createSuperuser', async (req, res, next) => {
 		email: 'admin@gmail.com',
 		password: credentials,
 		status: 1,
+		access: access,
 		linkLender: '',
 		userImage: '',
 		LastAccess: today,
@@ -240,6 +247,7 @@ users.post('/register', async (req, res, next) => {
 		password: req.body.password,
 		about: '',
 		status: 2,
+		access: [],
 		linkLender: '',
 		userImage: '',
 		LastAccess: today,
@@ -291,6 +299,7 @@ users.post('/login', (req, res) => {
 						email: user.email,
 						about: user.about,
 						status: user.status,
+						access: user.access,
 						userImage: user.userImage,
 						LastAccess: user.LastAccess,
 						linkLender: user.linkLender
@@ -298,7 +307,7 @@ users.post('/login', (req, res) => {
 					let token = jwt.sign(payload, process.env.SECRET_KEY, {
 						expiresIn: 60 * 60 * 24
 					})
-					res.json({token: token, status: user.status})
+					res.json({token: token, status: user.status, access: user.access})
 				})
 			}else{
 				res.json({error: 'pass incorrecto'})
@@ -333,6 +342,36 @@ users.get('/data/:id', async (req, res, next) => {
 		res.status(404).send('User not found')
 	}
 	res.send(data)
+})
+
+users.put('/editAccess/:id', async (req, res) => {
+	const token = req.headers['x-access-token'];
+	if (!token) {
+		return res.status(401).json({auth: false, message: 'no token provided'})
+	}
+
+	try {
+		const decoded = jwt.verify(token, process.env.SECRET_KEY)
+		const verify = await User.findById(decoded._id)
+		if (!verify) {
+			return res.status(401).json({auth: false, message: 'invalid access'})
+		}
+	} catch(err) {
+		return res.status(401).json({auth: false, message: 'token expired'})
+	}
+	const id = req.params.id
+	const accessss = req.body.access
+	try {
+		const modifyAccess = await User.findByIdAndUpdate(id, {
+			$set: {access: accessss}
+		})
+		if (modifyAccess) {
+			return res.json({status: 'ok'})
+		}
+	}catch(err) {
+		return res.json({status: 'bad'})
+	}
+	
 })
 
 users.put('/changePass/:id', async (req, res, next) => {

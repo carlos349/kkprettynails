@@ -23,6 +23,9 @@ const UserSchema = new Schema({
 		type:Number,
 		required:true
 	},
+	access: {
+		type: Array,
+	},
 	linkLender: {
 		type: String
 	},
