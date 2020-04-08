@@ -35,6 +35,23 @@ inventory.put('/:id', (req, res) => {
         res.send('error: ' + err)
       })
 })
+inventory.put('/updateProvider/:id', (req, res) => {
+    Provider.findByIdAndUpdate(req.params.id, {
+        $set: {
+            nombre:req.body.name,
+            rut:req.body.rut,
+            contacto:req.body.contact,
+            contactoAdicional:req.body.contactoPlus,
+            ubicacion:req.body.ubicacion
+        }
+      })
+      .then(servicio => {
+        res.json({status: 'ok'})
+      })
+      .catch(err => {
+        res.send('error: ' + err)
+      })
+})
 inventory.put('/add/:id', (req, res) => {
     
     Inventory.findByIdAndUpdate(req.params.id, {
@@ -52,45 +69,35 @@ inventory.put('/add/:id', (req, res) => {
 inventory.post('/closeInventory', (req, res) => {
     var array = req.body.array
     var date = new Date()
-    History.findOne({
-        mes: date.getMonth()
-    })
-    .then(done => {
-        if (!done) {
-            for (let i = 0; i < array.length; i++) {
-                Inventory.findByIdAndUpdate(array[i].id, {
-                $set: {
-                    cantidad:array[i].count,
-                    entry:0
-                }
-                })
-                .then(aver => {})
-                var diferencia = parseFloat(array[i].count) - parseFloat(array[i].ideal)
-                if (diferencia == 0) {
-                    diferencia = "Sin diferencia"
-                }
-                if (diferencia > 0) {
-                    diferencia = "+" + diferencia + " Productos"
-                }
-                if (diferencia < 0) {
-                    diferencia = diferencia + " Productos"
-                }
-                const product = {
-                    medida:array[i].medida,
-                    totalIdeal:array[i].ideal,
-                    totalReal:array[i].count,
-                    diferencia:diferencia,
-                    mes:date.getMonth()
-                }
-                History.create(product)
-                .then(ready => {})   
+    for (let i = 0; i < array.length; i++) {
+        Inventory.findByIdAndUpdate(array[i].id, {
+            $set: {
+                cantidad:array[i].count,
+                entry:0
             }
-            res.json({status: 'ok'})
+        })
+        .then(aver => {})
+        var diferencia = parseFloat(array[i].count) - parseFloat(array[i].ideal)
+        if (diferencia == 0) {
+            array[i].diferencia = "Sin diferencia"
         }
-        else{
-            res.json({status: 'exist'})
+        if (diferencia > 0) {
+            array[i].diferencia = "+" + diferencia + " " + array[i].medida
         }
-    })
+        if (diferencia < 0) {
+            array[i].diferencia = diferencia + " " + array[i].medida
+        }
+    }
+    
+    const product = {
+        fecha:date,
+        user:req.body.user,
+        totalProduct:array.length,
+        array:array
+    }
+    History.create(product)
+    .then(ready => {})   
+    res.json({status: 'ok'})
     
 })
 inventory.post('/', (req, res) => {
@@ -155,6 +162,21 @@ inventory.post('/addProvider', (req, res) => {
     })
 })
 inventory.put('/deleteItem/:id', async (req, res) => {
+    const item = await Inventory.findByIdAndDelete(req.params.id)
+    if (item) {
+        res.json({status: 'ok'})
+    }
+    res.json({status: 'bad'})
+})
+inventory.delete('/deleteProvider/:id', async (req, res) => {
+    const item = await Provider.findByIdAndDelete(req.params.id)
+    if (item) {
+        res.json({status: 'ok'})
+    }
+    res.json({status: 'bad'})
+})
+
+inventory.post('/deleteSale/:id', async (req, res) => {
     const item = await Inventory.findByIdAndDelete(req.params.id)
     if (item) {
         res.json({status: 'ok'})

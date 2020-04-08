@@ -6,21 +6,15 @@ const historySchema = new Schema({
     type: Date,
 		default: Date.now
   },
-  medida:{
+  user:{
     type:String
   },
-  totalIdeal:{
+  totalProduct:{
     type:String
   },
-  totalReal:{
-    type:String
-  },
-  mes:{
-    type:String
-  },
-  diferencia:{
-    type:String
-  },
+  array:{
+    type:Object
+  }
 })
 
-module.exports = History = mongoose.model("history", historySchema)
+module.exports = History = mongoose.model("historyInventory", historySchema)
