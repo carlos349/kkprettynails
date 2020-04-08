@@ -16,6 +16,8 @@ import VueCurrencyInput from 'vue-currency-input'
 import VueAnimate from 'vue-animate-scroll'
 import vueCustomScrollbar from 'vue-custom-scrollbar'
 import VTooltip from 'v-tooltip'
+ import VueApexCharts from 'vue-apexcharts'
+ 
 // import 'vue-croppa/dist/vue-croppa.css'
 // import Croppa from 'vue-croppa'
 require("../node_modules/bootstrap/dist/css/bootstrap.css")
@@ -37,6 +39,7 @@ Vue.use(Autocomplete)
 Vue.use(ClientTable);
 Vue.use(CKEditor);
 Vue.use(VTooltip)
+Vue.component('apexchart', VueApexCharts)
 // Vue.use(Croppa)
 /* eslint-disable no-new */
 new Vue({
