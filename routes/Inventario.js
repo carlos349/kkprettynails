@@ -184,4 +184,14 @@ inventory.post('/deleteSale/:id', async (req, res) => {
     res.json({status: 'bad'})
 })
 
+inventory.post('/procesarVenta', (req, res) => {
+    var array = req.body.array
+    for (let i = 0; i < array.length; i++) {
+        Inventory.findByIdAndUpdate(array[i].id, {
+            $inc: {consume:array[i].count}
+        })
+        .then(aver => {})
+    }   
+})
+
 module.exports = inventory
