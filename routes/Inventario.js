@@ -73,7 +73,8 @@ inventory.post('/closeInventory', (req, res) => {
         Inventory.findByIdAndUpdate(array[i].id, {
             $set: {
                 cantidad:array[i].count,
-                entry:0
+                entry:0,
+                consume:0
             }
         })
         .then(aver => {})
