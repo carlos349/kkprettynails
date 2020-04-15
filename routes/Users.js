@@ -359,6 +359,7 @@ users.put('/editAccess/:id', async (req, res) => {
 	} catch(err) {
 		return res.status(401).json({auth: false, message: 'token expired'})
 	}
+
 	const id = req.params.id
 	const accessss = req.body.access
 	try {
@@ -366,7 +367,26 @@ users.put('/editAccess/:id', async (req, res) => {
 			$set: {access: accessss}
 		})
 		if (modifyAccess) {
-			return res.json({status: 'ok'})
+			const user = await User.findOne({ email: req.body.email })
+			if (user) {
+				const payload = {
+					_id: user._id,
+					first_name: user.first_name,
+					last_name: user.last_name,
+					email: user.email,
+					about: user.about,
+					status: user.status,
+					access: user.access,
+					userImage: user.userImage,
+					LastAccess: user.LastAccess,
+					linkLender: user.linkLender
+				}
+				let token = jwt.sign(payload, process.env.SECRET_KEY, {
+					expiresIn: 60 * 60 * 24
+				})
+				console.log(token)
+				return res.json({status: 'ok', token: token})
+			}
 		}
 	}catch(err) {
 		return res.json({status: 'bad'})
