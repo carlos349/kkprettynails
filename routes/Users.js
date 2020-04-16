@@ -384,7 +384,6 @@ users.put('/editAccess/:id', async (req, res) => {
 				let token = jwt.sign(payload, process.env.SECRET_KEY, {
 					expiresIn: 60 * 60 * 24
 				})
-				console.log(token)
 				return res.json({status: 'ok', token: token})
 			}
 		}
