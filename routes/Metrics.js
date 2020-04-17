@@ -17,6 +17,12 @@ metrics.get('/top', async (req, res) => {
 
 metrics.get('/dailyProduction/:date', async (req, res) => {
   const split = req.params.date.split(':')
+  var dateAfter
+  if (split[1] == 'not') {
+    dateAfter = new Date(split[0])
+    dateAfter.setDate(dateAfter.getDate() + 1)
+    split[1] = (dateAfter.getMonth() + 1)+'-'+dateAfter.getDate()+'-'+dateAfter.getFullYear()
+  }
   let series = [
     {
       name:"Venta total",
@@ -33,7 +39,7 @@ metrics.get('/dailyProduction/:date', async (req, res) => {
     {fecha: {$gte:split[0] , $lte: finalDate}},
     {status: true}
   ]}).sort({fecha: 1})
-  if (sales) {
+  if (sales.length > 0) {
     var sumDay = 0
     for (let index = 0; index < sales.length; index++) {
       let date = sales[index].fecha
@@ -67,7 +73,9 @@ metrics.get('/dailyProduction/:date', async (req, res) => {
         sumDay = sales[index].total
       }
     }
-    res.json({series:series, dataTable: dataTable})
+    res.json({status: 'ok', series:series, dataTable: dataTable})
+  }else{
+    res.json({status: 'bad',series: series, dataTable: dataTable})
   }
 })
 
@@ -80,6 +88,12 @@ metrics.get('/total', (req, res) => {
 
 metrics.get('/dailyExpenseGainTotal/:date', async (req, res) => {
   const split = req.params.date.split(':')
+  var dateAfter
+  if (split[1] == 'not') {
+    dateAfter = new Date(split[0])
+    dateAfter.setDate(dateAfter.getDate() + 1)
+    split[1] = (dateAfter.getMonth() + 1)+'-'+dateAfter.getDate()+'-'+dateAfter.getFullYear()
+  }
   let series = [
     {
       name: "Total de ventas",
@@ -182,14 +196,21 @@ metrics.get('/dailyExpenseGainTotal/:date', async (req, res) => {
           sumExpense = expenses[indexTwo].figure
         }
       }
-      res.json({series:series, dataTable:dataTable})
+      res.json({status: 'ok', series:series, dataTable:dataTable})
     }
-    
+  }else{
+    res.json({status: 'bad',series: series, dataTable: dataTable})
   }
 })
 
 metrics.get('/dailyServices/:date', async (req, res) => {
   const split = req.params.date.split(':')
+  var dateAfter
+  if (split[1] == 'not') {
+    dateAfter = new Date(split[0])
+    dateAfter.setDate(dateAfter.getDate() + 1)
+    split[1] = (dateAfter.getMonth() + 1)+'-'+dateAfter.getDate()+'-'+dateAfter.getFullYear()
+  }
   let series = [
     {
       name: 'Servicios totales', 
@@ -204,7 +225,7 @@ metrics.get('/dailyServices/:date', async (req, res) => {
     {fecha: {$gte:split[0] , $lte: finalDate}},
     {status: true}
   ]}).sort({fecha: 1})
-  if (sales) {
+  if (sales.length > 0) {
     var sumDay = 0
     for (let index = 0; index < sales.length; index++) {
       let date = sales[index].fecha
@@ -237,12 +258,20 @@ metrics.get('/dailyServices/:date', async (req, res) => {
         sumDay = sales[index].servicios.length
       }
     }
-    res.json({series:series, dataTable: dataTable})
+    res.json({status: 'ok', series:series, dataTable: dataTable})
+  }else{
+    res.json({status: 'bad',series: series, dataTable: dataTable})
   }
 })
 
 metrics.get('/quantityProductionPerLender/:date', async (req, res) => {
   const split = req.params.date.split(':')
+  var dateAfter
+  if (split[1] == 'not') {
+    dateAfter = new Date(split[0])
+    dateAfter.setDate(dateAfter.getDate() + 1)
+    split[1] = (dateAfter.getMonth() + 1)+'-'+dateAfter.getDate()+'-'+dateAfter.getFullYear()
+  }
   let quantity = []
   let series = []
   let dataTable = []
@@ -253,7 +282,7 @@ metrics.get('/quantityProductionPerLender/:date', async (req, res) => {
     {fecha: {$gte:split[0] , $lte: finalDate}},
     {status: true}
   ]}).sort({fecha: 1})
-  if (sales) {
+  if (sales.length > 0) {
     const lenders = await Manicurista.find()
     if (lenders) {
       for (let indexTwo = 0; indexTwo < lenders.length; indexTwo++) {
@@ -273,7 +302,6 @@ metrics.get('/quantityProductionPerLender/:date', async (req, res) => {
           for (let indexThree = 0; indexThree < sales[index].EmployeComision.length; indexThree++) {
             name = lenders[indexTwo].nombre == sales[index].EmployeComision[indexThree].employe ? true : false
           }
-          console.log(name)
           if (index > 0 ) {
             if (dateFormat == dateFormatPrev) {
               if (name) {
@@ -298,13 +326,21 @@ metrics.get('/quantityProductionPerLender/:date', async (req, res) => {
           }
         }
       }
-      res.json({series: series, dataTable:dataTable})
+      res.json({status: 'ok', series: series, dataTable:dataTable})
     }
+  }else{
+    res.json({status: 'bad',series: series, dataTable: dataTable})
   }
 })
 
 metrics.get('/dailyDesign/:date', async (req, res) => {
   const split = req.params.date.split(':')
+  var dateAfter
+  if (split[1] == 'not') {
+    dateAfter = new Date(split[0])
+    dateAfter.setDate(dateAfter.getDate() + 1)
+    split[1] = (dateAfter.getMonth() + 1)+'-'+dateAfter.getDate()+'-'+dateAfter.getFullYear()
+  }
   let quantity = []
   let series = []
   let dataTable = []
@@ -315,7 +351,7 @@ metrics.get('/dailyDesign/:date', async (req, res) => {
     {fecha: {$gte:split[0] , $lte: finalDate}},
     {status: true}
   ]}).sort({fecha: 1})
-  if (sales) {
+  if (sales.length > 0) {
     const lenders = await Manicurista.find()
     if (lenders) {
       for (let indexTwo = 0; indexTwo < lenders.length; indexTwo++) {
@@ -337,7 +373,6 @@ metrics.get('/dailyDesign/:date', async (req, res) => {
             name = lenders[indexTwo].nombre == sales[index].EmployeComision[indexThree].employe ? true : false
             sumDesign = lenders[indexTwo].nombre == sales[index].EmployeComision[indexThree].employe ? sales[index].design : 0
           }
-          console.log(name)
           if (index > 0 ) {
             if (dateFormat == dateFormatPrev) {
               if (name) {
@@ -363,13 +398,21 @@ metrics.get('/dailyDesign/:date', async (req, res) => {
           }
         }
       }
-      res.json({series: series, dataTable:dataTable})
+      res.json({status: 'ok', series: series, dataTable:dataTable})
     }
+  }else{
+    res.json({status: 'bad',series: series, dataTable: dataTable})
   }
 })
 
 metrics.get('/quantityComissionPerLender/:date', async (req, res) => {
   const split = req.params.date.split(':')
+  var dateAfter
+  if (split[1] == 'not') {
+    dateAfter = new Date(split[0])
+    dateAfter.setDate(dateAfter.getDate() + 1)
+    split[1] = (dateAfter.getMonth() + 1)+'-'+dateAfter.getDate()+'-'+dateAfter.getFullYear()
+  }
   let quantity = []
   let series = []
   let dataTable = []
@@ -380,7 +423,7 @@ metrics.get('/quantityComissionPerLender/:date', async (req, res) => {
     {fecha: {$gte:split[0] , $lte: finalDate}},
     {status: true}
   ]}).sort({fecha: 1})
-  if (sales) {
+  if (sales.length > 0) {
     const lenders = await Manicurista.find()
     if (lenders) {
       for (let indexTwo = 0; indexTwo < lenders.length; indexTwo++) {
@@ -427,13 +470,21 @@ metrics.get('/quantityComissionPerLender/:date', async (req, res) => {
           }
         }
       }
-      res.json({series: series, dataTable: dataTable})
+      res.json({status: 'ok', series: series, dataTable: dataTable})
     }
+  }else{
+    res.json({status: 'bad',series: series, dataTable: dataTable})
   }
 })
 
 metrics.get('/quantityServicesPerLender/:date', async (req, res) => {
   const split = req.params.date.split(':')
+  var dateAfter
+  if (split[1] == 'not') {
+    dateAfter = new Date(split[0])
+    dateAfter.setDate(dateAfter.getDate() + 1)
+    split[1] = (dateAfter.getMonth() + 1)+'-'+dateAfter.getDate()+'-'+dateAfter.getFullYear()
+  }
   let quantity = []
   let series = []
   let dataTable = []
@@ -444,7 +495,7 @@ metrics.get('/quantityServicesPerLender/:date', async (req, res) => {
     {fecha: {$gte:split[0] , $lte: finalDate}},
     {status: true}
   ]}).sort({fecha: 1})
-  if (sales) {
+  if (sales.length > 0) {
     const lenders = await Manicurista.find()
     if (lenders) {
       for (let indexTwo = 0; indexTwo < lenders.length; indexTwo++) {
@@ -491,15 +542,22 @@ metrics.get('/quantityServicesPerLender/:date', async (req, res) => {
           }
         }
       }
-      res.json({series: series, dataTable: dataTable})
+      res.json({status: 'ok', series: series, dataTable: dataTable})
     }
+  }else{
+    res.json({status: 'bad',series: series, dataTable: dataTable})
   }
 })
 
 metrics.post('/detailPerLender/:date', async (req, res) => {
   const split = req.params.date.split(':')
+  var dateAfter
+  if (split[1] == 'not') {
+    dateAfter = new Date(split[0])
+    dateAfter.setDate(dateAfter.getDate() + 1)
+    split[1] = (dateAfter.getMonth() + 1)+'-'+dateAfter.getDate()+'-'+dateAfter.getFullYear()
+  }
   const lender = req.body.lender
-  console.log(lender)
   let quantity = []
   let series = [
     {
@@ -523,7 +581,7 @@ metrics.post('/detailPerLender/:date', async (req, res) => {
     {fecha: {$gte:split[0] , $lte: finalDate}},
     {status: true}
   ]}).sort({fecha: 1})
-  if (sales) {
+  if (sales.length > 0) {
     var sumDayServices = 0
     var sumDayProduction = 0
     var sumDayComission = 0
@@ -585,14 +643,21 @@ metrics.post('/detailPerLender/:date', async (req, res) => {
         sumDayServices = totalServices
       }
     }
-    res.json({series: series, dataTable: dataTable})
+    res.json({status: 'ok',series: series, dataTable: dataTable})
+  }else{
+    res.json({status: 'bad',series: series, dataTable: dataTable})
   }
 })
 
 metrics.post('/detailPerService/:date', async (req, res) => {
   const split = req.params.date.split(':')
+  var dateAfter
+  if (split[1] == 'not') {
+    dateAfter = new Date(split[0])
+    dateAfter.setDate(dateAfter.getDate() + 1)
+    split[1] = (dateAfter.getMonth() + 1)+'-'+dateAfter.getDate()+'-'+dateAfter.getFullYear()
+  }
   const service = req.body.service
-  console.log(service)
   let quantity = []
   let series = [
     {
@@ -608,7 +673,7 @@ metrics.post('/detailPerService/:date', async (req, res) => {
     {fecha: {$gte:split[0] , $lte: finalDate}},
     {status: true}
   ]}).sort({fecha: 1})
-  if (sales) {
+  if (sales.length > 0) {
     var sumDayServices = 0
     for (let index = 0; index < sales.length; index++) {
       let date = sales[index].fecha
@@ -650,12 +715,20 @@ metrics.post('/detailPerService/:date', async (req, res) => {
         sumDayServices = totalServices
       }
     }
-    res.json({series: series, dataTable: dataTable})
+    res.json({status: 'ok', series: series, dataTable: dataTable})
+  }else{
+    res.json({status: 'bad',series: series, dataTable: dataTable})
   }
 })
 
 metrics.get('/quantityServicesPerService/:date', async (req, res) => {
   const split = req.params.date.split(':')
+  var dateAfter
+  if (split[1] == 'not') {
+    dateAfter = new Date(split[0])
+    dateAfter.setDate(dateAfter.getDate() + 1)
+    split[1] = (dateAfter.getMonth() + 1)+'-'+dateAfter.getDate()+'-'+dateAfter.getFullYear()
+  }
   let quantity = []
   let series = []
   let dataTable = []
@@ -666,7 +739,7 @@ metrics.get('/quantityServicesPerService/:date', async (req, res) => {
     {fecha: {$gte:split[0] , $lte: finalDate}},
     {status: true}
   ]}).sort({fecha: 1})
-  if (sales) {
+  if (sales.length > 0) {
     const Services = await Servicio.find()
     if (Services) {
       for (let indexTwo = 0; indexTwo < Services.length; indexTwo++) {
@@ -719,8 +792,10 @@ metrics.get('/quantityServicesPerService/:date', async (req, res) => {
           }
         }
       }
-      res.json({series: series, dataTable: dataTable})
+      res.json({status: 'ok', series: series, dataTable: dataTable})
     }
+  }else{
+    res.json({status: 'bad',series: series, dataTable: dataTable})
   }
 })
 
@@ -728,6 +803,12 @@ metrics.get('/quantityServicesPerService/:date', async (req, res) => {
 
 metrics.get('/dailyQuantityPerDay/:date', async (req, res) => {
   const split = req.params.date.split(':')
+  var dateAfter
+  if (split[1] == 'not') {
+    dateAfter = new Date(split[0])
+    dateAfter.setDate(dateAfter.getDate() + 1)
+    split[1] = (dateAfter.getMonth() + 1)+'-'+dateAfter.getDate()+'-'+dateAfter.getFullYear()
+  }
   let categories = ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado']
   let series = [
     {
@@ -744,7 +825,7 @@ metrics.get('/dailyQuantityPerDay/:date', async (req, res) => {
     {fecha: {$gte:split[0] , $lte: split[1]}},
     {status: true}
   ]}).sort({fecha: 1})
-  if (sales) {
+  if (sales.length > 0) {
     var sumDay = 0
     for (let index = 0; index < sales.length; index++) {
       let date = sales[index].fecha.getDay()
@@ -754,12 +835,20 @@ metrics.get('/dailyQuantityPerDay/:date', async (req, res) => {
     for (let indexTwo = 0; indexTwo < categories.length; indexTwo++) {
       dataTable.push({Dia: categories[indexTwo], Servicios: series[1].data[indexTwo],Produccion: series[0].data[indexTwo]})
     }
-    res.json({series:series, categories:categories, dataTable: dataTable})
+    res.json({status: 'ok', series:series, categories:categories, dataTable: dataTable})
+  }else{
+    res.json({status: 'bad',series: series, dataTable: dataTable})
   }
 })
 
 metrics.get('/dailyAveragePerDay/:date', async (req, res) => {
   const split = req.params.date.split(':')
+  var dateAfter
+  if (split[1] == 'not') {
+    dateAfter = new Date(split[0])
+    dateAfter.setDate(dateAfter.getDate() + 1)
+    split[1] = (dateAfter.getMonth() + 1)+'-'+dateAfter.getDate()+'-'+dateAfter.getFullYear()
+  }
   let categories = ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado']
   let totals = [ 
     {
@@ -784,7 +873,7 @@ metrics.get('/dailyAveragePerDay/:date', async (req, res) => {
     {fecha: {$gte:split[0] , $lte: split[1]}},
     {status: true}
   ]}).sort({fecha: 1})
-  if (sales) {
+  if (sales.length > 0) {
     for (let index = 0; index < sales.length; index++) {
       let date = sales[index].fecha.getDay()
       let dateValid = sales[index].fecha
@@ -803,7 +892,6 @@ metrics.get('/dailyAveragePerDay/:date', async (req, res) => {
         totals[1].data[date].Quantity = totals[1].data[date].Quantity + 1
       }
     }
-    console.log(totals[0].data)
     for (let indexTwo = 0; indexTwo < 7; indexTwo++) {
       if (totals[0].data[indexTwo].sum == 0) {
         series[0].data.push(0) 
@@ -814,7 +902,9 @@ metrics.get('/dailyAveragePerDay/:date', async (req, res) => {
       }
       dataTable.push({Dia: categories[indexTwo], Servicios: series[1].data[indexTwo], Produccion: series[0].data[indexTwo]})
     }
-    res.json({series:series, categories:categories, dataTable: dataTable})
+    res.json({status: 'ok', series:series, categories:categories, dataTable: dataTable})
+  }else{
+    res.json({status: 'bad',series: series, dataTable: dataTable})
   }
 })
 
@@ -834,7 +924,7 @@ metrics.get('/getTopTenBestClients', (req, res) => {
           series[0].data.push(topClients[indexTwo].participacion)
           dataTable.push({Cliente: topClients[indexTwo].nombre, contacto: topClients[indexTwo].identidad, atencion: topClients[indexTwo].participacion})
         }
-        res.json({series:series, categories: categories, dataTable: dataTable})
+        res.json({status: 'ok', series:series, categories: categories, dataTable: dataTable})
     })
 })
 
@@ -854,7 +944,7 @@ metrics.get('/getTopTenBestClientsRecommendations', (req, res) => {
           series[0].data.push(topClients[indexTwo].recomendaciones)
           dataTable.push({Cliente: topClients[indexTwo].nombre, contacto: topClients[indexTwo].identidad, recomendaciones: topClients[indexTwo].recomendaciones})
         }
-        res.json({series: series, categories:categories, dataTable: dataTable})
+        res.json({status: 'ok', series: series, categories:categories, dataTable: dataTable})
     })
 })
 
