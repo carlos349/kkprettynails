@@ -2,6 +2,7 @@ const express = require('express');
 const inventory = express.Router()
 const cors = require('cors');
 const Inventory = require('../models/Inventario')
+const Servicio = require('../models/Servicios')
 const Provider = require('../models/providers')
 const History = require('../models/historyClosedInventory')
 inventory.use(cors())
@@ -189,9 +190,20 @@ inventory.post('/procesarVenta', (req, res) => {
     var array = req.body.array
     for (let i = 0; i < array.length; i++) {
         Inventory.findByIdAndUpdate(array[i].id, {
-            $inc: {consume:array[i].count}
+            $inc: {consume:array[i].count }
         })
         .then(aver => {})
+    }   
+})
+inventory.post('/nullSale', (req, res) => {
+    var array = req.body.array
+    for (let i = 0; i < array.length; i++) {
+        for (let e = 0; e < array[i].productos.length; e++) {
+            Inventory.findByIdAndUpdate(array[i].productos[e].id, {
+            $inc: {consume:-array[i].productos[e].count}
+        })
+        .then(aver => {})    
+        }
     }   
 })
 
