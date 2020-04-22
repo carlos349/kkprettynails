@@ -7,6 +7,7 @@ const multer = require('multer')
 const { diskStorage } = require('multer')
 const path = require('path')
 const Venta = require('../models/Venta')
+const mailCredentials = require('../private/mail-credentials')
 const storage = diskStorage({
 	destination: 'public/mailsImage',
 	filename: (req, files, cb) => {
@@ -16,16 +17,7 @@ const storage = diskStorage({
 const upload = multer({
 	storage:storage
 })
-const KMails = new email({
-	host: 'smtp.gmail.com',
-	port: '465',
-	secure: true,
-	auth: {
-		type: 'login',
-		user: 'carlos.gomes349@gmail.com',
-		pass: '25430435carlos16'
-	}
-})
+const KMails = new email(mailCredentials)
 clients.use(cors())
 
 
@@ -45,11 +37,13 @@ clients.post('/sendmail', upload.array('image', 3),  async (req, res, next) => {
             from: "kkprettynails",
             to: array.to,
             subject: array.subject,
-            html: `<div>
+            html: `
+            <div>
                 <center>
                     <img src="http://192.168.0.103:4200/static/mailsImage/${array.image}" alt="Imagen de correo">
                 </center> 
-            </div>`
+            </div>
+            `
         }
     }
     if (req.body.type == 2) {
@@ -64,13 +58,11 @@ clients.post('/sendmail', upload.array('image', 3),  async (req, res, next) => {
             to: array.to,
             subject: array.subject,
             html: `
-            
-            <div style="width: 50%;margin: auto;background-color: #ecebea;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;">
-                
+            <div style="width: 50%;margin: auto;background-color: ##f8f9fe;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;">
                     ${array.text}
-                    
-                
-            </div>`
+                    <style>h1{color:#32325d}h12{color:#32325d}h3{color:#32325d}h4{color:#32325d}h5{color:#32325d}</style>
+            </div>
+            `
         }
     }
     if (req.body.type == 3) {
@@ -85,12 +77,13 @@ clients.post('/sendmail', upload.array('image', 3),  async (req, res, next) => {
             from: "kkprettynails",
             to: array.to,
             subject: array.subject,
-            html: `<div style="width: 50%;margin: auto;background-color: #ecebea;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;">
+            html: `<div style="width: 50%;margin: auto;background-color: #f8f9fe;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#32325d;">
                     <center>
                        <img src="http://192.168.0.103:4200/static/mailsImage/${array.image}" alt="Imagen de correo"> 
                     </center>
                     
                 ${array.text}
+                <style>h1{color:#32325d}h12{color:#32325d}h3{color:#32325d}h4{color:#32325d}h5{color:#32325d}</style>
             </div>`
         }
     }
@@ -109,7 +102,7 @@ clients.post('/sendmail', upload.array('image', 3),  async (req, res, next) => {
             from: "kkprettynails",
             to: array.to,
             subject: array.subject,
-            html: `<div style="width: 50%;margin: auto;background-color: #ecebea;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;">
+            html: `<div style="width: 50%;margin: auto;background-color: #f8f9fe;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#32325d;">
                     <center>
                        <img src="http://192.168.0.103:4200/static/mailsImage/${array.image}" alt="Imagen de correo"> 
                     </center>
@@ -123,6 +116,7 @@ clients.post('/sendmail', upload.array('image', 3),  async (req, res, next) => {
                     </div>
                 </center>
                 ${array.textTwo}
+                <style>h1{color:#32325d}h12{color:#32325d}h3{color:#32325d}h4{color:#32325d}h5{color:#32325d}</style>
             </div>`
         }
     }
@@ -138,11 +132,12 @@ clients.post('/sendmail', upload.array('image', 3),  async (req, res, next) => {
             from: "kkprettynails",
             to: array.to,
             subject: array.subject,
-            html: `<div style="width: 50%;margin: auto;background-color: #ecebea;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;">     
+            html: `<div style="width: 50%;margin: auto;background-color: #f8f9fe;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#32325d;">   
                 ${array.text}
                 <center>
                     <img src="http://192.168.0.103:4200/static/mailsImage/${array.image}" alt="Imagen de correo"> 
                  </center>
+                 <style>h1{color:#32325d}h12{color:#32325d}h3{color:#32325d}h4{color:#32325d}h5{color:#32325d}</style>
             </div>`
         }
     }
@@ -163,7 +158,7 @@ clients.post('/sendmail', upload.array('image', 3),  async (req, res, next) => {
             from: "kkprettynails",
             to: array.to,
             subject: array.subject,
-            html: `<div style="width: 50%;margin: auto;background-color: #ecebea;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;">     
+            html: `<div style="width: 50%;margin: auto;background-color: #f8f9fe;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#32325d;">     
                 <center>
                     <img src="http://192.168.0.103:4200/static/mailsImage/${array.image}" alt="Imagen de correo"> 
                  </center>
@@ -172,6 +167,7 @@ clients.post('/sendmail', upload.array('image', 3),  async (req, res, next) => {
                     <img src="http://192.168.0.103:4200/static/mailsImage/${array.imageTwo}" alt="Imagen de correo2"> 
                  </center>
                  ${array.textTwo}
+                 <style>h1{color:#32325d}h12{color:#32325d}h3{color:#32325d}h4{color:#32325d}h5{color:#32325d}</style>
             </div>`
         }
     }
