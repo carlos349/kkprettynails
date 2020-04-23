@@ -22,7 +22,25 @@ manicurista.get('/justOneById/:id', async (req, res) => {
   const manicurista = await Manicurista.findById(req.params.id)
   res.json(manicurista)
 })
+manicurista.get('/SalesByPrestAll/:nombre', async (req, res) => {
+  const dateNow = new Date()
+  const formatDate = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+'-1'
+  const formatDateTwo = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-31"
+  const split = req.params.nombre.split(':')
+  const lender = split[0]
+  
+  const manicuristas = await Venta.find({
+    $and: [
+      {
+        fecha: { $gte: formatDate, $lte: formatDateTwo }
+      },
+      {status: true}
+    ]   
+  })
 
+  console.log(manicuristas)
+  res.json(manicuristas)
+})
 
 manicurista.get('/SalesByPrest/:nombre', async (req, res) => {
   const dateNow = new Date()
@@ -149,6 +167,7 @@ manicurista.post('/registerAdvancement', (req, res) => {
   }
    const dataExpense = {
     expense:req.body.reason + ' / ' + req.body.name,
+    lenderId: req.body.id,
     type: type,
     figure:req.body.total,
     date: req.body.date
@@ -190,6 +209,11 @@ manicurista.post('/registerAdvancement', (req, res) => {
 manicurista.get('/advancements/:id', async (req, res) => {
   const advancement = await Advancement.find({prest: req.params.id})
   res.json(advancement)
+})
+
+manicurista.get('/getBonusByEmploye/:id', async (req, res) => {
+  const bonuses = await Expenses.find({lenderId: req.params.id})
+  res.json(bonuses)
 })
 
 manicurista.delete('/:id', async (req, res) => {

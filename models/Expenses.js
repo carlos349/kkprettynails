@@ -5,6 +5,9 @@ const expenses = new Schema ({
   expense: {
     type:String
   },
+  lenderId: {
+    type: String,
+  },
   type: {
     type: String
   },
