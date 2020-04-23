@@ -11,6 +11,7 @@ class Email{
         try{
             this.createTransport.sendMail(KEmail, (error, info) => {
                 if(error){
+                    console.log(error)
                     console.log('Error al enviar el email')
                 }else{
                     console.log('Correo enviado correctamente')

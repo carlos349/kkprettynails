@@ -748,8 +748,10 @@ ventas.get('/', async (req, res) => {
 	} catch(err) {
 		return res.status(401).json({auth: false, message: 'token expired'})
   }
-  
-  const ventas = await Venta.find().sort({fecha: -1})
+  const dateformat = new Date()
+  const dateFirst = dateformat.getFullYear() +"-"+(dateformat.getMonth() + 1)+"-1"
+  const dateLast = dateformat.getFullYear() +"-"+(dateformat.getMonth() + 1)+"-31"
+  const ventas = await Venta.find({fecha: {$gte: dateFirst, $lte: dateLast}}).sort({fecha: -1})
   res.json(ventas)
 })
 
@@ -921,7 +923,6 @@ ventas.post('/procesar', (req, res) => {
   
   var descuento = 100 - req.body.descuento
   var comisionTotal = 0
-  console.log(services)
   for (let index = 0; index < services.length; index++) {
     let comisionPerAmount = 0
     let comisionDescuento = 0
@@ -941,7 +942,6 @@ ventas.post('/procesar', (req, res) => {
   const total = req.body.total
   const totalComisionDesign = parseFloat(req.body.diseno) * 0.50
   const totalParaComision = req.body.totalSinDesign + totalComisionDesign
-  console.log(totalParaComision)
   const comision = parseFloat(comisionTotal) + parseFloat(totalComisionDesign)
   const gananciaTotal = totalParaComision - parseFloat(comision) 
   const documentoManicurista = req.body.documentoManicurista
@@ -990,6 +990,10 @@ ventas.post('/procesar', (req, res) => {
     idTableSales: '',
     fecha: today
   }
+  var ifrecomend = 0
+  if (req.body.ifrecomend) {
+    ifrecomend = 1
+  }
   
   cashFunds.find()
   .then(have => {
@@ -1009,7 +1013,7 @@ ventas.post('/procesar', (req, res) => {
                 })
                 .then(comision => {
                   Cliente.updateOne({identidad: finalClient[1]},{
-                    $inc: {participacion: 1},
+                    $inc: {participacion: 1, recomendaciones: -ifrecomend},
                     $set: {ultimaFecha: today},
                     $push: {historical: ventaDia}
                   })
