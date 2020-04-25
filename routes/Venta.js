@@ -254,12 +254,6 @@ ventas.get('/totalSales/:month', async (req, res) => {
     formatDatePrev = dateNow.getFullYear() +"-"+dateNow.getMonth()+'-1'
     formatDateTwoPrev = dateNow.getFullYear() +"-"+dateNow.getMonth()+"-31"
   }
-
-  console.log(formatDate)
-  console.log(formatDateTwo)
-
-  console.log(formatDatePrev)
-  console.log(formatDateTwoPrev)
   Venta.find({
     $and: [
       {
@@ -271,7 +265,6 @@ ventas.get('/totalSales/:month', async (req, res) => {
     ]   
   })
   .then(SalesMonth => {
-    console.log(SalesMonth)
     for (let index = 0; index < SalesMonth.length; index++) {
       totalLocal = totalLocal + SalesMonth[index].ganancialocal 
       gananciaTotal = gananciaTotal + SalesMonth[index].total

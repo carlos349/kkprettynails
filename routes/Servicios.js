@@ -88,7 +88,6 @@ service.put('/changeActive/:id', (req, res) => {
         res.send("error:" + err)
       })
     }
-    console.log(servicios)
   })
 })
 
