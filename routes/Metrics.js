@@ -17,11 +17,15 @@ metrics.get('/top', async (req, res) => {
 
 metrics.get('/dailyProduction/:date', async (req, res) => {
   const split = req.params.date.split(':')
-  var dateAfter
+  var dateAfter, finalDate
   if (split[1] == 'not') {
     dateAfter = new Date(split[0])
     dateAfter.setDate(dateAfter.getDate() + 1)
-    split[1] = (dateAfter.getMonth() + 1)+'-'+dateAfter.getDate()+'-'+dateAfter.getFullYear()
+    finalDate = (dateAfter.getMonth() + 1)+'-'+dateAfter.getDate()+'-'+dateAfter.getFullYear()
+  }else{
+    const dateGood = new Date(split[1])
+    dateGood.setDate(dateGood.getDate() + 1)
+    finalDate = dateGood.getFullYear()+'-'+(dateGood.getMonth() + 1)+'-'+dateGood.getDate()
   }
   let series = [
     {
@@ -29,17 +33,14 @@ metrics.get('/dailyProduction/:date', async (req, res) => {
       data: []
     }
   ]
-  let dataTable = [
-
-  ]
-  const dateGood = new Date(split[1])
-  dateGood.setDate(dateGood.getDate() + 1)
-  const finalDate = dateGood.getFullYear()+'-'+(dateGood.getMonth() + 1)+'-'+dateGood.getDate()
+  let dataTable = []
+  
   const sales = await Venta.find({$and: [
     {fecha: {$gte:split[0] , $lte: finalDate}},
     {status: true}
   ]}).sort({fecha: 1})
   if (sales.length > 0) {
+    console.log(sales)
     var sumDay = 0
     for (let index = 0; index < sales.length; index++) {
       let date = sales[index].fecha
@@ -71,6 +72,10 @@ metrics.get('/dailyProduction/:date', async (req, res) => {
         }
       }else{
         sumDay = sales[index].total
+        if (sales.length == 1) {
+          series[0].data.push([dateTimeFormat, sumDay])
+          dataTable.push({fecha: dateFormat, total: sumDay})
+        }
       }
     }
     res.json({status: 'ok', series:series, dataTable: dataTable})
@@ -80,19 +85,52 @@ metrics.get('/dailyProduction/:date', async (req, res) => {
 })
 
 metrics.get('/total', (req, res) => {
-  Venta.find().count()
-  .then(total => {
-    res.json({status: total})
+  const dateAfter = new Date()
+  formatDate = (dateAfter.getMonth() + 1)+'-01-'+dateAfter.getFullYear()
+  formatDateTwo = (dateAfter.getMonth() + 1)+'-31-'+dateAfter.getFullYear()
+  dateAfter.setMonth(dateAfter.getMonth() - 1)
+  formatDatePrev = (dateAfter.getMonth() + 1)+'-01-'+dateAfter.getFullYear()
+  formatDateTwoPrev = (dateAfter.getMonth() + 1)+'-31-'+dateAfter.getFullYear()
+  Venta.find({
+    $and: [
+      {fecha: {$gte: formatDate, $lte: formatDateTwo}},
+      {status: true}
+    ]
+  })
+  .then(sales => {
+    var count = 0
+    for (let index = 0; index < sales.length; index++) {
+      const element = sales[index];
+      count = count + element.servicios.length
+    }
+    Venta.find({
+      $and: [
+        {fecha: {$gte: formatDatePrev, $lte: formatDateTwoPrev}},
+        {status: true}
+      ]
+    })
+    .then(salesPrev => {
+      var countPrev = 0
+      for (let indexTwo = 0; indexTwo < salesPrev.length; indexTwo++) {
+        const elementTwo = salesPrev[indexTwo];
+        countPrev = countPrev + elementTwo.servicios.length
+      }
+      res.json({count:count, countPrev:countPrev})
+    })
   })
 })
 
 metrics.get('/dailyExpenseGainTotal/:date', async (req, res) => {
   const split = req.params.date.split(':')
-  var dateAfter
+  var dateAfter, finalDate
   if (split[1] == 'not') {
     dateAfter = new Date(split[0])
     dateAfter.setDate(dateAfter.getDate() + 1)
-    split[1] = (dateAfter.getMonth() + 1)+'-'+dateAfter.getDate()+'-'+dateAfter.getFullYear()
+    finalDate = (dateAfter.getMonth() + 1)+'-'+dateAfter.getDate()+'-'+dateAfter.getFullYear()
+  }else{
+    const dateGood = new Date(split[1])
+    dateGood.setDate(dateGood.getDate() + 1)
+    finalDate = dateGood.getFullYear()+'-'+(dateGood.getMonth() + 1)+'-'+dateGood.getDate()
   }
   let series = [
     {
@@ -109,9 +147,6 @@ metrics.get('/dailyExpenseGainTotal/:date', async (req, res) => {
     }
   ]
   const dataTable = []
-  const dateGood = new Date(split[1])
-  dateGood.setDate(dateGood.getDate() + 1)
-  const finalDate = dateGood.getFullYear()+'-'+(dateGood.getMonth() + 1)+'-'+dateGood.getDate()
   const sales = await Venta.find({$and: [
     {fecha: {$gte:split[0] , $lte: finalDate}},
     {status: true}
@@ -158,6 +193,12 @@ metrics.get('/dailyExpenseGainTotal/:date', async (req, res) => {
       }else{
         sumTotal = sales[index].total
         sumGain = sales[index].ganancialocal
+        if (sales.length == 1) {
+          series[0].data.push([dateTimeFormat, sumTotal])
+          series[1].data.push([dateTimeFormat, sumGain])
+          dataTable.push({Fecha: dateFormat, Tipo: 'Total venta', Monto: sumTotal})
+          dataTable.push({Fecha: dateFormat, Tipo: 'Total ganancias', Monto: sumGain})
+        }
       }
     }
     const expenses = await Expenses.find({
@@ -194,6 +235,10 @@ metrics.get('/dailyExpenseGainTotal/:date', async (req, res) => {
           }
         }else{
           sumExpense = expenses[indexTwo].figure
+          if (sales.length == 1) {
+            series[2].data.push([dateTimeFormat, sumExpense])
+            dataTable.push({Fecha: dateFormat, Tipo: 'Gasto', Monto: sumExpense})
+          }
         }
       }
       res.json({status: 'ok', series:series, dataTable:dataTable})
@@ -206,10 +251,15 @@ metrics.get('/dailyExpenseGainTotal/:date', async (req, res) => {
 metrics.get('/dailyServices/:date', async (req, res) => {
   const split = req.params.date.split(':')
   var dateAfter
+  var finalDate
   if (split[1] == 'not') {
     dateAfter = new Date(split[0])
     dateAfter.setDate(dateAfter.getDate() + 1)
-    split[1] = (dateAfter.getMonth() + 1)+'-'+dateAfter.getDate()+'-'+dateAfter.getFullYear()
+    finalDate = (dateAfter.getMonth() + 1)+'-'+dateAfter.getDate()+'-'+dateAfter.getFullYear()
+  }else{
+    const dateGood = new Date(split[1])
+    dateGood.setDate(dateGood.getDate() + 1)
+    finalDate = dateGood.getFullYear()+'-'+(dateGood.getMonth() + 1)+'-'+dateGood.getDate()
   }
   let series = [
     {
@@ -218,9 +268,6 @@ metrics.get('/dailyServices/:date', async (req, res) => {
     }
   ]
   let dataTable = []
-  const dateGood = new Date(split[1])
-  dateGood.setDate(dateGood.getDate() + 1)
-  const finalDate = dateGood.getFullYear()+'-'+(dateGood.getMonth() + 1)+'-'+dateGood.getDate()
   const sales = await Venta.find({$and: [
     {fecha: {$gte:split[0] , $lte: finalDate}},
     {status: true}
@@ -256,6 +303,10 @@ metrics.get('/dailyServices/:date', async (req, res) => {
         }
       }else{
         sumDay = sales[index].servicios.length
+        if (sales.length == 1) {
+          series[0].data.push([dateTimeFormat, sumDay])
+          dataTable.push({Fecha: dateFormat, Cantidad: sumDay})
+        }
       }
     }
     res.json({status: 'ok', series:series, dataTable: dataTable})
@@ -266,18 +317,19 @@ metrics.get('/dailyServices/:date', async (req, res) => {
 
 metrics.get('/quantityProductionPerLender/:date', async (req, res) => {
   const split = req.params.date.split(':')
-  var dateAfter
+  var dateAfter, finalDate
   if (split[1] == 'not') {
     dateAfter = new Date(split[0])
     dateAfter.setDate(dateAfter.getDate() + 1)
-    split[1] = (dateAfter.getMonth() + 1)+'-'+dateAfter.getDate()+'-'+dateAfter.getFullYear()
+    finalDate = (dateAfter.getMonth() + 1)+'-'+dateAfter.getDate()+'-'+dateAfter.getFullYear()
+  }else{
+    const dateGood = new Date(split[1])
+    dateGood.setDate(dateGood.getDate() + 1)
+    finalDate = dateGood.getFullYear()+'-'+(dateGood.getMonth() + 1)+'-'+dateGood.getDate()
   }
   let quantity = []
   let series = []
   let dataTable = []
-  const dateGood = new Date(split[1])
-  dateGood.setDate(dateGood.getDate() + 1)
-  const finalDate = dateGood.getFullYear()+'-'+(dateGood.getMonth() + 1)+'-'+dateGood.getDate()
   const sales = await Venta.find({$and: [
     {fecha: {$gte:split[0] , $lte: finalDate}},
     {status: true}
@@ -323,6 +375,10 @@ metrics.get('/quantityProductionPerLender/:date', async (req, res) => {
             }
           }else{
             sumDay = sales[index].total
+            if (sales.length == 1) {
+              series[indexTwo].data.push([dateTimeFormat, sumDay])
+              dataTable.push({Fecha: dateFormat, Prestadora: lenders[indexTwo].nombre, Monto: sumDay})
+            }
           }
         }
       }
@@ -335,18 +391,19 @@ metrics.get('/quantityProductionPerLender/:date', async (req, res) => {
 
 metrics.get('/dailyDesign/:date', async (req, res) => {
   const split = req.params.date.split(':')
-  var dateAfter
+  var dateAfter, finalDate
   if (split[1] == 'not') {
     dateAfter = new Date(split[0])
     dateAfter.setDate(dateAfter.getDate() + 1)
-    split[1] = (dateAfter.getMonth() + 1)+'-'+dateAfter.getDate()+'-'+dateAfter.getFullYear()
+    finalDate = (dateAfter.getMonth() + 1)+'-'+dateAfter.getDate()+'-'+dateAfter.getFullYear()
+  }else{
+    const dateGood = new Date(split[1])
+    dateGood.setDate(dateGood.getDate() + 1)
+    finalDate = dateGood.getFullYear()+'-'+(dateGood.getMonth() + 1)+'-'+dateGood.getDate()
   }
   let quantity = []
   let series = []
   let dataTable = []
-  const dateGood = new Date(split[1])
-  dateGood.setDate(dateGood.getDate() + 1)
-  const finalDate = dateGood.getFullYear()+'-'+(dateGood.getMonth() + 1)+'-'+dateGood.getDate()
   const sales = await Venta.find({$and: [
     {fecha: {$gte:split[0] , $lte: finalDate}},
     {status: true}
@@ -395,6 +452,10 @@ metrics.get('/dailyDesign/:date', async (req, res) => {
             }
           }else{
             sumDay = sumDesign
+            if (sales.length == 1) {
+              series[indexTwo].data.push([dateTimeFormat, sumDay])
+              dataTable.push({Fecha: dateFormat, Prestadora: lenders[indexTwo].nombre, Monto: sumDay})
+            }
           }
         }
       }
@@ -407,18 +468,19 @@ metrics.get('/dailyDesign/:date', async (req, res) => {
 
 metrics.get('/quantityComissionPerLender/:date', async (req, res) => {
   const split = req.params.date.split(':')
-  var dateAfter
+  var dateAfter, finalDate
   if (split[1] == 'not') {
     dateAfter = new Date(split[0])
     dateAfter.setDate(dateAfter.getDate() + 1)
-    split[1] = (dateAfter.getMonth() + 1)+'-'+dateAfter.getDate()+'-'+dateAfter.getFullYear()
+    finalDate = (dateAfter.getMonth() + 1)+'-'+dateAfter.getDate()+'-'+dateAfter.getFullYear()
+  }else{
+    const dateGood = new Date(split[1])
+    dateGood.setDate(dateGood.getDate() + 1)
+    finalDate = dateGood.getFullYear()+'-'+(dateGood.getMonth() + 1)+'-'+dateGood.getDate()
   }
   let quantity = []
   let series = []
   let dataTable = []
-  const dateGood = new Date(split[1])
-  dateGood.setDate(dateGood.getDate() + 1)
-  const finalDate = dateGood.getFullYear()+'-'+(dateGood.getMonth() + 1)+'-'+dateGood.getDate()
   const sales = await Venta.find({$and: [
     {fecha: {$gte:split[0] , $lte: finalDate}},
     {status: true}
@@ -467,6 +529,10 @@ metrics.get('/quantityComissionPerLender/:date', async (req, res) => {
             }
           }else{
             sumDay = totalComission
+            if (sales.length == 1) {
+              series[indexTwo].data.push([dateTimeFormat, sumDay])
+              dataTable.push({Fecha: dateFormat, Prestadora: lenders[indexTwo].nombre, Monto: sumDay})
+            }
           }
         }
       }
@@ -479,18 +545,19 @@ metrics.get('/quantityComissionPerLender/:date', async (req, res) => {
 
 metrics.get('/quantityServicesPerLender/:date', async (req, res) => {
   const split = req.params.date.split(':')
-  var dateAfter
+  var dateAfter, finalDate
   if (split[1] == 'not') {
     dateAfter = new Date(split[0])
     dateAfter.setDate(dateAfter.getDate() + 1)
-    split[1] = (dateAfter.getMonth() + 1)+'-'+dateAfter.getDate()+'-'+dateAfter.getFullYear()
+    finalDate = (dateAfter.getMonth() + 1)+'-'+dateAfter.getDate()+'-'+dateAfter.getFullYear()
+  }else{
+    const dateGood = new Date(split[1])
+    dateGood.setDate(dateGood.getDate() + 1)
+    finalDate = dateGood.getFullYear()+'-'+(dateGood.getMonth() + 1)+'-'+dateGood.getDate()
   }
   let quantity = []
   let series = []
   let dataTable = []
-  const dateGood = new Date(split[1])
-  dateGood.setDate(dateGood.getDate() + 1)
-  const finalDate = dateGood.getFullYear()+'-'+(dateGood.getMonth() + 1)+'-'+dateGood.getDate()
   const sales = await Venta.find({$and: [
     {fecha: {$gte:split[0] , $lte: finalDate}},
     {status: true}
@@ -539,6 +606,10 @@ metrics.get('/quantityServicesPerLender/:date', async (req, res) => {
             }
           }else{
             sumDay = totalServices
+            if (sales.length == 1) {
+              series[indexTwo].data.push([dateTimeFormat, sumDay])
+              dataTable.push({Fecha: dateFormat, Prestadora: lenders[indexTwo].nombre, Monto: sumDay})
+            }
           }
         }
       }
@@ -551,11 +622,15 @@ metrics.get('/quantityServicesPerLender/:date', async (req, res) => {
 
 metrics.post('/detailPerLender/:date', async (req, res) => {
   const split = req.params.date.split(':')
-  var dateAfter
+  var dateAfter, finalDate
   if (split[1] == 'not') {
     dateAfter = new Date(split[0])
     dateAfter.setDate(dateAfter.getDate() + 1)
-    split[1] = (dateAfter.getMonth() + 1)+'-'+dateAfter.getDate()+'-'+dateAfter.getFullYear()
+    finalDate = (dateAfter.getMonth() + 1)+'-'+dateAfter.getDate()+'-'+dateAfter.getFullYear()
+  }else{
+    const dateGood = new Date(split[1])
+    dateGood.setDate(dateGood.getDate() + 1)
+    finalDate = dateGood.getFullYear()+'-'+(dateGood.getMonth() + 1)+'-'+dateGood.getDate()
   }
   const lender = req.body.lender
   let quantity = []
@@ -574,9 +649,6 @@ metrics.post('/detailPerLender/:date', async (req, res) => {
     }
   ]
   let dataTable = []
-  const dateGood = new Date(split[1])
-  dateGood.setDate(dateGood.getDate() + 1)
-  const finalDate = dateGood.getFullYear()+'-'+(dateGood.getMonth() + 1)+'-'+dateGood.getDate()
   const sales = await Venta.find({$and: [
     {fecha: {$gte:split[0] , $lte: finalDate}},
     {status: true}
@@ -641,6 +713,12 @@ metrics.post('/detailPerLender/:date', async (req, res) => {
         sumDayProduction = totalProduction
         sumDayComission = totalComision
         sumDayServices = totalServices
+        if (sales.length == 1) {
+          series[0].data.push([dateTimeFormat, sumDayProduction])
+          series[1].data.push([dateTimeFormat, sumDayComission])
+          series[2].data.push([dateTimeFormat, sumDayServices])
+          dataTable.push({Fecha: dateFormat, totalProduction: sumDayProduction, totalComision: sumDayComission, totalServices: sumDayServices})
+        }
       }
     }
     res.json({status: 'ok',series: series, dataTable: dataTable})
@@ -651,11 +729,15 @@ metrics.post('/detailPerLender/:date', async (req, res) => {
 
 metrics.post('/detailPerService/:date', async (req, res) => {
   const split = req.params.date.split(':')
-  var dateAfter
+  var dateAfter, finalDate
   if (split[1] == 'not') {
     dateAfter = new Date(split[0])
     dateAfter.setDate(dateAfter.getDate() + 1)
-    split[1] = (dateAfter.getMonth() + 1)+'-'+dateAfter.getDate()+'-'+dateAfter.getFullYear()
+    finalDate = (dateAfter.getMonth() + 1)+'-'+dateAfter.getDate()+'-'+dateAfter.getFullYear()
+  }else{
+    const dateGood = new Date(split[1])
+    dateGood.setDate(dateGood.getDate() + 1)
+    finalDate = dateGood.getFullYear()+'-'+(dateGood.getMonth() + 1)+'-'+dateGood.getDate()
   }
   const service = req.body.service
   let quantity = []
@@ -666,9 +748,6 @@ metrics.post('/detailPerService/:date', async (req, res) => {
     }
   ]
   let dataTable = []
-  const dateGood = new Date(split[1])
-  dateGood.setDate(dateGood.getDate() + 1)
-  const finalDate = dateGood.getFullYear()+'-'+(dateGood.getMonth() + 1)+'-'+dateGood.getDate()
   const sales = await Venta.find({$and: [
     {fecha: {$gte:split[0] , $lte: finalDate}},
     {status: true}
@@ -713,6 +792,10 @@ metrics.post('/detailPerService/:date', async (req, res) => {
         }
       }else{
         sumDayServices = totalServices
+        if (sales.length == 1) {
+          series[0].data.push([dateTimeFormat, sumDayServices])
+          dataTable.push({Fecha: dateFormat, total: sumDayServices})
+        }
       }
     }
     res.json({status: 'ok', series: series, dataTable: dataTable})
@@ -723,18 +806,19 @@ metrics.post('/detailPerService/:date', async (req, res) => {
 
 metrics.get('/quantityServicesPerService/:date', async (req, res) => {
   const split = req.params.date.split(':')
-  var dateAfter
+  var dateAfter, finalDate
   if (split[1] == 'not') {
     dateAfter = new Date(split[0])
     dateAfter.setDate(dateAfter.getDate() + 1)
-    split[1] = (dateAfter.getMonth() + 1)+'-'+dateAfter.getDate()+'-'+dateAfter.getFullYear()
+    finalDate = (dateAfter.getMonth() + 1)+'-'+dateAfter.getDate()+'-'+dateAfter.getFullYear()
+  }else{
+    const dateGood = new Date(split[1])
+    dateGood.setDate(dateGood.getDate() + 1)
+    finalDate = dateGood.getFullYear()+'-'+(dateGood.getMonth() + 1)+'-'+dateGood.getDate()
   }
   let quantity = []
   let series = []
   let dataTable = []
-  const dateGood = new Date(split[1])
-  dateGood.setDate(dateGood.getDate() + 1)
-  const finalDate = dateGood.getFullYear()+'-'+(dateGood.getMonth() + 1)+'-'+dateGood.getDate()
   const sales = await Venta.find({$and: [
     {fecha: {$gte:split[0] , $lte: finalDate}},
     {status: true}
@@ -789,6 +873,10 @@ metrics.get('/quantityServicesPerService/:date', async (req, res) => {
             }
           }else{
             sumDay = totalServices
+            if (sales.length == 1) {
+              series[indexTwo].data.push([dateTimeFormat, sumDay])
+              dataTable.push({Fecha: dateFormat, Servicio: Services[indexTwo].nombre, Cantidad: sumDay})
+            }
           }
         }
       }
