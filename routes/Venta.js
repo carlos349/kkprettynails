@@ -858,9 +858,10 @@ ventas.post('/processEndDates', (req, res) => {
                 })    
                 .then(aver => {})  
               }
+              
               for (let indexTwo = 0; indexTwo < clientClosedDatesId.length; indexTwo++) {
-                Cliente.updateOne({identidad: clientClosedDatesId[indexTwo]},{
-                  $inc: {participacion: 1},
+                Cliente.updateOne({identidad: clientClosedDatesId[indexTwo].id},{
+                  $inc: {participacion: 1, recomendaciones: -clientClosedDatesId[indexTwo].ifrecomend},
                   $set: {ultimaFecha: new Date()},
                   $push: {historical: ventaDia}
                 })
