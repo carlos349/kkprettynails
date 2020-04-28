@@ -971,6 +971,8 @@ metrics.get('/dailyAveragePerDay/:date', async (req, res) => {
         dateFormatPrev = datePrev.getFullYear()+'-'+(datePrev.getMonth() + 1)+'-'+datePrev.getDate()
       }else{
         dateFormatPrev = dateFormat
+        totals[0].data[date].Quantity = totals[0].data[date].Quantity + 1
+        totals[1].data[date].Quantity = totals[1].data[date].Quantity + 1
       }
       totals[0].data[date].sum = parseFloat(totals[0].data[date].sum) + parseFloat(sales[index].total)
       totals[1].data[date].sum = parseFloat(totals[1].data[date].sum) + parseFloat(sales[index].servicios.length)
@@ -979,7 +981,7 @@ metrics.get('/dailyAveragePerDay/:date', async (req, res) => {
         totals[1].data[date].Quantity = totals[1].data[date].Quantity + 1
       }
     }
-    console.log(totals)
+    
     for (let indexTwo = 0; indexTwo < 7; indexTwo++) {
       if (totals[0].data[indexTwo].sum == 0) {
         series[0].data.push(0) 
@@ -990,7 +992,7 @@ metrics.get('/dailyAveragePerDay/:date', async (req, res) => {
       }
       dataTable.push({Dia: categories[indexTwo], Servicios: series[1].data[indexTwo], Produccion: series[0].data[indexTwo]})
     }
-    res.json({status: 'ok', series:series, categories:categories, dataTable: dataTable})
+    res.json({status: 'ok', series:series, categories:categories, dataTable: dataTable, console:totals})
   }else{
     res.json({status: 'bad',series: series, dataTable: dataTable})
   }
