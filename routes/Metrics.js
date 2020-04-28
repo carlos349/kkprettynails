@@ -9,7 +9,6 @@ const Servicio = require('../models/Servicios')
 
 metrics.use(cors())
 
-
 metrics.get('/top', async (req, res) => {
   const participacion = await Cliente.find().sort({participacion: -1}).limit(10)
   res.json(participacion)
@@ -980,6 +979,7 @@ metrics.get('/dailyAveragePerDay/:date', async (req, res) => {
         totals[1].data[date].Quantity = totals[1].data[date].Quantity + 1
       }
     }
+    console.log(totals)
     for (let indexTwo = 0; indexTwo < 7; indexTwo++) {
       if (totals[0].data[indexTwo].sum == 0) {
         series[0].data.push(0) 
