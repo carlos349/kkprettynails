@@ -890,11 +890,15 @@ metrics.get('/quantityServicesPerService/:date', async (req, res) => {
 
 metrics.get('/dailyQuantityPerDay/:date', async (req, res) => {
   const split = req.params.date.split(':')
-  var dateAfter
+  var dateAfter, finalDate
   if (split[1] == 'not') {
     dateAfter = new Date(split[0])
     dateAfter.setDate(dateAfter.getDate() + 1)
-    split[1] = (dateAfter.getMonth() + 1)+'-'+dateAfter.getDate()+'-'+dateAfter.getFullYear()
+    finalDate = (dateAfter.getMonth() + 1)+'-'+dateAfter.getDate()+'-'+dateAfter.getFullYear()
+  }else{
+    const dateGood = new Date(split[1])
+    dateGood.setDate(dateGood.getDate() + 1)
+    finalDate = dateGood.getFullYear()+'-'+(dateGood.getMonth() + 1)+'-'+dateGood.getDate()
   }
   let categories = ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado']
   let series = [
@@ -909,7 +913,7 @@ metrics.get('/dailyQuantityPerDay/:date', async (req, res) => {
   ]
   let dataTable =  []
   const sales = await Venta.find({$and: [
-    {fecha: {$gte:split[0] , $lte: split[1]}},
+    {fecha: {$gte:split[0] , $lte: finalDate}},
     {status: true}
   ]}).sort({fecha: 1})
   if (sales.length > 0) {
@@ -930,11 +934,15 @@ metrics.get('/dailyQuantityPerDay/:date', async (req, res) => {
 
 metrics.get('/dailyAveragePerDay/:date', async (req, res) => {
   const split = req.params.date.split(':')
-  var dateAfter
+  var dateAfter, finalDate
   if (split[1] == 'not') {
     dateAfter = new Date(split[0])
     dateAfter.setDate(dateAfter.getDate() + 1)
-    split[1] = (dateAfter.getMonth() + 1)+'-'+dateAfter.getDate()+'-'+dateAfter.getFullYear()
+    finalDate = (dateAfter.getMonth() + 1)+'-'+dateAfter.getDate()+'-'+dateAfter.getFullYear()
+  }else{
+    const dateGood = new Date(split[1])
+    dateGood.setDate(dateGood.getDate() + 1)
+    finalDate = dateGood.getFullYear()+'-'+(dateGood.getMonth() + 1)+'-'+dateGood.getDate()
   }
   let categories = ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado']
   let totals = [ 
@@ -957,7 +965,7 @@ metrics.get('/dailyAveragePerDay/:date', async (req, res) => {
   ]
   let dataTable =  []
   const sales = await Venta.find({$and: [
-    {fecha: {$gte:split[0] , $lte: split[1]}},
+    {fecha: {$gte:split[0] , $lte: finalDate}},
     {status: true}
   ]}).sort({fecha: 1})
   if (sales.length > 0) {
