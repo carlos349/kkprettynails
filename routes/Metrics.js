@@ -980,9 +980,10 @@ metrics.get('/dailyAveragePerDay/:date', async (req, res) => {
         totals[0].data[date].Quantity = totals[0].data[date].Quantity + 1
         totals[1].data[date].Quantity = totals[1].data[date].Quantity + 1
       }
-      if (sales.length - 1 == index) {
+      if ((sales.length - 1) == index) {
         totals[0].data[date].Quantity = totals[0].data[date].Quantity + 1
         totals[1].data[date].Quantity = totals[1].data[date].Quantity + 1
+        console.log(date)
       }
     }
     
