@@ -334,6 +334,7 @@ metrics.get('/quantityProductionPerLender/:date', async (req, res) => {
     {status: true}
   ]}).sort({fecha: 1})
   if (sales.length > 0) {
+    console.log(sales.length)
     const lenders = await Manicurista.find()
     if (lenders) {
       for (let indexTwo = 0; indexTwo < lenders.length; indexTwo++) {
@@ -353,30 +354,44 @@ metrics.get('/quantityProductionPerLender/:date', async (req, res) => {
           for (let indexThree = 0; indexThree < sales[index].EmployeComision.length; indexThree++) {
             name = lenders[indexTwo].nombre == sales[index].EmployeComision[indexThree].employe ? true : false
           }
+          console.log(name)
           if (index > 0 ) {
-            if (dateFormat == dateFormatPrev) {
-              if (name) {
-                sumDay = sales[index].total + sumDay
+              if (dateFormat == dateFormatPrev) {
+                if (name) {
+                  sumDay = sales[index].total + sumDay
+                }
                 if ((index+1) == sales.length) {
-                  series[indexTwo].data.push([dateTimeFormat, sumDay])
-                  dataTable.push({Fecha: dateFormat, Prestadora: lenders[indexTwo].nombre, Monto: sumDay})
+                  if(sumDay > 0){
+                    series[indexTwo].data.push([dateTimeFormat, sumDay])
+                    dataTable.push({Fecha: dateFormat, Prestadora: lenders[indexTwo].nombre, Monto: sumDay})
+                  }
+                }
+              }else{
+                if(sumDay > 0){
+                  series[indexTwo].data.push([dateTimeFormatPrev, sumDay])
+                  dataTable.push({Fecha: dateFormatPrev, Prestadora: lenders[indexTwo].nombre, Monto: sumDay})
+                  sumDay = 0
+                }
+                if (name) {
+                  sumDay = sales[index].total
+                }
+                if ((index+1) == sales.length) {
+                  if(sumDay > 0){
+                    series[indexTwo].data.push([dateTimeFormat, sumDay])
+                    dataTable.push({Fecha: dateFormat, Prestadora: lenders[indexTwo].nombre, Monto: sumDay})
+                  }
                 }
               }
-            }else{
-              series[indexTwo].data.push([dateTimeFormatPrev, sumDay])
-              dataTable.push({Fecha: dateFormatPrev, Prestadora: lenders[indexTwo].nombre, Monto: sumDay})
-              sumDay = 0
-              sumDay = sales[index].total
-              if ((index+1) == sales.length) {
-                series[indexTwo].data.push([dateTimeFormat, sumDay])
-                dataTable.push({Fecha: dateFormat, Prestadora: lenders[indexTwo].nombre, Monto: sumDay})
-              }
-            }
           }else{
-            sumDay = sales[index].total
-            if (sales.length == 1) {
-              series[indexTwo].data.push([dateTimeFormat, sumDay])
-              dataTable.push({Fecha: dateFormat, Prestadora: lenders[indexTwo].nombre, Monto: sumDay})
+            if (name) {
+              sumDay = sales[index].total
+              if (sales.length == 1) {
+                if(sumDay > 0){
+                  series[indexTwo].data.push([dateTimeFormat, sumDay])
+                  dataTable.push({Fecha: dateFormat, Prestadora: lenders[indexTwo].nombre, Monto: sumDay})
+                  sumDay = 0
+                }
+              }
             }
           }
         }
@@ -433,27 +448,40 @@ metrics.get('/dailyDesign/:date', async (req, res) => {
             if (dateFormat == dateFormatPrev) {
               if (name) {
                 sumDay = sumDesign + sumDay
-                if ((index+1) == sales.length) {
+              }
+              if ((index+1) == sales.length) {
+                if(sumDay > 0){
                   series[indexTwo].data.push([dateTimeFormat, sumDay])
                   dataTable.push({Fecha: dateFormat, Prestadora: lenders[indexTwo].nombre, Monto: sumDay})
                   sumDay = 0
                 }
               }
+              
             }else{
+              if(sumDay > 0){
                 series[indexTwo].data.push([dateTimeFormatPrev, sumDay])
                 dataTable.push({Fecha: dateFormatPrev, Prestadora: lenders[indexTwo].nombre, Monto: sumDay})
                 sumDay = 0
+              }
+              if (name) {
                 sumDay = sumDesign
-                if ((index+1) == sales.length) {
+              }
+              if ((index+1) == sales.length) {
+                if(sumDay > 0){
                   series[indexTwo].data.push([dateTimeFormat, sumDay])
                   dataTable.push({Fecha: dateFormat, Prestadora: lenders[indexTwo].nombre, Monto: sumDay})
                 }
+              }
             }
           }else{
-            sumDay = sumDesign
-            if (sales.length == 1) {
-              series[indexTwo].data.push([dateTimeFormat, sumDay])
-              dataTable.push({Fecha: dateFormat, Prestadora: lenders[indexTwo].nombre, Monto: sumDay})
+            if (name) {
+              sumDay = sumDesign
+              if (sales.length == 1) {
+                if(sumDay > 0){
+                  series[indexTwo].data.push([dateTimeFormat, sumDay])
+                  dataTable.push({Fecha: dateFormat, Prestadora: lenders[indexTwo].nombre, Monto: sumDay})
+                }
+              }
             }
           }
         }
@@ -511,26 +539,38 @@ metrics.get('/quantityComissionPerLender/:date', async (req, res) => {
             if (dateFormat == dateFormatPrev) {
               if (name) {
                 sumDay = totalComission + sumDay
+              }
                 if ((index+1) == sales.length) {
+                  if(sumDay > 0){
+                    series[indexTwo].data.push([dateTimeFormat, sumDay])
+                    dataTable.push({Fecha: dateFormat, Prestadora: lenders[indexTwo].nombre, Monto: sumDay})
+                  }
+                }
+            }else{
+              if(sumDay > 0){
+                series[indexTwo].data.push([dateTimeFormatPrev, sumDay])
+                dataTable.push({Fecha: dateFormatPrev, Prestadora: lenders[indexTwo].nombre, Monto: sumDay})
+                sumDay = 0
+              }
+              if (name) {
+                sumDay = totalComission
+              }
+              if ((index+1) == sales.length) {
+                if(sumDay > 0){
                   series[indexTwo].data.push([dateTimeFormat, sumDay])
                   dataTable.push({Fecha: dateFormat, Prestadora: lenders[indexTwo].nombre, Monto: sumDay})
                 }
               }
-            }else{
-              series[indexTwo].data.push([dateTimeFormatPrev, sumDay])
-              dataTable.push({Fecha: dateFormatPrev, Prestadora: lenders[indexTwo].nombre, Monto: sumDay})
-              sumDay = 0
-              sumDay = totalComission
-              if ((index+1) == sales.length) {
-                series[indexTwo].data.push([dateTimeFormat, sumDay])
-                dataTable.push({Fecha: dateFormat, Prestadora: lenders[indexTwo].nombre, Monto: sumDay})
-              }
             }
           }else{
-            sumDay = totalComission
-            if (sales.length == 1) {
-              series[indexTwo].data.push([dateTimeFormat, sumDay])
-              dataTable.push({Fecha: dateFormat, Prestadora: lenders[indexTwo].nombre, Monto: sumDay})
+            if (name) {
+              sumDay = totalComission
+              if (sales.length == 1) {
+                if(sumDay > 0){
+                  series[indexTwo].data.push([dateTimeFormat, sumDay])
+                  dataTable.push({Fecha: dateFormat, Prestadora: lenders[indexTwo].nombre, Monto: sumDay})
+                }
+              }
             }
           }
         }
@@ -588,26 +628,39 @@ metrics.get('/quantityServicesPerLender/:date', async (req, res) => {
             if (dateFormat == dateFormatPrev) {
               if (name) {
                 sumDay = totalServices + sumDay
+              }
                 if ((index+1) == sales.length) {
+                  if(sumDay > 0){
+                    series[indexTwo].data.push([dateTimeFormat, sumDay])
+                    dataTable.push({Fecha: dateFormat, Prestadora: lenders[indexTwo].nombre, Monto: sumDay})
+                  }
+                }
+          
+            }else{
+              if(sumDay > 0){
+                series[indexTwo].data.push([dateTimeFormatPrev, sumDay])
+                dataTable.push({Fecha: dateFormatPrev, Prestadora: lenders[indexTwo].nombre, Monto: sumDay})
+                sumDay = 0
+              }
+              if (name) {
+                sumDay = totalServices
+              }
+              if ((index+1) == sales.length) {
+                if(sumDay > 0){
                   series[indexTwo].data.push([dateTimeFormat, sumDay])
                   dataTable.push({Fecha: dateFormat, Prestadora: lenders[indexTwo].nombre, Monto: sumDay})
                 }
               }
-            }else{
-              series[indexTwo].data.push([dateTimeFormatPrev, sumDay])
-              dataTable.push({Fecha: dateFormatPrev, Prestadora: lenders[indexTwo].nombre, Monto: sumDay})
-              sumDay = 0
-              sumDay = totalServices
-              if ((index+1) == sales.length) {
-                series[indexTwo].data.push([dateTimeFormat, sumDay])
-                dataTable.push({Fecha: dateFormat, Prestadora: lenders[indexTwo].nombre, Monto: sumDay})
-              }
             }
           }else{
-            sumDay = totalServices
-            if (sales.length == 1) {
-              series[indexTwo].data.push([dateTimeFormat, sumDay])
-              dataTable.push({Fecha: dateFormat, Prestadora: lenders[indexTwo].nombre, Monto: sumDay})
+            if (name) {
+              sumDay = totalServices
+              if (sales.length == 1) {
+                if(sumDay > 0){
+                  series[indexTwo].data.push([dateTimeFormat, sumDay])
+                  dataTable.push({Fecha: dateFormat, Prestadora: lenders[indexTwo].nombre, Monto: sumDay})
+                }
+              }
             }
           }
         }
@@ -683,40 +736,52 @@ metrics.post('/detailPerLender/:date', async (req, res) => {
             sumDayProduction = totalProduction + sumDayProduction
             sumDayComission = totalComision + sumDayComission
             sumDayServices = totalServices + sumDayServices
+          }
             if ((index+1) == sales.length) {
+              if(sumDay > 0){
+                series[0].data.push([dateTimeFormat, sumDayProduction])
+                series[1].data.push([dateTimeFormat, sumDayComission])
+                series[2].data.push([dateTimeFormat, sumDayServices])
+                dataTable.push({Fecha: dateFormat, totalProduction: sumDayProduction, totalComision: sumDayComission, totalServices: sumDayServices})
+              }
+            }
+        }else{
+          if(sumDay > 0){
+            series[0].data.push([dateTimeFormatPrev, sumDayProduction])
+            series[1].data.push([dateTimeFormatPrev, sumDayComission])
+            series[2].data.push([dateTimeFormatPrev, sumDayServices])
+            dataTable.push({Fecha: dateFormatPrev, totalProduction: sumDayProduction, totalComision: sumDayComission, totalServices: sumDayServices})
+            sumDayProduction = 0
+            sumDayComission = 0
+            sumDayServices = 0
+          }
+          if (name) {
+            sumDayProduction = totalProduction
+            sumDayComission = totalComision
+            sumDayServices = totalServices
+          }
+          if ((index+1) == sales.length) {
+            if(sumDay > 0){
               series[0].data.push([dateTimeFormat, sumDayProduction])
               series[1].data.push([dateTimeFormat, sumDayComission])
               series[2].data.push([dateTimeFormat, sumDayServices])
               dataTable.push({Fecha: dateFormat, totalProduction: sumDayProduction, totalComision: sumDayComission, totalServices: sumDayServices})
             }
           }
-        }else{
-          series[0].data.push([dateTimeFormatPrev, sumDayProduction])
-          series[1].data.push([dateTimeFormatPrev, sumDayComission])
-          series[2].data.push([dateTimeFormatPrev, sumDayServices])
-          dataTable.push({Fecha: dateFormatPrev, totalProduction: sumDayProduction, totalComision: sumDayComission, totalServices: sumDayServices})
-          sumDayProduction = 0
-          sumDayComission = 0
-          sumDayServices = 0
+        }
+      }else{
+        if (name) {
           sumDayProduction = totalProduction
           sumDayComission = totalComision
           sumDayServices = totalServices
-          if ((index+1) == sales.length) {
-            series[0].data.push([dateTimeFormat, sumDayProduction])
-            series[1].data.push([dateTimeFormat, sumDayComission])
-            series[2].data.push([dateTimeFormat, sumDayServices])
-            dataTable.push({Fecha: dateFormat, totalProduction: sumDayProduction, totalComision: sumDayComission, totalServices: sumDayServices})
+          if (sales.length == 1) {
+            if(sumDay > 0){
+              series[0].data.push([dateTimeFormat, sumDayProduction])
+              series[1].data.push([dateTimeFormat, sumDayComission])
+              series[2].data.push([dateTimeFormat, sumDayServices])
+              dataTable.push({Fecha: dateFormat, totalProduction: sumDayProduction, totalComision: sumDayComission, totalServices: sumDayServices})
+            }
           }
-        }
-      }else{
-        sumDayProduction = totalProduction
-        sumDayComission = totalComision
-        sumDayServices = totalServices
-        if (sales.length == 1) {
-          series[0].data.push([dateTimeFormat, sumDayProduction])
-          series[1].data.push([dateTimeFormat, sumDayComission])
-          series[2].data.push([dateTimeFormat, sumDayServices])
-          dataTable.push({Fecha: dateFormat, totalProduction: sumDayProduction, totalComision: sumDayComission, totalServices: sumDayServices})
         }
       }
     }
@@ -774,26 +839,38 @@ metrics.post('/detailPerService/:date', async (req, res) => {
         if (dateFormat == dateFormatPrev) {
           if (name) {
             sumDayServices = totalServices + sumDayServices
+          }
             if ((index+1) == sales.length) {
+              if(sumDay > 0){ 
+                series[0].data.push([dateTimeFormat, sumDayServices])
+                dataTable.push({Fecha: dateFormat, total: sumDayServices})
+              }
+            }
+        }else{
+          if(sumDay > 0){
+            series[0].data.push([dateTimeFormatPrev, sumDayServices])
+            dataTable.push({Fecha: dateFormatPrev, total: sumDayServices})
+            sumDayServices = 0
+          }
+          if (name) {
+            sumDayServices = totalServices
+          }
+          if ((index+1) == sales.length) {
+            if(sumDay > 0){
               series[0].data.push([dateTimeFormat, sumDayServices])
               dataTable.push({Fecha: dateFormat, total: sumDayServices})
             }
           }
-        }else{
-          series[0].data.push([dateTimeFormatPrev, sumDayServices])
-          dataTable.push({Fecha: dateFormatPrev, total: sumDayServices})
-          sumDayServices = 0
-          sumDayServices = totalServices
-          if ((index+1) == sales.length) {
-            series[0].data.push([dateTimeFormat, sumDayServices])
-            dataTable.push({Fecha: dateFormat, total: sumDayServices})
-          }
         }
       }else{
-        sumDayServices = totalServices
-        if (sales.length == 1) {
-          series[0].data.push([dateTimeFormat, sumDayServices])
-          dataTable.push({Fecha: dateFormat, total: sumDayServices})
+        if (name) {
+          sumDayServices = totalServices
+          if (sales.length == 1) {
+            if(sumDay > 0){
+              series[0].data.push([dateTimeFormat, sumDayServices])
+              dataTable.push({Fecha: dateFormat, total: sumDayServices})
+            }
+          }
         }
       }
     }
@@ -849,20 +926,22 @@ metrics.get('/quantityServicesPerService/:date', async (req, res) => {
             if (dateFormat == dateFormatPrev) {
               if (name) {
                 sumDay = totalServices + sumDay
+              }
                 if ((index+1) == sales.length) {
                   if (sumDay > 0) {
                     series[indexTwo].data.push([dateTimeFormat, sumDay])
                     dataTable.push({Fecha: dateFormat, Servicio: Services[indexTwo].nombre, Cantidad: sumDay})
                   }
                 }
-              }
             }else{
               if (sumDay > 0) {
                 series[indexTwo].data.push([dateTimeFormatPrev, sumDay])
                 dataTable.push({Fecha: dateFormatPrev, Servicio: Services[indexTwo].nombre, Cantidad: sumDay})
               }
               sumDay = 0
-              sumDay = totalServices
+              if (name) {
+                sumDay = totalServices
+              }
               if ((index+1) == sales.length) {
                 if (sumDay > 0) {
                   series[indexTwo].data.push([dateTimeFormat, sumDay])
@@ -871,10 +950,14 @@ metrics.get('/quantityServicesPerService/:date', async (req, res) => {
               }
             }
           }else{
-            sumDay = totalServices
-            if (sales.length == 1) {
-              series[indexTwo].data.push([dateTimeFormat, sumDay])
-              dataTable.push({Fecha: dateFormat, Servicio: Services[indexTwo].nombre, Cantidad: sumDay})
+            if (name) {
+              sumDay = totalServices
+              if (sales.length == 1) {
+                if (sumDay > 0) {
+                  series[indexTwo].data.push([dateTimeFormat, sumDay])
+                  dataTable.push({Fecha: dateFormat, Servicio: Services[indexTwo].nombre, Cantidad: sumDay})
+                }
+              }
             }
           }
         }
