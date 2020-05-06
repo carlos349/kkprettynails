@@ -126,10 +126,11 @@ ventas.get('/findSalesByDate/:dates', async (req, res) => {
   const dates = req.params.dates
   const splitDates = dates.split(':')
   const desde = splitDates[0]
-  const hasta = splitDates[1]
-  
+  const hasta = new Date(splitDates[1]) 
+  hasta.setDate(hasta.getDate() + 1)
+  const goodHasta =  (hasta.getMonth() + 1)+"-"+hasta.getDate()+"-"+hasta.getFullYear()
   try {
-    const Sales = await Venta.find({fecha: { $gte: desde, $lte: hasta }})
+    const Sales = await Venta.find({fecha: { $gte: desde, $lte: goodHasta }})
     
     if (Sales.length == 0) {
       res.json({status: 'no Sales'})
