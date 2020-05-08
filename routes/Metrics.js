@@ -738,7 +738,7 @@ metrics.post('/detailPerLender/:date', async (req, res) => {
             sumDayServices = totalServices + sumDayServices
           }
             if ((index+1) == sales.length) {
-              if(sumDay > 0){
+              if(sumDayProduction > 0 && sumDayComission > 0&& sumDayServices > 0){
                 series[0].data.push([dateTimeFormat, sumDayProduction])
                 series[1].data.push([dateTimeFormat, sumDayComission])
                 series[2].data.push([dateTimeFormat, sumDayServices])
@@ -746,7 +746,7 @@ metrics.post('/detailPerLender/:date', async (req, res) => {
               }
             }
         }else{
-          if(sumDay > 0){
+          if(sumDayProduction > 0 && sumDayComission > 0&& sumDayServices > 0){
             series[0].data.push([dateTimeFormatPrev, sumDayProduction])
             series[1].data.push([dateTimeFormatPrev, sumDayComission])
             series[2].data.push([dateTimeFormatPrev, sumDayServices])
@@ -761,7 +761,7 @@ metrics.post('/detailPerLender/:date', async (req, res) => {
             sumDayServices = totalServices
           }
           if ((index+1) == sales.length) {
-            if(sumDay > 0){
+            if(sumDayProduction > 0 && sumDayComission > 0&& sumDayServices > 0){
               series[0].data.push([dateTimeFormat, sumDayProduction])
               series[1].data.push([dateTimeFormat, sumDayComission])
               series[2].data.push([dateTimeFormat, sumDayServices])
@@ -775,7 +775,7 @@ metrics.post('/detailPerLender/:date', async (req, res) => {
           sumDayComission = totalComision
           sumDayServices = totalServices
           if (sales.length == 1) {
-            if(sumDay > 0){
+            if(sumDayProduction > 0 && sumDayComission > 0&& sumDayServices > 0){
               series[0].data.push([dateTimeFormat, sumDayProduction])
               series[1].data.push([dateTimeFormat, sumDayComission])
               series[2].data.push([dateTimeFormat, sumDayServices])
@@ -841,13 +841,13 @@ metrics.post('/detailPerService/:date', async (req, res) => {
             sumDayServices = totalServices + sumDayServices
           }
             if ((index+1) == sales.length) {
-              if(sumDay > 0){ 
+              if(sumDayServices > 0){ 
                 series[0].data.push([dateTimeFormat, sumDayServices])
                 dataTable.push({Fecha: dateFormat, total: sumDayServices})
               }
             }
         }else{
-          if(sumDay > 0){
+          if(sumDayServices > 0){
             series[0].data.push([dateTimeFormatPrev, sumDayServices])
             dataTable.push({Fecha: dateFormatPrev, total: sumDayServices})
             sumDayServices = 0
@@ -856,7 +856,7 @@ metrics.post('/detailPerService/:date', async (req, res) => {
             sumDayServices = totalServices
           }
           if ((index+1) == sales.length) {
-            if(sumDay > 0){
+            if(sumDayServices > 0){
               series[0].data.push([dateTimeFormat, sumDayServices])
               dataTable.push({Fecha: dateFormat, total: sumDayServices})
             }
@@ -866,7 +866,7 @@ metrics.post('/detailPerService/:date', async (req, res) => {
         if (name) {
           sumDayServices = totalServices
           if (sales.length == 1) {
-            if(sumDay > 0){
+            if(sumDayServices > 0){
               series[0].data.push([dateTimeFormat, sumDayServices])
               dataTable.push({Fecha: dateFormat, total: sumDayServices})
             }

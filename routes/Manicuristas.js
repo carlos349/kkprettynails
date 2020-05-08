@@ -8,6 +8,67 @@ const Venta = require('../models/Venta')
 const Cierres = require('../models/Cierres')
 manicurista.use(cors())
 
+manicurista.get('/dataMetrics/:id', (req, res) => {
+  const dateNow = new Date()
+  const formatDate = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-1"
+  dateNow.setMonth(dateNow.getMonth() + 1)
+  const formatDateTwo = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-31"
+  var services = 0
+  var advancements = 0
+  var bonus = 0
+  var comission = 0
+  Venta.find({
+    $and: [
+      {manicurista: { $regex: req.params.id, $options: 'i'}},
+      {fecha: {$gte: formatDate, $lte: formatDateTwo} },
+      {status: true}
+    ]
+  })
+  .then(sales => {
+    for (let index = 0; index < sales.length; index++) {
+      const element = sales[index];
+      var totalComision = 0
+      for (let indexThree = 0; indexThree < sales[index].EmployeComision.length; indexThree++) {
+        totalComision = req.params.id == sales[index].EmployeComision[0].employe ? sales[index].EmployeComision[0].comision : 0
+      }
+      comission = parseFloat(comission) + parseFloat(totalComision)
+      services = parseFloat(services) + parseFloat(element.servicios.length)
+    }
+    Advancement.find({
+      $and: [
+        {date: {$gte: formatDate, $lte: formatDateTwo}},
+        {name: req.params.id}
+      ] 
+    })
+    .then(advancement => {
+      for (let indexTwo = 0; indexTwo < advancement.length; indexTwo++) {
+        const elementTwo = advancement[indexTwo];
+        advancements = parseFloat(advancements) + elementTwo.total
+      }
+      Expenses.find({
+        $and: [
+          {date: {$gte: formatDate, $lte: formatDateTwo}},
+          {expense: { $regex: req.params.id, $options: 'i'}},
+          {type: 'Bonus'}
+        ] 
+      })
+      .then(bonuses => {
+        for (let indexThree = 0; indexThree < bonuses.length; indexThree++) {
+          const elementThree = bonuses[indexThree];
+          bonus = parseFloat(bonus) + elementThree.figure
+        }
+        res.json({servicesLender: services, lenderAvancements: advancements, lenderBonus: bonus, lenderComission:comission})
+      }).catch(err => {
+        res.send(err)
+      })
+    }).catch(err => {
+      res.send(err)
+    })
+  }).catch(err => {
+    res.send(err)
+  })
+})
+
 manicurista.get('/', async (req, res) => {
   const manicuristas = await Manicurista.find()
   res.json(manicuristas)
@@ -415,5 +476,6 @@ manicurista.get('/CompareSalesAndExpenses', (req, res) => {
     
   })
 })
+
 
 module.exports = manicurista
