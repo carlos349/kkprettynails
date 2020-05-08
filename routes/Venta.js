@@ -28,6 +28,147 @@ const Expenses = require('../models/Expenses')
 const GetWeeks = require('../models/getWeek')
 ventas.use(cors())
 
+ventas.post('/generateDataExcel', (req, res) => {
+  var Client = req.body.clientSelect
+  if (Client) {
+    const splitClient = req.body.clientSelect.split(' / ')
+    Client = splitClient[1]
+  }
+  
+  const data = {
+    rangeExcel: req.body.rangeExcel, 
+    lenderSelect: req.body.lenderSelect, 
+    clientSelect: Client,
+    orderSelect: req.body.orderSelect,
+    firstDate: '', 
+    lastDate: ''
+  }
+  if (data.rangeExcel.length > 14 ) {
+    const split = data.rangeExcel.split(' a ')
+    data.firstDate = split[0]
+    data.lastDate = split[1]
+  }else{
+    const split = data.rangeExcel.split(':')
+    const DateUsage = new Date(split[0])
+    data.firstDate = split[0]
+    DateUsage.setDate(DateUsage.getDate() + 1)
+    data.lastDate = (DateUsage.getMonth() + 1)+"-"+DateUsage.getDate()+"-"+DateUsage.getFullYear()
+  }
+  console.log(data)
+  var type, typeFilter
+  if (data.orderSelect == 'firstTotal') {
+    type = 'total'
+    typeFilter = -1
+  }else if(data.orderSelect == 'lastTotal'){
+    type = 'total'
+    typeFilter = 1
+  }else if(data.orderSelect == 'firstDate'){
+    type = 'fecha'
+    typeFilter = -1
+  }else if(data.orderSelect == 'lastTotal'){
+    type = 'fecha'
+    typeFilter = 1
+  }
+  var dataTable = []
+  if (data.clientSelect == '' && data.lenderSelect == '' ) {
+    Venta.find({
+      $and: [
+        {fecha: {$gte: data.firstDate, $lte: data.lastDate}},
+        {status:true}
+      ]
+    }).sort({[type]: typeFilter})
+    .then(sales => {
+      if(sales.length > 0){
+        for (let index = 0; index < sales.length; index++) {
+          const element = sales[index];
+          var servicios = ''
+          for (let indexTwo = 0; indexTwo < element.servicios.length; indexTwo++) {
+            const elementTwo = element.servicios[indexTwo];
+            if (indexTwo == 0) {
+              servicios = elementTwo.servicio
+            }else{
+              servicios = servicios + ',' + elementTwo.servicio
+            }
+          }
+          dataTable.push({'id de ventas': 'V-'+element.count, Fecha: element.fecha, Prestador: element.manicurista, Cliente: element.cliente, servicios: servicios, Descuento: element.descuento, Comision: element.comision, 'Ganancia local': element.ganancialocal, Total: element.total, Efectivo: element.pagoEfectivo, 'Débito': element.pagoRedCDebito, 'Crédito':  element.pagoRedCCredito, Tranferencia: element.pagoTransf, Otros: element.pagoOtros })
+        }
+        res.json({status: 'ok', dataTable: dataTable})
+      }else{
+        res.json({status: 'bad'})
+      }
+    }).catch(err => {
+      res.send(err)
+      console.log(err)
+    })
+  }else{
+    if(data.clientSelect == '' || data.clientSelect == null){
+      Venta.find({
+        $and: [
+          {fecha: {$gte: data.firstDate, $lte: data.lastDate}},
+          {manicurista: { $regex: data.lenderSelect, $options: 'i'}},
+          {status:true}
+        ]
+      }).sort({[type]: typeFilter})
+      .then(sales => {
+        if(sales.length > 0){
+          for (let index = 0; index < sales.length; index++) {
+            const element = sales[index];
+            var servicios = ''
+            for (let indexTwo = 0; indexTwo < element.servicios.length; indexTwo++) {
+              const elementTwo = element.servicios[indexTwo];
+              if (indexTwo == 0) {
+                servicios = elementTwo.servicio
+              }else{
+                servicios = servicios + ',' + elementTwo.servicio
+              }
+            }
+            dataTable.push({'id de ventas': 'V-'+element.count, Fecha: element.fecha, Prestador: element.manicurista, Cliente: element.cliente, servicios: servicios, Descuento: element.descuento, Comision: element.comision, 'Ganancia local': element.ganancialocal, Total: element.total, Efectivo: element.pagoEfectivo, 'Débito': element.pagoRedCDebito, 'Crédito':  element.pagoRedCCredito, Tranferencia: element.pagoTransf, Otros: element.pagoOtros })
+          }
+          res.json({status: 'ok', dataTable: dataTable})
+        }else{
+          res.json({status: 'bad'})
+        }
+      }).catch(err => {
+        res.send(err)
+        console.log(err)
+      })
+    }else if (data.lenderSelect == '' || data.lenderSelect == null) {
+      Venta.find({
+        $and: [
+          {fecha: {$gte: data.firstDate, $lte: data.lastDate}},
+          {cliente: { $regex: data.clientSelect, $options: 'i'}},
+          {status:true}
+        ]
+      }).sort({[type]: typeFilter})
+      .then(sales => {
+        if(sales.length > 0){
+          for (let index = 0; index < sales.length; index++) {
+            const element = sales[index];
+            var servicios = ''
+            for (let indexTwo = 0; indexTwo < element.servicios.length; indexTwo++) {
+              const elementTwo = element.servicios[indexTwo];
+              if (indexTwo == 0) {
+                servicios = elementTwo.servicio
+              }else{
+                servicios = servicios + ',' + elementTwo.servicio
+              }
+            }
+            dataTable.push({'id de ventas': 'V-'+element.count, Fecha: element.fecha, Prestador: element.manicurista, Cliente: element.cliente, servicios: servicios, Descuento: element.descuento, Comision: element.comision, 'Ganancia local': element.ganancialocal, Total: element.total, Efectivo: element.pagoEfectivo, 'Débito': element.pagoRedCDebito, 'Crédito':  element.pagoRedCCredito, Tranferencia: element.pagoTransf, Otros: element.pagoOtros })
+          }
+          res.json({status: 'ok', dataTable: dataTable})
+        }else{
+          res.json({status: 'bad'})
+        }
+      }).catch(err => {
+        res.send(err)
+        console.log(err)
+      })
+    }
+  }
+  
+})
+// {servicios: 1, employeComision: 1, cliente: 1, manicurista: 1, comision: 1, pagoEfectivo: 1, pagoOtros: 1, pagoRedCDebito: 1, pagoRedCCredito: 1, }
+
 ventas.put('/updateServicesMonth/:service', (req, res) => {
   const thisDate = new Date()
   const date = thisDate.getMonth()
