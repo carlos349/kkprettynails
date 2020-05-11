@@ -983,10 +983,10 @@ metrics.get('/dailyQuantityPerDay/:date', async (req, res) => {
     dateGood.setDate(dateGood.getDate() + 1)
     finalDate = dateGood.getFullYear()+'-'+(dateGood.getMonth() + 1)+'-'+dateGood.getDate()
   }
-  let categories = ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado']
+  let categories = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']
   let series = [
     {
-      name: "Produccion",
+      name: "Producción",
       data:[0, 0, 0, 0, 0, 0, 0],
     },
     {
@@ -1007,7 +1007,7 @@ metrics.get('/dailyQuantityPerDay/:date', async (req, res) => {
       series[1].data[date] = series[1].data[date] + sales[index].servicios.length
     }
     for (let indexTwo = 0; indexTwo < categories.length; indexTwo++) {
-      dataTable.push({Dia: categories[indexTwo], Servicios: series[1].data[indexTwo],Produccion: series[0].data[indexTwo]})
+      dataTable.push({Dia: categories[indexTwo], Servicios: series[1].data[indexTwo],'Produccion': series[0].data[indexTwo]})
     }
     res.json({status: 'ok', series:series, categories:categories, dataTable: dataTable})
   }else{
@@ -1027,7 +1027,7 @@ metrics.get('/dailyAveragePerDay/:date', async (req, res) => {
     dateGood.setDate(dateGood.getDate() + 1)
     finalDate = dateGood.getFullYear()+'-'+(dateGood.getMonth() + 1)+'-'+dateGood.getDate()
   }
-  let categories = ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado']
+  let categories = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']
   let totals = [ 
     {
       data:[{sum: 0, Quantity: 0}, {sum: 0, Quantity: 0}, {sum: 0, Quantity: 0}, {sum: 0, Quantity: 0}, {sum: 0, Quantity: 0}, {sum: 0, Quantity: 0}, {sum: 0, Quantity: 0}]

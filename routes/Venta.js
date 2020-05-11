@@ -39,7 +39,6 @@ ventas.post('/generateDataExcel', (req, res) => {
     rangeExcel: req.body.rangeExcel, 
     lenderSelect: req.body.lenderSelect, 
     clientSelect: Client,
-    orderSelect: req.body.orderSelect,
     firstDate: '', 
     lastDate: ''
   }
@@ -54,21 +53,7 @@ ventas.post('/generateDataExcel', (req, res) => {
     DateUsage.setDate(DateUsage.getDate() + 1)
     data.lastDate = (DateUsage.getMonth() + 1)+"-"+DateUsage.getDate()+"-"+DateUsage.getFullYear()
   }
-  console.log(data)
-  var type, typeFilter
-  if (data.orderSelect == 'firstTotal') {
-    type = 'total'
-    typeFilter = -1
-  }else if(data.orderSelect == 'lastTotal'){
-    type = 'total'
-    typeFilter = 1
-  }else if(data.orderSelect == 'firstDate'){
-    type = 'fecha'
-    typeFilter = -1
-  }else if(data.orderSelect == 'lastTotal'){
-    type = 'fecha'
-    typeFilter = 1
-  }
+
   var dataTable = []
   if (data.clientSelect == '' && data.lenderSelect == '' ) {
     Venta.find({
@@ -76,21 +61,58 @@ ventas.post('/generateDataExcel', (req, res) => {
         {fecha: {$gte: data.firstDate, $lte: data.lastDate}},
         {status:true}
       ]
-    }).sort({[type]: typeFilter})
+    })
     .then(sales => {
       if(sales.length > 0){
         for (let index = 0; index < sales.length; index++) {
           const element = sales[index];
-          var servicios = ''
+          var services = ''
           for (let indexTwo = 0; indexTwo < element.servicios.length; indexTwo++) {
             const elementTwo = element.servicios[indexTwo];
             if (indexTwo == 0) {
-              servicios = elementTwo.servicio
+              services = elementTwo.servicio
             }else{
-              servicios = servicios + ',' + elementTwo.servicio
+              services = services + ',' + elementTwo.servicio
             }
           }
-          dataTable.push({'id de ventas': 'V-'+element.count, Fecha: element.fecha, Prestador: element.manicurista, Cliente: element.cliente, servicios: servicios, Descuento: element.descuento, Comision: element.comision, 'Ganancia local': element.ganancialocal, Total: element.total, Efectivo: element.pagoEfectivo, 'Débito': element.pagoRedCDebito, 'Crédito':  element.pagoRedCCredito, Tranferencia: element.pagoTransf, Otros: element.pagoOtros })
+          var Lenders = ''
+          for (let indexThree = 0; indexThree < element.EmployeComision.length; indexThree++) {
+            const elementThree = element.EmployeComision[indexThree];
+            if (indexThree == 0) {
+              Lenders = elementThree.employe
+            }else{
+              Lenders = Lenders + ',' + elementThree.employe
+            }
+          }
+          if(element.EmployeComision.length > 1){
+              const client = element.cliente.split(' - ')
+              const discount = element.descuento.split(' - ')
+              var clients = ''
+              var discounts = ''
+              for (let indexFour = 0; indexFour < client.length; indexFour++) {
+                const clientFinal = client[indexFour].split(' / ')
+                const discountFinal = discount[indexFour].split(' / ')
+                if (indexFour == 0) {
+                  clients = clientFinal[0]
+                  discounts = discountFinal[1]
+                }else{
+                  clients = clients+ ' , ' +clientFinal[0]
+                  discounts = discounts+ ' , ' +discountFinal[1]
+                } 
+              }
+            }else{
+              var discounts = ''
+              if (element.descuento != '0%') {
+                const discount = element.descuento.split(' / ')
+                discounts = discount[1]
+              }else{
+                discounts = element.descuento
+              }
+              const client = element.cliente.split(' / ')
+              var clients = client[0]
+            }
+            const formatDate = (element.fecha.getMonth() + 1)+"-"+element.fecha.getDate()+"-"+element.fecha.getFullYear()
+            dataTable.push({'id de ventas': 'V-'+element.count, Fecha: formatDate, Prestador: Lenders, Cliente: clients, servicios: services, Descuento: discounts, Comision: element.comision, 'Ganancia local': element.ganancialocal, Total: element.total, Efectivo: element.pagoEfectivo, 'Débito': element.pagoRedCDebito, 'Crédito':  element.pagoRedCCredito, Tranferencia: element.pagoTransf, Otros: element.pagoOtros })
         }
         res.json({status: 'ok', dataTable: dataTable})
       }else{
@@ -108,21 +130,58 @@ ventas.post('/generateDataExcel', (req, res) => {
           {manicurista: { $regex: data.lenderSelect, $options: 'i'}},
           {status:true}
         ]
-      }).sort({[type]: typeFilter})
+      })
       .then(sales => {
         if(sales.length > 0){
           for (let index = 0; index < sales.length; index++) {
             const element = sales[index];
-            var servicios = ''
+            var services = ''
             for (let indexTwo = 0; indexTwo < element.servicios.length; indexTwo++) {
               const elementTwo = element.servicios[indexTwo];
               if (indexTwo == 0) {
-                servicios = elementTwo.servicio
+                services = elementTwo.servicio
               }else{
-                servicios = servicios + ',' + elementTwo.servicio
+                services = services + ',' + elementTwo.servicio
               }
             }
-            dataTable.push({'id de ventas': 'V-'+element.count, Fecha: element.fecha, Prestador: element.manicurista, Cliente: element.cliente, servicios: servicios, Descuento: element.descuento, Comision: element.comision, 'Ganancia local': element.ganancialocal, Total: element.total, Efectivo: element.pagoEfectivo, 'Débito': element.pagoRedCDebito, 'Crédito':  element.pagoRedCCredito, Tranferencia: element.pagoTransf, Otros: element.pagoOtros })
+            var Lenders = ''
+            for (let indexThree = 0; indexThree < element.EmployeComision.length; indexThree++) {
+              const elementThree = element.EmployeComision[indexThree];
+              if (indexThree == 0) {
+                Lenders = elementThree.employe
+              }else{
+                Lenders = Lenders + ',' + elementThree.employe
+              }
+            }
+            if(element.EmployeComision.length > 1){
+              const client = element.cliente.split(' - ')
+              const discount = element.descuento.split(' - ')
+              var clients = ''
+              var discounts = ''
+              for (let indexFour = 0; indexFour < client.length; indexFour++) {
+                const clientFinal = client[indexFour].split(' / ')
+                const discountFinal = discount[indexFour].split(' / ')
+                if (indexFour == 0) {
+                  clients = clientFinal[0]
+                  discounts = discountFinal[1]
+                }else{
+                  clients = clients+ ' , ' +clientFinal[0]
+                  discounts = discounts+ ' , ' +discountFinal[1]
+                } 
+              }
+            }else{
+              var discounts = ''
+              if (element.descuento != '0%') {
+                const discount = element.descuento.split(' / ')
+                discounts = discount[1]
+              }else{
+                discounts = element.descuento
+              }
+              const client = element.cliente.split(' / ')
+              var clients = client[0]
+            }
+            const formatDate = (element.fecha.getMonth() + 1)+"-"+element.fecha.getDate()+"-"+element.fecha.getFullYear()
+            dataTable.push({'id de ventas': 'V-'+element.count, Fecha: formatDate, Prestador: Lenders, Cliente: clients, servicios: services, Descuento: discounts, Comision: element.comision, 'Ganancia local': element.ganancialocal, Total: element.total, Efectivo: element.pagoEfectivo, 'Débito': element.pagoRedCDebito, 'Crédito':  element.pagoRedCCredito, Tranferencia: element.pagoTransf, Otros: element.pagoOtros })
           }
           res.json({status: 'ok', dataTable: dataTable})
         }else{
@@ -139,21 +198,58 @@ ventas.post('/generateDataExcel', (req, res) => {
           {cliente: { $regex: data.clientSelect, $options: 'i'}},
           {status:true}
         ]
-      }).sort({[type]: typeFilter})
+      })
       .then(sales => {
         if(sales.length > 0){
           for (let index = 0; index < sales.length; index++) {
             const element = sales[index];
-            var servicios = ''
+            var services = ''
             for (let indexTwo = 0; indexTwo < element.servicios.length; indexTwo++) {
               const elementTwo = element.servicios[indexTwo];
               if (indexTwo == 0) {
-                servicios = elementTwo.servicio
+                services = elementTwo.servicio
               }else{
-                servicios = servicios + ',' + elementTwo.servicio
+                services = services + ',' + elementTwo.servicio
               }
             }
-            dataTable.push({'id de ventas': 'V-'+element.count, Fecha: element.fecha, Prestador: element.manicurista, Cliente: element.cliente, servicios: servicios, Descuento: element.descuento, Comision: element.comision, 'Ganancia local': element.ganancialocal, Total: element.total, Efectivo: element.pagoEfectivo, 'Débito': element.pagoRedCDebito, 'Crédito':  element.pagoRedCCredito, Tranferencia: element.pagoTransf, Otros: element.pagoOtros })
+            var Lenders = ''
+            for (let indexThree = 0; indexThree < element.EmployeComision.length; indexThree++) {
+              const elementThree = element.EmployeComision[indexThree];
+              if (indexThree == 0) {
+                Lenders = elementThree.employe
+              }else{
+                Lenders = Lenders + ',' + elementThree.employe
+              }
+            }
+            if(element.EmployeComision.length > 1){
+              const client = element.cliente.split(' - ')
+              const discount = element.descuento.split(' - ')
+              var clients = ''
+              var discounts = ''
+              for (let indexFour = 0; indexFour < client.length; indexFour++) {
+                const clientFinal = client[indexFour].split(' / ')
+                const discountFinal = discount[indexFour].split(' / ')
+                if (indexFour == 0) {
+                  clients = clientFinal[0]
+                  discounts = discountFinal[1]
+                }else{
+                  clients = clients+ ' , ' +clientFinal[0]
+                  discounts = discounts+ ' , ' +discountFinal[1]
+                } 
+              }
+            }else{
+              var discounts = ''
+              if (element.descuento != '0%') {
+                const discount = element.descuento.split(' / ')
+                discounts = discount[1]
+              }else{
+                discounts = element.descuento
+              }
+              const client = element.cliente.split(' / ')
+              var clients = client[0]
+            }
+            const formatDate = (element.fecha.getMonth() + 1)+"-"+element.fecha.getDate()+"-"+element.fecha.getFullYear()
+            dataTable.push({'id de ventas': 'V-'+element.count, Fecha: formatDate, Prestador: Lenders, Cliente: clients, servicios: services, Descuento: discounts, Comision: element.comision, 'Ganancia local': element.ganancialocal, Total: element.total, Efectivo: element.pagoEfectivo, 'Débito': element.pagoRedCDebito, 'Crédito':  element.pagoRedCCredito, Tranferencia: element.pagoTransf, Otros: element.pagoOtros })
           }
           res.json({status: 'ok', dataTable: dataTable})
         }else{
