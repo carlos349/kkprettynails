@@ -266,7 +266,7 @@ citas.post('/', (req, res) => {
     employe: req.body.manicuristas,
     class: req.body.class,
     process: true,
-    image: ''
+    image: []
   }
     
   Citas.create(dataCitas)
@@ -373,8 +373,19 @@ citas.post('/endDate/:id', (req, res) => {
   })
 })
 
-citas.put('/uploadDesign/:id', upload.single("image"), (req, res) => {
-  const images = req.file.filename
+citas.put('/uploadDesign/:id', upload.array('image', 3), (req, res) => {
+  const images = []
+  for (let index = 0; index < req.files.length; index++) {
+    const element = req.files[index];
+    images.push(element.filename)
+  }
+  if (req.body.imagePrev != '') {
+    const split = req.body.imagePrev.split(',')
+    for (let indexTwo = 0; indexTwo < split.length; indexTwo++) {
+      const elementTwo = split[indexTwo];
+      images.push(elementTwo)
+    }
+  }
   Citas.findByIdAndUpdate(req.params.id, {
     $set: {
       image: images

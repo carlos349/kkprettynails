@@ -30,7 +30,7 @@ const citasSchema = new Schema ({
     type: Boolean
   },
   image: {
-    type: String
+    type: Array
   }
 })
 
