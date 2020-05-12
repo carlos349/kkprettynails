@@ -5,6 +5,18 @@ const Citas = require('../models/Citas')
 const Cliente = require('../models/Cliente')
 const closedDates = require('../models/closedDates')
 citas.use(cors())
+const multer = require('multer')
+const { diskStorage } = require('multer')
+const path = require('path')
+const storage = diskStorage({
+	destination: 'public/designs',
+	filename: (req, file, cb) => {
+		cb(null, Date.now() + path.extname(file.originalname));
+	}
+})
+const upload = multer({
+	storage
+})
 
 citas.get('/', async (req, res) => {
   const citas = await Citas.find()
@@ -244,10 +256,6 @@ citas.post('/getDateByMani', (req, res) => {
 
 citas.post('/', (req, res) => {
   const DateSelect = new Date(req.body.fecha+' 10:00')
-  
-  // const formatDate = DateSelect.getFullYear() +"-"+(DateSelect.getMonth() + 1)+"-"+DateSelect.getDate()
-
-  // const Datee = new Date(formatDate + " 10:00")
   const dataCitas = {
     start: req.body.entrada,
     end: req.body.salida,
@@ -257,7 +265,8 @@ citas.post('/', (req, res) => {
     client: req.body.cliente,
     employe: req.body.manicuristas,
     class: req.body.class,
-    process: true
+    process: true,
+    image: ''
   }
     
   Citas.create(dataCitas)
@@ -361,6 +370,22 @@ citas.post('/endDate/:id', (req, res) => {
   })
   .catch(err => {
     res.send(err)
+  })
+})
+
+citas.put('/uploadDesign/:id', upload.single("image"), (req, res) => {
+  const images = req.file.filename
+  Citas.findByIdAndUpdate(req.params.id, {
+    $set: {
+      image: images
+    }
+  })
+  .then(change => {
+    res.json({status: 'ok', image: images})
+  })
+  .catch(err => {
+    res.send(err)
+    console.log(err)
   })
 })
 

@@ -28,6 +28,9 @@ const citasSchema = new Schema ({
   },
   process: {
     type: Boolean
+  },
+  image: {
+    type: String
   }
 })
 
