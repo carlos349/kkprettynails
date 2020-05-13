@@ -400,6 +400,21 @@ citas.put('/uploadDesign/:id', upload.array('image', 3), (req, res) => {
   })
 })
 
+citas.put('/removeImage/:id', (req, res) => {
+  const images = req.body.images
+  Citas.findByIdAndUpdate(req.params.id, {
+    $set: {
+      image: images
+    }
+  })
+  .then(change => {
+    res.json({status: 'ok'})
+  })
+  .catch(err => {
+    res.send(err)
+  })
+})
+
 citas.put('/editDate/:id', async (req, res) => {
   const dateDate = new Date(req.body.fecha+' 10:00')
   const data = {
