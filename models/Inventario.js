@@ -25,6 +25,9 @@ const InventorySchema = new Schema ({
     },
     total: {
       type: Number,
+    },
+    validAlert: {
+      type: Boolean
     }
   })
   

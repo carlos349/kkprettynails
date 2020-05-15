@@ -1152,7 +1152,7 @@ ventas.post('/procesar', (req, res) => {
     const dateDailyToday = dateformat.getFullYear() +"-"+(dateformat.getMonth() + 1)+"-"+dateformat.getDate()
     today = new Date(dateDailyToday+ ' 10:00')
   }
-  
+  console.log(services)
   var descuento = 100 - req.body.descuento
   var comisionTotal = 0
   for (let index = 0; index < services.length; index++) {

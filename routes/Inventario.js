@@ -111,7 +111,8 @@ inventory.post('/', (req, res) => {
         entry: 0,
         consume:0,
         history:[],
-        total:0
+        total:0,
+        validAlert: false
     }
     
     Inventory.findOne({
@@ -195,6 +196,42 @@ inventory.post('/procesarVenta', (req, res) => {
         .then(aver => {})
     }   
 })
+
+inventory.get('/alertProducts', (req, res) => {
+    var productsToAlert = []
+    Inventory.find()
+    .then(products => {
+        for (let index = 0; index < products.length; index++) {
+            const product = products[index];
+            const total = (parseFloat(product.entry) + parseFloat(product.cantidad)) - parseFloat(product.consume)
+            if (product.type == "Mililitro(s)" && total <= 200) {
+                productsToAlert.push({total: total, type: product.type, nameProduct: product.producto})
+            }
+            if(product.type == "Litros(s)" && total <= 2){
+                productsToAlert.push({total: total, type: product.type, nameProduct: product.producto})
+            }
+            if(product.type == "Gramo(s)" && total <= 200){
+                productsToAlert.push({total: total, type: product.type, nameProduct: product.producto})
+            }
+            if(product.type == "Kilogramo(s)" && total <= 2){
+                productsToAlert.push({total: total, type: product.type, nameProduct: product.producto})
+            }
+            if(product.type == "Unidad" && total <= 5){
+                productsToAlert.push({total: total, type: product.type, nameProduct: product.producto})
+            }               
+        }
+        if (productsToAlert.length > 0) {
+            res.json({status: true, productsToAlert: productsToAlert})
+        }else{
+            res.json({status: false})
+        }
+    })
+    .catch(err => {
+        res.send(err)
+        console.log(err)
+    })
+})
+
 inventory.post('/nullSale', (req, res) => {
     var array = req.body.array
     for (let i = 0; i < array.length; i++) {
