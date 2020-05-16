@@ -30,6 +30,10 @@ metrics.get('/dailyProduction/:date', async (req, res) => {
     {
       name:"Venta total",
       data: []
+    },
+    {
+      name: 'Tendencia',
+      data: []
     }
   ]
   let dataTable = []
@@ -41,7 +45,9 @@ metrics.get('/dailyProduction/:date', async (req, res) => {
   if (sales.length > 0) {
     console.log(sales)
     var sumDay = 0
+    var sumTotal = 0
     for (let index = 0; index < sales.length; index++) {
+      sumTotal = sumTotal + sales[index].total
       let date = sales[index].fecha
       let dateFormat = date.getFullYear()+'-'+(date.getMonth() + 1)+'-'+date.getDate()
       let dateTimeFormat = date.getTime()
@@ -77,6 +83,10 @@ metrics.get('/dailyProduction/:date', async (req, res) => {
         }
       }
     }
+    const countData = sales.length - 1
+    const lastDate = sales[countData].fecha
+    series[1].data.push(series[0].data[0])
+    series[1].data.push([lastDate.getTime(), sumTotal])
     res.json({status: 'ok', series:series, dataTable: dataTable})
   }else{
     res.json({status: 'bad',series: series, dataTable: dataTable})
@@ -264,6 +274,10 @@ metrics.get('/dailyServices/:date', async (req, res) => {
     {
       name: 'Servicios totales', 
       data: []
+    },
+    {
+      name: 'Tendencia',
+      data: []
     }
   ]
   let dataTable = []
@@ -273,7 +287,9 @@ metrics.get('/dailyServices/:date', async (req, res) => {
   ]}).sort({fecha: 1})
   if (sales.length > 0) {
     var sumDay = 0
+    var sumTotal = 0
     for (let index = 0; index < sales.length; index++) {
+      sumTotal = sumTotal + sales[index].servicios.length
       let date = sales[index].fecha
       let dateFormat = date.getFullYear()+'-'+(date.getMonth() + 1)+'-'+date.getDate()
       let dateTimeFormat = date.getTime()
@@ -308,6 +324,10 @@ metrics.get('/dailyServices/:date', async (req, res) => {
         }
       }
     }
+    const countData = sales.length - 1
+    const lastDate = sales[countData].fecha
+    series[1].data.push(series[0].data[0])
+    series[1].data.push([lastDate.getTime(), sumTotal])
     res.json({status: 'ok', series:series, dataTable: dataTable})
   }else{
     res.json({status: 'bad',series: series, dataTable: dataTable})
