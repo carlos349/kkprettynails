@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const User = require('../models/User')
 const Clientes = require('../models/Cliente')
+const email = require('../modelsMails/Mails')
 const credentials = require('../private/private-credentials')
 users.use(cors())
 process.env.SECRET_KEY = 'secret'
@@ -17,7 +18,8 @@ const storage = diskStorage({
 		cb(null, Date.now() + path.extname(file.originalname));
 	}
 })
-
+const mailCredentials = require('../private/mail-credentials')
+const KMails = new email(mailCredentials)
 const upload = multer({
 	storage
 })
@@ -67,6 +69,45 @@ users.get('/createSuperuser', async (req, res, next) => {
 	.catch(err => {
 		res.send('error: ' + err)
 	})
+})
+
+users.post('/sendNewPass', async (req, res) => {
+	const email = req.body.email
+	const user = await User.findOne({email: email})
+	if (user) {
+		const newPass = Date.now()
+		console.log(newPass.toString())
+		const hash = await bcrypt.hash(newPass.toString(), 10)
+		if (!hash) {
+			res.status(404).send('Error en encriptado')
+		}
+		const change = await User.findByIdAndUpdate(user._id, {
+			$set: {password: hash}
+		})
+		if (!change) {
+			res.status(404).send('User not found')
+		}
+		const mail = {
+            from: "kkprettynails",
+            to: email,
+            subject: 'Contraseña provicional, SYSWA Gestión',
+            html: `<div style="width: 50%;margin: auto;background-color: #f8f9fe;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#32325d;text-align:justify;">     
+                <h1>Estimado usuario, se le proporcionara una contraseña provicional, al ingresar al sistema deberá cambiarla, en su sección de perfil.</h1>
+				<h3 style="color:#32325d !important;">Contaseña: ${newPass} </h3>
+                <style>h3{color:#32325d;}</style>
+            </div>`
+        }
+		try{
+        	const send = await KMails.sendMail(mail)
+			res.json({status: 'ok'})
+		}catch(err){
+			res.json({status: 'bad'})
+			console.log(err)
+		}
+	}else{
+		res.json({status: 'bad'})
+	}
+	
 })
 
 users.post('/editData/:id', upload.single("image"), async (req, res, next) => {

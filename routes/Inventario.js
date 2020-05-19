@@ -102,6 +102,25 @@ inventory.post('/closeInventory', (req, res) => {
     res.json({status: 'ok'})
     
 })
+
+inventory.put('/editStockAlarm/:id', (req, res) => {
+    const totalAlarm = req.body.stockTotal
+    Inventory.findByIdAndUpdate(req.params.id, {
+        $set: {alertTotal: totalAlarm}
+    })
+    .then(done => {
+        if (done) {
+            res.json({status: 'ok'})     
+        }else{
+            res.json({status: 'bad'})
+        }
+    })
+    .catch(err => {
+        res.json({status: 'bad'})
+        console.log(err)
+    })
+})
+
 inventory.post('/', (req, res) => {
     const product = {
         producto: req.body.product,
@@ -112,9 +131,8 @@ inventory.post('/', (req, res) => {
         consume:0,
         history:[],
         total:0,
-        validAlert: false
+        alertTotal: 0
     }
-    
     Inventory.findOne({
         producto: req.body.product
     })
@@ -204,21 +222,9 @@ inventory.get('/alertProducts', (req, res) => {
         for (let index = 0; index < products.length; index++) {
             const product = products[index];
             const total = (parseFloat(product.entry) + parseFloat(product.cantidad)) - parseFloat(product.consume)
-            if (product.type == "Mililitro(s)" && total <= 200) {
+            if (total <= product.alertTotal) {
                 productsToAlert.push({total: total, type: product.type, nameProduct: product.producto})
-            }
-            if(product.type == "Litros(s)" && total <= 2){
-                productsToAlert.push({total: total, type: product.type, nameProduct: product.producto})
-            }
-            if(product.type == "Gramo(s)" && total <= 200){
-                productsToAlert.push({total: total, type: product.type, nameProduct: product.producto})
-            }
-            if(product.type == "Kilogramo(s)" && total <= 2){
-                productsToAlert.push({total: total, type: product.type, nameProduct: product.producto})
-            }
-            if(product.type == "Unidad" && total <= 5){
-                productsToAlert.push({total: total, type: product.type, nameProduct: product.producto})
-            }               
+            }            
         }
         if (productsToAlert.length > 0) {
             res.json({status: true, productsToAlert: productsToAlert})

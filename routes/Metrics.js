@@ -32,7 +32,7 @@ metrics.get('/dailyProduction/:date', async (req, res) => {
       data: []
     },
     {
-      name: 'Tendencia',
+      name: 'Totales',
       data: []
     }
   ]
@@ -83,10 +83,12 @@ metrics.get('/dailyProduction/:date', async (req, res) => {
         }
       }
     }
-    const countData = sales.length - 1
-    const lastDate = sales[countData].fecha
-    series[1].data.push(series[0].data[0])
-    series[1].data.push([lastDate.getTime(), sumTotal])
+    var sumTotals = 0
+    for (let indexTwo = 0; indexTwo < series[0].data.length; indexTwo++) {
+      const element = series[0].data[indexTwo];
+      sumTotals = sumTotals + element[1]
+      series[1].data.push([element[0], sumTotals])
+    }
     res.json({status: 'ok', series:series, dataTable: dataTable})
   }else{
     res.json({status: 'bad',series: series, dataTable: dataTable})
@@ -324,10 +326,12 @@ metrics.get('/dailyServices/:date', async (req, res) => {
         }
       }
     }
-    const countData = sales.length - 1
-    const lastDate = sales[countData].fecha
-    series[1].data.push(series[0].data[0])
-    series[1].data.push([lastDate.getTime(), sumTotal])
+    var sumTotals = 0
+    for (let indexTwo = 0; indexTwo < series[0].data.length; indexTwo++) {
+      const element = series[0].data[indexTwo];
+      sumTotals = sumTotals + element[1]
+      series[1].data.push([element[0], sumTotals])
+    }
     res.json({status: 'ok', series:series, dataTable: dataTable})
   }else{
     res.json({status: 'bad',series: series, dataTable: dataTable})
