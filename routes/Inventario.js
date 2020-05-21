@@ -131,7 +131,7 @@ inventory.post('/', (req, res) => {
         consume:0,
         history:[],
         total:0,
-        alertTotal: 0
+        alertTotal: req.body.alert
     }
     Inventory.findOne({
         producto: req.body.product

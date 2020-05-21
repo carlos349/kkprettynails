@@ -92,7 +92,7 @@ users.post('/sendNewPass', async (req, res) => {
             to: email,
             subject: 'Contraseña provicional, SYSWA Gestión',
             html: `<div style="width: 50%;margin: auto;background-color: #f8f9fe;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#32325d;text-align:justify;">     
-                <h1>Estimado usuario, se le proporcionara una contraseña provicional, al ingresar al sistema deberá cambiarla, en su sección de perfil.</h1>
+                <h1>Estimado ${user.first_name} ${user.last_name}, esta es su clave provisoria. Al ingresar a nuestro sistema debe modificar dicha clave en "Perfil de usuario".</h1>
 				<h3 style="color:#32325d !important;">Contaseña: ${newPass} </h3>
                 <style>h3{color:#32325d;}</style>
             </div>`
