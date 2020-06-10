@@ -23,6 +23,9 @@ const servicioSchema = new Schema({
   productos:{
     type:Array
   },
+  category: {
+    type: String
+  },
   active:{
     type:Boolean
   }

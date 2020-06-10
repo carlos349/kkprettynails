@@ -21,9 +21,6 @@ const upload = multer({
 const KMails = new email(mailCredentials)
 clients.use(cors())
 
-
-
-
 clients.post('/sendmail', upload.array('image', 3),  async (req, res, next) => {
     var array = {}
     let mail = {}
@@ -220,6 +217,38 @@ clients.put('/deleteClient/:id', async (req, res) => {
         res.json({status: 'ok'})
     }
     res.json({status: 'bad'})
+})
+
+clients.post('/verifyClient', (req, res) => {
+    const data = {
+        nombre: req.body.name,
+        identidad: req.body.mail,
+        correoCliente: '',
+        instagramCliente: '',
+        participacion: 1,
+        recomendacion: '',
+        recomendaciones: 0,
+        historical: [],
+        ultimaFecha: new Date(),
+        fecha: new Date()
+    }
+    Cliente.findOne({identidad: data.identidad})
+    .then(client => {
+        if(client){
+            res.json({status: 'ok', data: client})
+        }else{
+            Cliente.create(data)
+            .then(ready => {
+                res.json({status: 'bad', data: ready})
+            })
+            .catch(err => {
+                res.send(err)
+            })
+        }
+    })
+    .catch(err => {
+        res.send(err)
+    })
 })
 
 clients.post('/', (req, res) => {

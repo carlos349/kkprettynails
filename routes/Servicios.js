@@ -4,6 +4,7 @@ const cors = require('cors');
 
 //Models
 const Servicio = require('../models/Servicios')
+const Categories = require('../models/Categories')
 const January = require('../models/January')
 const February = require('../models/February')
 const March = require('../models/March')
@@ -21,6 +22,34 @@ const December = require('../models/December')
 service.use(cors())
 
 //Apis
+
+service.post('/newCategory', async (req,res) => {
+  const Category = {
+    name: req.body.name
+  } 
+  const have = await Categories.find({name: Category.name})
+  if (have.length > 0) {
+    res.json({status: 'exist'})
+  }
+  const createCat = await Categories.create(Category)
+  if (createCat) {
+    res.json({status: 'ok'})
+  }
+  
+})
+
+service.delete('/deleteCategory/:id', async (req, res) => {
+  const categories = await Categories.findByIdAndRemove(req.params.id)
+  if (categories) {
+    res.json({status: 'ok'})
+  }
+})
+
+service.get('/getCategory', async (req,res) => {
+  const categories = await Categories.find()
+  res.json(categories)
+})
+
 service.get('/', async (req,res) => {
   const servicios = await Servicio.find()
   res.json(servicios)
@@ -35,6 +64,7 @@ service.post('/', (req,res) => {
     descuento: req.body.descuento,
     prestadores:req.body.prestadores,
     productos:req.body.productos,
+    category: req.body.categoryRegister,
     active:true
   }
   Servicio.findOne({
@@ -100,7 +130,8 @@ service.put('/:id', (req, res) => {
         comision:req.body.comisionServicio,
         prestadores:req.body.prestadores,
         productos:req.body.productos,
-        descuento: req.body.descuento
+        descuento: req.body.descuento,
+        category: req.body.editCategoryServicer
       }
     })
     .then(servicio => {

@@ -279,6 +279,39 @@ citas.post('/', (req, res) => {
     
 })
 
+citas.post('/noOneLender', (req, res) => {
+  const dataCitas = []
+  const dataDate = req.body.dataDate
+  const client = req.body.client
+  const date = req.body.date
+  for (let index = 0; index < dataDate.serviceSelectds.length; index++) {
+    const element = dataDate.serviceSelectds[index];
+    var data = {
+      start: element.start,
+      end: element.end,
+      sort: element.sort,
+      date: date,
+      services: [{servicio: element.servicio, comision: element.comision, precio: element.precio}],
+      client: client,
+      employe: element.lender,
+      class: element.class,
+      process: true,
+      image: []
+    }
+    dataCitas.push(data)
+  }
+  console.log(dataCitas)
+  for (let i = 0; i < dataCitas.length; i++) {
+    Citas.create(dataCitas[i])
+    .then(citas => {
+      console.log(citas)
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  }
+  res.json({status: 'cita creada'})
+})
 
 citas.delete('/:id', async (req, res) => {
   const citas = await Citas.findByIdAndRemove(req.params.id)
