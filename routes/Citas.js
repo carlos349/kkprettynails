@@ -4,10 +4,14 @@ const cors = require('cors');
 const Citas = require('../models/Citas')
 const Cliente = require('../models/Cliente')
 const closedDates = require('../models/closedDates')
+const email = require('../modelsMails/Mails')
 citas.use(cors())
 const multer = require('multer')
 const { diskStorage } = require('multer')
 const path = require('path')
+const mailCredentials = require('../private/mail-credentials')
+const KMails = new email(mailCredentials)
+const imgMails = require('../private/endpointsLogo.js')
 const storage = diskStorage({
 	destination: 'public/designs',
 	filename: (req, file, cb) => {
@@ -266,6 +270,7 @@ citas.post('/', (req, res) => {
     employe: req.body.manicuristas,
     class: req.body.class,
     process: true,
+    confirmation: false,
     image: []
   }
     
@@ -277,6 +282,83 @@ citas.post('/', (req, res) => {
     res.send('error: ' + err)
   })
     
+})
+
+citas.get('/confirmDate/:id', (req, res) => {
+  const id = req.params.id
+
+  Citas.findByIdAndUpdate(id, {
+    $set: {
+      confirmation: true
+    }
+  })
+  .then(citas => {
+    if (citas) {
+      res.json({status: 'ok'})
+    }
+  })
+  .catch(err => {
+    res.send('error: ' + err)
+  })
+    
+})
+
+citas.post('/sendConfirmation/:id', (req, res) => {
+  const id = req.params.id
+  const data = {
+      name: req.body.name,
+      contact: req.body.contact,
+      start: req.body.start,  
+      end: req.body.end,
+      date: req.body.date,
+  }
+  const mail = {
+    from: "kkprettynails.cl",
+    to: data.contact,
+    subject: 'Confirmacion de cita programada',
+    html: `
+    <div style="width: 100%; border:solid .5px #f0f1f3;text-align:center;padding-bottom:20px;">
+
+      <div style="width: 100%;height: 8vh;margin: auto;background-color: #32325d;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#32325d;text-align:justify;">
+        <center>     
+          <img style="width: 50%; heigth:auto;" src="${imgMails}logokk.png" alt="Logo kkprettynails">
+        </center>
+      </div>
+      <div style="width: 100%;margin: auto;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#32325d;padding-bottom: 20px;">
+        <center>
+          <div style="width:60%;text-align: center;">
+            <h1 style="text-align: center;color:#32325d;">Bienvenid@</h1>
+            <p style="text-align:center;margin-top:10px;font-size:16px;"> <strong>Hola ${data.name}</strong></p> </br> 
+            <p style="text-align:center;margin-top:10px;font-size:16px;"> Necesitamos que confirmes tu cita para el dia ${data.date}</p> 
+            <p style="text-align:center;font-size:16px;margin-bottom:20px;">Horario de confirmación Desde las ${data.start} Hasta las ${data.end}</p>
+            <center>
+              <a style="background-color:#32325d;font-size:18px;border:none;padding:10px;margin-top:20px;margin-bottom:30px;color:#fff;cursor:pointer;" href="http://localhost:8080/#/ConfirmacionAgenda?id=${id}">Confirmar</a>
+            </center>
+          <div>
+        </center>
+      </div>
+      <div style="width: 100%;background-color: #f0f1f3;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#32325d;">
+        <center>
+          <div style="width:60%;margint-">
+            <center>
+              <p style="text-align:center;font-size:14px;"> Ofrecerte la mejor experiencia es lo más importante para nosotros.</br> 
+              <p style="text-align:center;font-size:14px;"> +56 9 7262 8949 &nbsp;&nbsp;   kkprettynails@gmail.com</p> 
+              <p style="text-align:center;font-size:14px;">Te atendemos de lunes a viernes de 9:00 a 18:30 hrs.</p>
+              <p style="text-align:center;margin-top:10px;"><strong>SÍGUENOS</strong></p>
+            </center>
+          </div>
+        </center>
+      </div>
+    </div>
+    `
+  }
+  try {
+    KMails.sendMail(mail)
+    res.json({status: 'ok'})
+  }catch(err){
+    res.json({status: 'bad'})
+    res.send(err)
+  }
 })
 
 citas.post('/noOneLender', (req, res) => {
@@ -296,6 +378,7 @@ citas.post('/noOneLender', (req, res) => {
       employe: element.lender,
       class: element.class,
       process: true,
+      confirmation: false,
       image: []
     }
     dataCitas.push(data)
