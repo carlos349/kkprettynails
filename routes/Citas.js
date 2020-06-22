@@ -321,7 +321,7 @@ citas.post('/sendConfirmation/:id', (req, res) => {
 
       <div style="width: 100%;height: 8vh;margin: auto;background-color: #32325d;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#32325d;text-align:justify;">
         <center>     
-          <img style="height:70px;width:140px"" src="${imgMails}syswa-gestion.png" alt="Logo kkprettynails">
+          <img style="width: 30%;" src="${imgMails}syswa-gestion.png" alt="Logo kkprettynails">
         </center>
       </div>
       <div style="width: 100%;margin: auto;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#32325d;padding-bottom: 20px;">
