@@ -321,25 +321,25 @@ citas.post('/sendConfirmation/:id', (req, res) => {
 
       <div style="width: 100%;height: 8vh;margin: auto;background-color: #32325d;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#32325d;text-align:justify;">
         <center>     
-          <img style="width: 50%; heigth:auto;" src="${imgMails}logokk.png" alt="Logo kkprettynails">
+          <img style="width: 50%; heigth:auto;" src="${imgMails}syswa-gestion.png" alt="Logo kkprettynails">
         </center>
       </div>
       <div style="width: 100%;margin: auto;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#32325d;padding-bottom: 20px;">
         <center>
           <div style="width:60%;text-align: center;">
-            <h1 style="text-align: center;color:#32325d;">Bienvenid@</h1>
+            <h1 style="text-align: center;color:#32325d;"> <img style="height:70px;width:70px" src="${imgMails}logokk.png" alt="Logo kkprettynails"> Bienvenid@</h1>
             <p style="text-align:center;margin-top:10px;font-size:16px;"> <strong>Hola ${data.name}</strong></p> </br> 
             <p style="text-align:center;margin-top:10px;font-size:16px;"> Necesitamos que confirmes tu cita para el dia ${data.date}</p> 
             <p style="text-align:center;font-size:16px;margin-bottom:20px;">Horario de confirmación Desde las ${data.start} Hasta las ${data.end}</p>
             <center>
-              <a style="background-color:#32325d;font-size:18px;border:none;padding:10px;margin-top:20px;margin-bottom:30px;color:#fff;cursor:pointer;" href="http://localhost:8080/#/ConfirmacionAgenda?id=${id}">Confirmar</a>
+              <a style="background-color:#32325d;font-size:18px;border:none;padding:10px;margin-top:20px;margin-bottom:30px;color:#fff;cursor:pointer;" href="http://syswa.net/#/ConfirmacionAgenda?id=${id}">Confirmar</a>
             </center>
           <div>
         </center>
       </div>
       <div style="width: 100%;background-color: #f0f1f3;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#32325d;">
         <center>
-          <div style="width:60%;margint-">
+          <div style="width:60%;">
             <center>
               <p style="text-align:center;font-size:14px;"> Ofrecerte la mejor experiencia es lo más importante para nosotros.</br> 
               <p style="text-align:center;font-size:14px;"> +56 9 7262 8949 &nbsp;&nbsp;   kkprettynails@gmail.com</p> 
