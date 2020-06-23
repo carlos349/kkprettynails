@@ -276,7 +276,7 @@ citas.post('/', (req, res) => {
     
   Citas.create(dataCitas)
   .then(citas => {
-    res.json({status: 'cita creada'})
+    res.json({status: 'cita creada', id: citas._id })
   })
   .catch(err => {
     res.send('error: ' + err)
@@ -294,7 +294,13 @@ citas.get('/confirmDate/:id', (req, res) => {
   })
   .then(citas => {
     if (citas) {
-      res.json({status: 'ok'})
+      Citas.findById(id)
+      .then(date => {
+        res.json({status: 'ok', data: date})
+      })
+      .catch(err => {
+        res.send('error: ' + err)
+      })
     }
   })
   .catch(err => {
@@ -311,45 +317,67 @@ citas.post('/sendConfirmation/:id', (req, res) => {
       start: req.body.start,  
       end: req.body.end,
       date: req.body.date,
+      services: '',
+      lender: req.body.lenders
+  }
+  console.log(req.body.service)
+  for (let index = 0; index < req.body.service.length; index++) {
+    const element = req.body.service[index].servicio;
+    if (index > 0){
+      data.services = data.services+' - '+element
+    }else{
+      data.services = element
+    }
   }
   const mail = {
     from: "kkprettynails.cl",
     to: data.contact,
     subject: 'Confirmacion de cita programada',
     html: `
-    <div style="width: 100%; border:solid .5px #f0f1f3;text-align:center;padding-bottom:20px;">
-
-      <div style="width: 100%;height: 8vh;margin: auto;background-color: #32325d;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#32325d;text-align:justify;">
-        <center>     
-          <img style="height:100px;width:100px;" src="${imgMails}syswa-isotipo.png" alt="Logo kkprettynails">
-        </center>
-      </div>
-      <div style="width: 100%;margin: auto;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#32325d;padding-bottom: 20px;">
-        <center>
-          <div style="width:60%;text-align: center;">
-            <h1 style="text-align: center;color:#32325d;">Bienvenid@ a <img style="height:70px;width:80px" src="${imgMails}logokk.png" alt="Logo kkprettynails"></h1>
-            <p style="text-align:center;margin-top:10px;font-size:16px;"> <strong>Hola ${data.name}</strong></p> </br> 
-            <p style="text-align:center;margin-top:10px;font-size:16px;"> Necesitamos que confirmes tu cita para el dia ${data.date}</p> 
-            <p style="text-align:center;font-size:16px;margin-bottom:20px;">Horario de confirmación Desde las ${data.start} Hasta las ${data.end}</p>
-            <center>
-              <a style="background-color:#32325d;font-size:18px;border:none;padding:10px;margin-top:20px;margin-bottom:30px;color:#fff;cursor:pointer;" href="http://syswa.net/#/ConfirmacionAgenda?id=${id}">Confirmar</a>
-            </center>
-          <div>
-        </center>
-      </div>
-      <div style="width: 100%;background-color: #f0f1f3;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#32325d;">
-        <center>
-          <div style="width:60%;">
-            <center>
-              <p style="text-align:center;font-size:14px;"> Ofrecerte la mejor experiencia es lo más importante para nosotros.</br> 
-              <p style="text-align:center;font-size:14px;"> +56 9 7262 8949 &nbsp;&nbsp;   kkprettynails@gmail.com</p> 
-              <p style="text-align:center;font-size:14px;">Te atendemos de lunes a viernes de 9:00 a 18:30 hrs.</p>
-              <p style="text-align:center;margin-top:10px;"><strong>SÍGUENOS</strong></p>
-            </center>
-          </div>
-        </center>
-      </div>
-    </div>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
+    <div style="width: 100%; padding:0;text-align:center;">
+            <div style="width: 85%;height: 8vh;margin: auto;background-color: #32325d;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#32325d;text-align:justify;-webkit-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);-moz-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);">
+                <div style="width: 80px;margin:auto;border-radius:55%;background-color:#f8f9fa;padding: 10px;">     
+                    <img style="width: 100%;" src="${imgMails}syswa-isotipo.png" alt="Logo kkprettynails">
+                </div>
+            </div>
+            <div style="width: 100%;margin: auto;padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#32325d;padding-bottom: 20px;">
+                <center>
+                    <div style="width:60%;text-align: center;">
+                        <h1 style="text-align: center;color:#32325d;">Bienvenid@ </h1>
+                        <img style="height:80px;width:100px;margin-top:-20px;" src="${imgMails}logokk.png" alt="Logo kkprettynails">
+                            <p style="text-align:center;margin-top:10px;font-size:16px;"> <strong>Hola ${data.name} has generado la siguiente cita.</p>
+                            <p style="text-align:left;margin-top:10px;font-size:16px;"> 
+                            <strong> Día:</strong> ${data.date} <br>
+                            <strong> Hora:</strong> ${data.start} Hrs <br>
+                            </p>
+                            <p style="text-align:left;margin-top:10px;font-size:14px;font-weight: 300;"> 
+                                <strong> Profesional: </strong> ${data.lender}. <br>
+                                <strong> Servicios:</strong> ${data.services}. <br>
+                                <strong> Dirección:</strong> Av. Pedro de Valdivia 3474 Caracol Ñuñoa, Local 53-B Ñuñoa, Chile.
+                            </p>
+                        <center style="margin-top:40px;margin-bottom:30px;">
+                            <a style="background-color:#32325d;font-size:18px;border:none;padding:10px;margin-bottom:30px;color:#fff;cursor:pointer;" href="http://syswa.net/#/ConfirmacionAgenda?id=${id}">Confirmar</a>
+                        </center>
+                        <p style="text-align:left;margin-top:10px;font-size:14px;font-weight: 300;"> 
+                            <strong>Al visitar nuestro local ten presente: </strong> <br><br>
+                            1. Llegar con 15 minutos de anticipación. <br>
+                            2. Para evitar restrasos en los servicios, no se atenderá una vez pasado los 15 minutos de la hora agendada.
+                        </p>
+                <div>
+                </center>
+            </div>
+            <div style="width: 85%;background-color: #f0f1f3;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);margin: auto;padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#32325d;padding-bottom:20px;-webkit-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);-moz-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);">
+                <center>
+                <div style="width:60%;">
+                    <center>
+                    <p style="text-align:center;font-size:14px;"> +56 9 7262 8949 &nbsp;&nbsp;   kkprettynails@gmail.com</p> 
+                    <p style="text-align:center;font-size:14px;">Te atendemos de lunes a viernes de 9:00 a 18:30 hrs.</p>
+                    </center>
+                </div>
+                </center>
+            </div>
+        </div>
     `
   }
   try {
@@ -383,17 +411,23 @@ citas.post('/noOneLender', (req, res) => {
     }
     dataCitas.push(data)
   }
-  console.log(dataCitas)
   for (let i = 0; i < dataCitas.length; i++) {
     Citas.create(dataCitas[i])
     .then(citas => {
-      console.log(citas)
+      console.log('for'+citas)
     })
     .catch(err => {
       console.log(err)
     })
   }
-  res.json({status: 'cita creada'})
+  Citas.find().sort({_id:-1}).limit(1)
+  .then(record => {
+    console.log(record)
+    res.json({status: 'cita creada', id: record[0]._id})
+  })
+  .catch(err => {
+    res.send(err)
+  })
 })
 
 citas.delete('/:id', async (req, res) => {
