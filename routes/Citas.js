@@ -334,14 +334,13 @@ citas.post('/sendConfirmation/:id', (req, res) => {
     to: data.contact,
     subject: 'Confirmacion de cita programada',
     html: `
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
     <div style="width: 100%; padding:0;text-align:center;">
             <div style="width: 85%;height: 8vh;margin: auto;background-color: #32325d;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#32325d;text-align:justify;-webkit-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);-moz-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);">
                 <div style="width: 80px;margin:auto;border-radius:55%;background-color:#f8f9fa;padding: 10px;">     
                     <img style="width: 100%;" src="${imgMails}syswa-isotipo.png" alt="Logo kkprettynails">
                 </div>
             </div>
-            <div style="width: 100%;margin: auto;padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#32325d;padding-bottom: 20px;">
+            <div style="width: 100%;padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#32325d;padding-bottom: 20px;">
                 <center>
                     <div style="width:60%;text-align: center;">
                         <h1 style="text-align: center;color:#32325d;">Bienvenid@ </h1>
