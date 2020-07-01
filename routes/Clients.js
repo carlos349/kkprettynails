@@ -189,6 +189,11 @@ clients.get('/bestClient', async (req, res) => {
     res.json(Clients)
 })
 
+clients.get('/findOne/:id', async (req, res) => {
+    const Clients = await Cliente.findById(req.params.id)
+    res.json(Clients)
+})
+
 clients.get('/onlyData', async (req, res) => {
     const Clients = await Cliente.find()
     res.json(Clients)
