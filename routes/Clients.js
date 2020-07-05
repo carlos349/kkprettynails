@@ -199,6 +199,11 @@ clients.get('/onlyData', async (req, res) => {
     res.json(Clients)
 })
 
+clients.get('/countClient', async (req, res) => {
+    const Clients = await Cliente.find().count()
+    res.json(Clients)
+})
+
 clients.get('/mails', async (req, res) => {
     const Clients = await Cliente.find()
     res.json(Clients)
@@ -228,9 +233,9 @@ clients.post('/verifyClient', (req, res) => {
     const data = {
         nombre: req.body.name,
         identidad: req.body.mail,
-        correoCliente: '',
+        correoCliente: req.body.number,
         instagramCliente: '',
-        participacion: 1,
+        participacion: 0,
         recomendacion: '',
         recomendaciones: 0,
         historical: [],
