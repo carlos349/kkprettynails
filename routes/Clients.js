@@ -2,6 +2,7 @@ const express = require('express');
 const clients = express.Router()
 const cors = require('cors');
 const Cliente = require('../models/Cliente')
+const Citas = require('../models/Citas')
 const email = require('../modelsMails/Mails')
 const multer = require('multer')
 const { diskStorage } = require('multer')
@@ -210,8 +211,8 @@ clients.get('/mails', async (req, res) => {
 })
 
 clients.post('/datesPerClient', async (req, res) => {
-    const Clients = await Cliente.find({
-        $and: {client: {$regex: req.body.client},process:true}
+    const Clients = await Citas.find({
+        $and: [{client: {$regex: req.body.client}},{process:true}]
     })
     res.json(Clients)
 })
