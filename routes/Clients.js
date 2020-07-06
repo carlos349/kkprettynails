@@ -209,7 +209,7 @@ clients.get('/mails', async (req, res) => {
     res.json(Clients)
 })
 
-clients.get('/datesPerClient', async (req, res) => {
+clients.post('/datesPerClient', async (req, res) => {
     const Clients = await Cliente.find({
         $and: {client: {$regex: req.body.client},process:true}
     })
