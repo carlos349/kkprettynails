@@ -209,6 +209,13 @@ clients.get('/mails', async (req, res) => {
     res.json(Clients)
 })
 
+clients.get('/datesPerClient', async (req, res) => {
+    const Clients = await Cliente.find({
+        $and: {client: {$regex: req.body.client},process:true}
+    })
+    res.json(Clients)
+})
+
 // clients.get('/historical/:data', async (req, res) => {
 //     const split = req.params.data.split('-')
 //     const data = split[0]+' / '+split[1]
