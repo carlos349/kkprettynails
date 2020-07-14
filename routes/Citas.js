@@ -9,8 +9,8 @@ citas.use(cors())
 const multer = require('multer')
 const { diskStorage } = require('multer')
 const path = require('path')
-const mailCredentials = require('../private/mail-credentials')
-const KMails = new email(mailCredentials)
+const kmailCredentials = require('../private/kmail-credentials')
+const KMails = new email(kmailCredentials)
 const imgMails = require('../private/endpointsLogo.js')
 const storage = diskStorage({
 	destination: 'public/designs',

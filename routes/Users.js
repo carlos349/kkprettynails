@@ -18,8 +18,8 @@ const storage = diskStorage({
 		cb(null, Date.now() + path.extname(file.originalname));
 	}
 })
-const mailCredentials = require('../private/mail-credentials')
-const KMails = new email(mailCredentials)
+const kmailCredentials = require('../private/kmail-credentials')
+const KMails = new email(kmailCredentials)
 const upload = multer({
 	storage
 })
