@@ -70,7 +70,7 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
         }
         mailTwo = {
             from: "SYSWA WEB",
-            to: array.to,
+            to: 'syswainfo@gmail.com',
             subject: array.subject,
             html: `
             <div style="width: 100%; padding:0;text-align:center;">
@@ -141,7 +141,7 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
         }
         mailTwo = {
             from: "SYSWA WEB",
-            to: array.to,
+            to: 'syswainfo@gmail.com',
             subject: array.subject,
             html: `
             <div style="width: 100%; padding:0;text-align:center;">
@@ -210,7 +210,7 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
         }
         mailTwo = {
             from: "SYSWA WEB",
-            to: array.to,
+            to: 'syswainfo@gmail.com',
             subject: array.subject,
             html: `
             <div style="width: 100%; padding:0;text-align:center;">
