@@ -58,7 +58,7 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
                     <div style="width:60%;">
                         <center>
                         <p style="text-align:center;font-size:12px;"> +56 9 8582 6974 &nbsp;&nbsp;   syswainfo@gmail.com</p> 
-                        <p style="text-align:center;font-size:12px;">Te atendemos todos los dias, solo contáctanos.</p>
+                        <p style="text-align:center;font-size:12px;">Atendemos las 24 horas, los 7 días a la semana, sólo contáctanos.</p>
                         <a href="http://syswa.net" style="color:#172b4d;text-decoration: none;" style="text-align:center;margin-top:12px;"><strong>Syswa.net</strong></a>&nbsp;&nbsp;
                         <a href="https://www.instagram.com/syswanet/" style="color:#172b4d;text-decoration: none;" style="text-align:center;margin-top:12px;"><strong>@syswanet</strong></a>
                         </center>
@@ -129,7 +129,7 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
                     <div style="width:60%;">
                         <center>
                         <p style="text-align:center;font-size:12px;"> +56 9 8582 6974 &nbsp;&nbsp;   syswainfo@gmail.com</p> 
-                        <p style="text-align:center;font-size:12px;">Te atendemos todos los dias, solo contáctanos.</p>
+                        <p style="text-align:center;font-size:12px;">Atendemos las 24 horas, los 7 días a la semana, sólo contáctanos.</p>
                         <a href="http://syswa.net" style="color:#172b4d;text-decoration: none;" style="text-align:center;margin-top:12px;"><strong>Syswa.net</strong></a>&nbsp;&nbsp;
                         <a href="https://www.instagram.com/syswanet/" style="color:#172b4d;text-decoration: none;" style="text-align:center;margin-top:12px;"><strong>@syswanet</strong></a>
                         </center>
@@ -153,7 +153,7 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
                 <div style="width: 100%;margin: auto;padding-top: 5%;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;padding-bottom: 20px;">
                     <center>
                         <div style="width:60%;text-align: center;">
-                            <h1 style="text-align: center;color:#172b4d;">El Cliente contrato un servicio</h1>
+                            <h1 style="text-align: center;color:#172b4d;">El cliente contrató un servicio</h1>
                             <p style="text-align:left;font-size:14px;font-weight: 300;text-align: center;width: 60%;margin:auto;">
                             <strong>El cliente ${array.firstName} ${array.lastName} ha contratado el servicio ${array.type}, por favor ponerse en contacto.</strong><br>Correo: ${array.to} <br> Teléfono: ${array.number}
                             </p>
@@ -198,7 +198,7 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
                     <div style="width:60%;">
                         <center>
                         <p style="text-align:center;font-size:12px;"> +56 9 8582 6974 &nbsp;&nbsp;   syswainfo@gmail.com</p> 
-                        <p style="text-align:center;font-size:12px;">Te atendemos todos los dias, solo contáctanos.</p>
+                        <p style="text-align:center;font-size:12px;">Atendemos las 24 horas, los 7 días a la semana, sólo contáctanos.</p>
                         <a href="http://syswa.net" style="color:#172b4d;text-decoration: none;" style="text-align:center;margin-top:12px;"><strong>Syswa.net</strong></a>&nbsp;&nbsp;
                         <a href="https://www.instagram.com/syswanet/" style="color:#172b4d;text-decoration: none;" style="text-align:center;margin-top:12px;"><strong>@syswanet</strong></a>
                         </center>
