@@ -43,6 +43,7 @@ app.use('/citas', require('./routes/Citas.js'))
 app.use('/expenses', require('./routes/Expenses.js'))
 app.use('/inventario', require('./routes/Inventario.js'))
 app.use('/clients', require('./routes/Clients.js'))
+app.use('/pedidos', require('./routes/Pedidos.js'))
 app.use('/notifications', require('./routes/Notifications.js'))
 
 

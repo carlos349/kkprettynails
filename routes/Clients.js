@@ -510,7 +510,7 @@ clients.post('/', (req, res) => {
         correoCliente:req.body.correoCliente,
         instagramCliente: req.body.instagramCliente,
         participacion: req.body.ifCheck,
-        recomendacion: req.body.recomendador,
+        recomendacion: recommender,
         recomendaciones:0,
         historical: [],
         ultimaFecha:today,
