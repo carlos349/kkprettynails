@@ -34,6 +34,15 @@ const citasSchema = new Schema ({
   },
   image: {
     type: Array
+  },
+  typepay: {
+    type: String    
+  },
+  paypdf: {
+    type: String
+  },
+  type: {
+    type: String
   }
 })
 
