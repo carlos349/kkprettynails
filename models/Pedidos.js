@@ -25,6 +25,9 @@ const PedidoSchema = new Schema ({
     articulo: {
       type: String
     },
+    medio:{
+      type:String
+    },
     total: {
       type: String
     }
