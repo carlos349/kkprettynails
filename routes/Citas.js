@@ -4,6 +4,7 @@ const cors = require('cors');
 const Citas = require('../models/Citas')
 const Cliente = require('../models/Cliente')
 const closedDates = require('../models/closedDates')
+const Manicurista = require('../models/Manicurista')
 const email = require('../modelsMails/Mails')
 citas.use(cors())
 const multer = require('multer')
@@ -20,6 +21,58 @@ const storage = diskStorage({
 })
 const upload = multer({
 	storage
+})
+
+
+citas.get('/availableslenders/:fecha', (req, res) => {
+
+  const dateNow = new Date(req.params.fecha)
+  const day = dateNow.getDay()
+  console.log(day)
+  const formatDate = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()
+  dateNow.setDate(dateNow.getDate() + 1)
+  const formatDateTwo = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()
+  var arrayLenders = []
+  console.log(formatDateTwo)
+  Citas.find({date: {$gte: formatDate, $lte: formatDateTwo}}).sort({sort: 1})
+  .then(citas => {
+    const Dates = citas
+    Manicurista.find()
+    .then(lenders => {
+      const Lenders = lenders
+      console.log(lenders)
+      for (let index = 0; index < Lenders.length; index++) {
+        const element = Lenders[index];
+        if (day != element.restDay) {
+          arrayLenders.push({name: element.nombre, sort: 0})
+        }
+      }
+      
+      if (Dates.length > 0) {
+        for (let i = 0; i < Dates.length; i++) {
+          const elementTwo = Dates[i];
+          for (let j = 0; j < arrayLenders.length; j++) {
+            const elementThree = arrayLenders[j];
+            if (elementTwo.employe == elementThree.name) {
+              elementThree.sort = elementTwo.sort
+            }
+          }
+        }
+        arrayLenders.sort(function(a, b) {
+          return a.sort - b.sort;
+        });
+        console.log(arrayLenders)
+        res.json({array: arrayLenders})
+      }else{
+        res.json({array: arrayLenders})
+      }
+    })
+    .catch(err => {
+      res.send(err)
+    })
+  }).catch(err => {
+    res.send(err)
+  })
 })
 
 citas.get('/', async (req, res) => {
@@ -58,6 +111,37 @@ citas.put('/closeDate/:id', async (req, res) => {
     res.send(err)
   }
 })
+
+citas.post('/editBlocks', (req, res) => {
+  const blocks = req.body.array
+  const time = req.body.time
+  const totalFor = parseFloat(time) / 15
+  console.log(time)
+  console.log(totalFor)
+  for (let index = 0; index < blocks.length; index++) {
+    const element = blocks[index];
+    if (element.validator == 'select') {
+      element.validator = false
+    }
+  }
+  for (let i = 0; i < blocks.length; i++) {
+    const elementTwo = blocks[i];
+    if (elementTwo.validator == false) {
+      let count = 0
+      for (let j = 0; j < totalFor + 1; j++) {
+        count = j == 0 ? parseFloat(i) - parseFloat(1) : parseFloat(count) - 1
+        console.log(count)
+        if (count >= 0) {
+          console.log(blocks[count].validator)
+          if (blocks[count].validator == true) {
+            blocks[count].validator = 'nDisponible'
+          }
+        }
+      }
+    }
+  }
+  res.json(blocks)
+})  
 
 citas.post('/getBlocks', (req,res) => {
   const employe = req.body.employe
@@ -260,6 +344,8 @@ citas.post('/getDateByMani', (req, res) => {
 
 citas.post('/', (req, res) => {
   const DateSelect = new Date(req.body.fecha+' 10:00')
+  const dateID = new Date()
+  const id = dateID.getTime()
   const dataCitas = {
     start: req.body.entrada,
     end: req.body.salida,
@@ -271,7 +357,11 @@ citas.post('/', (req, res) => {
     class: req.body.class,
     process: true,
     confirmation: false,
-    image: []
+    image: [],
+    confirmationId: id,
+    typepay: '',
+    paypdf: '',
+    type: 'system'
   }
     
   Citas.create(dataCitas)
@@ -357,7 +447,7 @@ citas.post('/sendConfirmation/:id', (req, res) => {
                                 <strong> Dirección:</strong> Av. Pedro de Valdivia 3474 Caracol Ñuñoa, Local 53-B Ñuñoa, Chile.
                             </p>
                         <center style="margin-top:40px;margin-bottom:30px;">
-                            <a style="background-color:#32325d;font-size:18px;border:none;padding:10px;margin-bottom:30px;color:#fff;cursor:pointer;" href="http://syswa.net/#/ConfirmacionAgenda?id=${id}">Confirmar</a>
+                            <a style="background-color:#32325d;font-size:18px;border:none;padding:10px;margin-bottom:30px;color:#fff;cursor:pointer;" href="http://kkprettynails.syswa.net/#/ConfirmacionAgenda?id=${id}">Confirmar</a>
                         </center>
                         <p style="text-align:left;margin-top:10px;font-size:14px;font-weight: 300;"> 
                             <strong>Al visitar nuestro local ten presente: </strong> <br><br>
@@ -389,11 +479,28 @@ citas.post('/sendConfirmation/:id', (req, res) => {
   }
 })
 
-citas.post('/noOneLender', (req, res) => {
+citas.post('/uploadPdf', upload.single('file'), (req, res, next) => {
+  console.log(req.file)
+  if (req.file) {
+    res.json({nameFile: req.file.filename})
+  }else{
+    console.log(req.file)
+  }
+})
+
+citas.post('/noOneLender',  (req, res) => {
   const dataCitas = []
   const dataDate = req.body.dataDate
   const client = req.body.client
   const date = req.body.date
+  var nameFile = ''
+  if (req.body.pdf == 'not') {
+    nameFile = ''
+  }else{
+    nameFile = req.body.pdf
+  }
+  const dateID = new Date()
+  const id = dateID.getTime()
   for (let index = 0; index < dataDate.serviceSelectds.length; index++) {
     const element = dataDate.serviceSelectds[index];
     var data = {
@@ -402,19 +509,22 @@ citas.post('/noOneLender', (req, res) => {
       sort: element.sort,
       date: date,
       services: [{servicio: element.servicio, comision: element.comision, precio: element.precio}],
-      client: client,
-      employe: element.lender,
+      client: client.name+' '+client.lastName+ ' / '+client.mail,
+      employe: element.realLender,
       class: element.class,
       process: true,
       confirmation: false,
-      image: []
+      image: [],
+      confirmationId: id,
+      typepay: client.pay,
+      paypdf: '',
+      type: 'web',
     }
     dataCitas.push(data)
   }
   for (let i = 0; i < dataCitas.length; i++) {
     Citas.create(dataCitas[i])
-    .then(citas => {
-      console.log('for'+citas)
+    .then(citas => { 
     })
     .catch(err => {
       console.log(err)
@@ -423,7 +533,7 @@ citas.post('/noOneLender', (req, res) => {
   Citas.find().sort({_id:-1}).limit(1)
   .then(record => {
     console.log(record)
-    res.json({status: 'cita creada', id: record[0]._id})
+    res.json({status: 'cita creada', id: record[0].confirmationId})
   })
   .catch(err => {
     res.send(err)
