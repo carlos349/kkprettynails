@@ -533,7 +533,7 @@ citas.post('/noOneLender',  (req, res) => {
   const dataCitas = []
   const dataDate = req.body.dataDate
   const client = req.body.client
-  const date = req.body.date
+  const date = new Date(req.body.date+' 10:00')
   console.log(req.body.pdf)
   var nameFile = ''
   if (req.body.pdf == 'not') {
