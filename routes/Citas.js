@@ -479,7 +479,7 @@ citas.post('/sendConfirmation/:id', (req, res) => {
 
                             <p style="text-align:left;margin-top:10px;font-size:16px;"> 
                              <img style="height:40px;width:40px;" src="${imgMails}calendar.png" alt="Logo kkprettynails"> ${data.date} <br>
-                            <img style="height:40px;width:40px;" src="${imgMails}sun.png" alt="Logo kkprettynails"> ${data.date} ${data.start} Hrs <br>
+                            <img style="height:40px;width:40px;" src="${imgMails}sun.png" alt="Logo kkprettynails"> ${data.start} Hrs <br>
                             <img style="height:40px;width:40px;" src="${imgMails}market.png" alt="Logo kkprettynails"> Av. Pedro de Valdivia 3474 Caracol Ñuñoa, Local 53-B Ñuñoa, Chile. <br>
                             </p>
                         <center style="margin-top:40px;margin-bottom:30px;">
