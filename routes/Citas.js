@@ -376,17 +376,52 @@ citas.post('/', (req, res) => {
 
 citas.get('/confirmDate/:id', (req, res) => {
   const id = req.params.id
-
-  Citas.findByIdAndUpdate(id, {
+  Citas.updateMany({confirmationId: id}, {
     $set: {
       confirmation: true
     }
   })
   .then(citas => {
     if (citas) {
-      Citas.findById(id)
+      Citas.find({confirmationId: id})
       .then(date => {
-        res.json({status: 'ok', data: date})
+        console.log(date)
+        const split = date[0].client.split(' / ')
+        const splitDate = date[0].date.getFullYear() +"-"+(date[0].date.getMonth() + 1)+"-"+date[0].date.getDate()
+        const mail = {
+          from: "kkprettynails.syswa.net",
+          to: 'kkprettynails@gmail.com',
+          subject: 'Cita confirmada',
+          html: `
+          <div style="width: 100%; padding:0;text-align:center;">
+                  <div style="width: 85%;height: 8vh;margin: auto;background-color: #181d81;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;text-align:justify;-webkit-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);-moz-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);">
+                      <div style="width: 80px;margin:auto;border-radius:55%;background-color:#f8f9fa;padding: 10px;">     
+                          <img style="width: 100%;" src="${imgMails}syswa-isotipo.png" alt="Logo kkprettynails">
+                      </div>
+                  </div>
+                  <div style="width: 100%;margin: auto;padding-top: 5%;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;padding-bottom: 20px;">
+                      <center>
+                        <div style="width:60%;text-align: center;">
+                          <h1 style="text-align: center;color:#181d81;">Información </h1>
+                          <img style="height:80px;width:100px;margin-top:-20px;" src="${imgMails}logokk.png" alt="Logo kkprettynails">
+                          <p style="text-align:center;margin-top:10px;font-size:16px;"> <strong>El cliente ${split[0]} ha confirmado su cita.</p>
+                          <p style="text-align:center;margin-top:10px;font-size:16px;"> 
+                              <img style="height:40px;width:40px;" src="${imgMails}calendar.png" alt="Logo kkprettynails"> ${splitDate} <br>
+                          </p>
+                        <div>
+                      </center>
+                  </div>
+              </div>
+          `
+        }
+        try {
+          KMails.sendMail(mail)
+          res.json({status: 'ok', data: date[0]})
+        }catch(err){
+          res.json({status: 'bad'})
+          res.send(err)
+        }
+        
       })
       .catch(err => {
         res.send('error: ' + err)
@@ -424,31 +459,33 @@ citas.post('/sendConfirmation/:id', (req, res) => {
     to: data.contact,
     subject: 'Confirmacion de cita programada',
     html: `
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
     <div style="width: 100%; padding:0;text-align:center;">
-            <div style="width: 85%;height: 8vh;margin: auto;background-color: #32325d;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#32325d;text-align:justify;-webkit-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);-moz-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);">
+            <div style="width: 85%;height: 8vh;margin: auto;background-color: #181d81;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;text-align:justify;-webkit-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);-moz-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);">
                 <div style="width: 80px;margin:auto;border-radius:55%;background-color:#f8f9fa;padding: 10px;">     
                     <img style="width: 100%;" src="${imgMails}syswa-isotipo.png" alt="Logo kkprettynails">
                 </div>
             </div>
-            <div style="width: 100%;margin: auto;padding-top: 5%;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#32325d;padding-bottom: 20px;">
+            <div style="width: 100%;margin: auto;padding-top: 5%;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;padding-bottom: 20px;">
                 <center>
                     <div style="width:60%;text-align: center;">
-                        <h1 style="text-align: center;color:#32325d;">Bienvenid@ </h1>
+                        <h1 style="text-align: center;color:#181d81;">Bienvenid@ </h1>
                         <img style="height:80px;width:100px;margin-top:-20px;" src="${imgMails}logokk.png" alt="Logo kkprettynails">
-                            <p style="text-align:center;margin-top:10px;font-size:16px;"> <strong>Hola ${data.name} has generado la siguiente cita.</p>
-                            <p style="text-align:left;margin-top:10px;font-size:16px;"> 
-                            <strong> Día:</strong> ${data.date} <br>
-                            <strong> Hora:</strong> ${data.start} Hrs <br>
-                            </p>
+                            <p style="text-align:center;margin-top:10px;font-size:16px;"> <strong>¡${data.name}! has generado la siguiente cita.</p>
+                            
                             <p style="text-align:left;margin-top:10px;font-size:14px;font-weight: 300;"> 
                                 <strong> Profesional: </strong> ${data.lender}. <br>
                                 <strong> Servicios:</strong> ${data.services}. <br>
-                                <strong> Dirección:</strong> Av. Pedro de Valdivia 3474 Caracol Ñuñoa, Local 53-B Ñuñoa, Chile.
+                            </p>
+
+                            <p style="text-align:left;margin-top:10px;font-size:16px;"> 
+                             <img style="height:40px;width:40px;" src="${imgMails}calendar.png" alt="Logo kkprettynails"> ${data.date} <br>
+                            <img style="height:40px;width:40px;" src="${imgMails}sun.png" alt="Logo kkprettynails"> ${data.date} ${data.start} Hrs <br>
+                            <img style="height:40px;width:40px;" src="${imgMails}market.png" alt="Logo kkprettynails"> Av. Pedro de Valdivia 3474 Caracol Ñuñoa, Local 53-B Ñuñoa, Chile. <br>
                             </p>
                         <center style="margin-top:40px;margin-bottom:30px;">
-                            <a style="background-color:#32325d;font-size:18px;border:none;padding:10px;margin-bottom:30px;color:#fff;cursor:pointer;" href="http://kkprettynails.syswa.net/#/ConfirmacionAgenda?id=${id}">Confirmar</a>
+                            <a style="background-color:#181d81;font-size:18px;border:none;border-radius:14px;padding:10px;margin-bottom:30px;color:#fff;cursor:pointer;" href="http://kkprettynails.syswa.net/#/ConfirmacionAgenda?id=${id}">Confirmar</a>
                         </center>
+                        <hr style="background-color:#181d81;color:#181d81;">
                         <p style="text-align:left;margin-top:10px;font-size:14px;font-weight: 300;"> 
                             <strong>Al visitar nuestro local ten presente: </strong> <br><br>
                             1. Llegar con 15 minutos de anticipación. <br>
@@ -457,12 +494,16 @@ citas.post('/sendConfirmation/:id', (req, res) => {
                 <div>
                 </center>
             </div>
-            <div style="width: 85%;background-color: #f0f1f3;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);margin: auto;padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#32325d;padding-bottom:20px;-webkit-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);-moz-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);">
+            <div style="width: 85%;background-color: #f0f1f3;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);margin: auto;padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;padding-bottom:20px;-webkit-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);-moz-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);">
                 <center>
                 <div style="width:60%;">
                     <center>
-                    <p style="text-align:center;font-size:14px;"> +56 9 7262 8949 &nbsp;&nbsp;   kkprettynails@gmail.com</p> 
-                    <p style="text-align:center;font-size:14px;">Te atendemos de lunes a viernes de 9:00 a 18:30 hrs.</p>
+                    <p style="text-align:center;font-size:14px;"> Contáctanos</p>
+                    <a  href="kkprettynails@gmail.com" style="margin-left:20px;> <img style="height:50px;width:50px;" src="${imgMails}mail.png" alt="Logo kkprettynails"></a>
+                    <a  href="https://www.instagram.com/kkprettynails/" style="margin-left:20px;><img style="height:50px;width:50px;" src="${imgMails}ig.png" alt="Logo kkprettynails"></a>
+                    <a  href="https://api.whatsapp.com/send?phone=56972628949&text=&source=&data=&app_absent=" style="margin-left:20px;><img style="height:50px;width:50px;" src="${imgMails}ws.png" alt="Logo kkprettynails"></a>
+                    <a  href="https://kkprettynails.cl/inicio" style="margin-left:20px;><img style="height:50px;width:50px;" src="${imgMails}web.png" alt="Logo kkprettynails"></a>
+                    <p style="text-align:center;font-size:14px;">Av. Pedro de Valdivia 3474 Caracol Ñuñoa, Local 53-B Ñuñoa, Chile.</p>
                     </center>
                 </div>
                 </center>
@@ -493,6 +534,7 @@ citas.post('/noOneLender',  (req, res) => {
   const dataDate = req.body.dataDate
   const client = req.body.client
   const date = req.body.date
+  console.log(req.body.pdf)
   var nameFile = ''
   if (req.body.pdf == 'not') {
     nameFile = ''
@@ -517,7 +559,7 @@ citas.post('/noOneLender',  (req, res) => {
       image: [],
       confirmationId: id,
       typepay: client.pay,
-      paypdf: '',
+      paypdf: nameFile,
       type: 'web',
     }
     dataCitas.push(data)
@@ -530,14 +572,9 @@ citas.post('/noOneLender',  (req, res) => {
       console.log(err)
     })
   }
-  Citas.find().sort({_id:-1}).limit(1)
-  .then(record => {
-    console.log(record)
-    res.json({status: 'cita creada', id: record[0].confirmationId})
-  })
-  .catch(err => {
-    res.send(err)
-  })
+  
+  res.json({status: 'cita creada', id: id})
+  
 })
 
 citas.delete('/:id', async (req, res) => {
