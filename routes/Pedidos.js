@@ -73,7 +73,7 @@ pedidos.post('/sendEmailPedido', async (req, res, next) => {
 })
 
 pedidos.get('/', async (req, res) => {
-    const pedidos = await Pedido.find().sort({ultimaFecha: -1})
+    const pedidos = await Pedido.find().sort({nPedido: -1})
     res.json(pedidos)
 })
 
@@ -199,7 +199,7 @@ pedidos.post('/', (req, res) => {
             pedidoData.nPedido = parseFloat(Count[0].nPedido) + 1
             Pedido.create(pedidoData)
             .then(pedido => {
-                res.json({status: 'Registrado'}) 
+                res.json({status: 'Registrado',datos:pedido}) 
             })
             .catch(err => {
 
