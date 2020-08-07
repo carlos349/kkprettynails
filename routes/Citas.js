@@ -499,10 +499,18 @@ citas.post('/sendConfirmation/:id', (req, res) => {
                 <div style="width:60%;">
                     <center>
                     <p style="text-align:center;font-size:14px;"> Contáctanos</p>
-                    <a  href="kkprettynails@gmail.com" style="margin-left:20px;> <img style="height:50px;width:50px;" src="${imgMails}mail.png" alt="Logo kkprettynails"></a>
-                    <a  href="https://www.instagram.com/kkprettynails/" style="margin-left:20px;><img style="height:50px;width:50px;" src="${imgMails}ig.png" alt="Logo kkprettynails"></a>
-                    <a  href="https://api.whatsapp.com/send?phone=56972628949&text=&source=&data=&app_absent=" style="margin-left:20px;><img style="height:50px;width:50px;" src="${imgMails}ws.png" alt="Logo kkprettynails"></a>
-                    <a  href="https://kkprettynails.cl/inicio" style="margin-left:20px;><img style="height:50px;width:50px;" src="${imgMails}web.png" alt="Logo kkprettynails"></a>
+                    <a  href="kkprettynails@gmail.com" style="margin-left:20px;> 
+                      <img style="height:50px;width:50px;" src="${imgMails}mail.png" alt="Logo kkprettynails">
+                    </a>
+                    <a  href="https://www.instagram.com/kkprettynails/" style="margin-left:20px;>
+                      <img style="height:50px;width:50px;" src="${imgMails}ig.png" alt="Logo kkprettynails">
+                    </a>
+                    <a  href="https://api.whatsapp.com/send?phone=56972628949&text=&source=&data=&app_absent=" style="margin-left:20px;>
+                      <img style="height:50px;width:50px;" src="${imgMails}ws.png" alt="Logo kkprettynails">
+                    </a>
+                    <a  href="https://kkprettynails.cl/inicio" style="margin-left:20px;>
+                      <img style="height:50px;width:50px;" src="${imgMails}web.png" alt="Logo kkprettynails">
+                    </a>
                     <p style="text-align:center;font-size:14px;">Av. Pedro de Valdivia 3474 Caracol Ñuñoa, Local 53-B Ñuñoa, Chile.</p>
                     </center>
                 </div>
