@@ -462,7 +462,7 @@ citas.post('/sendConfirmation/:id', (req, res) => {
     <div style="width: 100%; padding:0;text-align:center;">
             <div style="width: 85%;height: 8vh;margin: auto;background-color: #181d81;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;text-align:justify;-webkit-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);-moz-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);">
                 <div style="width: 80px;margin:auto;border-radius:55%;background-color:#f8f9fa;padding: 10px;">     
-                    <img style="width: 100%;" src="${imgMails}syswa-isotipo.png" alt="Logo kkprettynails">
+                    <img style="width: 100%;" src="${imgMails}syswa-isotipo.png" alt="Logo syswa">
                 </div>
             </div>
             <div style="width: 100%;margin: auto;padding-top: 5%;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;padding-bottom: 20px;">
@@ -499,18 +499,18 @@ citas.post('/sendConfirmation/:id', (req, res) => {
                 <div style="width:60%;">
                     <center>
                     <p style="text-align:center;font-size:14px;"> Contáctanos</p>
-                    <a  href="kkprettynails@gmail.com" style="margin-left:20px;> 
-                      <img style="height:50px;width:50px;" src="${imgMails}mail.png" alt="Logo kkprettynails">
-                    </a>
-                    <a  href="https://www.instagram.com/kkprettynails/" style="margin-left:20px;>
-                      <img style="height:50px;width:50px;" src="${imgMails}ig.png" alt="Logo kkprettynails">
-                    </a>
-                    <a  href="https://api.whatsapp.com/send?phone=56972628949&text=&source=&data=&app_absent=" style="margin-left:20px;>
-                      <img style="height:50px;width:50px;" src="${imgMails}ws.png" alt="Logo kkprettynails">
-                    </a>
-                    <a  href="https://kkprettynails.cl/inicio" style="margin-left:20px;>
-                      <img style="height:50px;width:50px;" src="${imgMails}web.png" alt="Logo kkprettynails">
-                    </a>
+                      <a  href="kkprettynails@gmail.com" style="margin-left:20px;"> 
+                        <img style="height:50px;width:50px;" src="${imgMails}mail.png" alt="Logo mail">
+                      </a>
+                      <a  href="https://www.instagram.com/kkprettynails/" style="margin-left:20px;">
+                        <img style="height:50px;width:50px;" src="${imgMails}ig.png" alt="Logo ig">
+                      </a>
+                      <a  href="https://api.whatsapp.com/send?phone=56972628949&text=&source=&data=&app_absent=" style="margin-left:20px;">
+                        <img style="height:50px;width:50px;" src="${imgMails}ws.png" alt="Logo ws">
+                      </a>
+                      <a  href="https://kkprettynails.cl/inicio" style="margin-left:20px;">
+                        <img style="height:50px;width:50px;" src="${imgMails}web.png" alt="Logo web">
+                      </a>
                     <p style="text-align:center;font-size:14px;">Av. Pedro de Valdivia 3474 Caracol Ñuñoa, Local 53-B Ñuñoa, Chile.</p>
                     </center>
                 </div>
