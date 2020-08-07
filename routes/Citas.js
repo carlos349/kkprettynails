@@ -23,6 +23,7 @@ const upload = multer({
 	storage
 })
 
+
 citas.get('/availableslenders/:fecha', (req, res) => {
 
   const dateNow = new Date(req.params.fecha)
@@ -343,6 +344,8 @@ citas.post('/getDateByMani', (req, res) => {
 
 citas.post('/', (req, res) => {
   const DateSelect = new Date(req.body.fecha+' 10:00')
+  const dateID = new Date()
+  const id = dateID.getTime()
   const dataCitas = {
     start: req.body.entrada,
     end: req.body.salida,
@@ -355,6 +358,7 @@ citas.post('/', (req, res) => {
     process: true,
     confirmation: false,
     image: [],
+    confirmationId: id,
     typepay: '',
     paypdf: '',
     type: 'system'
@@ -475,11 +479,28 @@ citas.post('/sendConfirmation/:id', (req, res) => {
   }
 })
 
-citas.post('/noOneLender', (req, res) => {
+citas.post('/uploadPdf', upload.single('file'), (req, res, next) => {
+  console.log(req.file)
+  if (req.file) {
+    res.json({nameFile: req.file.filename})
+  }else{
+    console.log(req.file)
+  }
+})
+
+citas.post('/noOneLender',  (req, res) => {
   const dataCitas = []
   const dataDate = req.body.dataDate
   const client = req.body.client
   const date = req.body.date
+  var nameFile = ''
+  if (req.body.pdf == 'not') {
+    nameFile = ''
+  }else{
+    nameFile = req.body.pdf
+  }
+  const dateID = new Date()
+  const id = dateID.getTime()
   for (let index = 0; index < dataDate.serviceSelectds.length; index++) {
     const element = dataDate.serviceSelectds[index];
     var data = {
@@ -488,12 +509,13 @@ citas.post('/noOneLender', (req, res) => {
       sort: element.sort,
       date: date,
       services: [{servicio: element.servicio, comision: element.comision, precio: element.precio}],
-      client: client.name+' '+client.lastName,
-      employe: element.lender,
+      client: client.name+' '+client.lastName+ ' / '+client.mail,
+      employe: element.realLender,
       class: element.class,
       process: true,
       confirmation: false,
       image: [],
+      confirmationId: id,
       typepay: client.pay,
       paypdf: '',
       type: 'web',
@@ -502,8 +524,7 @@ citas.post('/noOneLender', (req, res) => {
   }
   for (let i = 0; i < dataCitas.length; i++) {
     Citas.create(dataCitas[i])
-    .then(citas => {
-      console.log('for'+citas)
+    .then(citas => { 
     })
     .catch(err => {
       console.log(err)
@@ -512,7 +533,7 @@ citas.post('/noOneLender', (req, res) => {
   Citas.find().sort({_id:-1}).limit(1)
   .then(record => {
     console.log(record)
-    res.json({status: 'cita creada', id: record[0]._id})
+    res.json({status: 'cita creada', id: record[0].confirmationId})
   })
   .catch(err => {
     res.send(err)

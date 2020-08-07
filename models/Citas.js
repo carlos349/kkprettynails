@@ -35,6 +35,9 @@ const citasSchema = new Schema ({
   image: {
     type: Array
   },
+  confirmationId: {
+    type: Number
+  },
   typepay: {
     type: String    
   },
