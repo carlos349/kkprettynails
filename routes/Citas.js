@@ -459,9 +459,9 @@ citas.post('/sendConfirmation/:id', (req, res) => {
     to: data.contact,
     subject: 'Confirmacion de cita programada',
     html: `
-    <div style="width: 100%; padding:0;text-align:center;">
+    <div style="width: 70%;max-width:70% padding:0;text-align:center;">
             <div style="width: 85%;height: 8vh;margin: auto;background-color: #181d81;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;text-align:justify;-webkit-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);-moz-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);">
-                <div style="width: 80px;margin:auto;border-radius:55%;background-color:#f8f9fa;padding: 10px;">     
+                <div style="width: 80px;margin:auto;border-radius:55%;background-color:#fff;padding: 10px;">     
                     <img style="width: 100%;" src="${imgMails}syswa-isotipo.png" alt="Logo syswa">
                 </div>
             </div>
@@ -481,7 +481,7 @@ citas.post('/sendConfirmation/:id', (req, res) => {
                             <p style="text-align:left;margin-top:10px;font-size:16px;"> 
                              <img style="height:40px;width:40px;" src="${imgMails}calendar.png" alt="Logo kkprettynails"> 
                             <b style="margin-top:-5px">${data.date}</b> <br>
-                            <img style="height:40px;width:40px;" src="${imgMails}market.png" alt="Logo kkprettynails"> <b style="margin-top:-5px"> Av. Pedro de Valdivia 3474 Caracol Ñuñoa, Local 53-B Ñuñoa, Chile.</b> <br>
+                            <img style="height:40px;width:40px;" src="${imgMails}market.png" alt="Logo kkprettynails"><a style="text-align:center;font-size:16px;" href="https://goo.gl/maps/m5rVWDEiPj7q1Hxh9"><b style="font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;font-size:16px;margin-top:-5px"> Av. Pedro de Valdivia 3474 Caracol Ñuñoa, Local 53-B Ñuñoa, Chile. </b></a>   <br>
                             </p>
                         <center style="margin-top:40px;margin-bottom:30px;">
                             <a style="background-color:#181d81;font-size:18px;border:none;border-radius:14px;padding:10px;margin-bottom:30px;color:#fff;cursor:pointer;" href="http://kkprettynails.syswa.net/#/ConfirmacionAgenda?id=${id}">Confirmar</a>
