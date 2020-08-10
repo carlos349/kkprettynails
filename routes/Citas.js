@@ -500,16 +500,16 @@ citas.post('/sendConfirmation/:id', (req, res) => {
                 <div style="width:60%;">
                     <center>
                     <p style="text-align:center;font-size:14px;"> Contáctanos</p>
-                      <a  href="mailto:kkprettynails@gmail.com" style="margin-left:20px;"> 
+                      <a  href="mailto:kkprettynails@gmail.com" style="margin-left:20px;text-decoration:none;"> 
                         <img style="height:50px;width:50px;" src="${imgMails}mail.png" alt="Logo mail">
                       </a>
-                      <a  href="https://www.instagram.com/kkprettynails/" style="margin-left:20px;">
+                      <a  href="https://www.instagram.com/kkprettynails/" style="margin-left:20px;text-decoration:none;">
                         <img style="height:50px;width:50px;" src="${imgMails}ig.png" alt="Logo ig">
                       </a>
-                      <a  href="https://api.whatsapp.com/send?phone=56972628949&text=&source=&data=&app_absent=" style="margin-left:20px;">
+                      <a  href="https://api.whatsapp.com/send?phone=56972628949&text=&source=&data=&app_absent=" style="margin-left:20px;text-decoration:none;">
                         <img style="height:50px;width:50px;" src="${imgMails}ws.png" alt="Logo ws">
                       </a>
-                      <a  href="https://kkprettynails.cl/inicio" style="margin-left:20px;">
+                      <a  href="https://kkprettynails.cl/inicio" style="margin-left:20px;text-decoration:none;">
                         <img style="height:50px;width:50px;" src="${imgMails}web.png" alt="Logo web">
                       </a>
                     <br>
