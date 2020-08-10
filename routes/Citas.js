@@ -459,7 +459,7 @@ citas.post('/sendConfirmation/:id', (req, res) => {
     to: data.contact,
     subject: 'Confirmacion de cita programada',
     html: `
-    <div style="width: 70%;max-width:1000px;margin:auto; padding:0;text-align:center;">
+    <div style="width: 80%;max-width:1000px;margin:auto; padding:0;text-align:center;">
             <div style="width: 85%;height: 8vh;margin: auto;background-color: #181d81;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;text-align:justify;-webkit-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);-moz-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);">
                 <div style="width: 80px;margin:auto;border-radius:55%;background-color:#fff;padding: 10px;">     
                     <img style="width: 100%;" src="${imgMails}syswa-isotipo.png" alt="Logo syswa">
