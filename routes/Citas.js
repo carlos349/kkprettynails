@@ -475,12 +475,13 @@ citas.post('/sendConfirmation/:id', (req, res) => {
                             <p style="text-align:left;margin-top:10px;font-size:14px;font-weight: 300;"> 
                                 <strong> Profesional: </strong> ${data.lender}. <br>
                                 <strong> Servicios:</strong> ${data.services}. <br>
+                                <strong> Horarios de entrada:</strong> ${data.start}. <br>
                             </p>
 
                             <p style="text-align:left;margin-top:10px;font-size:16px;"> 
-                             <img style="height:40px;width:40px;" src="${imgMails}calendar.png" alt="Logo kkprettynails"> ${data.date} <br>
-                            <img style="height:40px;width:40px;" src="${imgMails}sun.png" alt="Logo kkprettynails"> ${data.start} Hrs <br>
-                            <img style="height:40px;width:40px;" src="${imgMails}market.png" alt="Logo kkprettynails"> Av. Pedro de Valdivia 3474 Caracol Ñuñoa, Local 53-B Ñuñoa, Chile. <br>
+                             <img style="height:40px;width:40px;" src="${imgMails}calendar.png" alt="Logo kkprettynails"> 
+                            <b style="margin-top:-5px">${data.date}</b> <br>
+                            <img style="height:40px;width:40px;" src="${imgMails}market.png" alt="Logo kkprettynails"> <b style="margin-top:-5px"> Av. Pedro de Valdivia 3474 Caracol Ñuñoa, Local 53-B Ñuñoa, Chile.</b> <br>
                             </p>
                         <center style="margin-top:40px;margin-bottom:30px;">
                             <a style="background-color:#181d81;font-size:18px;border:none;border-radius:14px;padding:10px;margin-bottom:30px;color:#fff;cursor:pointer;" href="http://kkprettynails.syswa.net/#/ConfirmacionAgenda?id=${id}">Confirmar</a>
@@ -499,7 +500,7 @@ citas.post('/sendConfirmation/:id', (req, res) => {
                 <div style="width:60%;">
                     <center>
                     <p style="text-align:center;font-size:14px;"> Contáctanos</p>
-                      <a  href="kkprettynails@gmail.com" style="margin-left:20px;"> 
+                      <a  href="mailto:kkprettynails@gmail.com" style="margin-left:20px;"> 
                         <img style="height:50px;width:50px;" src="${imgMails}mail.png" alt="Logo mail">
                       </a>
                       <a  href="https://www.instagram.com/kkprettynails/" style="margin-left:20px;">
@@ -511,7 +512,7 @@ citas.post('/sendConfirmation/:id', (req, res) => {
                       <a  href="https://kkprettynails.cl/inicio" style="margin-left:20px;">
                         <img style="height:50px;width:50px;" src="${imgMails}web.png" alt="Logo web">
                       </a>
-                    <p style="text-align:center;font-size:14px;">Av. Pedro de Valdivia 3474 Caracol Ñuñoa, Local 53-B Ñuñoa, Chile.</p>
+                    <a style="text-align:center;font-size:14px;" href="https://goo.gl/maps/m5rVWDEiPj7q1Hxh9"> Av. Pedro de Valdivia 3474 Caracol Ñuñoa, Local 53-B Ñuñoa, Chile.</a>
                     </center>
                 </div>
                 </center>
