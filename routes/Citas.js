@@ -512,6 +512,7 @@ citas.post('/sendConfirmation/:id', (req, res) => {
                       <a  href="https://kkprettynails.cl/inicio" style="margin-left:20px;">
                         <img style="height:50px;width:50px;" src="${imgMails}web.png" alt="Logo web">
                       </a>
+                    <br>
                     <a style="text-align:center;font-size:14px;" href="https://goo.gl/maps/m5rVWDEiPj7q1Hxh9"> Av. Pedro de Valdivia 3474 Caracol Ñuñoa, Local 53-B Ñuñoa, Chile.</a>
                     </center>
                 </div>
