@@ -28,19 +28,16 @@ citas.get('/availableslenders/:fecha', (req, res) => {
 
   const dateNow = new Date(req.params.fecha)
   const day = dateNow.getDay()
-  console.log(day)
   const formatDate = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()
   dateNow.setDate(dateNow.getDate() + 1)
   const formatDateTwo = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()
   var arrayLenders = []
-  console.log(formatDateTwo)
   Citas.find({date: {$gte: formatDate, $lte: formatDateTwo}}).sort({sort: 1})
   .then(citas => {
     const Dates = citas
     Manicurista.find()
     .then(lenders => {
       const Lenders = lenders
-      console.log(lenders)
       for (let index = 0; index < Lenders.length; index++) {
         const element = Lenders[index];
         if (day != element.restDay) {
@@ -61,7 +58,6 @@ citas.get('/availableslenders/:fecha', (req, res) => {
         arrayLenders.sort(function(a, b) {
           return a.sort - b.sort;
         });
-        console.log(arrayLenders)
         res.json({array: arrayLenders})
       }else{
         res.json({array: arrayLenders})
@@ -105,7 +101,6 @@ citas.put('/closeDate/:id', async (req, res) => {
     const closeDate = await Citas.findByIdAndUpdate(req.params.id, {
       $set: {process: false}
     })
-    console.log(closeDate)
     res.json({status: 'ok'})
   }catch(err){
     res.send(err)
@@ -116,8 +111,6 @@ citas.post('/editBlocks', (req, res) => {
   const blocks = req.body.array
   const time = req.body.time
   const totalFor = parseFloat(time) / 15
-  console.log(time)
-  console.log(totalFor)
   for (let index = 0; index < blocks.length; index++) {
     const element = blocks[index];
     if (element.validator == 'select') {
@@ -130,9 +123,7 @@ citas.post('/editBlocks', (req, res) => {
       let count = 0
       for (let j = 0; j < totalFor + 1; j++) {
         count = j == 0 ? parseFloat(i) - parseFloat(1) : parseFloat(count) - 1
-        console.log(count)
         if (count >= 0) {
-          console.log(blocks[count].validator)
           if (blocks[count].validator == true) {
             blocks[count].validator = 'nDisponible'
           }
@@ -155,8 +146,6 @@ citas.post('/getBlocks', (req,res) => {
 
   dateNow.setDate(dateNow.getDate() + 1)
   const formatDateTwo = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()
-  console.log(formatDate)
-  console.log(formatDateTwo)
   Citas.find({
     $and:[
       {date: {$gte: formatDate, $lte: formatDateTwo}},
@@ -267,8 +256,6 @@ citas.post('/getBlocks', (req,res) => {
         
       } 
     }
-    console.log(timelineBlock)
-    console.log(bloques)
     bloques.push({Horario:'21:00' , validator: 'nDisponible'})
     var insp = false
     for (let j = 0; j < bloques.length; j++) {
@@ -317,7 +304,6 @@ citas.post('/getBlocks', (req,res) => {
 
 citas.get('/prueba', (req, res) => {
   let a = new Date('2019-09-17 10:00')
-  console.log(a)
 })
 
 citas.post('/getDateByMani', (req, res) => {
@@ -385,7 +371,6 @@ citas.get('/confirmDate/:id', (req, res) => {
     if (citas) {
       Citas.find({confirmationId: id})
       .then(date => {
-        console.log(date)
         const split = date[0].client.split(' / ')
         const splitDate = date[0].date.getFullYear() +"-"+(date[0].date.getMonth() + 1)+"-"+date[0].date.getDate()
         const mail = {
@@ -445,7 +430,6 @@ citas.post('/sendConfirmation/:id', (req, res) => {
       services: '',
       lender: req.body.lenders
   }
-  console.log(req.body.service)
   for (let index = 0; index < req.body.service.length; index++) {
     const element = req.body.service[index].servicio;
     if (index > 0){
@@ -531,7 +515,6 @@ citas.post('/sendConfirmation/:id', (req, res) => {
 })
 
 citas.post('/uploadPdf', upload.single('file'), (req, res, next) => {
-  console.log(req.file)
   if (req.file) {
     res.json({nameFile: req.file.filename})
   }else{
@@ -544,7 +527,6 @@ citas.post('/noOneLender',  (req, res) => {
   const dataDate = req.body.dataDate
   const client = req.body.client
   const date = new Date(req.body.date+' 10:00')
-  console.log(req.body.pdf)
   var nameFile = ''
   if (req.body.pdf == 'not') {
     nameFile = ''
@@ -733,7 +715,6 @@ citas.put('/editDate/:id', async (req, res) => {
     class: req.body.class,
     manicuristas: req.body.manicuristas,
   }
-  console.log(data)
   const editDate = await Citas.findByIdAndUpdate(req.params.id, {
     $set: {
       start: data.entrada,
