@@ -373,6 +373,20 @@ citas.get('/confirmDate/:id', (req, res) => {
       .then(date => {
         const split = date[0].client.split(' / ')
         const splitDate = date[0].date.getFullYear() +"-"+(date[0].date.getMonth() + 1)+"-"+date[0].date.getDate()
+        var services = ''
+        var lenders = ''
+        for (let index = 0; index < date.length; index++) {
+          const element = date[index];
+          if (index > 0) {
+            services = services +' - '+element.services[0].servicio
+            lenders = lenders +' - '+element.employe
+            start = start+' - '+element.start
+          }else{
+            services = element.services[0].servicio
+            lenders = element.employe
+            start = element.start
+          }
+        }
         const mail = {
           from: "kkprettynails.syswa.net",
           to: 'kkprettynails@gmail.com',
@@ -389,10 +403,19 @@ citas.get('/confirmDate/:id', (req, res) => {
                         <div style="width:60%;text-align: center;">
                           <h1 style="text-align: center;color:#181d81;">Información </h1>
                           <img style="height:80px;width:100px;margin-top:-20px;" src="${imgMails}logokk.png" alt="Logo kkprettynails">
-                          <p style="text-align:center;margin-top:10px;font-size:16px;"> <strong>El cliente ${split[0]} ha confirmado su cita.</p>
-                          <p style="text-align:center;margin-top:10px;font-size:16px;"> 
-                              <img style="height:40px;width:40px;" src="${imgMails}calendar.png" alt="Logo kkprettynails"> ${splitDate} <br>
+                          <p style="text-align:center;margin-top:10px;font-size:16px;"> <strong>El cliente ${split[0]} ha confirmado su cita.</p> <br>
+                          <p style="text-align:left;margin-top:10px;font-size:14px;font-weight: 300;"> 
+                              <strong> Profesional: </strong> ${lenders}. <br>
+                              <strong> Servicios:</strong> ${services}. <br>
+                              <strong> Horarios de entrada:</strong> ${start}. <br>
                           </p>
+
+                          <p style="text-align:left;margin-top:10px;font-size:16px;"> 
+                            <img style="height:40px;width:40px;" src="${imgMails}calendar.png" alt="Logo kkprettynails"> 
+                            <b style="margin-top:-5px">${splitDate}</b> <br>
+                            <img style="height:40px;width:40px;" src="${imgMails}market.png" alt="Logo kkprettynails"><a style="text-align:center;font-size:16px;" href="https://goo.gl/maps/m5rVWDEiPj7q1Hxh9"><b style="font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;font-size:16px;margin-top:-5px"> Av. Pedro de Valdivia 3474 Caracol Ñuñoa, Local 53-B Ñuñoa, Chile. </b></a>   <br>
+                          </p>
+                          
                         <div>
                       </center>
                   </div>
