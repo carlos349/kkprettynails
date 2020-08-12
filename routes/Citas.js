@@ -380,11 +380,11 @@ citas.get('/confirmDate/:id', (req, res) => {
           if (index > 0) {
             services = services +' - '+element.services[0].servicio
             lenders = lenders +' - '+element.employe
-            start = start+' - '+element.start
+            start = start+' - '+element.start+'Hrs'
           }else{
             services = element.services[0].servicio
             lenders = element.employe
-            start = element.start
+            start = element.start+'Hrs '
           }
         }
         const mail = {
