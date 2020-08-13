@@ -411,9 +411,9 @@ citas.get('/confirmDate/:id', (req, res) => {
                           </p>
 
                           <p style="text-align:left;margin-top:10px;font-size:16px;"> 
-                            <img style="height:40px;width:40px;" src="${imgMails}calendar.png" alt="Logo kkprettynails"> 
+                            <img style="height:25px;width:25px;" src="${imgMails}calendar.png" alt="Logo kkprettynails"> 
                             <b style="margin-top:-5px">${splitDate}</b> <br>
-                            <img style="height:40px;width:40px;" src="${imgMails}market.png" alt="Logo kkprettynails"><a style="text-align:center;font-size:16px;" href="https://goo.gl/maps/m5rVWDEiPj7q1Hxh9"><b style="font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;font-size:16px;margin-top:-5px"> Av. Pedro de Valdivia 3474 Caracol Ñuñoa, Local 53-B Ñuñoa, Chile. </b></a>   <br>
+                            <img style="height:25px;width:25px;" src="${imgMails}market.png" alt="Logo kkprettynails"><a style="text-align:center;font-size:16px;" href="https://goo.gl/maps/m5rVWDEiPj7q1Hxh9"><b style="font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;font-size:16px;margin-top:-5px"> Av. Pedro de Valdivia 3474 Caracol Ñuñoa, Local 53-B Ñuñoa, Chile. </b></a>   <br>
                           </p>
                           
                         <div>
@@ -487,17 +487,17 @@ citas.post('/sendConfirmation/:id', (req, res) => {
                             </p>
 
                             <p style="text-align:left;margin-top:10px;font-size:16px;"> 
-                             <img style="height:40px;width:40px;" src="${imgMails}calendar.png" alt="Logo kkprettynails"> 
+                             <img style="height:25px;width:25px;" src="${imgMails}calendar.png" alt="Logo kkprettynails"> 
                             <b style="margin-top:-5px">${data.date}</b> <br>
                             <p style="text-align:left;margin-top:10px;font-size:16px;"> 
-                             <img style="height:40px;width:40px;" src="${imgMails}payment.png" alt="Logo kkprettynails"> 
+                             <img style="height:25px;width:25px;" src="${imgMails}payment.png" alt="Logo kkprettynails"> 
                             <b style="margin-top:-5px">${data.payment}</b> <br>
-                            <img style="height:40px;width:40px;" src="${imgMails}market.png" alt="Logo kkprettynails"><a style="text-align:center;font-size:16px;" href="https://goo.gl/maps/m5rVWDEiPj7q1Hxh9"><b style="font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;font-size:16px;margin-top:-5px"> Av. Pedro de Valdivia 3474 Caracol Ñuñoa, Local 53-B Ñuñoa, Chile. </b></a>   <br>
+                            <img style="height:25px;width:25px;" src="${imgMails}market.png" alt="Logo kkprettynails"><a style="text-align:center;font-size:16px;" href="https://goo.gl/maps/m5rVWDEiPj7q1Hxh9"><b style="font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;font-size:16px;margin-top:-5px"> Av. Pedro de Valdivia 3474 Caracol Ñuñoa, Local 53-B Ñuñoa, Chile. </b></a>   <br>
                             </p>
                         <center style="margin-top:40px;margin-bottom:30px;">
                             <a style="background-color:#181d81;font-size:18px;border:none;border-radius:14px;padding:10px;margin-bottom:30px;color:#fff;cursor:pointer;" href="http://kkprettynails.syswa.net/#/ConfirmacionAgenda?id=${id}">Confirmar</a>
                         </center>
-                        <hr style="background-color:#181d81;color:#181d81;">
+                        <hr style="border-top: 1.5px solid #ffd4d8;">
                         <p style="text-align:left;margin-top:10px;font-size:14px;font-weight: 300;"> 
                             <strong>Al visitar nuestro local ten presente: </strong> <br><br>
                             1. Llegar con 15 minutos de anticipación. <br>

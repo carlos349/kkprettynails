@@ -36,7 +36,7 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
             to: array.to,
             subject: 'Informacion a cliente',
             html: `
-            <div style="width: 100%; padding:0;text-align:center;">
+            <div style="width: 80%;max-width:1000px;margin:auto;padding:0;text-align:center;">
                 <div style="width: 85%;height: 8vh;margin: auto;background-color: #172b4d;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;text-align:justify;-webkit-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);-moz-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);">
                     <div style="width: 100px;margin:auto;border-radius:55%;background-color:#f8f9fa;padding: 10px;">     
                         <img style="width: 100%;" src="http://syswa.net/views/images/syswa-isotipo.png" alt="Logo kkprettynails">
@@ -45,24 +45,38 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
                 <div style="width: 100%;margin: auto;padding-top: 5%;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;padding-bottom: 20px;">
                     <center>
                         <div style="width:60%;text-align: center;">
-                            <h1 style="text-align: center;color:#172b4d;">Bienvenid@ </h1>
+                            <h1 style="text-align: center;color:#172b4d;">Bienvenido(a) </h1>
+                            <hr style="border-top: 1.5px solid #2eceaa;">
                             <p style="text-align:center;margin-top:10px;font-size:18px;"> <strong>Hola</p>
-                            <p style="text-align:left;font-size:14px;font-weight: 300;text-align: center;width: 60%;margin:auto;"><strong> 
-                                Nos alegra que te hayas interesado en nosotros, pronto te llegará información sobre nuestros nuevos servicios.</strong>
+                            <p style="text-align:left;font-size:14px;font-weight: 300;text-align: center;width: 60%;margin:auto;">
+                                <strong> 
+                                    Nos alegra que te hayas suscrito en nuestro sitio web, por este medio te enviaremos todas las novedades de nuestros servicios.
+                                </strong>
                             </p>
                         <div>
                     </center>
                 </div>
-                <div style="width: 85%;background-color: #f0f1f3;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);margin: auto;padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;padding-bottom:20px;-webkit-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);-moz-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);">
+                <div style="width: 85%;background-color: #2eceaa;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);margin: auto;padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#1f8d7c;padding-bottom:20px;-webkit-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);-moz-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);">
                     <center>
-                    <div style="width:60%;">
-                        <center>
-                        <p style="text-align:center;font-size:12px;"> +56 9 8582 6974 &nbsp;&nbsp;   syswainfo@gmail.com</p> 
-                        <p style="text-align:center;font-size:12px;">Atendemos las 24 horas, los 7 días a la semana, sólo contáctanos.</p>
-                        <a href="http://syswa.net" style="color:#172b4d;text-decoration: none;" style="text-align:center;margin-top:12px;"><strong>Syswa.net</strong></a>&nbsp;&nbsp;
-                        <a href="https://www.instagram.com/syswanet/" style="color:#172b4d;text-decoration: none;" style="text-align:center;margin-top:12px;"><strong>@syswanet</strong></a>
-                        </center>
-                    </div>
+                        <div style="width:60%;">
+                            <center>
+                                <p style="text-align:center;font-size:14px;"> Contacto</p>
+                                <a  href="mailto:syswainfo@gmail.com" style="margin-left:20px;text-decoration:none;"> 
+                                    <img style="height:50px;width:50px;" src="${imgMails}mails.png" alt="Logo mail">
+                                </a>
+                                <a  href="https://www.instagram.com/syswanet/" style="margin-left:20px;text-decoration:none;">
+                                    <img style="height:50px;width:50px;" src="${imgMails}igs.png" alt="Logo ig">
+                                </a>
+                                <a  href="https://api.whatsapp.com/send?phone=56985826974&text=&source=&data=&app_absent=" style="margin-left:20px;text-decoration:none;">
+                                    <img style="height:50px;width:50px;" src="${imgMails}wss.png" alt="Logo ws">
+                                </a>
+                                <a  href="https://syswa.net/inicio" style="margin-left:20px;text-decoration:none;">
+                                    <img style="height:50px;width:50px;" src="${imgMails}webs.png" alt="Logo web">
+                                </a>
+                                <br>
+                                <p style="text-align:center;font-size:14px;"> Atendemos las 24 horas, los 7 días de la semana</p>
+                            </center>
+                        </div>
                     </center>
                 </div>
             </div>
@@ -73,7 +87,7 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
             to: 'syswainfo@gmail.com',
             subject: array.subject,
             html: `
-            <div style="width: 100%; padding:0;text-align:center;">
+            <div style="width: 80%;max-width:1000px;margin:auto;padding:0;text-align:center;">
                 <div style="width: 85%;height: 8vh;margin: auto;background-color: #172b4d;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;text-align:justify;-webkit-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);-moz-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);">
                     <div style="width: 100px;margin:auto;border-radius:55%;background-color:#f8f9fa;padding: 10px;">     
                         <img style="width: 100%;" src="http://syswa.net/views/images/syswa-isotipo.png" alt="Logo kkprettynails">
@@ -107,7 +121,7 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
             to: array.to,
             subject: array.subject,
             html: `
-            <div style="width: 100%; padding:0;text-align:center;">
+            <div style="width: 80%;max-width:1000px;margin:auto;padding:0;text-align:center;">
                 <div style="width: 85%;height: 8vh;margin: auto;background-color: #172b4d;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;text-align:justify;-webkit-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);-moz-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);">
                     <div style="width: 100px;margin:auto;border-radius:55%;background-color:#f8f9fa;padding: 10px;">     
                         <img style="width: 100%;" src="http://syswa.net/views/images/syswa-isotipo.png" alt="Logo kkprettynails">
@@ -116,24 +130,37 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
                 <div style="width: 100%;margin: auto;padding-top: 5%;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;padding-bottom: 20px;">
                     <center>
                         <div style="width:60%;text-align: center;">
-                            <h1 style="text-align: center;color:#172b4d;">Bienvenid@ </h1>
+                            <h1 style="text-align: center;color:#172b4d;">Bienvenido(a) </h1>
+                            <hr style="border-top: 1.5px solid #2eceaa;">
                             <p style="text-align:center;margin-top:10px;font-size:18px;"> <strong>Hola ${array.firstName} ${array.lastName}</p>
                             <p style="text-align:left;font-size:14px;font-weight: 300;text-align: center;width: 60%;margin:auto;"><strong> 
-                                Nos alegra que te hayas interesado en nuestros servicios, pronto nuestro equipo se pondrá en contacto contigo ofreciéndote la información que necesites.</strong>
+                                    Nos alegra que te hayas interesado en nuestros servicios, pronto nuestro equipo se pondrá en contacto contigo ofreciéndote la información que necesites.
+                                </strong>
                             </p>
                         <div>
                     </center>
                 </div>
-                <div style="width: 85%;background-color: #f0f1f3;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);margin: auto;padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;padding-bottom:20px;-webkit-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);-moz-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);">
+                <div style="width: 85%;background-color: #2eceaa;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);margin: auto;padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#1f8d7c;padding-bottom:20px;-webkit-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);-moz-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);">
                     <center>
-                    <div style="width:60%;">
-                        <center>
-                        <p style="text-align:center;font-size:12px;"> +56 9 8582 6974 &nbsp;&nbsp;   syswainfo@gmail.com</p> 
-                        <p style="text-align:center;font-size:12px;">Atendemos las 24 horas, los 7 días a la semana, sólo contáctanos.</p>
-                        <a href="http://syswa.net" style="color:#172b4d;text-decoration: none;" style="text-align:center;margin-top:12px;"><strong>Syswa.net</strong></a>&nbsp;&nbsp;
-                        <a href="https://www.instagram.com/syswanet/" style="color:#172b4d;text-decoration: none;" style="text-align:center;margin-top:12px;"><strong>@syswanet</strong></a>
-                        </center>
-                    </div>
+                        <div style="width:60%;">
+                            <center>
+                                <p style="text-align:center;font-size:14px;"> Contacto</p>
+                                <a  href="mailto:syswainfo@gmail.com" style="margin-left:20px;text-decoration:none;"> 
+                                    <img style="height:50px;width:50px;" src="${imgMails}mails.png" alt="Logo mail">
+                                </a>
+                                <a  href="https://www.instagram.com/syswanet/" style="margin-left:20px;text-decoration:none;">
+                                    <img style="height:50px;width:50px;" src="${imgMails}igs.png" alt="Logo ig">
+                                </a>
+                                <a  href="https://api.whatsapp.com/send?phone=56985826974&text=&source=&data=&app_absent=" style="margin-left:20px;text-decoration:none;">
+                                    <img style="height:50px;width:50px;" src="${imgMails}wss.png" alt="Logo ws">
+                                </a>
+                                <a  href="https://syswa.net/inicio" style="margin-left:20px;text-decoration:none;">
+                                    <img style="height:50px;width:50px;" src="${imgMails}webs.png" alt="Logo web">
+                                </a>
+                                <br>
+                                <p style="text-align:center;font-size:14px;"> Atendemos las 24 horas, los 7 días de la semana</p>
+                            </center>
+                        </div>
                     </center>
                 </div>
             </div>
@@ -144,7 +171,7 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
             to: 'syswainfo@gmail.com',
             subject: array.subject,
             html: `
-            <div style="width: 100%; padding:0;text-align:center;">
+            <div style="width: 80%;max-width:1000px;margin:auto;padding:0;text-align:center;">
                 <div style="width: 85%;height: 8vh;margin: auto;background-color: #172b4d;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;text-align:justify;-webkit-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);-moz-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);">
                     <div style="width: 100px;margin:auto;border-radius:55%;background-color:#f8f9fa;padding: 10px;">     
                         <img style="width: 100%;" src="http://syswa.net/views/images/syswa-isotipo.png" alt="Logo kkprettynails">
@@ -176,7 +203,7 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
             to: array.to,
             subject: array.subject,
             html: `
-            <div style="width: 100%; padding:0;text-align:center;">
+            <div style="width: 80%;max-width:1000px;margin:auto;padding:0;text-align:center;">
                 <div style="width: 85%;height: 8vh;margin: auto;background-color: #172b4d;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;text-align:justify;-webkit-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);-moz-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);">
                     <div style="width: 100px;margin:auto;border-radius:55%;background-color:#f8f9fa;padding: 10px;">     
                         <img style="width: 100%;" src="http://syswa.net/views/images/syswa-isotipo.png" alt="Logo kkprettynails">
@@ -185,24 +212,38 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
                 <div style="width: 100%;margin: auto;padding-top: 5%;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;padding-bottom: 20px;">
                     <center>
                         <div style="width:60%;text-align: center;">
-                            <h1 style="text-align: center;color:#172b4d;">Bienvenid@ </h1>
-                            <p style="text-align:center;margin-top:10px;font-size:18px;"> <strong>Hola ${array.Name}</p>
-                            <p style="text-align:left;font-size:14px;font-weight: 300;text-align: center;width: 60%;margin:auto;"><strong> 
-                                Nos alegra que te hayas interesado en nuestros servicios, pronto nuestro equipo se pondrá en contacto contigo ofreciéndote la información que necesites.</strong>
+                            <h1 style="text-align: center;color:#172b4d;">Bienvenid(a) </h1>
+                            <hr style="border-top: 1.5px solid #2eceaa;">
+                            <p style="text-align:center;margin-top:10px;font-size:18px;"> <strong>¡Hola ${array.Name}!</p>
+                            <p style="text-align:left;font-size:14px;font-weight: 300;text-align: center;width: 60%;margin:auto;">
+                                <strong> 
+                                    Nos alegra que te hayas interesado en nuestros servicios, pronto nuestro equipo se pondrá en contacto contigo ofreciéndote la información que necesites.
+                                </strong>
                             </p>
                         <div>
                     </center>
                 </div>
-                <div style="width: 85%;background-color: #f0f1f3;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);margin: auto;padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;padding-bottom:20px;-webkit-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);-moz-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);">
+                <div style="width: 85%;background-color: #2eceaa;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);margin: auto;padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#1f8d7c;padding-bottom:20px;-webkit-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);-moz-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);">
                     <center>
-                    <div style="width:60%;">
-                        <center>
-                        <p style="text-align:center;font-size:12px;"> +56 9 8582 6974 &nbsp;&nbsp;   syswainfo@gmail.com</p> 
-                        <p style="text-align:center;font-size:12px;">Atendemos las 24 horas, los 7 días a la semana, sólo contáctanos.</p>
-                        <a href="http://syswa.net" style="color:#172b4d;text-decoration: none;" style="text-align:center;margin-top:12px;"><strong>Syswa.net</strong></a>&nbsp;&nbsp;
-                        <a href="https://www.instagram.com/syswanet/" style="color:#172b4d;text-decoration: none;" style="text-align:center;margin-top:12px;"><strong>@syswanet</strong></a>
-                        </center>
-                    </div>
+                        <div style="width:60%;">
+                            <center>
+                                <p style="text-align:center;font-size:14px;"> Contacto</p>
+                                <a  href="mailto:syswainfo@gmail.com" style="margin-left:20px;text-decoration:none;"> 
+                                    <img style="height:50px;width:50px;" src="${imgMails}mails.png" alt="Logo mail">
+                                </a>
+                                <a  href="https://www.instagram.com/syswanet/" style="margin-left:20px;text-decoration:none;">
+                                    <img style="height:50px;width:50px;" src="${imgMails}igs.png" alt="Logo ig">
+                                </a>
+                                <a  href="https://api.whatsapp.com/send?phone=56985826974&text=&source=&data=&app_absent=" style="margin-left:20px;text-decoration:none;">
+                                    <img style="height:50px;width:50px;" src="${imgMails}wss.png" alt="Logo ws">
+                                </a>
+                                <a  href="https://syswa.net/inicio" style="margin-left:20px;text-decoration:none;">
+                                    <img style="height:50px;width:50px;" src="${imgMails}webs.png" alt="Logo web">
+                                </a>
+                                <br>
+                                <p style="text-align:center;font-size:14px;"> Atendemos las 24 horas, los 7 días de la semana</p>
+                            </center>
+                        </div>
                     </center>
                 </div>
             </div>
@@ -213,7 +254,7 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
             to: 'syswainfo@gmail.com',
             subject: array.subject,
             html: `
-            <div style="width: 100%; padding:0;text-align:center;">
+            <div style="width: 80%;max-width:1000px;margin:auto;padding:0;text-align:center;">
                 <div style="width: 85%;height: 8vh;margin: auto;background-color: #172b4d;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;text-align:justify;-webkit-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);-moz-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);">
                     <div style="width: 100px;margin:auto;border-radius:55%;background-color:#f8f9fa;padding: 10px;">     
                         <img style="width: 100%;" src="http://syswa.net/views/images/syswa-isotipo.png" alt="Logo kkprettynails">
@@ -223,8 +264,10 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
                     <center>
                         <div style="width:60%;text-align: center;">
                             <h1 style="text-align: center;color:#172b4d;">Contacto con cliente</h1>
+                            <hr style="border-top: 1.5px solid #2eceaa;">
                             <p style="text-align:left;font-size:14px;font-weight: 300;text-align: center;width: 60%;margin:auto;">
-                            <strong>El cliente ${array.Name} necesita información, por favor ponerse en contacto.</strong><br>Mensaje: ${array.message} <br> Correo: ${array.to}
+                            <strong>El cliente ${array.Name} necesita información, por favor ponerse en contacto.
+                            </strong><br>Correo: ${array.to} <br> Mensaje: ${array.message}
                             </p>
                         <div>
                     </center>
