@@ -44,11 +44,11 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
                 </div>
                 <div style="width: 100%;margin: auto;padding-top: 5%;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;padding-bottom: 20px;">
                     <center>
-                        <div style="width:100%;text-align: center;">
+                        <div style="width:80%;text-align: center;">
                             <h1 style="text-align: center;color:#181d81;">Bienvenido(a) </h1>
                             <hr style="border-top: 1.5px solid #2eceaa;">
                             <p style="text-align:center;margin-top:10px;font-size:18px;"> <strong>Hola</p>
-                            <p style="text-align:left;font-size:14px;font-weight: 300;text-align: center;width: 80%;margin:auto;">
+                            <p style="text-align:left;font-size:14px;font-weight: 300;text-align: center;width: 90%;margin:auto;">
                                 <strong> 
                                     Nos alegra que te hayas suscrito en nuestro sitio web, por este medio te enviaremos todas las novedades de nuestros servicios.
                                 </strong>
