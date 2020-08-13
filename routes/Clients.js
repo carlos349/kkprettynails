@@ -10,7 +10,7 @@ const path = require('path')
 const Venta = require('../models/Venta')
 const kmailCredentials = require('../private/kmail-credentials')
 const smailCredentials = require('../private/smail-credentials')
-const imgMails = require('../private/endpoints.js')
+const imgMails = require('../private/endpointsLogo.js')
 const storage = diskStorage({
 	destination: 'public/mailsImage',
 	filename: (req, files, cb) => {
