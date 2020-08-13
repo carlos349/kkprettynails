@@ -44,7 +44,7 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
                 </div>
                 <div style="width: 100%;margin: auto;padding-top: 5%;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;padding-bottom: 20px;">
                     <center>
-                        <div style="width:80%;text-align: center;">
+                        <div style="width:90%;text-align: center;">
                             <h1 style="text-align: center;color:#181d81;">Bienvenido(a) </h1>
                             <hr style="border-top: 1.5px solid #2eceaa;">
                             <p style="text-align:center;margin-top:10px;font-size:18px;"> <strong>Hola</p>
@@ -95,7 +95,7 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
                 </div>
                 <div style="width: 100%;margin: auto;padding-top: 5%;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;padding-bottom: 20px;">
                     <center>
-                        <div style="width:100%;text-align: center;">
+                        <div style="width:90%;text-align: center;">
                             <h1 style="text-align: center;color:#181d81;">Actualización de clientes</h1>
                             <p style="text-align:left;font-size:14px;font-weight: 300;text-align: center;width: 80%;margin:auto;">
                             <strong> Se ha suscrito un nuevo cliente con el correo ${array.to}</strong>
@@ -129,7 +129,7 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
                 </div>
                 <div style="width: 100%;margin: auto;padding-top: 5%;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;padding-bottom: 20px;">
                     <center>
-                        <div style="width:100%;text-align: center;">
+                        <div style="width:90%;text-align: center;">
                             <h1 style="text-align: center;color:#181d81;">Bienvenido(a) </h1>
                             <hr style="border-top: 1.5px solid #2eceaa;">
                             <p style="text-align:center;margin-top:10px;font-size:18px;"> <strong>Hola ${array.firstName} ${array.lastName}</p>
@@ -177,7 +177,7 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
                         <img style="width: 100%;" src="http://syswa.net/views/images/syswa-isotipo.png" alt="Logo kkprettynails">
                     </div>
                 </div>
-                <div style="width: 100%;margin: auto;padding-top: 5%;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;padding-bottom: 20px;">
+                <div style="width: 90%;margin: auto;padding-top: 5%;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;padding-bottom: 20px;">
                     <center>
                         <div style="width:100%;text-align: center;">
                             <h1 style="text-align: center;color:#181d81;">El cliente contrató un servicio</h1>
@@ -209,7 +209,7 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
                         <img style="width: 100%;" src="http://syswa.net/views/images/syswa-isotipo.png" alt="Logo kkprettynails">
                     </div>
                 </div>
-                <div style="width: 100%;margin: auto;padding-top: 5%;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;padding-bottom: 20px;">
+                <div style="width: 90%;margin: auto;padding-top: 5%;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;padding-bottom: 20px;">
                     <center>
                         <div style="width:100%;text-align: center;">
                             <h1 style="text-align: center;color:#181d81;">Bienvenid(a) </h1>
@@ -260,7 +260,7 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
                         <img style="width: 100%;" src="http://syswa.net/views/images/syswa-isotipo.png" alt="Logo kkprettynails">
                     </div>
                 </div>
-                <div style="width: 100%;margin: auto;padding-top: 5%;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;padding-bottom: 20px;">
+                <div style="width:90%;margin: auto;padding-top: 5%;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;padding-bottom: 20px;">
                     <center>
                         <div style="width:100%;text-align: center;">
                             <h1 style="text-align: center;color:#181d81;">Contacto con cliente</h1>
