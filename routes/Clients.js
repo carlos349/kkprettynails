@@ -70,7 +70,7 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
                                 <a  href="https://api.whatsapp.com/send?phone=56985826974&text=&source=&data=&app_absent=" style="margin-left:20px;text-decoration:none;">
                                     <img style="height:50px;width:50px;" src="${imgMails}wss.png" alt="Logo ws">
                                 </a>
-                                <a  href="https://syswa.net/inicio" style="margin-left:20px;text-decoration:none;">
+                                <a  href="https://syswa.net" style="margin-left:20px;text-decoration:none;">
                                     <img style="height:50px;width:50px;" src="${imgMails}webs.png" alt="Logo web">
                                 </a>
                                 <br>
@@ -154,7 +154,7 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
                                 <a  href="https://api.whatsapp.com/send?phone=56985826974&text=&source=&data=&app_absent=" style="margin-left:20px;text-decoration:none;">
                                     <img style="height:50px;width:50px;" src="${imgMails}wss.png" alt="Logo ws">
                                 </a>
-                                <a  href="https://syswa.net/inicio" style="margin-left:20px;text-decoration:none;">
+                                <a  href="https://syswa.net" style="margin-left:20px;text-decoration:none;">
                                     <img style="height:50px;width:50px;" src="${imgMails}webs.png" alt="Logo web">
                                 </a>
                                 <br>
@@ -237,7 +237,7 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
                                 <a  href="https://api.whatsapp.com/send?phone=56985826974&text=&source=&data=&app_absent=" style="margin-left:20px;text-decoration:none;">
                                     <img style="height:50px;width:50px;" src="${imgMails}wss.png" alt="Logo ws">
                                 </a>
-                                <a  href="https://syswa.net/inicio" style="margin-left:20px;text-decoration:none;">
+                                <a  href="https://syswa.net" style="margin-left:20px;text-decoration:none;">
                                     <img style="height:50px;width:50px;" src="${imgMails}webs.png" alt="Logo web">
                                 </a>
                                 <br>
