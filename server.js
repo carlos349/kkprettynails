@@ -6,6 +6,7 @@ const app = express()
 const mongoose = require('mongoose')
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
+const vhost = require('vhost');
 
 mongoose.connect('mongodb://localhost/kkprettynails-database', {
 			useNewUrlParser: true,
@@ -26,6 +27,7 @@ io.on('connection', socket  => {
 app.set('port', process.env.PORT || 4200)
 
 //middlewares
+app.use(vhost('kkprettynailsback', app))
 app.use(morgan('dev'))
 app.use(express.json())
 app.use(bodyParser.json())
