@@ -28,19 +28,16 @@ citas.get('/availableslenders/:fecha', (req, res) => {
 
   const dateNow = new Date(req.params.fecha)
   const day = dateNow.getDay()
-  console.log(day)
   const formatDate = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()
   dateNow.setDate(dateNow.getDate() + 1)
   const formatDateTwo = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()
   var arrayLenders = []
-  console.log(formatDateTwo)
   Citas.find({date: {$gte: formatDate, $lte: formatDateTwo}}).sort({sort: 1})
   .then(citas => {
     const Dates = citas
     Manicurista.find()
     .then(lenders => {
       const Lenders = lenders
-      console.log(lenders)
       for (let index = 0; index < Lenders.length; index++) {
         const element = Lenders[index];
         if (day != element.restDay) {
@@ -61,7 +58,6 @@ citas.get('/availableslenders/:fecha', (req, res) => {
         arrayLenders.sort(function(a, b) {
           return a.sort - b.sort;
         });
-        console.log(arrayLenders)
         res.json({array: arrayLenders})
       }else{
         res.json({array: arrayLenders})
@@ -105,7 +101,6 @@ citas.put('/closeDate/:id', async (req, res) => {
     const closeDate = await Citas.findByIdAndUpdate(req.params.id, {
       $set: {process: false}
     })
-    console.log(closeDate)
     res.json({status: 'ok'})
   }catch(err){
     res.send(err)
@@ -116,8 +111,6 @@ citas.post('/editBlocks', (req, res) => {
   const blocks = req.body.array
   const time = req.body.time
   const totalFor = parseFloat(time) / 15
-  console.log(time)
-  console.log(totalFor)
   for (let index = 0; index < blocks.length; index++) {
     const element = blocks[index];
     if (element.validator == 'select') {
@@ -130,9 +123,7 @@ citas.post('/editBlocks', (req, res) => {
       let count = 0
       for (let j = 0; j < totalFor + 1; j++) {
         count = j == 0 ? parseFloat(i) - parseFloat(1) : parseFloat(count) - 1
-        console.log(count)
         if (count >= 0) {
-          console.log(blocks[count].validator)
           if (blocks[count].validator == true) {
             blocks[count].validator = 'nDisponible'
           }
@@ -155,8 +146,6 @@ citas.post('/getBlocks', (req,res) => {
 
   dateNow.setDate(dateNow.getDate() + 1)
   const formatDateTwo = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()
-  console.log(formatDate)
-  console.log(formatDateTwo)
   Citas.find({
     $and:[
       {date: {$gte: formatDate, $lte: formatDateTwo}},
@@ -267,8 +256,6 @@ citas.post('/getBlocks', (req,res) => {
         
       } 
     }
-    console.log(timelineBlock)
-    console.log(bloques)
     bloques.push({Horario:'21:00' , validator: 'nDisponible'})
     var insp = false
     for (let j = 0; j < bloques.length; j++) {
@@ -317,7 +304,6 @@ citas.post('/getBlocks', (req,res) => {
 
 citas.get('/prueba', (req, res) => {
   let a = new Date('2019-09-17 10:00')
-  console.log(a)
 })
 
 citas.post('/getDateByMani', (req, res) => {
@@ -385,15 +371,28 @@ citas.get('/confirmDate/:id', (req, res) => {
     if (citas) {
       Citas.find({confirmationId: id})
       .then(date => {
-        console.log(date)
         const split = date[0].client.split(' / ')
         const splitDate = date[0].date.getFullYear() +"-"+(date[0].date.getMonth() + 1)+"-"+date[0].date.getDate()
+        var services = ''
+        var lenders = ''
+        for (let index = 0; index < date.length; index++) {
+          const element = date[index];
+          if (index > 0) {
+            services = services +' - '+element.services[0].servicio
+            lenders = lenders +' - '+element.employe
+            start = start+' - '+element.start+'Hrs'
+          }else{
+            services = element.services[0].servicio
+            lenders = element.employe
+            start = element.start+'Hrs '
+          }
+        }
         const mail = {
           from: "kkprettynails.syswa.net",
           to: 'kkprettynails@gmail.com',
           subject: 'Cita confirmada',
           html: `
-          <div style="width: 100%; padding:0;text-align:center;">
+          <div style="width: 80%;max-width:1000px;margin:auto;padding:0;text-align:center;">
                   <div style="width: 85%;height: 8vh;margin: auto;background-color: #181d81;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;text-align:justify;-webkit-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);-moz-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);">
                       <div style="width: 80px;margin:auto;border-radius:55%;background-color:#f8f9fa;padding: 10px;">     
                           <img style="width: 100%;" src="${imgMails}syswa-isotipo.png" alt="Logo kkprettynails">
@@ -404,10 +403,19 @@ citas.get('/confirmDate/:id', (req, res) => {
                         <div style="width:60%;text-align: center;">
                           <h1 style="text-align: center;color:#181d81;">Información </h1>
                           <img style="height:80px;width:100px;margin-top:-20px;" src="${imgMails}logokk.png" alt="Logo kkprettynails">
-                          <p style="text-align:center;margin-top:10px;font-size:16px;"> <strong>El cliente ${split[0]} ha confirmado su cita.</p>
-                          <p style="text-align:center;margin-top:10px;font-size:16px;"> 
-                              <img style="height:40px;width:40px;" src="${imgMails}calendar.png" alt="Logo kkprettynails"> ${splitDate} <br>
+                          <p style="text-align:center;margin-top:10px;font-size:16px;"> <strong>El cliente ${split[0]} ha confirmado su cita.</p> <br>
+                          <p style="text-align:left;margin-top:10px;font-size:14px;font-weight: 300;"> 
+                              <strong> Profesional: </strong> ${lenders}. <br>
+                              <strong> Servicios:</strong> ${services}. <br>
+                              <strong> Horarios de entrada:</strong> ${start}. <br>
                           </p>
+
+                          <p style="text-align:left;margin-top:10px;font-size:16px;"> 
+                            <img style="height:25px;width:25px;" src="${imgMails}calendar.png" alt="Logo kkprettynails"> 
+                            <b style="margin-top:-5px">${splitDate}</b> <br>
+                            <img style="height:25px;width:25px;" src="${imgMails}market.png" alt="Logo kkprettynails"><a style="text-align:center;font-size:16px;" href="https://goo.gl/maps/m5rVWDEiPj7q1Hxh9"><b style="font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;font-size:16px;margin-top:-5px"> Av. Pedro de Valdivia 3474 Caracol Ñuñoa, Local 53-B Ñuñoa, Chile. </b></a>   <br>
+                          </p>
+                          
                         <div>
                       </center>
                   </div>
@@ -443,9 +451,9 @@ citas.post('/sendConfirmation/:id', (req, res) => {
       end: req.body.end,
       date: req.body.date,
       services: '',
-      lender: req.body.lenders
+      lender: req.body.lenders,
+      payment: req.body.payment
   }
-  console.log(req.body.service)
   for (let index = 0; index < req.body.service.length; index++) {
     const element = req.body.service[index].servicio;
     if (index > 0){
@@ -479,14 +487,17 @@ citas.post('/sendConfirmation/:id', (req, res) => {
                             </p>
 
                             <p style="text-align:left;margin-top:10px;font-size:16px;"> 
-                             <img style="height:40px;width:40px;" src="${imgMails}calendar.png" alt="Logo kkprettynails"> 
+                             <img style="height:25px;width:25px;" src="${imgMails}calendar.png" alt="Logo kkprettynails"> 
                             <b style="margin-top:-5px">${data.date}</b> <br>
-                            <img style="height:40px;width:40px;" src="${imgMails}market.png" alt="Logo kkprettynails"><a style="text-align:center;font-size:16px;" href="https://goo.gl/maps/m5rVWDEiPj7q1Hxh9"><b style="font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;font-size:16px;margin-top:-5px"> Av. Pedro de Valdivia 3474 Caracol Ñuñoa, Local 53-B Ñuñoa, Chile. </b></a>   <br>
+                            <p style="text-align:left;margin-top:10px;font-size:16px;"> 
+                             <img style="height:25px;width:25px;" src="${imgMails}payment.png" alt="Logo kkprettynails"> 
+                            <b style="margin-top:-5px">${data.payment}</b> <br>
+                            <img style="height:25px;width:25px;" src="${imgMails}market.png" alt="Logo kkprettynails"><a style="text-align:center;font-size:16px;" href="https://goo.gl/maps/m5rVWDEiPj7q1Hxh9"><b style="font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;font-size:16px;margin-top:-5px"> Av. Pedro de Valdivia 3474 Caracol Ñuñoa, Local 53-B Ñuñoa, Chile. </b></a>   <br>
                             </p>
                         <center style="margin-top:40px;margin-bottom:30px;">
                             <a style="background-color:#181d81;font-size:18px;border:none;border-radius:14px;padding:10px;margin-bottom:30px;color:#fff;cursor:pointer;" href="http://kkprettynails.syswa.net/#/ConfirmacionAgenda?id=${id}">Confirmar</a>
                         </center>
-                        <hr style="background-color:#181d81;color:#181d81;">
+                        <hr style="border-top: 1.5px solid #ffd4d8;">
                         <p style="text-align:left;margin-top:10px;font-size:14px;font-weight: 300;"> 
                             <strong>Al visitar nuestro local ten presente: </strong> <br><br>
                             1. Llegar con 15 minutos de anticipación. <br>
@@ -531,7 +542,6 @@ citas.post('/sendConfirmation/:id', (req, res) => {
 })
 
 citas.post('/uploadPdf', upload.single('file'), (req, res, next) => {
-  console.log(req.file)
   if (req.file) {
     res.json({nameFile: req.file.filename})
   }else{
@@ -544,7 +554,6 @@ citas.post('/noOneLender',  (req, res) => {
   const dataDate = req.body.dataDate
   const client = req.body.client
   const date = new Date(req.body.date+' 10:00')
-  console.log(req.body.pdf)
   var nameFile = ''
   if (req.body.pdf == 'not') {
     nameFile = ''
@@ -733,7 +742,6 @@ citas.put('/editDate/:id', async (req, res) => {
     class: req.body.class,
     manicuristas: req.body.manicuristas,
   }
-  console.log(data)
   const editDate = await Citas.findByIdAndUpdate(req.params.id, {
     $set: {
       start: data.entrada,
