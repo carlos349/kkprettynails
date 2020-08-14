@@ -56,7 +56,7 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
                         <div>
                     </center>
                 </div>
-                <div style="width: 85%;background-color: #2eceaa;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);margin: auto;padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#1f8d7c;padding-bottom:20px;-webkit-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);-moz-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);">
+                <div style="width: 85%;background-color: #2eceaa;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);margin: auto;padding:10px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#1f8d7c;padding-bottom:10px;-webkit-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);-moz-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);">
                     <center>
                         <div style="width:60%;">
                             <center>
@@ -85,7 +85,7 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
         mailTwo = {
             from: "SYSWA WEB",
             to: 'syswainfo@gmail.com',
-            subject: array.subject,
+            subject: 'Nueva suscripción de cliente',
             html: `
             <div style="width: 80%;max-width:1000px;margin:auto;padding:0;text-align:center;">
                 <div style="width: 85%;height: 8vh;margin: auto;background-color: #181d81;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;text-align:justify;-webkit-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);-moz-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);">
@@ -140,7 +140,7 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
                         <div>
                     </center>
                 </div>
-                <div style="width: 85%;background-color: #2eceaa;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);margin: auto;padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#1f8d7c;padding-bottom:20px;-webkit-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);-moz-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);">
+                <div style="width: 85%;background-color: #2eceaa;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);margin: auto;padding: 10px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#1f8d7c;padding-bottom:10px;-webkit-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);-moz-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);">
                     <center>
                         <div style="width:60%;">
                             <center>
@@ -169,7 +169,7 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
         mailTwo = {
             from: "SYSWA WEB",
             to: 'syswainfo@gmail.com',
-            subject: array.subject,
+            subject: 'Nueva solicitud de servicio',
             html: `
             <div style="width: 80%;max-width:1000px;margin:auto;padding:0;text-align:center;">
                 <div style="width: 85%;height: 8vh;margin: auto;background-color: #181d81;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;text-align:justify;-webkit-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);-moz-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);">
@@ -252,7 +252,7 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
         mailTwo = {
             from: "SYSWA WEB",
             to: 'syswainfo@gmail.com',
-            subject: array.subject,
+            subject: 'Nueva solicitud de contacto',
             html: `
             <div style="width: 80%;max-width:1000px;margin:auto;padding:0;text-align:center;">
                 <div style="width: 85%;height: 8vh;margin: auto;background-color: #181d81;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;text-align:justify;-webkit-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);-moz-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);">
