@@ -11,6 +11,7 @@ const options = {
 }
 const server = require('https').Server(options, app);
 const io = require('socket.io')(server);
+const vhost = require('vhost')
 mongoose.connect('mongodb://localhost/kkprettynails-database', {
 			useNewUrlParser: true,
 			useUnifiedTopology: true
@@ -30,6 +31,10 @@ io.on('connection', socket  => {
 app.set('port', process.env.PORT || 8443)
 
 //middlewares
+app.use((req, res, next) => {
+	var username = req.vhost[0]
+	console.log(username)
+})
 app.use(morgan('dev'))
 app.use(express.json())
 app.use(bodyParser.json())
