@@ -4,14 +4,13 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const app = express()
 const mongoose = require('mongoose')
-const fs = require('fs')
-const options = {
-	key: fs.readFileSync('./ssl/server.key'),
-	cert: fs.readFileSync('./ssl/server.crt')
-}
-const server = require('https').Server(options, app);
+// const fs = require('fs')
+// const options = {
+// 	key: fs.readFileSync('./ssl/server.key'),
+// 	cert: fs.readFileSync('./ssl/server.crt')
+// }
+const server = require('http').Server(app);
 const io = require('socket.io')(server);
-const vhost = require('vhost')
 mongoose.connect('mongodb://localhost/kkprettynails-database', {
 			useNewUrlParser: true,
 			useUnifiedTopology: true
@@ -28,13 +27,9 @@ io.on('connection', socket  => {
 });
 
 // settings
-app.set('port', process.env.PORT || 8443)
+app.set('port', process.env.PORT || 4200)
 
 //middlewares
-app.use((req, res, next) => {
-	var username = req.vhost[0]
-	console.log(username)
-})
 app.use(morgan('dev'))
 app.use(express.json())
 app.use(bodyParser.json())
