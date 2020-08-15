@@ -5,12 +5,11 @@ const cors = require('cors')
 const app = express()
 const mongoose = require('mongoose')
 const fs = require('fs')
-const https = require('https')
 const options = {
 	key: fs.readFileSync('./ssl/server.key'),
 	cert: fs.readFileSync('./ssl/server.crt')
 }
-const server = https.Server(options, app);
+const server = require('https').Server(options, app);
 const io = require('socket.io')(server);
 mongoose.connect('mongodb://localhost/kkprettynails-database', {
 			useNewUrlParser: true,
@@ -57,7 +56,7 @@ app.use('/notifications', require('./routes/Notifications.js'))
 app.use('/static', express.static(__dirname + '/public'));
 
 // server in listened
-https.createServer(options, app).listen(app.get('port'), () => {
+server.listen(app.get('port'), () => {
 	console.log('Server on port: ', app.get('port'))
 })
 
