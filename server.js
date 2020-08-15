@@ -10,7 +10,7 @@ const server = require('http').Server(app);
 const io = require('socket.io')(server);
 const options = {
 	key: fs.readFileSync('./ssl/server.key'),
-	cert: fs.readFileSync('./ssl/server.cert')
+	cert: fs.readFileSync('./ssl/server.crt')
 }
 
 mongoose.connect('mongodb://localhost/kkprettynails-database', {
