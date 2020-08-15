@@ -4,9 +4,14 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const app = express()
 const mongoose = require('mongoose')
+const fs = require('fs')
+const https = require('https')
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
-const vhost = require('vhost');
+const options = {
+	key: fs.readFileSync('./ssl/server.key'),
+	cert: fs.readFileSync('./ssl/server.cert')
+}
 
 mongoose.connect('mongodb://localhost/kkprettynails-database', {
 			useNewUrlParser: true,
@@ -27,7 +32,6 @@ io.on('connection', socket  => {
 app.set('port', process.env.PORT || 4200)
 
 //middlewares
-app.use(vhost('kkprettynailsback', app))
 app.use(morgan('dev'))
 app.use(express.json())
 app.use(bodyParser.json())
@@ -54,6 +58,7 @@ app.use('/notifications', require('./routes/Notifications.js'))
 app.use('/static', express.static(__dirname + '/public'));
 
 // server in listened
-server.listen(app.get('port'), () => {
+https.createServer(options, app).listen(app.get('port'), () => {
 	console.log('Server on port: ', app.get('port'))
 })
+
