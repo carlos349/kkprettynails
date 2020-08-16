@@ -59,7 +59,7 @@ app.use('/static', express.static(__dirname + '/public'));
 
 // server in listened
 // var httpServer = http.createServer(app);
-var httpsServer = https.createServer(options, app);
+// var httpsServer = https.createServer(options, app);
 
 https.listen(app.get('port'), () => {
 	console.log('Server on port: ', app.get('port'))
