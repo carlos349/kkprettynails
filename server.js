@@ -10,7 +10,7 @@ const options = {
 	cert: fs.readFileSync('./ssl/server.crt')
 }
 const server = require('http').Server(app);
-const https = require('https')
+const https = require('https').Server(options, app)
 // const http = require('http')
 const io = require('socket.io')(server);
 mongoose.connect('mongodb://localhost/kkprettynails-database', {
@@ -61,7 +61,7 @@ app.use('/static', express.static(__dirname + '/public'));
 // var httpServer = http.createServer(app);
 var httpsServer = https.createServer(options, app);
 
-httpsServer.listen(app.get('port'), () => {
+https.listen(app.get('port'), () => {
 	console.log('Server on port: ', app.get('port'))
 });
 
