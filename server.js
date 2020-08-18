@@ -23,13 +23,12 @@ mongoose.connect('mongodb://localhost/kkprettynails-database', {
 //Websockets
 io.on('connection', socket  => {
   socket.on('sendNotification', data => {
-	  console.log(data)
 	  io.emit('notify', data);
   })
 });
 
 // settings
-app.set('port', process.env.PORT || 4200)
+app.set('port', process.env.PORT || 443)
 
 //middlewares
 app.use(morgan('dev'))
