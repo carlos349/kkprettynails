@@ -28,7 +28,7 @@ io.on('connection', socket  => {
 });
 
 // settings
-app.set('port', process.env.PORT || 443)
+app.set('port', process.env.PORT || 4200)
 
 //middlewares
 app.use(morgan('dev'))
