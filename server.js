@@ -4,9 +4,15 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const app = express()
 const mongoose = require('mongoose')
+const fs = require('fs')
+// const options = {
+// 	key: fs.readFileSync('./ssl/server.key'),
+// 	cert: fs.readFileSync('./ssl/server.crt')
+// }
 const server = require('http').Server(app);
+// const https = require('https').Server(options, app)
+// const http = require('http')
 const io = require('socket.io')(server);
-
 mongoose.connect('mongodb://localhost/kkprettynails-database', {
 			useNewUrlParser: true,
 			useUnifiedTopology: true
@@ -17,13 +23,13 @@ mongoose.connect('mongodb://localhost/kkprettynails-database', {
 //Websockets
 io.on('connection', socket  => {
   socket.on('sendNotification', data => {
-	  console.log(data)
 	  io.emit('notify', data);
   })
 });
 
 // settings
 app.set('port', process.env.PORT || 4200)
+app.set('trust proxy', true);
 
 //middlewares
 app.use(morgan('dev'))
@@ -52,6 +58,10 @@ app.use('/notifications', require('./routes/Notifications.js'))
 app.use('/static', express.static(__dirname + '/public'));
 
 // server in listened
+// var httpServer = http.createServer(app);
+// var httpsServer = https.createServer(options, app);
+
 server.listen(app.get('port'), () => {
 	console.log('Server on port: ', app.get('port'))
-})
+});
+

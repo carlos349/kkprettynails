@@ -46,7 +46,7 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
                     <center>
                         <div style="width:90%;text-align: center;">
                             <h1 style="text-align: center;color:#181d81;">Bienvenido(a) </h1>
-                            <hr style="border-top: 1.5px solid #2eceaa;">
+                            <hr style="border-top: 1.5px solid #f0f1f3;">
                             <p style="text-align:center;margin-top:10px;font-size:18px;"> <strong>Hola</p>
                             <p style="text-align:left;font-size:14px;font-weight: 300;text-align: center;width: 90%;margin:auto;">
                                 <strong> 
@@ -56,7 +56,7 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
                         <div>
                     </center>
                 </div>
-                <div style="width: 85%;background-color: #2eceaa;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);margin: auto;padding:10px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#1f8d7c;padding-bottom:10px;-webkit-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);-moz-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);">
+                <div style="width: 85%;background-color: #f0f1f3;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);margin: auto;padding:10px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;padding-bottom:10px;-webkit-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);-moz-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);">
                     <center>
                         <div style="width:60%;">
                             <center>
@@ -131,7 +131,7 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
                     <center>
                         <div style="width:90%;text-align: center;">
                             <h1 style="text-align: center;color:#181d81;">Bienvenido(a) </h1>
-                            <hr style="border-top: 1.5px solid #2eceaa;">
+                            <hr style="border-top: 1.5px solid #f0f1f3;">
                             <p style="text-align:center;margin-top:10px;font-size:18px;"> <strong>Hola ${array.firstName} ${array.lastName}</p>
                             <p style="text-align:left;font-size:14px;font-weight: 300;text-align: center;width: 80%;margin:auto;"><strong> 
                                     Nos alegra que te hayas interesado en nuestros servicios, pronto nuestro equipo se pondrá en contacto contigo ofreciéndote la información que necesites.
@@ -140,7 +140,7 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
                         <div>
                     </center>
                 </div>
-                <div style="width: 85%;background-color: #2eceaa;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);margin: auto;padding: 10px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#1f8d7c;padding-bottom:10px;-webkit-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);-moz-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);">
+                <div style="width: 85%;background-color: #f0f1f3;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);margin: auto;padding: 10px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;padding-bottom:10px;-webkit-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);-moz-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);">
                     <center>
                         <div style="width:60%;">
                             <center>
@@ -213,7 +213,7 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
                     <center>
                         <div style="width:100%;text-align: center;">
                             <h1 style="text-align: center;color:#181d81;">Bienvenid(a) </h1>
-                            <hr style="border-top: 1.5px solid #2eceaa;">
+                            <hr style="border-top: 1.5px solid #f0f1f3;">
                             <p style="text-align:center;margin-top:10px;font-size:18px;"> <strong>¡Hola ${array.Name}!</p>
                             <p style="text-align:left;font-size:14px;font-weight: 300;text-align: center;width: 80%;margin:auto;">
                                 <strong> 
@@ -223,7 +223,7 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
                         <div>
                     </center>
                 </div>
-                <div style="width: 85%;background-color: #2eceaa;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);margin: auto;padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#1f8d7c;padding-bottom:20px;-webkit-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);-moz-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);">
+                <div style="width: 85%;background-color: #f0f1f3;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);margin: auto;padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;padding-bottom:20px;-webkit-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);-moz-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);">
                     <center>
                         <div style="width:60%;">
                             <center>
@@ -264,7 +264,7 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
                     <center>
                         <div style="width:100%;text-align: center;">
                             <h1 style="text-align: center;color:#181d81;">Contacto con cliente</h1>
-                            <hr style="border-top: 1.5px solid #2eceaa;">
+                            <hr style="border-top: 1.5px solid #f0f1f3;">
                             <p style="text-align:left;font-size:14px;font-weight: 300;text-align: center;width: 80%;margin:auto;">
                             <strong>El cliente ${array.Name} necesita información, por favor ponerse en contacto.
                             </strong><br>Correo: ${array.to} <br> Mensaje: ${array.message}
