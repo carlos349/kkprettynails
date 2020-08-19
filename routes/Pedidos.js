@@ -20,7 +20,8 @@ pedidos.post('/sendEmailPedido', async (req, res, next) => {
         array = {
             to: req.body.to,
             code: req.body.code,
-            articulo:req.body.article
+            articulo:req.body.article,
+            client:req.body.client
         }
         
         mail = {
@@ -38,7 +39,7 @@ pedidos.post('/sendEmailPedido', async (req, res, next) => {
             <center>
                 <div style="width:80%;text-align: center;">
                     <h1 style="text-align: center;color:#172b4d;"> </h1>
-                    <p style="text-align:center;margin-top:10px;font-size:18px;"> <strong>Estimado(a) '.$nombre.' '.$apellido.'. <br> Su pedido fue validado con éxito el código y detalles de su compra son los siguientes:</p>
+                    <p style="text-align:center;margin-top:10px;font-size:18px;"> <strong>Estimado(a) ${array.client} <br> Su pedido fue validado con éxito el código y detalles de su compra son los siguientes:</p>
                     <p style="text-align:left;font-size:14px;font-weight: 300;text-align: center;width: 60%;margin:auto;"><strong> 
                         
                         </strong>
@@ -55,17 +56,22 @@ pedidos.post('/sendEmailPedido', async (req, res, next) => {
             </center>
         </div>
         <div style="width: 60%;background-color: #f0f1f3;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);margin: auto;padding: 20px;font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;padding-bottom:20px;-webkit-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);-moz-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);">
-        <center>
-        <div style="width:60%;">
-            <center>
-            <p style="text-align:center;font-size:12px;"> +56 9 7262 8949 &nbsp;&nbsp;   kkprettynails@gmail.com</p> 
-            <p style="text-align:center;font-size:12px;">Contáctanos.</p>
-            <a href="https://kkprettynails.cl" style="text-decoration: none;color:#172b4d;" style="text-align:center;margin-top:12px;"><strong>kkprettynails.cl</strong></a>&nbsp;&nbsp;
-            <a href="https://www.instagram.com/kkprettynails/?hl=es-la" style="text-decoration: none;color:#172b4d;" style="text-align:center;margin-top:12px;"><strong>@kkprettynails</strong></a>
-            </center>
-        </div>
-        </center>
-    </div>
+                <center>
+                <div style="width:60%;">
+                    <center>
+                    <p style="text-align:center;font-size:18px;">Contáctanos.</p>
+                <a href="mailto:kkprettynails@gmail.com"><img style="width: 45px;" src="http://kkprettynails.cl/views/images/mail.png" alt=""></a>
+                <a href="https://www.instagram.com/kkprettynails/?hl=es-la"><img style="width: 40px;margin-left:40px" src="http://kkprettynails.cl/views/images/ig.png" alt=""></a>
+                <a href="https://wa.me/56972628949"><img style="width:38px;margin-left:40px" src="http://kkprettynails.cl/views/images/ws.png" alt=""></a>
+                <a href="https://kkprettynails.cl"><img style="width: 40px;margin-left:40px" src="http://kkprettynails.cl/views/images/web.png" alt=""></a>
+                <br>
+                   <a href="https://goo.gl/maps/GhvcDBH1ppBDae1KA">
+                    <p>Av. Pedro de Valdivia 3474, local 53B, Ñuñoa, Región Metropolitana de Santiago</p>
+                   </a>
+                    </center>
+                </div>
+                </center>
+            </div>
     </div>
             `
         }
