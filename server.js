@@ -60,7 +60,7 @@ app.use('/static', express.static(__dirname + '/public'));
 // var httpServer = http.createServer(app);
 // var httpsServer = https.createServer(options, app);
 
-server.listen(app.get('port'), () => {
+https.listen(app.get('port'), () => {
 	console.log('Server on port: ', app.get('port'))
 });
 
