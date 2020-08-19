@@ -44,8 +44,8 @@ pedidos.post('/sendEmailPedido', async (req, res, next) => {
                         
                         </strong>
                     </p>
-                    <img style="width:100%;" src="http://kkprettynails.cl/views/images/giftModelTop.png" alt="">
-                    <img style="width:30%;margin-top: -115px;border-radius: 50%;" src="http://kkprettynails.cl/views/images/logokk.png" alt=""> <br>
+                    <img style="width:100%;margin-bottom:-135px;" src="http://kkprettynails.cl/views/images/giftModelTop.png" alt="">
+                    <img style="width:30%;margin-top:-115px;border-radius: 50%;" src="http://kkprettynails.cl/views/images/logokk.png" alt=""> <br>
                     <img style="width:40%;margin-left: 180px;" src="http://kkprettynails.cl/views/images/giftModelCenter.png" alt=""><img style="width:30%;" src="http://kkprettynails.cl/views/images/giftModelInfo.png" alt="">
 
                     <p style="font-weight: 400;font-size: 18px;color: #9ba5b1;"><b>De regalo por: </b>${array.articulo}</p>
