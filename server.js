@@ -29,6 +29,7 @@ io.on('connection', socket  => {
 
 // settings
 app.set('port', process.env.PORT || 4200)
+app.set('trust proxy', true);
 
 //middlewares
 app.use(morgan('dev'))
