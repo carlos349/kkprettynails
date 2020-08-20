@@ -38,6 +38,19 @@ service.post('/newCategory', async (req,res) => {
   
 })
 
+service.get('/getServiceInfo/:id', async (req, res, next) => {
+  try {
+    const service = await Servicio.findById(req.params.id)
+    if (service) {
+      res.json({status: 'ok', service: service})
+    }else{
+      res.json({status: 'bad'})
+    }
+  }catch (err) {
+    res.status(404).send(err)
+  }
+})
+
 service.delete('/deleteCategory/:id', async (req, res) => {
   const categories = await Categories.findByIdAndRemove(req.params.id)
   if (categories) {
@@ -55,6 +68,18 @@ service.get('/', async (req,res) => {
   res.json(servicios)
 })
 
+service.post('/servicesByCategory', async (req, res, next) => {
+  try {
+    const services = await Servicio.find({category: req.body.name})
+    if (services.length > 0) {
+      res.json({status: 'ok', services: services})
+    }else{
+      res.json({status: 'bad', services: services})
+    }
+  }catch(err){
+    res.status(404).send(err)
+  }
+})
 service.post('/', (req,res) => {
   const dataServicios = {
     nombre:req.body.nombreServicio,
