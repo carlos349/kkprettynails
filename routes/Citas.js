@@ -472,7 +472,7 @@ citas.post('/sendConfirmation/:id', (req, res) => {
                     <img style="width: 100%;" src="${imgMails}syswa-isotipo.png" alt="Logo syswa">
                 </div>
             </div>
-            <div style="width: 100%;margin: auto;padding-top: 5%;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;padding-bottom: 20px;">
+            <div style="width: 100%;margin: auto;padding-top: 5%;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;padding-bottom: 20px;padding-left:10px;">
                 <center>
                     <div style="width:100%;text-align: center;">
                         <h1 style="text-align: center;color:#181d81;">Bienvenid@ </h1>
@@ -505,22 +505,22 @@ citas.post('/sendConfirmation/:id', (req, res) => {
                 <div>
                 </center>
             </div>
-            <div style="width: 100%;background-color: #f0f1f3;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);margin: auto;padding: 8px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;padding-bottom:8px;-webkit-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);-moz-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);">
+            <div style="width: 100%;background-color: #f0f1f3;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);margin: auto;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;padding-bottom:8px;-webkit-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);-moz-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);">
                 <center>
                 <div style="width:100%;">
                     <center>
                     <p style="text-align:center;font-size:14px;"><strong> Contáctanos</strong></p>
                       <a  href="mailto:kkprettynails@gmail.com" style="margin-left:20px;text-decoration:none;"> 
-                        <img style="height:50px;width:5%;" src="${imgMails}mail.png" alt="Logo mail">
+                        <img style="height:50px;width:7%;" src="${imgMails}mail.png" alt="Logo mail">
                       </a>
                       <a  href="https://www.instagram.com/kkprettynails/" style="margin-left:20px;text-decoration:none;">
-                        <img style="height:50px;width:5%;" src="${imgMails}ig.png" alt="Logo ig">
+                        <img style="height:50px;width:7%;" src="${imgMails}ig.png" alt="Logo ig">
                       </a>
                       <a  href="https://api.whatsapp.com/send?phone=56972628949&text=&source=&data=&app_absent=" style="margin-left:20px;text-decoration:none;">
-                        <img style="height:50px;width:5%;" src="${imgMails}ws.png" alt="Logo ws">
+                        <img style="height:50px;width:7%;" src="${imgMails}ws.png" alt="Logo ws">
                       </a>
                       <a  href="https://kkprettynails.cl/inicio" style="margin-left:20px;text-decoration:none;">
-                        <img style="height:50px;width:5%;" src="${imgMails}web.png" alt="Logo web">
+                        <img style="height:50px;width:7%;" src="${imgMails}web.png" alt="Logo web">
                       </a>
                     <br>
                     <a style="text-align:center;font-size:14px;" href="https://goo.gl/maps/m5rVWDEiPj7q1Hxh9"> Av. Pedro de Valdivia 3474 Caracol Ñuñoa, Local 53-B Ñuñoa, Chile.</a>
