@@ -118,13 +118,6 @@ pedidos.get('/mails', async (req, res) => {
     res.json(pedidos)
 })
 
-pedidos.post('/datesPerClient', async (req, res) => {
-    const pedidos = await Citas.find({
-        $and: [{client: {$regex: req.body.client}},{process:true}]
-    })
-    res.json(pedidos)
-})
-
 // pedidos.get('/historical/:data', async (req, res) => {
 //     const split = req.params.data.split('-')
 //     const data = split[0]+' / '+split[1]
@@ -189,6 +182,13 @@ pedidos.post('/verifyClient', (req, res) => {
     .catch(err => {
         res.send(err)
     })
+})
+
+pedidos.post('/datesPerClient', async (req, res) => {
+    const pedidos = await Citas.find({
+        $and: [{client: {$regex: req.body.client}},{process:true}]
+    })
+    res.json(pedidos)
 })
 
 pedidos.post('/', (req, res) => {
