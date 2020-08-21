@@ -4,14 +4,7 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const app = express()
 const mongoose = require('mongoose')
-const fs = require('fs')
-// const options = {
-// 	key: fs.readFileSync('./ssl/server.key'),
-// 	cert: fs.readFileSync('./ssl/server.crt')
-// }
 const server = require('http').Server(app);
-// const https = require('https').Server(options, app)
-// const http = require('http')
 const io = require('socket.io')(server);
 mongoose.connect('mongodb://localhost/kkprettynails-database', {
 			useNewUrlParser: true,

@@ -23,7 +23,6 @@ const upload = multer({
 	storage
 })
 
-
 citas.get('/availableslenders/:fecha', (req, res) => {
 
   const dateNow = new Date(req.params.fecha)

@@ -7,8 +7,9 @@ const User = require('../models/User')
 const Clientes = require('../models/Cliente')
 const email = require('../modelsMails/Mails')
 const credentials = require('../private/private-credentials')
+const protectRoute = require('../accessFunctions/verifyToken')
 users.use(cors())
-process.env.SECRET_KEY = 'secret'
+const key = require('../private/key_jwt');
 const multer = require('multer')
 const { diskStorage } = require('multer')
 const path = require('path')
@@ -23,7 +24,6 @@ const KMails = new email(kmailCredentials)
 const upload = multer({
 	storage
 })
-
 
 users.get('/createSuperuser', async (req, res, next) => {
 	console.log(credentials)
@@ -110,22 +110,7 @@ users.post('/sendNewPass', async (req, res) => {
 	
 })
 
-users.post('/editData/:id', upload.single("image"), async (req, res, next) => {
-	const token = req.headers['x-access-token'];
-	if (!token) {
-		return res.status(401).json({auth: false, message: 'no token provided'})
-	}
-
-	try {
-		const decoded = jwt.verify(token, process.env.SECRET_KEY)
-		const verify = await User.findById(decoded._id)
-		if (!verify) {
-			return res.status(401).json({auth: false, message: 'invalid access'})
-		}
-	} catch(err) {
-		return res.status(401).json({auth: false, message: 'token expired'})
-	}
-	
+users.post('/editData/:id', protectRoute, upload.single("image"), async (req, res, next) => {
 	const id = req.params.id
 	const firstName = req.body.first_name  
 	const lastName = req.body.last_name 
@@ -156,22 +141,7 @@ users.post('/editData/:id', upload.single("image"), async (req, res, next) => {
 	}
 })
 
-users.post('/registerImage/:id', upload.single("image"), async (req, res, next) => {
-	const token = req.headers['x-access-token'];
-	if (!token) {
-		return res.status(401).json({auth: false, message: 'no token provided'})
-	}
-
-	try {
-		const decoded = jwt.verify(token, process.env.SECRET_KEY)
-		const verify = await User.findById(decoded._id)
-		if (!verify) {
-			return res.status(401).json({auth: false, message: 'invalid access'})
-		}
-	} catch(err) {
-		return res.status(401).json({auth: false, message: 'token expired'})
-	}
-
+users.post('/registerImage/:id', protectRoute, upload.single("image"), async (req, res, next) => {
 	const images = req.file.filename
 	const id = req.params.id
 	User.findByIdAndUpdate(id, {
@@ -184,22 +154,7 @@ users.post('/registerImage/:id', upload.single("image"), async (req, res, next) 
 	})
 })
 
-users.get('/', async (req, res) => {
-	const token = req.headers['x-access-token'];
-	if (!token) {
-		return res.status(401).json({auth: false, message: 'no token provided'})
-	}
-
-	try {
-		const decoded = jwt.verify(token, process.env.SECRET_KEY)
-		const verify = await User.findById(decoded._id)
-		if (!verify) {
-			return res.status(401).json({auth: false, message: 'invalid access'})
-		}
-	} catch(err) {
-		return res.status(401).json({auth: false, message: 'token expired'})
-	}
-	
+users.get('/', protectRoute, async (req, res) => {
 	const userss = await User.find()
   	res.json(userss)
 })
@@ -209,42 +164,13 @@ users.get('/Clientes', async (req, res) => {
   	res.status(200).json(clients)
 })
 
-users.delete('/:id', async (req, res) => {
-	const token = req.headers['x-access-token'];
-	if (!token) {
-		return res.status(401).json({auth: false, message: 'no token provided'})
-	}
-
-	try {
-		const decoded = jwt.verify(token, process.env.SECRET_KEY)
-		const verify = await User.findById(decoded._id)
-		if (!verify) {
-			return res.status(401).json({auth: false, message: 'invalid access'})
-		}
-	} catch(err) {
-		return res.status(401).json({auth: false, message: 'token expired'})
-	}
+users.delete('/:id', protectRoute, async (req, res) => {
 
 	const userss = await User.findByIdAndRemove(req.params.id)
   	res.status(200).json(userss)
 })
 
-users.put('/:id', async (req, res, next) => {
-	const token = req.headers['x-access-token'];
-	if (!token) {
-		return res.status(401).json({auth: false, message: 'no token provided'})
-	}
-
-	try {
-		const decoded = jwt.verify(token, process.env.SECRET_KEY)
-		const verify = await User.findById(decoded._id)
-		if (!verify) {
-			return res.status(401).json({auth: false, message: 'invalid access'})
-		}
-	} catch(err) {
-		return res.status(401).json({auth: false, message: 'token expired'})
-	}
-
+users.put('/:id', protectRoute, async (req, res, next) => {
 	const status = req.body.status
 	const employe = req.body.employe
 	if(status == 3){
@@ -259,27 +185,9 @@ users.put('/:id', async (req, res, next) => {
 			res.json(update)
 		}
 	}
-	
-	
 })
 
-
-users.post('/register', async (req, res, next) => {
-	const token = req.headers['x-access-token'];
-	if (!token) {
-		return res.status(401).json({auth: false, message: 'no token provided'})
-	}
-
-	try {
-		const decoded = jwt.verify(token, process.env.SECRET_KEY)
-		const verify = await User.findById(decoded._id)
-		if (!verify) {
-			return res.status(401).json({auth: false, message: 'invalid access'})
-		}
-	} catch(err) {
-		return res.status(401).json({auth: false, message: 'token expired'})
-	}
-	
+users.post('/register', protectRoute, async (req, res, next) => {
 	const today = new Date()
 	const userData = {
 		first_name: req.body.first_name,
@@ -345,7 +253,7 @@ users.post('/login', (req, res) => {
 						LastAccess: user.LastAccess,
 						linkLender: user.linkLender
 					}
-					let token = jwt.sign(payload, process.env.SECRET_KEY, {
+					let token = jwt.sign(payload, key.key, {
 						expiresIn: 60 * 60 * 24
 					})
 					res.json({token: token, status: user.status, access: user.access})
@@ -362,22 +270,7 @@ users.post('/login', (req, res) => {
 	})
 })
 
-users.get('/data/:id', async (req, res, next) => {
-	const token = req.headers['x-access-token'];
-	if (!token) {
-		return res.status(401).json({auth: false, message: 'no token provided'})
-	}
-
-	try {
-		const decoded = jwt.verify(token, process.env.SECRET_KEY)
-		const verify = await User.findById(decoded._id)
-		if (!verify) {
-			return res.status(401).json({auth: false, message: 'invalid access'})
-		}
-	} catch(err) {
-		return res.status(401).json({auth: false, message: 'token expired'})
-	}
-
+users.get('/data/:id', protectRoute, async (req, res, next) => {
 	const data = await User.findById(req.params.id, {password: 0})
 	if (!data) {
 		res.status(404).send('User not found')
@@ -385,22 +278,7 @@ users.get('/data/:id', async (req, res, next) => {
 	res.send(data)
 })
 
-users.put('/editAccess/:id', async (req, res) => {
-	const token = req.headers['x-access-token'];
-	if (!token) {
-		return res.status(401).json({auth: false, message: 'no token provided'})
-	}
-
-	try {
-		const decoded = jwt.verify(token, process.env.SECRET_KEY)
-		const verify = await User.findById(decoded._id)
-		if (!verify) {
-			return res.status(401).json({auth: false, message: 'invalid access'})
-		}
-	} catch(err) {
-		return res.status(401).json({auth: false, message: 'token expired'})
-	}
-
+users.put('/editAccess/:id', protectRoute, async (req, res) => {
 	const id = req.params.id
 	const accessss = req.body.access
 	try {
@@ -422,7 +300,7 @@ users.put('/editAccess/:id', async (req, res) => {
 					LastAccess: user.LastAccess,
 					linkLender: user.linkLender
 				}
-				let token = jwt.sign(payload, process.env.SECRET_KEY, {
+				let token = jwt.sign(payload, key.key, {
 					expiresIn: 60 * 60 * 24
 				})
 				return res.json({status: 'ok', token: token})
@@ -434,22 +312,7 @@ users.put('/editAccess/:id', async (req, res) => {
 	
 })
 
-users.put('/changePass/:id', async (req, res, next) => {
-	const token = req.headers['x-access-token'];
-	if (!token) {
-		return res.status(401).json({auth: false, message: 'no token provided'})
-	}
-
-	try {
-		const decoded = jwt.verify(token, process.env.SECRET_KEY)
-		const verify = await User.findById(decoded._id)
-		if (!verify) {
-			return res.status(401).json({auth: false, message: 'invalid access'})
-		}
-	} catch(err) {
-		return res.status(401).json({auth: false, message: 'token expired'})
-	}
-	
+users.put('/changePass/:id', protectRoute, async (req, res, next) => {
 	const id = req.params.id
 	const newPass = req.body.newPass
 	const lastPass = req.body.lastPass
