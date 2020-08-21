@@ -467,14 +467,14 @@ citas.post('/sendConfirmation/:id', (req, res) => {
     subject: 'Confirmacion de cita programada',
     html: `
     <div style="width: 80%;max-width:1000px;margin:auto; padding:0;text-align:center;">
-            <div style="width: 85%;height: 8vh;margin: auto;background-color: #181d81;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;text-align:justify;-webkit-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);-moz-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);">
+            <div style="width: 100%;height: 8vh;margin: auto;background-color: #181d81;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;text-align:justify;-webkit-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);-moz-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);">
                 <div style="width: 80px;margin:auto;border-radius:55%;background-color:#fff;padding: 10px;">     
                     <img style="width: 100%;" src="${imgMails}syswa-isotipo.png" alt="Logo syswa">
                 </div>
             </div>
             <div style="width: 100%;margin: auto;padding-top: 5%;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;padding-bottom: 20px;">
                 <center>
-                    <div style="width:60%;text-align: center;">
+                    <div style="width:100%;text-align: center;">
                         <h1 style="text-align: center;color:#181d81;">Bienvenid@ </h1>
                         <img style="height:80px;width:100px;margin-top:-20px;" src="${imgMails}logokk.png" alt="Logo kkprettynails">
                             <p style="text-align:center;margin-top:10px;font-size:16px;"> <strong>¡${data.name}! has generado la siguiente cita.</p>
@@ -505,22 +505,22 @@ citas.post('/sendConfirmation/:id', (req, res) => {
                 <div>
                 </center>
             </div>
-            <div style="width: 85%;background-color: #f0f1f3;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);margin: auto;padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;padding-bottom:20px;-webkit-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);-moz-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);">
+            <div style="width: 100%;background-color: #f0f1f3;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);margin: auto;padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;padding-bottom:20px;-webkit-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);-moz-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);">
                 <center>
-                <div style="width:60%;">
+                <div style="width:100%;">
                     <center>
                     <p style="text-align:center;font-size:14px;"> Contáctanos</p>
                       <a  href="mailto:kkprettynails@gmail.com" style="margin-left:20px;text-decoration:none;"> 
-                        <img style="height:50px;width:50px;" src="${imgMails}mail.png" alt="Logo mail">
+                        <img style="height:50px;width:5%;" src="${imgMails}mail.png" alt="Logo mail">
                       </a>
                       <a  href="https://www.instagram.com/kkprettynails/" style="margin-left:20px;text-decoration:none;">
-                        <img style="height:50px;width:50px;" src="${imgMails}ig.png" alt="Logo ig">
+                        <img style="height:50px;width:5%;" src="${imgMails}ig.png" alt="Logo ig">
                       </a>
                       <a  href="https://api.whatsapp.com/send?phone=56972628949&text=&source=&data=&app_absent=" style="margin-left:20px;text-decoration:none;">
-                        <img style="height:50px;width:50px;" src="${imgMails}ws.png" alt="Logo ws">
+                        <img style="height:50px;width:5%;" src="${imgMails}ws.png" alt="Logo ws">
                       </a>
                       <a  href="https://kkprettynails.cl/inicio" style="margin-left:20px;text-decoration:none;">
-                        <img style="height:50px;width:50px;" src="${imgMails}web.png" alt="Logo web">
+                        <img style="height:50px;width:5%;" src="${imgMails}web.png" alt="Logo web">
                       </a>
                     <br>
                     <a style="text-align:center;font-size:14px;" href="https://goo.gl/maps/m5rVWDEiPj7q1Hxh9"> Av. Pedro de Valdivia 3474 Caracol Ñuñoa, Local 53-B Ñuñoa, Chile.</a>
