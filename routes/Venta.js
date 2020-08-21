@@ -1260,13 +1260,50 @@ ventas.post('/procesar', (req, res) => {
                           }
                         })
                         .then(process => {
-                          res.json({status: 'Venta registrada'})
+                          
+                          Cliente.findOne({identidad: finalClient[1]})
+                          .then(reco => {
+                            if (reco.idRecomendador != '') {
+                              Cliente.findByIdAndUpdate(reco.idRecomendador, {
+                                $inc : {recomendaciones:1}
+                              })
+                              .then(inc =>{
+                                Cliente.updateOne({identidad: finalClient[1]}, {
+                                  $set : {idRecomendador:''}
+                                })
+                                .then(set =>{
+                                  res.json({status: 'Venta registrada'})
+                                })
+                              })
+                            }
+                            else{
+                              res.json({status: 'Venta registrada'})
+                            }
+                          })
                         })
                         .catch(err => {
                           res.send('Error:' + err)
                         })
                       }else{
-                        res.json({status: 'Venta registrada'})
+                        Cliente.findOne({identidad: finalClient[1]})
+                          .then(reco => {
+                            if (reco.idRecomendador != '') {
+                              Cliente.findByIdAndUpdate(reco.idRecomendador, {
+                                $inc : {recomendaciones:1}
+                              })
+                              .then(inc =>{
+                                Cliente.updateOne({identidad: finalClient[1]}, {
+                                  $set : {idRecomendador:''}
+                                })
+                                .then(set =>{
+                                  res.json({status: 'Venta registrada'})
+                                })
+                              })
+                            }
+                            else{
+                              res.json({status: 'Venta registrada'})
+                            }
+                          })
                       }
                     })
                     .catch(err => {

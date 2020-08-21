@@ -460,6 +460,7 @@ clients.get('/bestClient', async (req, res) => {
 
 clients.get('/findOne/:id', async (req, res) => {
     const Clients = await Cliente.findById(req.params.id)
+
     res.json(Clients)
 })
 
@@ -506,35 +507,80 @@ clients.put('/deleteClient/:id', async (req, res) => {
 })
 
 clients.post('/verifyClient', (req, res) => {
-    const data = {
-        nombre: req.body.name,
-        identidad: req.body.mail,
-        correoCliente: req.body.number,
-        instagramCliente: '',
-        participacion: 0,
-        recomendacion: '',
-        recomendaciones: 0,
-        historical: [],
-        ultimaFecha: new Date(),
-        fecha: new Date()
-    }
-    Cliente.findOne({identidad: data.identidad})
-    .then(client => {
-        if(client){
-            res.json({status: 'ok', data: client})
-        }else{
-            Cliente.create(data)
-            .then(ready => {
-                res.json({status: 'bad', data: ready})
+    var recoFinal = null
+    if (req.body.referidoId != '') {
+        Cliente.findById(req.body.referidoId)
+        .then(recomender => {
+            const data = {
+                nombre: req.body.name,
+                identidad: req.body.mail,
+                correoCliente: req.body.number,
+                instagramCliente: '',
+                participacion: 0,
+                recomendacion: recomender.nombre + ' / ' + recomender.identidad,
+                idRecomendador:req.body.referidoId,
+                recomendaciones: 0,
+                historical: [],
+                ultimaFecha: new Date(),
+                fecha: new Date()
+            }
+            Cliente.findOne({identidad: data.identidad})
+            .then(client => {
+                if(client){
+                    res.json({status: 'ok', data: client})
+                }else{
+                    Cliente.create(data)
+                    .then(ready => {
+                        res.json({status: 'bad', data: ready})
+                    })
+                    .catch(err => {
+                        res.send(err)
+                    })
+                }
             })
             .catch(err => {
                 res.send(err)
             })
+        
+        })
+        .catch(err => {
+            console.log(err)
+        })
+        
+    }
+    else{
+        const data = {
+            nombre: req.body.name,
+            identidad: req.body.mail,
+            correoCliente: req.body.number,
+            instagramCliente: '',
+            participacion: 0,
+            recomendacion: recoFinal,
+            idRecomendador:req.body.referidoId,
+            recomendaciones: 0,
+            historical: [],
+            ultimaFecha: new Date(),
+            fecha: new Date()
         }
-    })
-    .catch(err => {
-        res.send(err)
-    })
+        Cliente.findOne({identidad: data.identidad})
+        .then(client => {
+            if(client){
+                res.json({status: 'ok', data: client})
+            }else{
+                Cliente.create(data)
+                .then(ready => {
+                    res.json({status: 'bad', data: ready})
+                })
+                .catch(err => {
+                    res.send(err)
+                })
+            }
+        })
+        .catch(err => {
+            res.send(err)
+        })
+    }
+    
 })
 
 clients.post('/', (req, res) => {
@@ -542,9 +588,9 @@ clients.post('/', (req, res) => {
     let finalRecommender = ''
     if (recommender == null) {
         finalRecommender = 'Ninguno'
-    }else{
-        let reco = recommender.split(" / ")
-        finalRecommender = reco[1]
+    }
+    else{
+        finalRecommender = recommender
     }
     const today = new Date()
     const ClienteData = {
@@ -553,7 +599,8 @@ clients.post('/', (req, res) => {
         correoCliente:req.body.correoCliente,
         instagramCliente: req.body.instagramCliente,
         participacion: req.body.ifCheck,
-        recomendacion: recommender,
+        recomendacion: finalRecommender,
+        idRecomendador:req.body.idRecomender,
         recomendaciones:0,
         historical: [],
         ultimaFecha:today,
@@ -567,17 +614,7 @@ clients.post('/', (req, res) => {
         if (!cliente) {
             Cliente.create(ClienteData)
             .then(cliente => {
-                if (recommender == '') {
-                    res.json({status: 'Registrado'}) 
-                }else{
-                    Cliente.updateOne({identidad: finalRecommender}, {$inc: {recomendaciones: 1}})
-                    .then(update => {
-                        res.json({status: 'Registrado'}) 
-                    })
-                    .catch(err => {
-                        res.send(err)
-                    })
-                }  
+                res.json({status: 'Registrado'})  
             })
             .catch(err => {
                 res.send(err)

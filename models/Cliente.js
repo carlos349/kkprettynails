@@ -20,6 +20,9 @@ const clienteSchema = new Schema ({
   recomendacion: {
     type: String
   },
+  idRecomendador: {
+    type: String
+  },
   recomendaciones: {
     type: Number
   },
