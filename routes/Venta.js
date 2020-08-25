@@ -2,6 +2,7 @@ const express = require('express')
 const ventas = express.Router()
 const cors = require('cors')
 const jwt = require('jsonwebtoken')
+const protectRoute = require('../accessFunctions/verifyToken')
 const User = require('../models/User')
 
 const Venta = require('../models/Venta')
@@ -964,21 +965,7 @@ ventas.post('/ingresocliente', (req, res) => {
   })
 })
 
-ventas.get('/', async (req, res) => {
-  const token = req.headers['x-access-token'];
-	if (!token) {
-		return res.status(401).json({auth: false, message: 'no token provided'})
-	}
-
-	try {
-		const decoded = jwt.verify(token, process.env.SECRET_KEY)
-		const verify = await User.findById(decoded._id)
-		if (!verify) {
-			return res.status(401).json({auth: false, message: 'invalid access'})
-		}
-	} catch(err) {
-		return res.status(401).json({auth: false, message: 'token expired'})
-  }
+ventas.get('/', protectRoute, async (req, res) => {
   const dateformat = new Date()
   const dateFirst = dateformat.getFullYear() +"-"+(dateformat.getMonth() + 1)+"-1"
   const dateLast = dateformat.getFullYear() +"-"+(dateformat.getMonth() + 1)+"-31"
