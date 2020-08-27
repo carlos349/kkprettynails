@@ -481,7 +481,7 @@ clients.get('/mails', async (req, res) => {
 
 clients.post('/datesPerClient', async (req, res) => {
     const Clients = await Citas.find({
-        $and: [{client: {$regex: req.body.client}},{process:true}]
+        $and: [{client: {$regex: req.body.client}},{confirmation:false}]
     })
     res.json(Clients)
 })
