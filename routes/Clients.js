@@ -572,7 +572,19 @@ clients.post('/registerwithpass', (req, res) => {
 				Cliente.create(Client)
 				.then(client => {
                     console.log(client)
-					res.json({status: client._id})
+                    const payload = {
+                        _id: client._id,
+                        name: client.nombre,
+                        mail: client.identidad,
+                        phone: client.correoCliente,
+                        birthday: client.birthday,
+                        userImage: client.userImage,
+                        historical: client.historical
+                    }
+                    let token = jwt.sign(payload, key.key, {
+                        expiresIn: 60 * 60 * 24
+                    })
+                    res.json({status: 'ok', token: token})
 				})
 				.catch(err => {
 					res.send(err)
