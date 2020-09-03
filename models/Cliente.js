@@ -8,6 +8,9 @@ const clienteSchema = new Schema ({
   identidad: {
     type: String
   },
+  password: {
+    type: String
+  },
   correoCliente: {
     type: String
   },
@@ -36,6 +39,12 @@ const clienteSchema = new Schema ({
   fecha: {
     type: Date,
 		default: Date.now
+  },
+  birthday: {
+    type: Date
+  },
+  userImage: {
+    type: String
   }
 })
 

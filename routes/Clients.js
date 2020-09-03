@@ -4,10 +4,13 @@ const cors = require('cors');
 const Cliente = require('../models/Cliente')
 const Citas = require('../models/Citas')
 const email = require('../modelsMails/Mails')
+const User = require('../models/User')
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
+const key = require('../private/key_jwt');
 const multer = require('multer')
 const { diskStorage } = require('multer')
 const path = require('path')
-const Venta = require('../models/Venta')
 const kmailCredentials = require('../private/kmail-credentials')
 const smailCredentials = require('../private/smail-credentials')
 const imgMails = require('../private/endpointsLogo.js')
@@ -62,16 +65,16 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
                             <center>
                                 <p style="text-align:center;font-size:14px;"> Contacto</p>
                                 <a  href="mailto:syswainfo@gmail.com" style="margin-left:20px;text-decoration:none;"> 
-                                    <img style="width:7%;" src="${imgMails}mails.png" alt="Logo mail">
+                                    <img style="width:5%;" src="${imgMails}mails.png" alt="Logo mail">
                                 </a>
                                 <a  href="https://www.instagram.com/syswanet/" style="margin-left:20px;text-decoration:none;">
-                                    <img style="width:7%;" src="${imgMails}igs.png" alt="Logo ig">
+                                    <img style="width:5%;" src="${imgMails}igs.png" alt="Logo ig">
                                 </a>
                                 <a  href="https://api.whatsapp.com/send?phone=56985826974&text=&source=&data=&app_absent=" style="margin-left:20px;text-decoration:none;">
-                                    <img style="width:7%;" src="${imgMails}wss.png" alt="Logo ws">
+                                    <img style="width:5%;" src="${imgMails}wss.png" alt="Logo ws">
                                 </a>
                                 <a  href="https://syswa.net" style="margin-left:20px;text-decoration:none;">
-                                    <img style="width:7%;" src="${imgMails}webs.png" alt="Logo web">
+                                    <img style="width:5%;" src="${imgMails}webs.png" alt="Logo web">
                                 </a>
                                 <br>
                                 <p style="text-align:center;font-size:14px;"> Atendemos las 24 horas, los 7 días de la semana</p>
@@ -146,16 +149,16 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
                             <center>
                                 <p style="text-align:center;font-size:14px;"> Contacto</p>
                                 <a  href="mailto:syswainfo@gmail.com" style="margin-left:20px;text-decoration:none;"> 
-                                    <img style="width:7%;" src="${imgMails}mails.png" alt="Logo mail">
+                                    <img style="width:5%;" src="${imgMails}mails.png" alt="Logo mail">
                                 </a>
                                 <a  href="https://www.instagram.com/syswanet/" style="margin-left:20px;text-decoration:none;">
-                                    <img style="width:7%;" src="${imgMails}igs.png" alt="Logo ig">
+                                    <img style="width:5%;" src="${imgMails}igs.png" alt="Logo ig">
                                 </a>
                                 <a  href="https://api.whatsapp.com/send?phone=56985826974&text=&source=&data=&app_absent=" style="margin-left:20px;text-decoration:none;">
-                                    <img style="width:7%;" src="${imgMails}wss.png" alt="Logo ws">
+                                    <img style="width:5%;" src="${imgMails}wss.png" alt="Logo ws">
                                 </a>
                                 <a  href="https://syswa.net" style="margin-left:20px;text-decoration:none;">
-                                    <img style="width:7%;" src="${imgMails}webs.png" alt="Logo web">
+                                    <img style="width:5%;" src="${imgMails}webs.png" alt="Logo web">
                                 </a>
                                 <br>
                                 <p style="text-align:center;font-size:14px;"> Atendemos las 24 horas, los 7 días de la semana</p>
@@ -229,16 +232,16 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
                             <center>
                                 <p style="text-align:center;font-size:14px;"> Contacto</p>
                                 <a  href="mailto:syswainfo@gmail.com" style="margin-left:20px;text-decoration:none;"> 
-                                    <img style="width:7%;" src="${imgMails}mails.png" alt="Logo mail">
+                                    <img style="width:5%;" src="${imgMails}mails.png" alt="Logo mail">
                                 </a>
                                 <a  href="https://www.instagram.com/syswanet/" style="margin-left:20px;text-decoration:none;">
-                                    <img style="width:7%;" src="${imgMails}igs.png" alt="Logo ig">
+                                    <img style="width:5%;" src="${imgMails}igs.png" alt="Logo ig">
                                 </a>
                                 <a  href="https://api.whatsapp.com/send?phone=56985826974&text=&source=&data=&app_absent=" style="margin-left:20px;text-decoration:none;">
-                                    <img style="width:7%;" src="${imgMails}wss.png" alt="Logo ws">
+                                    <img style="width:5%;" src="${imgMails}wss.png" alt="Logo ws">
                                 </a>
                                 <a  href="https://syswa.net" style="margin-left:20px;text-decoration:none;">
-                                    <img style="width:7%;" src="${imgMails}webs.png" alt="Logo web">
+                                    <img style="width:5%;" src="${imgMails}webs.png" alt="Logo web">
                                 </a>
                                 <br>
                                 <p style="text-align:center;font-size:14px;"> Atendemos las 24 horas, los 7 días de la semana</p>
@@ -504,6 +507,82 @@ clients.put('/deleteClient/:id', async (req, res) => {
         res.json({status: 'ok'})
     }
     res.json({status: 'bad'})
+})
+
+clients.post('/loginClient', (req, res) => {
+    const data = {
+        user: req.body.user, 
+        password: req.body.pass
+    }
+    Cliente.findOne({identidad: data.user})
+    .then(user => {
+        if(user){
+			if(bcrypt.compareSync(data.password, user.password)){
+                const payload = {
+                    _id: user._id,
+                    name: user.nombre,
+                    mail: user.identidad,
+                    phone: user.correoCliente,
+                    birthday: user.birthday,
+                    userImage: user.userImage,
+                    historical: user.historical
+                }
+                let token = jwt.sign(payload, key.key, {
+                    expiresIn: 60 * 60 * 24
+                })
+                res.json({status: 'ok', token: token})
+			}else{
+				res.json({status: 'pass incorrecto'})
+			}
+		}else{
+			res.json({status: 'User does not exist'})
+		}
+    })
+    .catch(err => {
+        res.send(err)
+    })
+})
+
+clients.post('/registerwithpass', (req, res) => {
+    const data = req.body.data
+    const Client = {
+        nombre: data.name+ ' ' +data.lastName,
+        identidad: data.email,
+        password: data.password,
+        correoCliente: data.code+ ' '+data.phone,
+        instagramCliente: '',
+        participacion: 1,
+        recomendacion: '',
+        idRecomendador: '',
+        recomendaciones: 0,
+        ultimaFecha: new Date(),
+        historical: [],
+        fecha: new Date(),
+        birthday: data.datePicker,
+        userImage: 'person_1.jpg'
+    }
+    Cliente.findOne({identidad: Client.identidad})
+    .then(exist => {
+        console.log(exist)
+        if (exist) {
+            res.json({status: 'client already exist'})
+        }else{
+            bcrypt.hash(Client.password, 10, (err, hash) => {
+				Client.password = hash
+				Cliente.create(Client)
+				.then(client => {
+                    console.log(client)
+					res.json({status: client._id})
+				})
+				.catch(err => {
+					res.send(err)
+				})
+			})
+        }
+    })
+    .catch(err => {
+        res.send(err)
+    })
 })
 
 clients.post('/verifyClient', (req, res) => {
