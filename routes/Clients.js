@@ -707,6 +707,20 @@ clients.post('/', (req, res) => {
     })
 })
 
+clients.put('/editData/:id', (req, res) => {
+
+    Cliente.findByIdAndUpdate(req.params.id, {
+        $set: {
+            nombre: req.body.name,
+            identidad: req.body.mail,
+            correoCliente: req.body.code+ ' '+req.body.phone
+        }
+    })
+    .then(change => {
+        
+    })
+
+})
 clients.put('/:id', async (req, res, next) => {
     try {
         const findClient = await Cliente.findOne({
