@@ -14,6 +14,9 @@ const clienteSchema = new Schema ({
   correoCliente: {
     type: String
   },
+  codigoRescue: {
+    type: String
+  },
   instagramCliente: {
     type: String
   },
