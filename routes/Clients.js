@@ -525,7 +525,8 @@ clients.post('/loginClient', (req, res) => {
                     phone: user.correoCliente,
                     birthday: user.birthday,
                     userImage: user.userImage,
-                    historical: user.historical
+                    historical: user.historical,
+                    recomends: user.recomendaciones
                 }
                 let token = jwt.sign(payload, key.key, {
                     expiresIn: 60 * 60 * 24
@@ -545,6 +546,7 @@ clients.post('/loginClient', (req, res) => {
 
 clients.post('/registerwithpass', (req, res) => {
     const data = req.body.data
+    console.log(req.body.referidoId)
     const Client = {
         nombre: data.name+ ' ' +data.lastName,
         identidad: data.email,
@@ -565,31 +567,98 @@ clients.post('/registerwithpass', (req, res) => {
     .then(exist => {
         console.log(exist)
         if (exist) {
-            res.json({status: 'client already exist'})
-        }else{
-            bcrypt.hash(Client.password, 10, (err, hash) => {
-				Client.password = hash
-				Cliente.create(Client)
-				.then(client => {
-                    console.log(client)
-                    const payload = {
-                        _id: client._id,
-                        name: client.nombre,
-                        mail: client.identidad,
-                        phone: client.correoCliente,
-                        birthday: client.birthday,
-                        userImage: client.userImage,
-                        historical: client.historical
-                    }
-                    let token = jwt.sign(payload, key.key, {
-                        expiresIn: 60 * 60 * 24
+            if (exist.password == '') {
+                bcrypt.hash(Client.password, 10, (err, hash) => {
+                    Client.password = hash
+                    Cliente.findByIdAndUpdate(exist._id, {
+                        $set: {
+                            password: Client.password,
+                            correoCliente: data.code+' '+data.phone
+                        }
                     })
-                    res.json({status: 'ok', token: token})
-				})
-				.catch(err => {
-					res.send(err)
-				})
-			})
+                    .then(setPass => {
+                        const payload = {
+                            _id: setPass._id,
+                            name: setPass.nombre,
+                            mail: setPass.identidad,
+                            phone: setPass.correoCliente,
+                            birthday: setPass.birthday,
+                            userImage: setPass.userImage,
+                            historical: setPass.historical,
+                            recomends: setPass.recomendaciones
+                        }
+                        let token = jwt.sign(payload, key.key, {
+                            expiresIn: 60 * 60 * 24
+                        })
+                        res.json({status: 'ok', token: token})
+                    })
+                    .catch(err => {
+                        res.send(err)
+                    })
+                })
+            }else{
+                res.json({status: 'client already exist'})
+            }
+        }else{
+            if (data.referidoId != '') {
+                Cliente.findById(data.referidoId)
+                .then(refer => {
+                    Client.recomendacion = refer.nombre + ' / ' + refer.identidad
+                    Client.idRecomendador = data.referidoId
+                    bcrypt.hash(Client.password, 10, (err, hash) => {
+                        Client.password = hash
+                        Cliente.create(Client)
+                        .then(client => {
+                            console.log(client)
+                            const payload = {
+                                _id: client._id,
+                                name: client.nombre,
+                                mail: client.identidad,
+                                phone: client.correoCliente,
+                                birthday: client.birthday,
+                                userImage: client.userImage,
+                                historical: client.historical,
+                                recomends: user.recomendaciones
+                            }
+                            let token = jwt.sign(payload, key.key, {
+                                expiresIn: 60 * 60 * 24
+                            })
+                            res.json({status: 'ok', token: token})
+                        })
+                        .catch(err => {
+                            res.send(err)
+                        })
+                    })
+                })
+                .catch(err => {
+                    res.send(err)
+                })
+            }else{
+                bcrypt.hash(Client.password, 10, (err, hash) => {
+                    Client.password = hash
+                    Cliente.create(Client)
+                    .then(client => {
+                        console.log(client)
+                        const payload = {
+                            _id: client._id,
+                            name: client.nombre,
+                            mail: client.identidad,
+                            phone: client.correoCliente,
+                            birthday: client.birthday,
+                            userImage: client.userImage,
+                            historical: client.historical,
+                            recomends: user.recomendaciones
+                        }
+                        let token = jwt.sign(payload, key.key, {
+                            expiresIn: 60 * 60 * 24
+                        })
+                        res.json({status: 'ok', token: token})
+                    })
+                    .catch(err => {
+                        res.send(err)
+                    })
+			    })
+            }
         }
     })
     .catch(err => {
@@ -719,20 +788,169 @@ clients.post('/', (req, res) => {
     })
 })
 
-clients.put('/editData/:id', (req, res) => {
-
-    Cliente.findByIdAndUpdate(req.params.id, {
-        $set: {
-            nombre: req.body.name,
-            identidad: req.body.mail,
-            correoCliente: req.body.code+ ' '+req.body.phone
+clients.put('/changePass/:id', async (req, res) => {
+    Cliente.findById(req.params.id)
+    .then(client => {
+        if (client) {
+            if(bcrypt.compareSync(req.body.lastPass, client.password)){
+                bcrypt.hash(req.body.newPass, 10, (err, hash) => {
+				    const newpass = hash
+                    Cliente.findByIdAndUpdate(req.params.id, {
+                        $set: {
+                            password: newpass
+                        }
+                    })
+                    .then(changePass => {
+                        console.log(changePass)
+                        const date = new Date()
+                        if (date.getDate() < 10) {
+                            var one = "0" + date.getDate()
+                        }
+                        else {
+                            var one = date.getDate()
+                        }
+                        if (date.getMonth() < 10 ) {
+                            var two = "0" + date.getMonth()
+                        }
+                        else{
+                            var two = date.getMonth()
+                        }
+                        const fechaCartelua = one+"-"+two+"-"+date.getFullYear() 
+                        const mail = {
+                            from: "kkprettynails.cl",
+                            to: changePass.identidad,
+                            subject: 'Cambio su contraseña',
+                            html: `
+                            <div style="width: 100%; padding:0;text-align:center;">
+                                <div style="width: 60%;height: 8vh;margin: auto;background-color: #fdd3d7;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;text-align:justify;-webkit-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);-moz-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);">
+                                    <div style="width: 100px;margin:auto;border-radius:55%;background-color:#f8f9fa;padding: 10px;">     
+                                        <img style="width: 100%;" src="http://kkprettynails.cl/views/images/logokk.png" alt="Logo kkprettynails">
+                                    </div>
+                                </div>
+                                <div style="width: 100%;margin: auto;padding-top: 5%;font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;padding-bottom: 40px;">
+                                    <center>
+                                        <div style="width:60%;text-align: center;">
+                                            <p style="text-align:center;margin-top:10px;font-size:30px;"> <strong>Estimado(a) ${changePass.nombre}.</p>
+                                            <p style="text-align:left;font-size:18px;font-weight: 300;width: 100%;margin:auto;border-top: 3px solid #fdd3d7 !important;padding-top: 20px;"><strong> 
+                                                Confirmamos el cambio de clave realizado por ti, con fecha ${fechaCartelua} <br><br> Para volver a ingresar como usuario registrado solo debes ingresar tu correo electrónico y nueva clave
+                                                personal. <br><br><br> Cualquier consulta, no dudes en escribirnos, estaremos encantadas de atenderte.
+                                            </strong>
+                                            </p>
+                                        <div>
+                                    </center>
+                                </div>
+                                <div style="width: 100%;background-color: #f0f1f3;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);margin: auto;padding: 5px;font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;padding-bottom:5px;-webkit-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);-moz-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);">
+                                    <center>
+                                    <div style="width:100%;">
+                                        <center>
+                                        <p style="text-align:center;font-size:18px;">Contáctanos.</p>
+                                        <a href="mailto:kkprettynails@gmail.com"><img style="width:5%;margin-left:20px;" src="https://kkprettynails.cl/img/mail.png" alt=""></a>
+                                        <a href="https://www.instagram.com/kkprettynails/?hl=es-la"><img style="width:5%;margin-left:20px;" src="https://kkprettynails.cl/img/ig.png" alt=""></a>
+                                        <a href="https://wa.me/56972628949"><img style="width:5%;margin-left:20px;" src="https://kkprettynails.cl/img/ws.png" alt=""></a>
+                                        <a href="https://kkprettynails.cl"><img style="width: 5%;margin-left:20px;" src="https://kkprettynails.cl/img/web.png" alt=""></a>
+                                        <br>
+                                        <a href="https://goo.gl/maps/GhvcDBH1ppBDae1KA">
+                                            <p>Av. Pedro de Valdivia 3474, local 53B, Ñuñoa, Región Metropolitana de Santiago</p>
+                                        </a>
+                                        </center>
+                                    </div>
+                                    </center>
+                                </div>
+                            </div>
+                            `
+                        }
+                        
+                        KMails.sendMail(mail)
+                        .then(send => {
+                            console.log(send)
+                        }).catch(err => {
+                            console.log(err)
+                        })
+                        res.json({status: 'ok'})
+                        
+                    }).catch(err => {
+                        res.send(err)
+                    })
+			    })
+            }else{
+                res.json({status: 'bad'})
+            }
         }
+    }).catch(err => {
+        res.send(err)
     })
-    .then(change => {
-        
-    })
-
 })
+
+clients.get('/sendMailChange/:id', (req, res) => {
+    Cliente.findById(req.params.id)
+    .then(client => {
+        const mail = {
+            from: "kkprettynails.cl",
+            to: client.identidad,
+            subject: 'Cambio de información',
+            html: `
+            <div style="width: 100%; padding:0;text-align:center;">
+                <div style="width: 60%;height: 8vh;margin: auto;background-color: #fdd3d7;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;text-align:justify;-webkit-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);-moz-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);">
+                    <div style="width: 100px;margin:auto;border-radius:55%;background-color:#f8f9fa;padding: 10px;">     
+                        <img style="width: 100%;" src="http://kkprettynails.cl/views/images/logokk.png" alt="Logo kkprettynails">
+                    </div>
+                </div>
+                <div style="width: 100%;margin: auto;padding-top: 5%;font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;padding-bottom: 40px;">
+                    <center>
+                        <div style="width:60%;text-align: center;">
+                            
+                            <p style="text-align:center;margin-top:10px;font-size:30px;"> <strong>Estimado(a) ${client.nombre}.</p>
+                            <p style="text-align:left;font-size:18px;font-weight: 300;width: 100%;margin:auto;border-top: 3px solid #fdd3d7 !important;padding-top: 20px;"><strong> Actualización de datos</strong> <br><br>
+                                Queremos confirmar y verificar que los cambios que has ejecutado fueron realizados correctamente.
+                                <br><br>
+                                Nombre: ${client.nombre}  <br>
+                                E-mail: ${client.identidad}  <br>
+                                Teléfono: ${client.correoCliente} <br><br>
+                                Cualquier consulta, no dudes en escribirnos, estaremos encantadas de atenderte.
+                            </p>
+
+                        
+                        <div>
+                    </center>
+                </div>
+                <div style="width: 100%;background-color: #f0f1f3;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);margin: auto;font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;padding-bottom:8px;-webkit-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);-moz-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);">
+                        <center>
+                        <div style="width:100%;">
+                            <center>
+                            <p style="text-align:center;font-size:14px;"><strong> Contáctanos</strong></p>
+                            <a  href="mailto:kkprettynails@gmail.com" style="margin-left:40px;text-decoration:none;"> 
+                                <img style="width:4%;" src="https://kkprettynails.cl/img/mail.png" alt="Logo mail">
+                            </a>
+                            <a  href="https://www.instagram.com/kkprettynails/" style="margin-left:40px;text-decoration:none;">
+                                <img style="width:4%;" src="https://kkprettynails.cl/img/ig.png" alt="Logo ig">
+                            </a>
+                            <a  href="https://api.whatsapp.com/send?phone=56972628949&text=&source=&data=&app_absent=" style="margin-left:20px;text-decoration:none;">
+                                <img style="width:4%;" src="https://kkprettynails.cl/img/ws.png" alt="Logo ws">
+                            </a>
+                            <a  href="https://kkprettynails.cl/inicio" style="margin-left:40px;text-decoration:none;">
+                                <img style="width:4%;" src="https://kkprettynails.cl/img/web.png" alt="Logo web">
+                            </a>
+                            <br>
+                            <a style="text-align:center;font-size:14px;" href="https://goo.gl/maps/m5rVWDEiPj7q1Hxh9"> Av. Pedro de Valdivia 3474 Caracol Ñuñoa, Local 53-B Ñuñoa, Chile.</a>
+                            </center>
+                        </div>
+                        </center>
+                    </div>
+            </div>
+            `
+        }
+        KMails.sendMail(mail)
+        .then(send => {
+            console.log(send)
+        }).catch(err => {
+            console.log(err)
+        })
+        res.json({status: 'ok'})
+    }).catch(err => {
+        res.send(err)
+    })
+})
+
 clients.put('/:id', async (req, res, next) => {
     try {
         const findClient = await Cliente.findOne({
@@ -768,7 +986,19 @@ clients.put('/:id', async (req, res, next) => {
                         }
                     })
                     if (updateClient) {
-                        res.json({status: 'Servicio actualizado'})
+                        const payload = {
+                            _id: updateClient._id,
+                            name: updateClient.nombre,
+                            mail: updateClient.identidad,
+                            phone: updateClient.correoCliente,
+                            birthday: updateClient.birthday,
+                            userImage: updateClient.userImage,
+                            historical: updateClient.historical
+                        }
+                        let token = jwt.sign(payload, key.key, {
+                            expiresIn: 60 * 60 * 24
+                        })
+                        res.json({status: 'Servicio actualizado', token: token})
                     }
                 } catch(err) {
                     res.send('error: ' + err)
