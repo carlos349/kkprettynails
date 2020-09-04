@@ -544,6 +544,101 @@ clients.post('/loginClient', (req, res) => {
     })
 })
 
+clients.post('/contacMail', async (req, res) => {
+    const mail = {
+        from: "kkprettynails.cl",
+        to: req.body.email,
+        subject: 'Información a cliente',
+        html: `
+            <div style="width: 100%; padding:0;text-align:center;">
+                <div style="width: 60%;height: 8vh;margin: auto;background-color: #fdd3d7;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;text-align:justify;-webkit-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);-moz-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);">
+                    <div style="width: 100px;margin:auto;border-radius:55%;background-color:#f8f9fa;padding: 10px;">     
+                        <img style="width: 100%;" src="http://kkprettynails.cl/views/images/logokk.png" alt="Logo kkprettynails">
+                    </div>
+                </div>
+                <div style="width: 100%;margin: auto;padding-top: 5%;font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;padding-bottom: 40px;">
+                    <center>
+                        <div style="width:60%;text-align: center;">
+                            <h1 style="text-align: center;color:#172b4d;">Bienvenid@ </h1>
+                            <p style="text-align:left;margin-top:10px;font-size:18px;"> <strong>Hola ${req.body.name}.</p>
+                            <p style="text-align:left;font-size:16px;font-weight: 300;margin:auto;"><strong> 
+                                Nos alegra darte la bienvenida a nuestra comunidad de uñas lindas y sanas, por este medio te estaremos
+                                informando todas las novedades de nuestros servicios. <br><br>
+                                Cualquier consulta, no dudes en escribirnos, estaremos encantadas de atenderte.</strong>
+                            </p>
+                        <div>
+                    </center>
+                </div>
+                <div style="width: 100%;background-color: #f0f1f3;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);margin: auto;font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;padding-bottom:8px;-webkit-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);-moz-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);">
+                        <center>
+                    <div style="width:100%;">
+                        <center>
+                        <p style="text-align:center;font-size:14px;"><strong> Contáctanos</strong></p>
+                        <a  href="mailto:kkprettynails@gmail.com" style="margin-left:40px;text-decoration:none;"> 
+                            <img style="width:4%;" src="http://kkprettynails.cl/img/mail.png" alt="Logo mail">
+                        </a>
+                        <a  href="https://www.instagram.com/kkprettynails/" style="margin-left:40px;text-decoration:none;">
+                            <img style="width:4%;" src="http://kkprettynails.cl/img/ig.png" alt="Logo ig">
+                        </a>
+                        <a  href="https://api.whatsapp.com/send?phone=56972628949&text=&source=&data=&app_absent=" style="margin-left:20px;text-decoration:none;">
+                            <img style="width:4%;" src="http://kkprettynails.cl/img/ws.png" alt="Logo ws">
+                        </a>
+                        <a  href="https://kkprettynails.cl/inicio" style="margin-left:40px;text-decoration:none;">
+                            <img style="width:4%;" src="http://kkprettynails.cl/img/web.png" alt="Logo web">
+                        </a>
+                        <br>
+                        <a style="text-align:center;font-size:14px;" href="https://goo.gl/maps/m5rVWDEiPj7q1Hxh9"> Av. Pedro de Valdivia 3474 Caracol Ñuñoa, Local 53-B Ñuñoa, Chile.</a>
+                        </center>
+                    </div>
+                    </center>
+                </div>
+            </div>
+        `
+    }
+    const mailTwo = {
+        from: "kkprettynails.cl",
+        to: 'kkprettynails@gmail.com',
+        subject: req.body.subject,
+        html: `
+            <div style="width: 100%; padding:0;text-align:center;">
+                <div style="width: 60%;height: 8vh;margin: auto;background-color: #fdd3d7;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;text-align:justify;-webkit-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);-moz-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);">
+                    <div style="width: 100px;margin:auto;border-radius:55%;background-color:#f8f9fa;padding: 10px;">     
+                        <img style="width: 100%;" src="http://kkprettynails.cl/views/images/logokk.png" alt="Logo kkprettynails">
+                    </div>
+                </div>
+                <div style="width: 100%;margin: auto;padding-top: 5%;font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;padding-bottom: 40px;">
+                    <center>
+                        <div style="width:60%;text-align: center;">
+                            
+                            <p style="text-align:center;margin-top:10px;font-size:30px;"> Solicitud de contacto</p>
+                            <p style="text-align:center;font-size:16px;font-weight: 300;margin:auto;">
+                            <strong> 
+                            nombre: ${req.body.name} <br>
+                            correo: ${req.body.email} <br>
+                            </strong> <br><br>
+                            Mensaje: ${req.body.message}
+                            </p>
+                        <div>
+                    </center>
+                </div>
+            </div>
+        `
+    }
+    try{
+        const send = await KMails.sendMail(mail)
+        try {
+            const sendtwo = await KMails.sendMail(mailTwo)
+            res.json({status: 'ok'})
+        }
+        catch(err){
+            res.send(err)
+        }
+    }catch(err){
+        
+    }
+    
+})
+
 clients.post('/registerwithpass', (req, res) => {
     const data = req.body.data
     console.log(req.body.referidoId)
@@ -573,24 +668,31 @@ clients.post('/registerwithpass', (req, res) => {
                     Cliente.findByIdAndUpdate(exist._id, {
                         $set: {
                             password: Client.password,
-                            correoCliente: data.code+' '+data.phone
+                            correoCliente: data.code+' '+data.phone,
+                            birthday: data.datePicker
                         }
                     })
                     .then(setPass => {
-                        const payload = {
-                            _id: setPass._id,
-                            name: setPass.nombre,
-                            mail: setPass.identidad,
-                            phone: setPass.correoCliente,
-                            birthday: setPass.birthday,
-                            userImage: setPass.userImage,
-                            historical: setPass.historical,
-                            recomends: setPass.recomendaciones
-                        }
-                        let token = jwt.sign(payload, key.key, {
-                            expiresIn: 60 * 60 * 24
+                        Cliente.findById(setPass._id)
+                        .then(client => {
+                            const payload = {
+                                _id: client._id,
+                                name: client.nombre,
+                                mail: client.identidad,
+                                phone: client.correoCliente,
+                                birthday: client.birthday,
+                                userImage: client.userImage,
+                                historical: client.historical,
+                                recomends: client.recomendaciones
+                            }
+                            let token = jwt.sign(payload, key.key, {
+                                expiresIn: 60 * 60 * 24
+                            })
+                            res.json({status: 'ok', token: token})
                         })
-                        res.json({status: 'ok', token: token})
+                        .catch(err => {
+                            res.send(err)
+                        })
                     })
                     .catch(err => {
                         res.send(err)
@@ -647,7 +749,7 @@ clients.post('/registerwithpass', (req, res) => {
                             birthday: client.birthday,
                             userImage: client.userImage,
                             historical: client.historical,
-                            recomends: user.recomendaciones
+                            recomends: client.recomendaciones
                         }
                         let token = jwt.sign(payload, key.key, {
                             expiresIn: 60 * 60 * 24
