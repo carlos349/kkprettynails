@@ -986,19 +986,24 @@ clients.put('/:id', async (req, res, next) => {
                         }
                     })
                     if (updateClient) {
-                        const payload = {
-                            _id: updateClient._id,
-                            name: updateClient.nombre,
-                            mail: updateClient.identidad,
-                            phone: updateClient.correoCliente,
-                            birthday: updateClient.birthday,
-                            userImage: updateClient.userImage,
-                            historical: updateClient.historical
+                        try{
+                            const clientNew = await Cliente.findById(updateClient._id)
+                            const payload = {
+                                _id: clientNew._id,
+                                name: clientNew.nombre,
+                                mail: clientNew.identidad,
+                                phone: clientNew.correoCliente,
+                                birthday: clientNew.birthday,
+                                userImage: clientNew.userImage,
+                                historical: clientNew.historical
+                            }
+                            let token = jwt.sign(payload, key.key, {
+                                expiresIn: 60 * 60 * 24
+                            })
+                            res.json({status: 'Servicio actualizado', token: token})
+                        }catch(err){
+                            res.send(err)
                         }
-                        let token = jwt.sign(payload, key.key, {
-                            expiresIn: 60 * 60 * 24
-                        })
-                        res.json({status: 'Servicio actualizado', token: token})
                     }
                 } catch(err) {
                     res.send('error: ' + err)
