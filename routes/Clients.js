@@ -1013,4 +1013,145 @@ clients.put('/:id', async (req, res, next) => {
     
 })
 
+clients.post('/rescueChange', (req, res) => {
+    const password = req.body.password
+    const code = req.body.code
+
+    Cliente.findOne({codigoRescue: code})
+    .then(rescue => {
+        if (rescue) {
+            bcrypt.hash(password, 10, (err, hash) => {
+                Cliente.findByIdAndUpdate(rescue._id, {
+                    $set: {password: hash}
+                })
+                .then(change => {
+                    if (change) {
+                        res.json({status: 'ok'})
+                    }else{
+                        res.json({status: 'bad'})
+                    }
+                }).catch(err => {
+                    res.send(err)
+                })
+            })
+        }else{
+            res.json({status: 'bad'})
+        }
+    }).catch(err => {
+        res.send(err)
+    })
+
+})
+clients.put('/rescuePass/:id', async (req, res, next) => { console.log(req.params.id)
+    try {
+        const findClient = await Cliente.findOne({
+            identidad:req.params.id
+        })
+        console.log(findClient)
+        if (!findClient) {
+            res.json({status: 'No existe'})   
+        }else{
+                try {
+                    const date = new Date()
+                    const code = date.getTime()+'?'+Math.floor(Math.random() * (9999 - 1000)) + 1000
+                    const updateClient = await Cliente.findOneAndUpdate({identidad:req.params.id}, {
+                        $set: {
+                          codigoRescue:code,
+                        }
+                    })
+                    if (updateClient) {
+                        const mail = {
+                            from: "kkprettynails.cl",
+                            to: req.params.id,
+                            subject: 'Recuperación de contraseña',
+                            html: `
+                            <div style="width: 100%; padding:0;text-align:center;">
+                                <div style="width: 60%;height: 8vh;margin: auto;background-color: #fdd3d7;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;text-align:justify;-webkit-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);-moz-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);">
+                                    <div style="width: 100px;margin:auto;border-radius:55%;background-color:#f8f9fa;padding: 10px;">     
+                                        <img style="width: 100%;" src="http://kkprettynails.cl/views/images/logokk.png" alt="Logo kkprettynails">
+                                    </div>
+                                </div>
+                                <div style="width: 100%;margin: auto;padding-top: 5%;font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;padding-bottom: 40px;">
+                                    <center>
+                                        <div style="width:100%;text-align: center;">
+                                            <h1 style="text-align: center;color:#172b4d;">Bienvenid@ </h1>
+                                            <p style="text-align:center;margin-top:10px;font-size:18px;"> <strong>Estimado(a) ${updateClient.nombre}.</p>
+                                            <p style="text-align:left;font-size:14px;font-weight: 300;text-align: center;width: 60%;margin:auto;"><strong> 
+                                            Puedes recuperar tu contraseña por medio de este <a style="cursor: pointer;" href="https://kkprettynails.cl/#/servicios?code=${code}" class="text-center accLog">ENLACE</a> o por medio del siguiente boton: </strong>
+                                            </p>
+
+                                            <a style="display: inline-block;
+                                            font-weight: 400;
+                                            background: #605B56 !important;
+                                            text-decoration: none;
+                                            color: white;
+                                            text-align: center;
+                                            vertical-align: middle;
+                                            -webkit-user-select: none;
+                                            -moz-user-select: none;
+                                            -ms-user-select: none;
+                                            user-select: none;
+                                            margin-top: 5%;
+                                            border: 1px solid transparent;
+                                            padding: 0.375rem 0.75rem;
+                                            font-size: 1rem;
+                                            line-height: 1.5;
+                                            border-radius: 0.25rem;
+                                            -webkit-transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+                                            transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+                                            -o-transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+                                            transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+                                            transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;" href="https://kkprettynails.cl/#/servicios?code=${code}" class="text-center ">Cambiar contraseña</a> <br><br><br>
+
+                                            <p style="text-align:left;font-size:14px;font-weight: 300;text-align: center;width: 60%;margin:auto;"><strong> <br>
+                                            Este link solo podrá ser utilizado una sola vez. Si usted no realizó esta acción, ignore este correo. <br><br> Cualquier consulta, no dudes en escribirnos, estaremos encantadas de atenderte. </strong>
+                                            </p>
+                                        <div>
+                                    </center>
+                                </div>
+                                <div style="width: 100%;background-color: #f0f1f3;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);margin: auto;font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;padding-bottom:8px;-webkit-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);-moz-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);">
+                                    <center>
+                                    <div style="width:100%;">
+                                        <center>
+                                        <p style="text-align:center;font-size:14px;"><strong> Contáctanos</strong></p>
+                                        <a  href="mailto:kkprettynails@gmail.com" style="margin-left:40px;text-decoration:none;"> 
+                                            <img style="width:4%;" src="http://kkprettynails.cl/views/images/mail.png" alt="Logo mail">
+                                        </a>
+                                        <a  href="https://www.instagram.com/kkprettynails/" style="margin-left:40px;text-decoration:none;">
+                                            <img style="width:4%;" src="http://kkprettynails.cl/views/images/ig.png" alt="Logo ig">
+                                        </a>
+                                        <a  href="https://api.whatsapp.com/send?phone=56972628949&text=&source=&data=&app_absent=" style="margin-left:20px;text-decoration:none;">
+                                            <img style="width:4%;" src="http://kkprettynails.cl/views/images/ws.png" alt="Logo ws">
+                                        </a>
+                                        <a  href="https://kkprettynails.cl/inicio" style="margin-left:40px;text-decoration:none;">
+                                            <img style="width:4%;" src="http://kkprettynails.cl/views/images/web.png" alt="Logo web">
+                                        </a>
+                                        <br>
+                                        <a style="text-align:center;font-size:14px;" href="https://goo.gl/maps/m5rVWDEiPj7q1Hxh9"> Av. Pedro de Valdivia 3474 Caracol Ñuñoa, Local 53-B Ñuñoa, Chile.</a>
+                                        </center>
+                                    </div>
+                                    </center>
+                                </div>
+                            </div>
+                            `
+                        }
+                        try{
+                            const send = await KMails.sendMail(mail)
+                            res.json({status:'ok'})
+                        }
+                        catch(err){
+                            console.log(err)
+                        }
+                        
+                    }
+                }catch(err) {
+                    res.send('error: ' + err)
+                }
+        }
+    } catch(err) {
+        res.send('error: ' + err)
+    }
+    
+})
+
 module.exports = clients
