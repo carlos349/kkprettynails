@@ -16,6 +16,9 @@ const PedidoSchema = new Schema ({
     cliente: {
       type:String
     },
+    tipoPago: {
+      type:String
+    },
     contacto: {
       type: String
     },
