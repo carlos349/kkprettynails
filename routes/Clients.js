@@ -890,6 +890,42 @@ clients.post('/', (req, res) => {
     })
 })
 
+clients.put('/changeImage/:id', async (req, res) => {
+    console.log(req.params.id)
+    console.log(req.body.img)
+    try {
+        const change = await Cliente.findByIdAndUpdate(req.params.id, {
+            $set: {
+                userImage: req.body.img+'.png'
+            }
+        })
+        if (change) {
+            try {
+                const client = await Cliente.findById(req.params.id)
+                const payload = {
+                    _id: client._id,
+                    name: client.nombre,
+                    mail: client.identidad,
+                    phone: client.correoCliente,
+                    birthday: client.birthday,
+                    userImage: client.userImage,
+                    historical: client.historical,
+                    recomends: client.recomendaciones
+                }
+                let token = jwt.sign(payload, key.key, {
+                    expiresIn: 60 * 60 * 24
+                })
+                res.json({status: 'ok', token: token})
+            }catch(err){
+                res.send(err)
+            }
+        }
+    }catch (err){
+        res.send(err)
+    }
+
+})
+
 clients.put('/changePass/:id', async (req, res) => {
     Cliente.findById(req.params.id)
     .then(client => {
