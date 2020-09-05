@@ -236,7 +236,7 @@ pedidos.post('/', (req, res) => {
                 
                     array = {
                         to: req.body.identidad,
-                        articulo:req.body.article,
+                        articulo:req.body.articulo,
                         client:req.body.cliente,
                         metodo:req.body.tipoPago,
                         datosMetodo:'',
