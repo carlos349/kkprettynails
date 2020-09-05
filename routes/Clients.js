@@ -561,7 +561,7 @@ clients.post('/contacMail', async (req, res) => {
                         <div style="width:60%;text-align: center;">
                             <h1 style="text-align: center;color:#172b4d;">Bienvenid@ </h1>
                             <p style="text-align:left;margin-top:10px;font-size:18px;"> <strong>Hola ${req.body.name}.</p>
-                            <p style="text-align:left;font-size:16px;font-weight: 300;margin:auto;"><strong> 
+                            <p style="text-align:left;font-weight: 300;margin:auto;font-size:13px;"><strong> 
                                 Nos alegra darte la bienvenida a nuestra comunidad de uñas lindas y sanas, por este medio te estaremos
                                 informando todas las novedades de nuestros servicios. <br><br>
                                 Cualquier consulta, no dudes en escribirnos, estaremos encantadas de atenderte.</strong>
@@ -612,7 +612,7 @@ clients.post('/contacMail', async (req, res) => {
                         <div style="width:60%;text-align: center;">
                             
                             <p style="text-align:center;margin-top:10px;font-size:30px;"> Solicitud de contacto</p>
-                            <p style="text-align:center;font-size:16px;font-weight: 300;margin:auto;">
+                            <p style="text-align:center;font-weight: 300;margin:auto;font-size:13px;">
                             <strong> 
                             nombre: ${req.body.name} <br>
                             correo: ${req.body.email} <br>
@@ -970,8 +970,8 @@ clients.put('/changePass/:id', async (req, res) => {
                                 <div style="width: 100%;margin: auto;padding-top: 5%;font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;padding-bottom: 40px;">
                                     <center>
                                         <div style="width:60%;text-align: center;">
-                                            <p style="text-align:center;margin-top:10px;font-size:30px;"> <strong>Estimado(a) ${changePass.nombre}.</p>
-                                            <p style="text-align:left;font-size:18px;font-weight: 300;width: 100%;margin:auto;border-top: 3px solid #fdd3d7 !important;padding-top: 20px;"><strong> 
+                                            <p style="text-align:center;margin-top:10px;font-size:24px;"> <strong>Estimado(a) ${changePass.nombre}.</p>
+                                            <p style="text-align:left;font-size:13px;font-weight: 300;width: 100%;margin:auto;border-top: 3px solid #fdd3d7 !important;padding-top: 20px;"><strong> 
                                                 Confirmamos el cambio de clave realizado por ti, con fecha ${fechaCartelua} <br><br> Para volver a ingresar como usuario registrado solo debes ingresar tu correo electrónico y nueva clave
                                                 personal. <br><br><br> Cualquier consulta, no dudes en escribirnos, estaremos encantadas de atenderte.
                                             </strong>
@@ -1042,8 +1042,8 @@ clients.get('/sendMailRegister/:id', async (req, res) => {
                             <center>
                                 <div style="width:60%;text-align: center;">
                                     <h1 style="text-align: center;color:#172b4d;">Bienvenid@ </h1>
-                                    <p style="text-align:left;margin-top:10px;font-size:18px;"> <strong>Hola ${client.nombre}.</p>
-                                    <p style="text-align:left;font-size:16px;font-weight: 300;margin:auto;"><strong> 
+                                    <p style="text-align:left;margin-top:10px;font-size:24px;"> <strong>Hola ${client.nombre}.</p>
+                                    <p style="text-align:left;font-size:13px;font-weight: 300;margin:auto;"><strong> 
                                         Nos alegra darte la bienvenida a nuestra comunidad de uñas lindas y sanas, por este medio te estaremos
                                         informando todas las novedades de nuestros servicios. <br><br>
                                         Cualquier consulta, no dudes en escribirnos, estaremos encantadas de atenderte.</strong>
@@ -1055,7 +1055,7 @@ clients.get('/sendMailRegister/:id', async (req, res) => {
                             <center>
                             <div style="width:100%;">
                                 <center>
-                                    <p style="text-align:center;font-size:14px;"><strong> Contáctanos</strong></p>
+                                    <p style="text-align:center;font-size:18px;"><strong> Contáctanos</strong></p>
                                     <a  href="mailto:kkprettynails@gmail.com" style="margin-left:20px;text-decoration:none;"> 
                                         <img style="width:5%;" src="http://kkprettynails.cl/img/mail.png" alt="Logo mail">
                                     </a>
@@ -1093,8 +1093,8 @@ clients.get('/sendMailRegister/:id', async (req, res) => {
                             <center>
                                 <div style="width:60%;text-align: center;">
                                     
-                                    <p style="text-align:center;margin-top:10px;font-size:30px;">Nuevo cliente registrado</p>
-                                    <p style="text-align:center;font-size:16px;font-weight: 300;margin:auto;">
+                                    <p style="text-align:center;margin-top:10px;font-size:24px;">Nuevo cliente registrado</p>
+                                    <p style="text-align:center;font-size:13px;font-weight: 300;margin:auto;">
                                         <strong> 
                                         nombre: ${client.nombre} <br>
                                         correo: ${client.identidad} <br>
@@ -1141,8 +1141,8 @@ clients.get('/sendMailChange/:id', (req, res) => {
                     <center>
                         <div style="width:60%;text-align: center;">
                             
-                            <p style="text-align:center;margin-top:10px;font-size:30px;"> <strong>Estimado(a) ${client.nombre}.</p>
-                            <p style="text-align:left;font-size:18px;font-weight: 300;width: 100%;margin:auto;border-top: 3px solid #fdd3d7 !important;padding-top: 20px;"><strong> Actualización de datos</strong> <br><br>
+                            <p style="text-align:center;margin-top:10px;font-size:24px;"> <strong>Estimado(a) ${client.nombre}.</p>
+                            <p style="text-align:left;font-size:13px;font-weight: 300;width: 100%;margin:auto;border-top: 3px solid #fdd3d7 !important;padding-top: 20px;"><strong> Actualización de datos</strong> <br><br>
                                 Queremos confirmar y verificar que los cambios que has ejecutado fueron realizados correctamente.
                                 <br><br>
                                 Nombre: ${client.nombre}  <br>
@@ -1159,7 +1159,7 @@ clients.get('/sendMailChange/:id', (req, res) => {
                         <center>
                         <div style="width:100%;">
                             <center>
-                            <p style="text-align:center;font-size:14px;"><strong> Contáctanos</strong></p>
+                            <p style="text-align:center;font-size:18px;"><strong> Contáctanos</strong></p>
                             <a  href="mailto:kkprettynails@gmail.com" style="margin-left:20px;text-decoration:none;"> 
                                 <img style="width:4%;" src="https://kkprettynails.cl/img/mail.png" alt="Logo mail">
                             </a>
@@ -1323,8 +1323,8 @@ clients.put('/rescuePass/:id', async (req, res, next) => { console.log(req.param
                                     <center>
                                         <div style="width:100%;text-align: center;">
                                             <h1 style="text-align: center;color:#172b4d;">Bienvenid@ </h1>
-                                            <p style="text-align:center;margin-top:10px;font-size:18px;"> <strong>Estimado(a) ${updateClient.nombre}.</p>
-                                            <p style="text-align:left;font-size:14px;font-weight: 300;text-align: center;width: 60%;margin:auto;"><strong> 
+                                            <p style="text-align:center;margin-top:10px;font-size:13px;"> <strong>Estimado(a) ${updateClient.nombre}.</p>
+                                            <p style="text-align:left;font-size:13px;font-weight: 300;text-align: center;width: 60%;margin:auto;"><strong> 
                                             Puedes recuperar tu contraseña por medio de este <a style="cursor: pointer;" href="https://kkprettynails.cl/#/servicios?code=${code}" class="text-center accLog">ENLACE</a> o por medio del siguiente boton: </strong>
                                             </p>
 
@@ -1351,7 +1351,7 @@ clients.put('/rescuePass/:id', async (req, res, next) => { console.log(req.param
                                             transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
                                             transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;" href="https://kkprettynails.cl/#/servicios?code=${code}" class="text-center ">Cambiar contraseña</a> <br><br><br>
 
-                                            <p style="text-align:left;font-size:14px;font-weight: 300;text-align: center;width: 60%;margin:auto;"><strong> <br>
+                                            <p style="text-align:left;font-size:13px;font-weight: 300;text-align: center;width: 60%;margin:auto;"><strong> <br>
                                             Este link solo podrá ser utilizado una sola vez. Si usted no realizó esta acción, ignore este correo. <br><br> Cualquier consulta, no dudes en escribirnos, estaremos encantadas de atenderte. </strong>
                                             </p>
                                         <div>
@@ -1361,18 +1361,18 @@ clients.put('/rescuePass/:id', async (req, res, next) => { console.log(req.param
                                     <center>
                                     <div style="width:100%;">
                                         <center>
-                                        <p style="text-align:center;font-size:14px;"><strong> Contáctanos</strong></p>
+                                        <p style="text-align:center;font-size:18px;"><strong> Contáctanos</strong></p>
                                         <a  href="mailto:kkprettynails@gmail.com" style="margin-left:20px;text-decoration:none;"> 
-                                            <img style="width:4%;" src="http://kkprettynails.cl/views/images/mail.png" alt="Logo mail">
+                                            <img style="width:4%;" src="http://kkprettynails.cl/img/mail.png" alt="Logo mail">
                                         </a>
                                         <a  href="https://www.instagram.com/kkprettynails/" style="margin-left:20px;text-decoration:none;">
-                                            <img style="width:4%;" src="http://kkprettynails.cl/views/images/ig.png" alt="Logo ig">
+                                            <img style="width:4%;" src="http://kkprettynails.cl/img/ig.png" alt="Logo ig">
                                         </a>
                                         <a  href="https://api.whatsapp.com/send?phone=56972628949&text=&source=&data=&app_absent=" style="margin-left:20px;text-decoration:none;">
-                                            <img style="width:4%;" src="http://kkprettynails.cl/views/images/ws.png" alt="Logo ws">
+                                            <img style="width:4%;" src="http://kkprettynails.cl/img/ws.png" alt="Logo ws">
                                         </a>
                                         <a  href="https://kkprettynails.cl/inicio" style="margin-left:20px;text-decoration:none;">
-                                            <img style="width:4%;" src="http://kkprettynails.cl/views/images/web.png" alt="Logo web">
+                                            <img style="width:4%;" src="http://kkprettynails.cl/img/web.png" alt="Logo web">
                                         </a>
                                         <a  href="https://goo.gl/maps/m5rVWDEiPj7q1Hxh9" style="margin-left:20px;text-decoration:none;">
                                             <img style="width:5%;" src="http://kkprettynails.cl/img/market.png" alt="Logo web">
