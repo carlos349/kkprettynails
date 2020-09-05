@@ -578,7 +578,7 @@ clients.post('/contacMail', async (req, res) => {
                             <img style="width:4%;" src="http://kkprettynails.cl/img/mail.png" alt="Logo mail">
                         </a>
                         <a  href="https://www.instagram.com/kkprettynails/" style="margin-left:20px;text-decoration:none;">
-                            <img style="width:4%;" src="http://kkprettynails.cl/img/ig.png" alt="Logo ig">
+                            <img style="width:4.4%;" src="http://kkprettynails.cl/img/ig.png" alt="Logo ig">
                         </a>
                         <a  href="https://api.whatsapp.com/send?phone=56972628949&text=&source=&data=&app_absent=" style="margin-left:20px;text-decoration:none;">
                             <img style="width:4%;" src="http://kkprettynails.cl/img/ws.png" alt="Logo ws">
@@ -1060,7 +1060,7 @@ clients.get('/sendMailRegister/:id', async (req, res) => {
                                         <img style="width:4%;" src="http://kkprettynails.cl/img/mail.png" alt="Logo mail">
                                     </a>
                                     <a  href="https://www.instagram.com/kkprettynails/" style="margin-left:20px;text-decoration:none;">
-                                        <img style="width:4%;" src="http://kkprettynails.cl/img/ig.png" alt="Logo ig">
+                                        <img style="width:4.4%;" src="http://kkprettynails.cl/img/ig.png" alt="Logo ig">
                                     </a>
                                     <a  href="https://api.whatsapp.com/send?phone=56972628949&text=&source=&data=&app_absent=" style="margin-left:20px;text-decoration:none;">
                                         <img style="width:4%;" src="http://kkprettynails.cl/img/ws.png" alt="Logo ws">
@@ -1366,7 +1366,7 @@ clients.put('/rescuePass/:id', async (req, res, next) => { console.log(req.param
                                             <img style="width:4%;" src="http://kkprettynails.cl/img/mail.png" alt="Logo mail">
                                         </a>
                                         <a  href="https://www.instagram.com/kkprettynails/" style="margin-left:20px;text-decoration:none;">
-                                            <img style="width:4%;" src="http://kkprettynails.cl/img/ig.png" alt="Logo ig">
+                                            <img style="width:4.4%;" src="http://kkprettynails.cl/img/ig.png" alt="Logo ig">
                                         </a>
                                         <a  href="https://api.whatsapp.com/send?phone=56972628949&text=&source=&data=&app_absent=" style="margin-left:20px;text-decoration:none;">
                                             <img style="width:4%;" src="http://kkprettynails.cl/img/ws.png" alt="Logo ws">
