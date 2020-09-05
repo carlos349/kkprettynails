@@ -60,7 +60,7 @@ pedidos.post('/sendEmailPedido', async (req, res, next) => {
                 <div style="width:60%;">
                     <center>
                     <p style="text-align:center;font-size:18px;">Contáctanos.</p>
-                <a href="mailto:kkprettynails@gmail.com"><img style="width: 4%;" src="http://kkprettynails.cl/img/mail.png" alt=""></a>
+                <a href="mailto:kkprettynails@gmail.com"><img style="width: 4%;" src="http://kkprettynails.cl/img/maill.png" alt=""></a>
                 <a href="https://www.instagram.com/kkprettynails/?hl=es-la"><img style="width: 4.4%;margin-left:20px" src="http://kkprettynails.cl/img/ig.png" alt=""></a>
                 <a href="https://wa.me/56972628949"><img style="width:4%;margin-left:20px" src="http://kkprettynails.cl/img/ws.png" alt=""></a>
                 <a href="https://kkprettynails.cl"><img style="width: 4%;margin-left:20px" src="http://kkprettynails.cl/img/web.png" alt=""></a>
@@ -327,7 +327,7 @@ pedidos.post('/', (req, res) => {
                                         <center>
                                         <p style="text-align:center;font-size:14px;"><strong> Contáctanos</strong></p>
                                         <a  href="mailto:kkprettynails@gmail.com" style="margin-left:20px;text-decoration:none;"> 
-                                            <img style="width:4%;" src="http://kkprettynails.cl/img/mail.png" alt="Logo mail">
+                                            <img style="width:4%;" src="http://kkprettynails.cl/img/maill.png" alt="Logo mail">
                                         </a>
                                         <a  href="https://www.instagram.com/kkprettynails/" style="margin-left:20px;text-decoration:none;">
                                             <img style="width:4.4%;" src="http://kkprettynails.cl/img/ig.png" alt="Logo ig">

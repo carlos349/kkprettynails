@@ -575,7 +575,7 @@ clients.post('/contacMail', async (req, res) => {
                         <center>
                         <p style="text-align:center;font-size:14px;"><strong> Contáctanos</strong></p>
                         <a  href="mailto:kkprettynails@gmail.com" style="margin-left:20px;text-decoration:none;"> 
-                            <img style="width:4%;" src="http://kkprettynails.cl/img/mail.png" alt="Logo mail">
+                            <img style="width:4%;" src="http://kkprettynails.cl/img/maill.png" alt="Logo mail">
                         </a>
                         <a  href="https://www.instagram.com/kkprettynails/" style="margin-left:20px;text-decoration:none;">
                             <img style="width:4.4%;" src="http://kkprettynails.cl/img/ig.png" alt="Logo ig">
@@ -1057,7 +1057,7 @@ clients.get('/sendMailRegister/:id', async (req, res) => {
                                 <center>
                                     <p style="text-align:center;font-size:18px;"><strong> Contáctanos</strong></p>
                                     <a  href="mailto:kkprettynails@gmail.com" style="margin-left:20px;text-decoration:none;"> 
-                                        <img style="width:4%;" src="http://kkprettynails.cl/img/mail.png" alt="Logo mail">
+                                        <img style="width:4%;" src="http://kkprettynails.cl/img/maill.png" alt="Logo mail">
                                     </a>
                                     <a  href="https://www.instagram.com/kkprettynails/" style="margin-left:20px;text-decoration:none;">
                                         <img style="width:4.4%;" src="http://kkprettynails.cl/img/ig.png" alt="Logo ig">
@@ -1363,7 +1363,7 @@ clients.put('/rescuePass/:id', async (req, res, next) => { console.log(req.param
                                         <center>
                                         <p style="text-align:center;font-size:18px;"><strong> Contáctanos</strong></p>
                                         <a  href="mailto:kkprettynails@gmail.com" style="margin-left:20px;text-decoration:none;"> 
-                                            <img style="width:4%;" src="http://kkprettynails.cl/img/mail.png" alt="Logo mail">
+                                            <img style="width:4%;" src="http://kkprettynails.cl/img/maill.png" alt="Logo mail">
                                         </a>
                                         <a  href="https://www.instagram.com/kkprettynails/" style="margin-left:20px;text-decoration:none;">
                                             <img style="width:4.4%;" src="http://kkprettynails.cl/img/ig.png" alt="Logo ig">
