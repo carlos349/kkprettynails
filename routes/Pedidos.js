@@ -274,16 +274,16 @@ pedidos.post('/', (req, res) => {
                             <div style="width: 100%;padding-top: 5%;font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;padding-bottom: 40px;">
                                 <center>
                                     <div style="width:60%;text-align: left;border-bottom: 3px solid #fdd3d7;">
-                                        <p style="text-align:left;margin-top:10px;font-size:18px;"> Estimado(a) ${array.client}, <br> Hemos recibido una solicitud de compra por pagar en ${array.metodo}. Para realizar este pago debes
+                                        <p style="text-align:left;margin-top:10px;font-size:13px;"> Estimado(a) ${array.client}, <br> Hemos recibido una solicitud de compra por pagar en ${array.metodo}. Para realizar este pago debes
                                             presentar en caja el siguiente código: 000${pedidoData.nPedido}. </p>
                                         </div>
                                     <div style="width:60%;text-align: left;border-bottom: 3px solid #fdd3d7;"> <br>
-                                        <p style="text-align:left;margin-top:10px;font-size:18px;"> <span style="font-weight: bold">Información importante:</span>  ${array.datosMetodo}
+                                        <p style="text-align:left;margin-top:10px;font-size:13px;"> <span style="font-weight: bold">Información importante:</span>  ${array.datosMetodo}
                                             </p>
                                     </div>
                                     ${array.metodoInfo}
                                     <div style="width:60%;text-align: left;"> <br>
-                                        <p style="text-align:left;margin-top:10px;font-size:18px;"> <span style="font-weight: bold">A continuación te dejamos el detalle de tu compra: <br><br>
+                                        <p style="text-align:left;margin-top:10px;font-size:13px;"> <span style="font-weight: bold">A continuación te dejamos el detalle de tu compra: <br><br>
                                             Nombre: ${array.client} <br>
                                             Monto: ${array.total}<br>
                                             Código de compra: 000${pedidoData.nPedido} <br>
