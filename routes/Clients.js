@@ -42,7 +42,7 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
             <div style="width: 80%;max-width:1000px;margin:auto;padding:0;text-align:center;">
                 <div style="width: 100%;height: 10vh;margin: auto;background-color: #181d81;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 10px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;text-align:justify;-webkit-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);-moz-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);">
                     <div style="width: 100px;margin:auto;border-radius:55%;background-color:#f8f9fa;padding: 10px;">     
-                        <img style="width: 100%;" src="http://syswa.net/views/images/syswa-isotipo.png" alt="Logo kkprettynails">
+                        <img style="width: 100%;margin-bot:20px;" src="http://syswa.net/views/images/syswa-isotipo.png" alt="Logo kkprettynails">
                     </div>
                 </div>
                 <div style="width: 100%;margin: auto;padding-top: 5%;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;padding-bottom: 20px;paddin-left:2px;">
@@ -65,16 +65,16 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
                             <center>
                                 <p style="text-align:center;font-size:14px;"> Contacto</p>
                                 <a  href="mailto:syswainfo@gmail.com" style="margin-left:20px;text-decoration:none;"> 
-                                    <img style="width:5%;" src="${imgMails}mails.png" alt="Logo mail">
+                                    <img style="width:4%;" src="${imgMails}mails.png" alt="Logo mail">
                                 </a>
                                 <a  href="https://www.instagram.com/syswanet/" style="margin-left:20px;text-decoration:none;">
-                                    <img style="width:5%;" src="${imgMails}igs.png" alt="Logo ig">
+                                    <img style="width:4%;" src="${imgMails}igs.png" alt="Logo ig">
                                 </a>
                                 <a  href="https://api.whatsapp.com/send?phone=56985826974&text=&source=&data=&app_absent=" style="margin-left:20px;text-decoration:none;">
-                                    <img style="width:5%;" src="${imgMails}wss.png" alt="Logo ws">
+                                    <img style="width:4%;" src="${imgMails}wss.png" alt="Logo ws">
                                 </a>
                                 <a  href="https://syswa.net" style="margin-left:20px;text-decoration:none;">
-                                    <img style="width:5%;" src="${imgMails}webs.png" alt="Logo web">
+                                    <img style="width:4%;" src="${imgMails}webs.png" alt="Logo web">
                                 </a>
                                 <br>
                                 <p style="text-align:center;font-size:14px;"> Atendemos las 24 horas, los 7 días de la semana</p>
@@ -93,7 +93,7 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
             <div style="width: 80%;max-width:1000px;margin:auto;padding:0;text-align:center;">
                 <div style="width: 100%;height: 10vh;margin: auto;background-color: #181d81;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 10px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;text-align:justify;-webkit-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);-moz-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);">
                     <div style="width: 100px;margin:auto;border-radius:55%;background-color:#f8f9fa;padding: 10px;">     
-                        <img style="width: 100%;" src="http://syswa.net/views/images/syswa-isotipo.png" alt="Logo kkprettynails">
+                        <img style="width: 100%;margin-bot:20px;" src="http://syswa.net/views/images/syswa-isotipo.png" alt="Logo kkprettynails">
                     </div>
                 </div>
                 <div style="width: 100%;margin: auto;padding-top: 5%;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;padding-bottom: 20px;">
@@ -127,7 +127,7 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
             <div style="width: 80%;max-width:1000px;margin:auto;padding:0;text-align:center;">
                 <div style="width: 100%;height: 10vh;margin: auto;background-color: #181d81;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 10px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;text-align:justify;-webkit-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);-moz-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);">
                     <div style="width: 100px;margin:auto;border-radius:55%;background-color:#f8f9fa;padding: 10px;">     
-                        <img style="width: 100%;" src="http://syswa.net/views/images/syswa-isotipo.png" alt="Logo kkprettynails">
+                        <img style="width: 100%;margin-bot:20px;" src="http://syswa.net/views/images/syswa-isotipo.png" alt="Logo kkprettynails">
                     </div>
                 </div>
                 <div style="width: 100%;margin: auto;padding-top: 5%;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;padding-bottom: 20px;padding-left:2px;">
@@ -149,16 +149,16 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
                             <center>
                                 <p style="text-align:center;font-size:14px;"> Contacto</p>
                                 <a  href="mailto:syswainfo@gmail.com" style="margin-left:20px;text-decoration:none;"> 
-                                    <img style="width:5%;" src="${imgMails}mails.png" alt="Logo mail">
+                                    <img style="width:4%;" src="${imgMails}mails.png" alt="Logo mail">
                                 </a>
                                 <a  href="https://www.instagram.com/syswanet/" style="margin-left:20px;text-decoration:none;">
-                                    <img style="width:5%;" src="${imgMails}igs.png" alt="Logo ig">
+                                    <img style="width:4%;" src="${imgMails}igs.png" alt="Logo ig">
                                 </a>
                                 <a  href="https://api.whatsapp.com/send?phone=56985826974&text=&source=&data=&app_absent=" style="margin-left:20px;text-decoration:none;">
-                                    <img style="width:5%;" src="${imgMails}wss.png" alt="Logo ws">
+                                    <img style="width:4%;" src="${imgMails}wss.png" alt="Logo ws">
                                 </a>
                                 <a  href="https://syswa.net" style="margin-left:20px;text-decoration:none;">
-                                    <img style="width:5%;" src="${imgMails}webs.png" alt="Logo web">
+                                    <img style="width:4%;" src="${imgMails}webs.png" alt="Logo web">
                                 </a>
                                 <br>
                                 <p style="text-align:center;font-size:14px;"> Atendemos las 24 horas, los 7 días de la semana</p>
@@ -177,7 +177,7 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
             <div style="width: 80%;max-width:1000px;margin:auto;padding:0;text-align:center;">
                 <div style="width: 100%;height: 10vh;margin: auto;background-color: #181d81;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 10px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;text-align:justify;-webkit-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);-moz-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);">
                     <div style="width: 100px;margin:auto;border-radius:55%;background-color:#f8f9fa;padding: 10px;">     
-                        <img style="width: 100%;" src="http://syswa.net/views/images/syswa-isotipo.png" alt="Logo kkprettynails">
+                        <img style="width: 100%;margin-bot:20px;" src="http://syswa.net/views/images/syswa-isotipo.png" alt="Logo kkprettynails">
                     </div>
                 </div>
                 <div style="width: 100%;margin: auto;padding-top: 5%;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;padding-bottom: 20px;padding-left:2px;">
@@ -209,7 +209,7 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
             <div style="width: 80%;max-width:1000px;margin:auto;padding:0;text-align:center;">
                 <div style="width: 100%;height: 10vh;margin: auto;background-color: #181d81;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 10px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;text-align:justify;-webkit-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);-moz-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);">
                     <div style="width: 100px;margin:auto;border-radius:55%;background-color:#f8f9fa;padding: 10px;">     
-                        <img style="width: 100%;" src="http://syswa.net/views/images/syswa-isotipo.png" alt="Logo kkprettynails">
+                        <img style="width: 100%;margin-bot:20px;" src="http://syswa.net/views/images/syswa-isotipo.png" alt="Logo kkprettynails">
                     </div>
                 </div>
                 <div style="width: 100%;margin: auto;padding-top: 5%;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;padding-bottom: 20px;padding-left:2px;">
@@ -232,16 +232,16 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
                             <center>
                                 <p style="text-align:center;font-size:14px;"> Contacto</p>
                                 <a  href="mailto:syswainfo@gmail.com" style="margin-left:20px;text-decoration:none;"> 
-                                    <img style="width:5%;" src="${imgMails}mails.png" alt="Logo mail">
+                                    <img style="width:4%;" src="${imgMails}mails.png" alt="Logo mail">
                                 </a>
                                 <a  href="https://www.instagram.com/syswanet/" style="margin-left:20px;text-decoration:none;">
-                                    <img style="width:5%;" src="${imgMails}igs.png" alt="Logo ig">
+                                    <img style="width:4%;" src="${imgMails}igs.png" alt="Logo ig">
                                 </a>
                                 <a  href="https://api.whatsapp.com/send?phone=56985826974&text=&source=&data=&app_absent=" style="margin-left:20px;text-decoration:none;">
-                                    <img style="width:5%;" src="${imgMails}wss.png" alt="Logo ws">
+                                    <img style="width:4%;" src="${imgMails}wss.png" alt="Logo ws">
                                 </a>
                                 <a  href="https://syswa.net" style="margin-left:20px;text-decoration:none;">
-                                    <img style="width:5%;" src="${imgMails}webs.png" alt="Logo web">
+                                    <img style="width:4%;" src="${imgMails}webs.png" alt="Logo web">
                                 </a>
                                 <br>
                                 <p style="text-align:center;font-size:14px;"> Atendemos las 24 horas, los 7 días de la semana</p>
@@ -260,7 +260,7 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
             <div style="width: 80%;max-width:1000px;margin:auto;padding:0;text-align:center;">
                 <div style="width: 100%;height: 10vh;margin: auto;background-color: #181d81;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 10px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;text-align:justify;-webkit-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);-moz-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);">
                     <div style="width: 100px;margin:auto;border-radius:55%;background-color:#f8f9fa;padding: 10px;">     
-                        <img style="width: 100%;" src="http://syswa.net/views/images/syswa-isotipo.png" alt="Logo kkprettynails">
+                        <img style="width: 100%;margin-bot:20px;" src="http://syswa.net/views/images/syswa-isotipo.png" alt="Logo kkprettynails">
                     </div>
                 </div>
                 <div style="width:100%;margin: auto;padding-top: 5%;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;padding-bottom: 20px;padding-left:2px;">
@@ -553,7 +553,7 @@ clients.post('/contacMail', async (req, res) => {
             <div style="width: 100%; padding:0;text-align:center;">
                 <div style="width: 60%;height: 8vh;margin: auto;background-color: #fdd3d7;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;text-align:justify;-webkit-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);-moz-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);">
                     <div style="width: 100px;margin:auto;border-radius:55%;background-color:#f8f9fa;padding: 10px;">     
-                        <img style="width: 100%;" src="http://kkprettynails.cl/img/logokk.png" alt="Logo kkprettynails">
+                        <img style="width: 100%;margin-bot:20px;" src="http://kkprettynails.cl/img/logokk.png" alt="Logo kkprettynails">
                     </div>
                 </div>
                 <div style="width: 100%;margin: auto;padding-top: 5%;font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;padding-bottom: 40px;">
@@ -587,7 +587,7 @@ clients.post('/contacMail', async (req, res) => {
                             <img style="width:4%;" src="http://kkprettynails.cl/img/web.png" alt="Logo web">
                         </a>
                         <a  href="https://goo.gl/maps/m5rVWDEiPj7q1Hxh9" style="margin-left:20px;text-decoration:none;">
-                            <img style="width:5%;" src="http://kkprettynails.cl/img/market.png" alt="Logo web">
+                            <img style="width:4%;" src="http://kkprettynails.cl/img/market.png" alt="Logo web">
                         </a>
                         </center>
                     </div>
@@ -604,7 +604,7 @@ clients.post('/contacMail', async (req, res) => {
             <div style="width: 100%; padding:0;text-align:center;">
                 <div style="width: 60%;height: 8vh;margin: auto;background-color: #fdd3d7;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;text-align:justify;-webkit-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);-moz-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);">
                     <div style="width: 100px;margin:auto;border-radius:55%;background-color:#f8f9fa;padding: 10px;">     
-                        <img style="width: 100%;" src="http://kkprettynails.cl/img/logokk.png" alt="Logo kkprettynails">
+                        <img style="width: 100%;margin-bot:20px;" src="http://kkprettynails.cl/img/logokk.png" alt="Logo kkprettynails">
                     </div>
                 </div>
                 <div style="width: 100%;margin: auto;padding-top: 5%;font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;padding-bottom: 40px;">
@@ -964,7 +964,7 @@ clients.put('/changePass/:id', async (req, res) => {
                             <div style="width: 100%; padding:0;text-align:center;">
                                 <div style="width: 60%;height: 8vh;margin: auto;background-color: #fdd3d7;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;text-align:justify;-webkit-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);-moz-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);">
                                     <div style="width: 100px;margin:auto;border-radius:55%;background-color:#f8f9fa;padding: 10px;">     
-                                        <img style="width: 100%;" src="http://kkprettynails.cl/img/logokk.png" alt="Logo kkprettynails">
+                                        <img style="width: 100%;margin-bot:20px;" src="http://kkprettynails.cl/img/logokk.png" alt="Logo kkprettynails">
                                     </div>
                                 </div>
                                 <div style="width: 100%;margin: auto;padding-top: 5%;font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;padding-bottom: 40px;">
@@ -991,7 +991,7 @@ clients.put('/changePass/:id', async (req, res) => {
                                             <img style="width: 5%;margin-left:20px;" src="https://kkprettynails.cl/img/web.png" alt="">
                                         </a>
                                         <a  href="https://goo.gl/maps/m5rVWDEiPj7q1Hxh9" style="margin-left:20px;text-decoration:none;">
-                                            <img style="width:5%;" src="http://kkprettynails.cl/img/market.png" alt="Logo web">
+                                            <img style="width:4%;" src="http://kkprettynails.cl/img/market.png" alt="Logo web">
                                         </a>
                                         </center>
                                     </div>
@@ -1035,7 +1035,7 @@ clients.get('/sendMailRegister/:id', async (req, res) => {
                     <div style="width: 100%; padding:0;text-align:center;">
                         <div style="width: 60%;height: 8vh;margin: auto;background-color: #fdd3d7;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;text-align:justify;-webkit-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);-moz-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);">
                             <div style="width: 100px;margin:auto;border-radius:55%;background-color:#f8f9fa;padding: 10px;">     
-                                <img style="width: 100%;" src="http://kkprettynails.cl/img/logokk.png" alt="Logo kkprettynails">
+                                <img style="width: 100%;margin-bot:20px;" src="http://kkprettynails.cl/img/logokk.png" alt="Logo kkprettynails">
                             </div>
                         </div>
                         <div style="width: 100%;margin: auto;padding-top: 5%;font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;padding-bottom: 40px;">
@@ -1057,19 +1057,19 @@ clients.get('/sendMailRegister/:id', async (req, res) => {
                                 <center>
                                     <p style="text-align:center;font-size:18px;"><strong> Contáctanos</strong></p>
                                     <a  href="mailto:kkprettynails@gmail.com" style="margin-left:20px;text-decoration:none;"> 
-                                        <img style="width:5%;" src="http://kkprettynails.cl/img/mail.png" alt="Logo mail">
+                                        <img style="width:4%;" src="http://kkprettynails.cl/img/mail.png" alt="Logo mail">
                                     </a>
                                     <a  href="https://www.instagram.com/kkprettynails/" style="margin-left:20px;text-decoration:none;">
-                                        <img style="width:5%;" src="http://kkprettynails.cl/img/ig.png" alt="Logo ig">
+                                        <img style="width:4%;" src="http://kkprettynails.cl/img/ig.png" alt="Logo ig">
                                     </a>
                                     <a  href="https://api.whatsapp.com/send?phone=56972628949&text=&source=&data=&app_absent=" style="margin-left:20px;text-decoration:none;">
-                                        <img style="width:5%;" src="http://kkprettynails.cl/img/ws.png" alt="Logo ws">
+                                        <img style="width:4%;" src="http://kkprettynails.cl/img/ws.png" alt="Logo ws">
                                     </a>
                                     <a  href="https://kkprettynails.cl/inicio" style="margin-left:20px;text-decoration:none;">
-                                        <img style="width:5%;" src="http://kkprettynails.cl/img/web.png" alt="Logo web">
+                                        <img style="width:4%;" src="http://kkprettynails.cl/img/web.png" alt="Logo web">
                                     </a>
                                     <a  href="https://goo.gl/maps/m5rVWDEiPj7q1Hxh9" style="margin-left:20px;text-decoration:none;">
-                                        <img style="width:5%;" src="http://kkprettynails.cl/img/market.png" alt="Logo web">
+                                        <img style="width:4%;" src="http://kkprettynails.cl/img/market.png" alt="Logo web">
                                     </a>
                                 </center>
                             </div>
@@ -1086,7 +1086,7 @@ clients.get('/sendMailRegister/:id', async (req, res) => {
                     <div style="width: 100%; padding:0;text-align:center;">
                         <div style="width: 60%;height: 8vh;margin: auto;background-color: #fdd3d7;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;text-align:justify;-webkit-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);-moz-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);">
                             <div style="width: 100px;margin:auto;border-radius:55%;background-color:#f8f9fa;padding: 10px;">     
-                                <img style="width: 100%;" src="http://kkprettynails.cl/img/logokk.png" alt="Logo kkprettynails">
+                                <img style="width: 100%;margin-bot:20px;" src="http://kkprettynails.cl/img/logokk.png" alt="Logo kkprettynails">
                             </div>
                         </div>
                         <div style="width: 100%;margin: auto;padding-top: 5%;font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;padding-bottom: 40px;">
@@ -1134,7 +1134,7 @@ clients.get('/sendMailChange/:id', (req, res) => {
             <div style="width: 100%; padding:0;text-align:center;">
                 <div style="width: 60%;height: 8vh;margin: auto;background-color: #fdd3d7;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;text-align:justify;-webkit-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);-moz-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);">
                     <div style="width: 100px;margin:auto;border-radius:55%;background-color:#f8f9fa;padding: 10px;">     
-                        <img style="width: 100%;" src="http://kkprettynails.cl/img/logokk.png" alt="Logo kkprettynails">
+                        <img style="width: 100%;margin-bot:20px;" src="http://kkprettynails.cl/img/logokk.png" alt="Logo kkprettynails">
                     </div>
                 </div>
                 <div style="width: 100%;margin: auto;padding-top: 5%;font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;padding-bottom: 40px;">
@@ -1173,7 +1173,7 @@ clients.get('/sendMailChange/:id', (req, res) => {
                                 <img style="width:4%;" src="https://kkprettynails.cl/img/web.png" alt="Logo web">
                             </a>
                             <a  href="https://goo.gl/maps/m5rVWDEiPj7q1Hxh9" style="margin-left:20px;text-decoration:none;">
-                                <img style="width:5%;" src="http://kkprettynails.cl/img/market.png" alt="Logo web">
+                                <img style="width:4%;" src="http://kkprettynails.cl/img/market.png" alt="Logo web">
                             </a>
                             </center>
                         </div>
@@ -1316,7 +1316,7 @@ clients.put('/rescuePass/:id', async (req, res, next) => { console.log(req.param
                             <div style="width: 100%; padding:0;text-align:center;">
                                 <div style="width: 60%;height: 8vh;margin: auto;background-color: #fdd3d7;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;text-align:justify;-webkit-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);-moz-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);">
                                     <div style="width: 100px;margin:auto;border-radius:55%;background-color:#f8f9fa;padding: 10px;">     
-                                        <img style="width: 100%;" src="http://kkprettynails.cl/img/logokk.png" alt="Logo kkprettynails">
+                                        <img style="width: 100%;margin-bot:20px;" src="http://kkprettynails.cl/img/logokk.png" alt="Logo kkprettynails">
                                     </div>
                                 </div>
                                 <div style="width: 100%;margin: auto;padding-top: 5%;font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;padding-bottom: 40px;">
@@ -1375,7 +1375,7 @@ clients.put('/rescuePass/:id', async (req, res, next) => { console.log(req.param
                                             <img style="width:4%;" src="http://kkprettynails.cl/img/web.png" alt="Logo web">
                                         </a>
                                         <a  href="https://goo.gl/maps/m5rVWDEiPj7q1Hxh9" style="margin-left:20px;text-decoration:none;">
-                                            <img style="width:5%;" src="http://kkprettynails.cl/img/market.png" alt="Logo web">
+                                            <img style="width:4%;" src="http://kkprettynails.cl/img/market.png" alt="Logo web">
                                         </a>
                                         </center>
                                     </div>
