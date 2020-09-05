@@ -574,20 +574,21 @@ clients.post('/contacMail', async (req, res) => {
                     <div style="width:100%;">
                         <center>
                         <p style="text-align:center;font-size:14px;"><strong> Contáctanos</strong></p>
-                        <a  href="mailto:kkprettynails@gmail.com" style="margin-left:40px;text-decoration:none;"> 
+                        <a  href="mailto:kkprettynails@gmail.com" style="margin-left:20px;text-decoration:none;"> 
                             <img style="width:4%;" src="http://kkprettynails.cl/img/mail.png" alt="Logo mail">
                         </a>
-                        <a  href="https://www.instagram.com/kkprettynails/" style="margin-left:40px;text-decoration:none;">
+                        <a  href="https://www.instagram.com/kkprettynails/" style="margin-left:20px;text-decoration:none;">
                             <img style="width:4%;" src="http://kkprettynails.cl/img/ig.png" alt="Logo ig">
                         </a>
                         <a  href="https://api.whatsapp.com/send?phone=56972628949&text=&source=&data=&app_absent=" style="margin-left:20px;text-decoration:none;">
                             <img style="width:4%;" src="http://kkprettynails.cl/img/ws.png" alt="Logo ws">
                         </a>
-                        <a  href="https://kkprettynails.cl/inicio" style="margin-left:40px;text-decoration:none;">
+                        <a  href="https://kkprettynails.cl/inicio" style="margin-left:20px;text-decoration:none;">
                             <img style="width:4%;" src="http://kkprettynails.cl/img/web.png" alt="Logo web">
                         </a>
-                        <br>
-                        <a style="text-align:center;font-size:14px;" href="https://goo.gl/maps/m5rVWDEiPj7q1Hxh9"> Av. Pedro de Valdivia 3474 Caracol Ñuñoa, Local 53-B Ñuñoa, Chile.</a>
+                        <a  href="https://goo.gl/maps/m5rVWDEiPj7q1Hxh9" style="margin-left:20px;text-decoration:none;">
+                            <img style="width:5%;" src="http://kkprettynails.cl/img/market.png" alt="Logo web">
+                        </a>
                         </center>
                     </div>
                     </center>
@@ -638,6 +639,7 @@ clients.post('/contacMail', async (req, res) => {
     }
     
 })
+
 
 clients.post('/registerwithpass', (req, res) => {
     const data = req.body.data
@@ -985,10 +987,11 @@ clients.put('/changePass/:id', async (req, res) => {
                                         <a href="mailto:kkprettynails@gmail.com"><img style="width:5%;margin-left:20px;" src="https://kkprettynails.cl/img/mail.png" alt=""></a>
                                         <a href="https://www.instagram.com/kkprettynails/?hl=es-la"><img style="width:5%;margin-left:20px;" src="https://kkprettynails.cl/img/ig.png" alt=""></a>
                                         <a href="https://wa.me/56972628949"><img style="width:5%;margin-left:20px;" src="https://kkprettynails.cl/img/ws.png" alt=""></a>
-                                        <a href="https://kkprettynails.cl"><img style="width: 5%;margin-left:20px;" src="https://kkprettynails.cl/img/web.png" alt=""></a>
-                                        <br>
-                                        <a href="https://goo.gl/maps/GhvcDBH1ppBDae1KA">
-                                            <p>Av. Pedro de Valdivia 3474, local 53B, Ñuñoa, Región Metropolitana de Santiago</p>
+                                        <a href="https://kkprettynails.cl">
+                                            <img style="width: 5%;margin-left:20px;" src="https://kkprettynails.cl/img/web.png" alt="">
+                                        </a>
+                                        <a  href="https://goo.gl/maps/m5rVWDEiPj7q1Hxh9" style="margin-left:20px;text-decoration:none;">
+                                            <img style="width:5%;" src="http://kkprettynails.cl/img/market.png" alt="Logo web">
                                         </a>
                                         </center>
                                     </div>
@@ -1017,6 +1020,107 @@ clients.put('/changePass/:id', async (req, res) => {
     }).catch(err => {
         res.send(err)
     })
+})
+
+clients.get('/sendMailRegister/:id', async (req, res) => {
+    try {
+        const client = await Cliente.findById(req.params.id)
+        console.log(client)
+        if (client) {
+            const mail = {
+                from: 'kkprettynails.cl',
+                to: client.identidad,
+                subject: 'Cambio de información',
+                html: `
+                    <div style="width: 100%; padding:0;text-align:center;">
+                        <div style="width: 60%;height: 8vh;margin: auto;background-color: #fdd3d7;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;text-align:justify;-webkit-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);-moz-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);">
+                            <div style="width: 100px;margin:auto;border-radius:55%;background-color:#f8f9fa;padding: 10px;">     
+                                <img style="width: 100%;" src="http://kkprettynails.cl/views/images/logokk.png" alt="Logo kkprettynails">
+                            </div>
+                        </div>
+                        <div style="width: 100%;margin: auto;padding-top: 5%;font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;padding-bottom: 40px;">
+                            <center>
+                                <div style="width:60%;text-align: center;">
+                                    <h1 style="text-align: center;color:#172b4d;">Bienvenid@ </h1>
+                                    <p style="text-align:left;margin-top:10px;font-size:18px;"> <strong>Hola ${client.nombre}.</p>
+                                    <p style="text-align:left;font-size:16px;font-weight: 300;margin:auto;"><strong> 
+                                        Nos alegra darte la bienvenida a nuestra comunidad de uñas lindas y sanas, por este medio te estaremos
+                                        informando todas las novedades de nuestros servicios. <br><br>
+                                        Cualquier consulta, no dudes en escribirnos, estaremos encantadas de atenderte.</strong>
+                                    </p>
+                                <div>
+                            </center>
+                        </div>
+                        <div style="width: 100%;background-color: #f0f1f3;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);margin: auto;font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;padding-bottom:8px;-webkit-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);-moz-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);">
+                            <center>
+                            <div style="width:100%;">
+                                <center>
+                                    <p style="text-align:center;font-size:14px;"><strong> Contáctanos</strong></p>
+                                    <a  href="mailto:kkprettynails@gmail.com" style="margin-left:20px;text-decoration:none;"> 
+                                        <img style="width:5%;" src="http://kkprettynails.cl/img/mail.png" alt="Logo mail">
+                                    </a>
+                                    <a  href="https://www.instagram.com/kkprettynails/" style="margin-left:20px;text-decoration:none;">
+                                        <img style="width:5%;" src="http://kkprettynails.cl/img/ig.png" alt="Logo ig">
+                                    </a>
+                                    <a  href="https://api.whatsapp.com/send?phone=56972628949&text=&source=&data=&app_absent=" style="margin-left:20px;text-decoration:none;">
+                                        <img style="width:5%;" src="http://kkprettynails.cl/img/ws.png" alt="Logo ws">
+                                    </a>
+                                    <a  href="https://kkprettynails.cl/inicio" style="margin-left:20px;text-decoration:none;">
+                                        <img style="width:5%;" src="http://kkprettynails.cl/img/web.png" alt="Logo web">
+                                    </a>
+                                    <a  href="https://goo.gl/maps/m5rVWDEiPj7q1Hxh9" style="margin-left:20px;text-decoration:none;">
+                                        <img style="width:5%;" src="http://kkprettynails.cl/img/market.png" alt="Logo web">
+                                    </a>
+                                </center>
+                            </div>
+                            </center>
+                        </div>
+                    </div>
+                `
+            }
+            const mailTwo = {
+                from: "kkprettynails.cl",
+                to: 'kkprettynails@gmail.com',
+                subject: 'Cliente registrado',
+                html: `
+                    <div style="width: 100%; padding:0;text-align:center;">
+                        <div style="width: 60%;height: 8vh;margin: auto;background-color: #fdd3d7;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;text-align:justify;-webkit-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);-moz-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);">
+                            <div style="width: 100px;margin:auto;border-radius:55%;background-color:#f8f9fa;padding: 10px;">     
+                                <img style="width: 100%;" src="http://kkprettynails.cl/views/images/logokk.png" alt="Logo kkprettynails">
+                            </div>
+                        </div>
+                        <div style="width: 100%;margin: auto;padding-top: 5%;font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;padding-bottom: 40px;">
+                            <center>
+                                <div style="width:60%;text-align: center;">
+                                    
+                                    <p style="text-align:center;margin-top:10px;font-size:30px;">Nuevo cliente registrado</p>
+                                    <p style="text-align:center;font-size:16px;font-weight: 300;margin:auto;">
+                                        <strong> 
+                                        nombre: ${client.nombre} <br>
+                                        correo: ${client.identidad} <br>
+                                    </p>
+                                <div>
+                            </center>
+                        </div>
+                    </div>
+                `
+            }
+            try{
+                const send = await KMails.sendMail(mail)
+                try {
+                    const sendtwo = await KMails.sendMail(mailTwo)
+                    res.json({status: 'ok'})
+                }
+                catch(err){
+                    res.send(err)
+                }
+            }catch(err){
+                res.send(err)
+            }
+        }
+    }catch(err) {
+        res.send(err)
+    }
 })
 
 clients.get('/sendMailChange/:id', (req, res) => {
@@ -1056,20 +1160,21 @@ clients.get('/sendMailChange/:id', (req, res) => {
                         <div style="width:100%;">
                             <center>
                             <p style="text-align:center;font-size:14px;"><strong> Contáctanos</strong></p>
-                            <a  href="mailto:kkprettynails@gmail.com" style="margin-left:40px;text-decoration:none;"> 
+                            <a  href="mailto:kkprettynails@gmail.com" style="margin-left:20px;text-decoration:none;"> 
                                 <img style="width:4%;" src="https://kkprettynails.cl/img/mail.png" alt="Logo mail">
                             </a>
-                            <a  href="https://www.instagram.com/kkprettynails/" style="margin-left:40px;text-decoration:none;">
+                            <a  href="https://www.instagram.com/kkprettynails/" style="margin-left:20px;text-decoration:none;">
                                 <img style="width:4%;" src="https://kkprettynails.cl/img/ig.png" alt="Logo ig">
                             </a>
                             <a  href="https://api.whatsapp.com/send?phone=56972628949&text=&source=&data=&app_absent=" style="margin-left:20px;text-decoration:none;">
                                 <img style="width:4%;" src="https://kkprettynails.cl/img/ws.png" alt="Logo ws">
                             </a>
-                            <a  href="https://kkprettynails.cl/inicio" style="margin-left:40px;text-decoration:none;">
+                            <a  href="https://kkprettynails.cl/inicio" style="margin-left:20px;text-decoration:none;">
                                 <img style="width:4%;" src="https://kkprettynails.cl/img/web.png" alt="Logo web">
                             </a>
-                            <br>
-                            <a style="text-align:center;font-size:14px;" href="https://goo.gl/maps/m5rVWDEiPj7q1Hxh9"> Av. Pedro de Valdivia 3474 Caracol Ñuñoa, Local 53-B Ñuñoa, Chile.</a>
+                            <a  href="https://goo.gl/maps/m5rVWDEiPj7q1Hxh9" style="margin-left:20px;text-decoration:none;">
+                                <img style="width:5%;" src="http://kkprettynails.cl/img/market.png" alt="Logo web">
+                            </a>
                             </center>
                         </div>
                         </center>
@@ -1257,20 +1362,21 @@ clients.put('/rescuePass/:id', async (req, res, next) => { console.log(req.param
                                     <div style="width:100%;">
                                         <center>
                                         <p style="text-align:center;font-size:14px;"><strong> Contáctanos</strong></p>
-                                        <a  href="mailto:kkprettynails@gmail.com" style="margin-left:40px;text-decoration:none;"> 
+                                        <a  href="mailto:kkprettynails@gmail.com" style="margin-left:20px;text-decoration:none;"> 
                                             <img style="width:4%;" src="http://kkprettynails.cl/views/images/mail.png" alt="Logo mail">
                                         </a>
-                                        <a  href="https://www.instagram.com/kkprettynails/" style="margin-left:40px;text-decoration:none;">
+                                        <a  href="https://www.instagram.com/kkprettynails/" style="margin-left:20px;text-decoration:none;">
                                             <img style="width:4%;" src="http://kkprettynails.cl/views/images/ig.png" alt="Logo ig">
                                         </a>
                                         <a  href="https://api.whatsapp.com/send?phone=56972628949&text=&source=&data=&app_absent=" style="margin-left:20px;text-decoration:none;">
                                             <img style="width:4%;" src="http://kkprettynails.cl/views/images/ws.png" alt="Logo ws">
                                         </a>
-                                        <a  href="https://kkprettynails.cl/inicio" style="margin-left:40px;text-decoration:none;">
+                                        <a  href="https://kkprettynails.cl/inicio" style="margin-left:20px;text-decoration:none;">
                                             <img style="width:4%;" src="http://kkprettynails.cl/views/images/web.png" alt="Logo web">
                                         </a>
-                                        <br>
-                                        <a style="text-align:center;font-size:14px;" href="https://goo.gl/maps/m5rVWDEiPj7q1Hxh9"> Av. Pedro de Valdivia 3474 Caracol Ñuñoa, Local 53-B Ñuñoa, Chile.</a>
+                                        <a  href="https://goo.gl/maps/m5rVWDEiPj7q1Hxh9" style="margin-left:20px;text-decoration:none;">
+                                            <img style="width:5%;" src="http://kkprettynails.cl/img/market.png" alt="Logo web">
+                                        </a>
                                         </center>
                                     </div>
                                     </center>
