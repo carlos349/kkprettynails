@@ -6,7 +6,7 @@ const providerSchema = new Schema({
     type:String
   },
   rut:{
-    type:Number
+    type:String
   },
   contacto:{
     type:String
