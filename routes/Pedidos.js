@@ -117,7 +117,7 @@ pedidos.post('/sendEmailPedido', async (req, res, next) => {
             <div style="width: 100%; padding:0;text-align:center;">
         <div style="width: 60%;height: 8vh;margin: auto;background-color: #fdd3d7;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;text-align:justify;-webkit-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);-moz-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);">
             <div style="width: 100px;margin:auto;border-radius:55%;background-color:#f8f9fa;padding: 10px;">     
-                <img style="width: 100%;" src="http://kkprettynails.cl/img/logokk.png" alt="Logo kkprettynails">
+                <img style="width: 100%;margin-bot:40px;" src="http://kkprettynails.cl/img/logokk.png" alt="Logo kkprettynails">
             </div>
         </div>
         <div style="width: 800px;margin: auto;padding-top: 5%;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;padding-bottom: 20px;">
@@ -145,12 +145,12 @@ pedidos.post('/sendEmailPedido', async (req, res, next) => {
                 <div style="width:60%;">
                     <center>
                     <p style="text-align:center;font-size:18px;">Contáctanos.</p>
-                <a href="mailto:kkprettynails@gmail.com"><img style="width: 45px;" src="http://kkprettynails.cl/img/mail.png" alt=""></a>
-                <a href="https://www.instagram.com/kkprettynails/?hl=es-la"><img style="width: 40px;margin-left:40px" src="http://kkprettynails.cl/img/ig.png" alt=""></a>
-                <a href="https://wa.me/56972628949"><img style="width:38px;margin-left:40px" src="http://kkprettynails.cl/img/ws.png" alt=""></a>
-                <a href="https://kkprettynails.cl"><img style="width: 40px;margin-left:40px" src="http://kkprettynails.cl/img/web.png" alt=""></a>
+                <a href="mailto:kkprettynails@gmail.com"><img style="width: 4%;" src="http://kkprettynails.cl/img/maill.png" alt=""></a>
+                <a href="https://www.instagram.com/kkprettynails/?hl=es-la"><img style="width: 4.4%;margin-left:20px" src="http://kkprettynails.cl/img/ig.png" alt=""></a>
+                <a href="https://wa.me/56972628949"><img style="width:4%;margin-left:20px" src="http://kkprettynails.cl/img/ws.png" alt=""></a>
+                <a href="https://kkprettynails.cl"><img style="width: 4%;margin-left:20px" src="http://kkprettynails.cl/img/web.png" alt=""></a>
                 <a  href="https://goo.gl/maps/m5rVWDEiPj7q1Hxh9" style="margin-left:20px;text-decoration:none;">
-                    <img style="width:5%;" src="http://kkprettynails.cl/img/market.png" alt="Logo web">
+                    <img style="width:4%;margin-left:20px;" src="http://kkprettynails.cl/img/market.png" alt="Logo web">
                 </a>
                 </center>
                 </div>
@@ -360,7 +360,7 @@ pedidos.post('/', (req, res) => {
                         <div style="width: 100%; padding:0;text-align:center;">
                             <div style="width: 60%;height: 8vh;margin: auto;padding: 20px;font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;text-align:justify">
                                 <div style="width: 100px;margin:auto;border-radius:55%;background-color:#f8f9fa;padding: 10px;">     
-                                    <img style="width: 100%;" src="http://kkprettynails.cl/img/logokk.png" alt="Logo kkprettynails">
+                                    <img style="width: 100%;margin-bot:40px;" src="http://kkprettynails.cl/img/logokk.png" alt="Logo kkprettynails">
                                 </div>
                             </div>
                             <div style="width: 100%;padding-top: 5%;font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;padding-bottom: 40px;">
@@ -419,20 +419,20 @@ pedidos.post('/', (req, res) => {
                                     <div style="width:100%;">
                                         <center>
                                         <p style="text-align:center;font-size:14px;"><strong> Contáctanos</strong></p>
-                                        <a  href="mailto:kkprettynails@gmail.com" style="margin-left:40px;text-decoration:none;"> 
-                                            <img style="width:4%;" src="http://kkprettynails.cl/img/mail.png" alt="Logo mail">
+                                        <a  href="mailto:kkprettynails@gmail.com" style="margin-left:20px;text-decoration:none;"> 
+                                            <img style="width:4%;" src="http://kkprettynails.cl/img/maill.png" alt="Logo mail">
                                         </a>
-                                        <a  href="https://www.instagram.com/kkprettynails/" style="margin-left:40px;text-decoration:none;">
-                                            <img style="width:4%;" src="http://kkprettynails.cl/img/ig.png" alt="Logo ig">
+                                        <a  href="https://www.instagram.com/kkprettynails/" style="margin-left:20px;text-decoration:none;">
+                                            <img style="width:4.4%;" src="http://kkprettynails.cl/img/ig.png" alt="Logo ig">
                                         </a>
                                         <a  href="https://api.whatsapp.com/send?phone=56972628949&text=&source=&data=&app_absent=" style="margin-left:20px;text-decoration:none;">
                                             <img style="width:4%;" src="http://kkprettynails.cl/img/ws.png" alt="Logo ws">
                                         </a>
-                                        <a  href="https://kkprettynails.cl/inicio" style="margin-left:40px;text-decoration:none;">
+                                        <a  href="https://kkprettynails.cl/inicio" style="margin-left:20px;text-decoration:none;">
                                             <img style="width:4%;" src="http://kkprettynails.cl/img/web.png" alt="Logo web">
                                         </a>
                                         <a  href="https://goo.gl/maps/m5rVWDEiPj7q1Hxh9" style="margin-left:20px;text-decoration:none;">
-                                            <img style="width:5%;" src="http://kkprettynails.cl/img/market.png" alt="Logo web">
+                                            <img style="width:4%;" src="http://kkprettynails.cl/img/market.png" alt="Logo web">
                                         </a>
                                         </center>
                                     </div>
