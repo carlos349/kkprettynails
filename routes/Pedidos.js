@@ -117,7 +117,7 @@ pedidos.post('/sendEmailPedido', async (req, res, next) => {
             <div style="width: 100%; padding:0;text-align:center;">
         <div style="width: 60%;height: 8vh;margin: auto;background-color: #fdd3d7;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;text-align:justify;-webkit-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);-moz-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);">
             <div style="width: 100px;margin:auto;border-radius:55%;background-color:#f8f9fa;padding: 10px;">     
-                <img style="width: 100%;margin-bot:40px;" src="http://kkprettynails.cl/img/logokk.png" alt="Logo kkprettynails">
+                <img style="width: 100%;margin-bottom:40px;" src="http://kkprettynails.cl/img/logokk.png" alt="Logo kkprettynails">
             </div>
         </div>
         <div style="width: 800px;margin: auto;padding-top: 5%;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;padding-bottom: 20px;">
@@ -307,11 +307,11 @@ pedidos.post('/', (req, res) => {
     else {
         var one = date.getDate()
     }
-    if (date.getMonth() < 10 ) {
-        var two = "0" + date.getMonth()
+    if (date.getMonth() < 9 ) {
+        var two = "0" + (date.getMonth() + 1)
     }
     else{
-        var two = date.getMonth()
+        var two = (date.getMonth() + 1)
     }
     var fechaCartelua = one+"-"+two+"-"+date.getFullYear()
     Pedido.find()

@@ -155,7 +155,7 @@ citas.post('/getBlocks', (req,res) => {
     var timelineBlock = []
     var bloques = []
     if (citas.length == 0) {
-      timelineBlock.push(["10:00","21:00",true])
+      timelineBlock.push(["10:00","17:00",true])
     }else{
       if (citas[0].start == "10:00") {
         var count = 0
@@ -203,7 +203,7 @@ citas.post('/getBlocks', (req,res) => {
         TotalMinutes = SumHours + SumMinutes
       }else{
         separ = timelineBlock[index][0].split(':')
-        SumHours = ((21 - parseFloat(separ[0])) * 60)  
+        SumHours = ((17 - parseFloat(separ[0])) * 60)  
         SumMinutes = 0 - parseFloat(separ[1])
         TotalMinutes = SumHours + SumMinutes
         last = true
@@ -255,7 +255,7 @@ citas.post('/getBlocks', (req,res) => {
         
       } 
     }
-    bloques.push({Horario:'21:00' , validator: 'nDisponible'})
+    bloques.push({Horario:'17:00' , validator: 'nDisponible'})
     var insp = false
     for (let j = 0; j < bloques.length; j++) {
       if (sepRes[0] == bloques[j].Horario) {
@@ -453,6 +453,7 @@ citas.post('/sendConfirmation/:id', (req, res) => {
       lender: req.body.lenders,
       payment: req.body.payment
   }
+  console.log(data)
   for (let index = 0; index < req.body.service.length; index++) {
     const element = req.body.service[index].servicio;
     if (index > 0){
@@ -552,6 +553,12 @@ citas.post('/noOneLender',  (req, res) => {
   const dataDate = req.body.dataDate
   const client = req.body.client
   const date = new Date(req.body.date+' 10:00')
+  var ClientAgend = ''
+  if (req.body.ifClient) {
+    ClientAgend = client.name+' '+client.lastName
+  }else{
+    ClientAgend = client.name
+  }
   var nameFile = ''
   if (req.body.pdf == 'not') {
     nameFile = ''
@@ -568,7 +575,7 @@ citas.post('/noOneLender',  (req, res) => {
       sort: element.sort,
       date: date,
       services: [{servicio: element.servicio, comision: element.comision, precio: element.precio}],
-      client: client.name+' '+client.lastName+ ' / '+client.mail,
+      client: ClientAgend+ ' / '+client.mail,
       employe: element.realLender,
       class: element.class,
       process: true,

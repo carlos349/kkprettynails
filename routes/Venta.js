@@ -364,9 +364,10 @@ ventas.get('/findSalesByDate/:dates', async (req, res) => {
   const dates = req.params.dates
   const splitDates = dates.split(':')
   const desde = splitDates[0]
-  const hasta = new Date(splitDates[1]) 
+  const hasta = new Date(splitDates[1] + ' 10:00') 
   hasta.setDate(hasta.getDate() + 1)
   const goodHasta =  (hasta.getMonth() + 1)+"-"+hasta.getDate()+"-"+hasta.getFullYear()
+  console.log(goodHasta)
   try {
     const Sales = await Venta.find({fecha: { $gte: desde, $lte: goodHasta }})
     
@@ -1250,20 +1251,24 @@ ventas.post('/procesar', (req, res) => {
                           
                           Cliente.findOne({identidad: finalClient[1]})
                           .then(reco => {
-                            if (reco.idRecomendador != '') {
-                              Cliente.findByIdAndUpdate(reco.idRecomendador, {
-                                $inc : {recomendaciones:1}
-                              })
-                              .then(inc =>{
-                                Cliente.updateOne({identidad: finalClient[1]}, {
-                                  $set : {idRecomendador:''}
+                            if (req.body.descuento == 10) {
+                              if (reco.idRecomendador != '') {
+                                Cliente.findByIdAndUpdate(reco.idRecomendador, {
+                                  $inc : {recomendaciones:1}
                                 })
-                                .then(set =>{
-                                  res.json({status: 'Venta registrada'})
+                                .then(inc =>{
+                                  Cliente.updateOne({identidad: finalClient[1]}, {
+                                    $set : {idRecomendador:''}
+                                  })
+                                  .then(set =>{
+                                    res.json({status: 'Venta registrada'})
+                                  })
                                 })
-                              })
-                            }
-                            else{
+                              }
+                              else{
+                                res.json({status: 'Venta registrada'})
+                              }
+                            }else{
                               res.json({status: 'Venta registrada'})
                             }
                           })
