@@ -14,17 +14,102 @@ const SMails = new email(smailCredentials)
 pedidos.use(cors())
 
 pedidos.post('/sendEmailPedido', async (req, res, next) => {
-    var array = {}
-    let mail = {}
-    
-        array = {
-            to: req.body.to,
-            code: req.body.code,
-            articulo:req.body.article,
-            client:req.body.client
-        }
+    var pdf = require("pdf-creator-node");
+    var fs = require('fs');
+    var html = `<!DOCTYPE html>
+                <html>
+                    <head>
+                        <mate charest="utf-8" />
+                        <title>Hello world!</title>
+                    </head>
+                    <body>
+                        
+
+                      
+        <div style="width: 800px;margin: auto;padding-top: 5%;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;padding-bottom: 20px;">
+            <center>
+                <div style="width:80%;text-align: center;">
+                    
+                    <img style="width:100%;" src="http://kkprettynails.cl/img/giftModelTop.png" alt="">
+                    
+                    <img style="width:40%;margin-left: 180px;" src="http://kkprettynails.cl/img/giftModelCenter.png" alt=""><img style="width:30%;" src="http://kkprettynails.cl/img/giftModelInfo.png" alt="">
+
+                    <p style="font-weight: 400;font-size: 18px;color: #9ba5b1;"><b>De regalo por: {{users.articulo}} </b></p>
+                    <p style="font-weight: 400;font-size: 16px;color: #9ba5b1;display: inline-block;width: 395px;"><b>Dirección: </b>Av. Pedro de Valdivia 3474, local 53B, Ñuñoa, Región Metropolitana de Santiago</p>
+                    <p style="font-weight: 400;font-size: 16px;color: #9ba5b1;background-color: #fcf8f7;padding: 10px;width: 200px;text-align: left;display: inline-block;"><b>Código: {{users.code}} <br> </b></p>
+                    <img style="width:100%;" src="http://kkprettynails.cl/img/giftModelBot.png" alt="">
+                <div>
+            </center>
+        </div>
         
+                    </body>
+                </html>`;
+
+    var options = {
+        format: "A3",
+        orientation: "portrait",
+        border: "10mm",
+        timeout: '100000',
+        header: {
+            height: "45mm",
+            contents: ''
+        },
+        "footer": {
+            "height": "28mm",
+            "contents": {
+                first: '',
+                2: '', // Any page number is working. 1-based index
+                default: '', // fallback value
+                last: ''
+            }
+        }
+    }
+    var users = [
+        {
+            name:"Shyaadsadsm",
+            age:"26"
+        },
+        {
+            name:"Navjot",
+            age:"26"
+        },
+        {
+            name:"Vitthal",
+            age:"26"
+        }
+    ]
+    arrayPdf = {
+                code: req.body.code,
+                articulo:req.body.article,
+                client:req.body.client
+            }
+    var document = {
+        html: html,
+        data: {
+            users: arrayPdf
+        },
+        path: "./output.pdf"
+    };
+
+    pdf.create(document, options)
+    .then(res => {
+        console.log(res)
+        var array = {}
+        let mail = {}
+        
+            array = {
+                to: req.body.to,
+                code: req.body.code,
+                articulo:req.body.article,
+                client:req.body.client
+            }
         mail = {
+            attachments: [
+                {   // stream as an attachment
+                    filename: 'Gift Card.pdf',
+                    content: fs.createReadStream('./output.pdf')
+                }
+            ],
             from: "KKPrettynails",
             to: array.to,
             subject: 'Pedido verificado',
@@ -32,14 +117,14 @@ pedidos.post('/sendEmailPedido', async (req, res, next) => {
             <div style="width: 100%; padding:0;text-align:center;">
         <div style="width: 60%;height: 8vh;margin: auto;background-color: #fdd3d7;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;text-align:justify;-webkit-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);-moz-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);">
             <div style="width: 100px;margin:auto;border-radius:55%;background-color:#f8f9fa;padding: 10px;">     
-                <img style="width: 100%;margin-bot:40px;" src="http://kkprettynails.cl/img/logokk.png" alt="Logo kkprettynails">
+                <img style="width: 100%;margin-bottom:40px;" src="http://kkprettynails.cl/img/logokk.png" alt="Logo kkprettynails">
             </div>
         </div>
         <div style="width: 800px;margin: auto;padding-top: 5%;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;padding-bottom: 20px;">
             <center>
                 <div style="width:80%;text-align: center;">
                     <h1 style="text-align: center;color:#172b4d;"> </h1>
-                    <p style="text-align:center;margin-top:10px;font-size:18px;"> <strong>Estimado(a) ${array.client} <br> Su pedido fue validado con éxito el código y detalles de su compra son los siguientes:</p>
+                    <p style="text-align:center;margin-top:10px;font-size:18px;"> <strong>Estimado(a) ${array.client} <br> Su pedido fue validado con éxito el código y detalles de su compra son los siguientes: <br> <br> (Si no puede leerlo correctamente puede descargar el pdf adjunto)</p>
                     <p style="text-align:left;font-size:14px;font-weight: 300;text-align: center;width: 60%;margin:auto;"><strong> 
                         
                         </strong>
@@ -79,12 +164,20 @@ pedidos.post('/sendEmailPedido', async (req, res, next) => {
     
     
     try{
-        const send = await KMails.sendMail(mail)
+        const send = KMails.sendMail(mail)
         console.log(send)
     }catch(err){
         res.send(err)
          console.log(err)
     }
+    })
+    .catch(error => {
+        console.error(error)
+    });
+
+    
+        
+        
 })
 
 pedidos.get('/', async (req, res) => {
@@ -214,11 +307,11 @@ pedidos.post('/', (req, res) => {
     else {
         var one = date.getDate()
     }
-    if (date.getMonth() < 10 ) {
-        var two = "0" + date.getMonth()
+    if (date.getMonth() < 9 ) {
+        var two = "0" + (date.getMonth() + 1)
     }
     else{
-        var two = date.getMonth()
+        var two = (date.getMonth() + 1)
     }
     var fechaCartelua = one+"-"+two+"-"+date.getFullYear()
     Pedido.find()
