@@ -155,7 +155,7 @@ citas.post('/getBlocks', (req,res) => {
     var timelineBlock = []
     var bloques = []
     if (citas.length == 0) {
-      timelineBlock.push(["10:00","17:00",true])
+      timelineBlock.push(["10:00","19:00",true])
     }else{
       if (citas[0].start == "10:00") {
         var count = 0
@@ -203,7 +203,7 @@ citas.post('/getBlocks', (req,res) => {
         TotalMinutes = SumHours + SumMinutes
       }else{
         separ = timelineBlock[index][0].split(':')
-        SumHours = ((17 - parseFloat(separ[0])) * 60)  
+        SumHours = ((19 - parseFloat(separ[0])) * 60)  
         SumMinutes = 0 - parseFloat(separ[1])
         TotalMinutes = SumHours + SumMinutes
         last = true
@@ -255,7 +255,7 @@ citas.post('/getBlocks', (req,res) => {
         
       } 
     }
-    bloques.push({Horario:'17:00' , validator: 'nDisponible'})
+    bloques.push({Horario:'19:00' , validator: 'nDisponible'})
     var insp = false
     for (let j = 0; j < bloques.length; j++) {
       if (sepRes[0] == bloques[j].Horario) {
