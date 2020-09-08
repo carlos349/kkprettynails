@@ -671,7 +671,8 @@ clients.post('/registerwithpass', (req, res) => {
                         $set: {
                             password: Client.password,
                             correoCliente: data.code+' '+data.phone,
-                            birthday: data.datePicker
+                            birthday: data.datePicker,
+                            userImage: 'person_1.jpg'
                         }
                     })
                     .then(setPass => {
@@ -778,6 +779,7 @@ clients.post('/verifyClient', (req, res) => {
             const data = {
                 nombre: req.body.name,
                 identidad: req.body.mail,
+                password: '',
                 correoCliente: req.body.number,
                 instagramCliente: '',
                 participacion: 0,
@@ -786,7 +788,9 @@ clients.post('/verifyClient', (req, res) => {
                 recomendaciones: 0,
                 historical: [],
                 ultimaFecha: new Date(),
-                fecha: new Date()
+                fecha: new Date(),
+                birthday: '',
+                userImage: ''
             }
             Cliente.findOne({identidad: data.identidad})
             .then(client => {
