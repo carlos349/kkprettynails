@@ -462,6 +462,7 @@ citas.post('/sendConfirmation/:id', (req, res) => {
       data.services = element
     }
   }
+  const split = data.date.split('-')
   const mail = {
     from: "kkprettynails.cl",
     to: data.contact,
@@ -488,7 +489,7 @@ citas.post('/sendConfirmation/:id', (req, res) => {
 
                             <p style="text-align:left;margin-top:10px;font-size:16px;"> 
                              <img style="height:25px;width:25px;" src="${imgMails}calendar.png" alt="Logo kkprettynails"> 
-                            <b style="margin-top:-5px">${data.date}</b> <br>
+                            <b style="margin-top:-5px">${split[1]}-${split[0]}-${split[2]}</b> <br>
                             <img style="height:25px;width:25px;" src="${imgMails}payment.png" alt="Logo kkprettynails"> 
                             <b style="margin-top:-5px">${data.payment}</b> <br>
                             <img style="height:25px;width:25px;" src="${imgMails}market.png" alt="Logo kkprettynails"><a style="text-align:center;font-size:16px;" href="https://goo.gl/maps/m5rVWDEiPj7q1Hxh9"><b style="font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;font-size:16px;margin-top:-5px"> Av. Pedro de Valdivia 3474 Caracol Ñuñoa, Local 53-B Ñuñoa, Chile. </b></a>   <br>
