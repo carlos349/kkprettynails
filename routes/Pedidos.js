@@ -428,7 +428,7 @@ pedidos.post('/', (req, res) => {
                                         <a  href="https://api.whatsapp.com/send?phone=56972628949&text=&source=&data=&app_absent=" style="margin-left:20px;text-decoration:none;">
                                             <img style="width:4%;" src="http://kkprettynails.cl/img/ws.png" alt="Logo ws">
                                         </a>
-                                        <a  href="https://kkprettynails.cl/inicio" style="margin-left:20px;text-decoration:none;">
+                                        <a  href="https://kkprettynails.cl" style="margin-left:20px;text-decoration:none;">
                                             <img style="width:4%;" src="http://kkprettynails.cl/img/web.png" alt="Logo web">
                                         </a>
                                         <a  href="https://goo.gl/maps/m5rVWDEiPj7q1Hxh9" style="margin-left:20px;text-decoration:none;">

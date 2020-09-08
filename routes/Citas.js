@@ -519,7 +519,7 @@ citas.post('/sendConfirmation/:id', (req, res) => {
                       <a  href="https://api.whatsapp.com/send?phone=56972628949&text=&source=&data=&app_absent=" style="margin-left:20px;text-decoration:none;">
                         <img style="width:4%;" src="${imgMails}ws.png" alt="Logo ws">
                       </a>
-                      <a  href="https://kkprettynails.cl/inicio" style="margin-left:40px;text-decoration:none;">
+                      <a  href="https://kkprettynails.cl" style="margin-left:40px;text-decoration:none;">
                         <img style="width:4%;" src="${imgMails}web.png" alt="Logo web">
                       </a>
                     <br>
