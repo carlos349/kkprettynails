@@ -1141,6 +1141,7 @@ ventas.post('/procesar', (req, res) => {
     today = new Date(dateDailyToday+ ' 10:00')
   }
   console.log(services)
+  console.log(req.body.descuento)
   var descuento = 100 - req.body.descuento
   var comisionTotal = 0
   for (let index = 0; index < services.length; index++) {
@@ -1233,7 +1234,7 @@ ventas.post('/procesar', (req, res) => {
                 })
                 .then(comision => {
                   Cliente.updateOne({identidad: finalClient[1]},{
-                    $inc: {participacion: 1, recomendaciones: -ifrecomend},
+                    $inc: {participacion: 1},
                     $set: {ultimaFecha: today},
                     $push: {historical: ventaDia}
                   })
@@ -1248,9 +1249,9 @@ ventas.post('/procesar', (req, res) => {
                           }
                         })
                         .then(process => {
-                          
                           Cliente.findOne({identidad: finalClient[1]})
                           .then(reco => {
+                            console.log(req.body.descuento)
                             if (req.body.descuento == 10) {
                               if (reco.idRecomendador != '') {
                                 Cliente.findByIdAndUpdate(reco.idRecomendador, {
@@ -1279,20 +1280,24 @@ ventas.post('/procesar', (req, res) => {
                       }else{
                         Cliente.findOne({identidad: finalClient[1]})
                           .then(reco => {
-                            if (reco.idRecomendador != '') {
-                              Cliente.findByIdAndUpdate(reco.idRecomendador, {
-                                $inc : {recomendaciones:1}
-                              })
-                              .then(inc =>{
-                                Cliente.updateOne({identidad: finalClient[1]}, {
-                                  $set : {idRecomendador:''}
+                            if (req.body.descuento == 10) {
+                              if (reco.idRecomendador != '') {
+                                Cliente.findByIdAndUpdate(reco.idRecomendador, {
+                                  $inc : {recomendaciones:1}
                                 })
-                                .then(set =>{
-                                  res.json({status: 'Venta registrada'})
+                                .then(inc =>{
+                                  Cliente.updateOne({identidad: finalClient[1]}, {
+                                    $set : {idRecomendador:''}
+                                  })
+                                  .then(set =>{
+                                    res.json({status: 'Venta registrada'})
+                                  })
                                 })
-                              })
-                            }
-                            else{
+                              }
+                              else{
+                                res.json({status: 'Venta registrada'})
+                              }
+                            }else{
                               res.json({status: 'Venta registrada'})
                             }
                           })
