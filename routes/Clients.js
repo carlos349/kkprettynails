@@ -498,6 +498,7 @@ clients.post('/datesPerClient', async (req, res) => {
 
 clients.get('/dataDiscount/:ident', async (req, res) => {
     const Client = await Cliente.find({identidad: req.params.ident})
+    console.log(Client)
     res.json(Client)
 })
 
@@ -782,7 +783,7 @@ clients.post('/verifyClient', (req, res) => {
                 password: '',
                 correoCliente: req.body.number,
                 instagramCliente: '',
-                participacion: 0,
+                participacion: 1,
                 recomendacion: recomender.nombre + ' / ' + recomender.identidad,
                 idRecomendador:req.body.referidoId,
                 recomendaciones: 0,
