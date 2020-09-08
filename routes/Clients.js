@@ -823,7 +823,7 @@ clients.post('/verifyClient', (req, res) => {
             identidad: req.body.mail,
             correoCliente: req.body.number,
             instagramCliente: '',
-            participacion: 0,
+            participacion: 1,
             recomendacion: recoFinal,
             idRecomendador:req.body.referidoId,
             recomendaciones: 0,
