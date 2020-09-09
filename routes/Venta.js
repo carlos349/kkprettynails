@@ -543,8 +543,18 @@ ventas.get('/totalSales/:month', async (req, res) => {
 })
 
 ventas.get('/getFund', async (req, res) => {
-  const idFunds = await cashFunds.find()
-  res.status(200).json(idFunds)
+  try{
+    const idFunds = await cashFunds.find()
+    console.log(idFunds)
+    if (idFunds.length > 0) {
+      res.status(200).json({status: 'ok', fondos:idFunds})
+    }else{
+      res.status(200).json({status: 'bad'})
+    } 
+  }catch(err){
+    res.send(err)
+  }
+  
 })
 
 ventas.post('/closeDay/:name', async (req, res) => {
@@ -1512,7 +1522,7 @@ ventas.post('/dataSectionManagement', (req, res) => {
 
 ventas.post('/registerFund', async (req, res) => {
   const find = await cashFunds.find()
-  if (find) {
+  if (find.length > 0) {
     const register = await cashFunds.findByIdAndUpdate(find[0]._id, {
       $set: {
         userRegister: req.body.userRegister,
@@ -1525,8 +1535,16 @@ ventas.post('/registerFund', async (req, res) => {
       res.status(200).json({status: 'ok'})
     }
     res.json({status: 'bad'})
+  }else{
+    const createData = await cashFunds.create({
+      userRegister: req.body.userRegister,
+      amount: req.body.amount,
+      amountEgress: 0,
+      quantity: 0,
+      validator: true
+    })
+    res.json({status: 'bad'})
   }
-  res.json({status: 'bad'})
 })
 
 ventas.get('/GetSalesPerMonth', (req, res) => {
