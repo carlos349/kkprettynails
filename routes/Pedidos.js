@@ -64,20 +64,7 @@ pedidos.post('/sendEmailPedido', async (req, res, next) => {
             }
         }
     }
-    var users = [
-        {
-            name:"Shyaadsadsm",
-            age:"26"
-        },
-        {
-            name:"Navjot",
-            age:"26"
-        },
-        {
-            name:"Vitthal",
-            age:"26"
-        }
-    ]
+   
     arrayPdf = {
                 code: req.body.code,
                 articulo:req.body.article,
@@ -88,7 +75,7 @@ pedidos.post('/sendEmailPedido', async (req, res, next) => {
         data: {
             users: arrayPdf
         },
-        path: "./output.pdf"
+        path: "./private/output.pdf"
     };
 
     pdf.create(document, options)
@@ -107,7 +94,7 @@ pedidos.post('/sendEmailPedido', async (req, res, next) => {
             attachments: [
                 {   // stream as an attachment
                     filename: 'Gift Card.pdf',
-                    content: fs.createReadStream('./output.pdf')
+                    content: fs.createReadStream('./private/output.pdf')
                 }
             ],
             from: "KKPrettynails",
