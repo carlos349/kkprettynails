@@ -139,7 +139,14 @@ citas.post('/getBlocks', (req,res) => {
   const duracion= req.body.time
   const dateNow = new Date(date+' 1:00')
   const resTimes = req.body.resTime
-  
+  let dayNow = dateNow.getDay()
+  let hourLast = ''
+  if (dayNow == 6) {
+    hourLast = '18:00'
+  }
+  else{
+    hourLast = '19:00'
+  }
   const sepRes = resTimes.split('/')
   const formatDate = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()
 
@@ -155,7 +162,7 @@ citas.post('/getBlocks', (req,res) => {
     var timelineBlock = []
     var bloques = []
     if (citas.length == 0) {
-      timelineBlock.push(["10:00","19:00",true])
+      timelineBlock.push(["10:00",hourLast,true])
     }else{
       if (citas[0].start == "10:00") {
         var count = 0
@@ -255,7 +262,7 @@ citas.post('/getBlocks', (req,res) => {
         
       } 
     }
-    bloques.push({Horario:'19:00' , validator: 'nDisponible'})
+    bloques.push({Horario:hourLast , validator: 'nDisponible'})
     var insp = false
     for (let j = 0; j < bloques.length; j++) {
       if (sepRes[0] == bloques[j].Horario) {
