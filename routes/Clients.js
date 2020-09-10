@@ -511,8 +511,9 @@ clients.put('/deleteClient/:id', async (req, res) => {
 })
 
 clients.post('/loginClient', (req, res) => {
+    const user = req.body.user.toLowerCase()
     const data = {
-        user: req.body.user, 
+        user: user, 
         password: req.body.pass
     }
     Cliente.findOne({identidad: data.user})
@@ -645,9 +646,10 @@ clients.post('/contacMail', async (req, res) => {
 clients.post('/registerwithpass', (req, res) => {
     const data = req.body.data
     console.log(req.body.referidoId)
+    const email = data.email.toLowerCase()
     const Client = {
         nombre: data.name+ ' ' +data.lastName,
-        identidad: data.email,
+        identidad: email,
         password: data.password,
         correoCliente: data.code+ ' '+data.phone,
         instagramCliente: '',
@@ -773,83 +775,41 @@ clients.post('/registerwithpass', (req, res) => {
 })
 
 clients.post('/verifyClient', (req, res) => {
-    var recoFinal = null
-    if (req.body.referidoId != '') {
-        Cliente.findById(req.body.referidoId)
-        .then(recomender => {
-            const data = {
-                nombre: req.body.name,
-                identidad: req.body.mail,
-                password: '',
-                correoCliente: req.body.number,
-                instagramCliente: '',
-                participacion: 1,
-                recomendacion: recomender.nombre + ' / ' + recomender.identidad,
-                idRecomendador:req.body.referidoId,
-                recomendaciones: 0,
-                historical: [],
-                ultimaFecha: new Date(),
-                fecha: new Date(),
-                birthday: '',
-                userImage: ''
-            }
-            Cliente.findOne({identidad: data.identidad})
-            .then(client => {
-                if(client){
-                    res.json({status: 'ok', data: client})
-                }else{
-                    Cliente.create(data)
-                    .then(ready => {
-                        res.json({status: 'bad', data: ready})
-                    })
-                    .catch(err => {
-                        res.send(err)
-                    })
-                }
+    const email = req.body.mail.toLowerCase()
+    const data = {
+        nombre: req.body.name,
+        identidad: email,
+        password: '',
+        correoCliente: req.body.number,
+        instagramCliente: '',
+        participacion: 1,
+        recomendacion: '',
+        idRecomendador:req.body.referidoId,
+        recomendaciones: 0,
+        historical: [],
+        ultimaFecha: new Date(),
+        fecha: new Date(),
+        birthday: '',
+        userImage: 'person_1.jpg'
+    }
+    Cliente.findOne({identidad: data.identidad})
+    .then(client => {
+        if(client){
+            res.json({status: 'ok', data: client})
+        }else{
+            Cliente.create(data)
+            .then(ready => {
+                res.json({status: 'bad', data: ready})
             })
             .catch(err => {
                 res.send(err)
             })
-        
-        })
-        .catch(err => {
-            console.log(err)
-        })
-        
-    }
-    else{
-        const data = {
-            nombre: req.body.name,
-            identidad: req.body.mail,
-            correoCliente: req.body.number,
-            instagramCliente: '',
-            participacion: 1,
-            recomendacion: recoFinal,
-            idRecomendador:req.body.referidoId,
-            recomendaciones: 0,
-            historical: [],
-            ultimaFecha: new Date(),
-            fecha: new Date()
         }
-        Cliente.findOne({identidad: data.identidad})
-        .then(client => {
-            if(client){
-                res.json({status: 'ok', data: client})
-            }else{
-                Cliente.create(data)
-                .then(ready => {
-                    res.json({status: 'bad', data: ready})
-                })
-                .catch(err => {
-                    res.send(err)
-                })
-            }
-        })
-        .catch(err => {
-            res.send(err)
-        })
-    }
-    
+    })
+    .catch(err => {
+        res.send(err)
+    })
+   
 })
 
 clients.post('/', (req, res) => {
