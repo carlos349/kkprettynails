@@ -7,7 +7,8 @@ const mongoose = require('mongoose')
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
 const port = require('./private/port.js')
-mongoose.connect('mongodb://localhost/kkprettynails-database', {
+const database = require('./private/database.js')
+mongoose.connect(database, {
 			useNewUrlParser: true,
 			useUnifiedTopology: true
 		})
