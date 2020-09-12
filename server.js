@@ -6,7 +6,9 @@ const app = express()
 const mongoose = require('mongoose')
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
-mongoose.connect('mongodb://localhost/kkprettynails-database', {
+const port = require('./private/port.js')
+const database = require('./private/database.js')
+mongoose.connect(database, {
 			useNewUrlParser: true,
 			useUnifiedTopology: true
 		})
@@ -21,7 +23,7 @@ io.on('connection', socket  => {
 });
 
 // settings
-app.set('port', process.env.PORT || 4200)
+app.set('port', process.env.PORT || port)
 app.set('trust proxy', true);
 
 //middlewares
