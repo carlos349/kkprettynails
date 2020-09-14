@@ -312,7 +312,7 @@ pedidos.post('/', (req, res) => {
                 res.json({status: 'Registrado',datos:pedido})
                 var array = {}
                 let mail = {}
-                
+                let mail2 = {} 
                     array = {
                         to: req.body.identidad,
                         articulo:req.body.articulo,
@@ -430,7 +430,24 @@ pedidos.post('/', (req, res) => {
                     }
                     
                 
-                
+                mail2 = {
+                    from: "KKPrettynails",
+                    to: 'kkprettynails@gmail.com',
+                    subject: 'Nuevo pedido',
+                    html: `
+                    <div style="width:60%;text-align: left;"> <br>
+                                        <p style="text-align:left;margin-top:10px;font-size:13px;"> <span style="font-weight: bold">Detalles del nuevo pedido: <br><br>
+                                            Nombre: ${array.client} <br>
+                                            Monto: ${array.total}<br>Articulo: ${array.articulo} <br>
+                                            Código de compra: 000${pedidoData.nPedido} <br>
+                                            Teléfono: ${array.number} <br>
+                                            Email: ${array.to} <br>
+                                            
+                                            Fecha de compra: ${fechaCartelua} <br>
+                                            </p>
+                                    </div>
+                    `
+                }
                 
                 try{
                     const send =  KMails.sendMail(mail)
