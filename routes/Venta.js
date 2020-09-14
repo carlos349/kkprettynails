@@ -1028,99 +1028,81 @@ ventas.put('/:id', async (req, res, next) => {
 })
 
 ventas.post('/processEndDates', (req, res) => {
-  const employeClosedDatesWithDiscount = req.body.employeClosedDatesWithDiscount
-  const clientClosedDatesId = req.body.datesClientIdentification
-  const endDatesId  = req.body.endDatesId
-  const venta = {
-    cliente: req.body.clientClosedDates,
-    manicurista: req.body.employeClosedDates,
-    servicios: req.body.servicesClosedDates,
-    comision: req.body.comisionClosedDates,
-    EmployeComision: employeClosedDatesWithDiscount,
-    pagoEfectivo:req.body.pagoEfectivo,
-    pagoOtros:req.body.pagoOtros,
-    pagoRedCDebito:req.body.pagoRedCDebito,
-    pagoRedCCredito:req.body.pagoRedCCredito,
-    pagoTransf:req.body.pagoTransf,
-    descuento:req.body.descuentoClosedDates,
-    ganancialocal: req.body.totalLocalClosedDates,
-    design: req.body.designClosedDates,
-    count: 0,
-    status: true,
-    total: req.body.totalClosedDates,
-
-    fecha: new Date()
-  }
-  const ventaDia = {
-    cliente: req.body.clientClosedDates,
-    manicurista: req.body.employeClosedDates,
-    servicios: req.body.servicesClosedDates,
-    comision: req.body.comisionClosedDates,
-    pagoEfectivo:req.body.pagoEfectivo,
-    pagoOtros:req.body.pagoOtros,
-    pagoRedCDebito:req.body.pagoRedCDebito,
-    pagoRedCCredito:req.body.pagoRedCCredito,
-    pagoTransf:req.body.pagoTransf,
-    descuento:req.body.descuentoClosedDates,
-    ganancialocal: req.body.totalLocalClosedDates,
-    design: req.body.designClosedDates,
-    status: true,
-    total: req.body.totalClosedDates,
-    idTableSales: '',
-    fecha: new Date()
-  }
   cashFunds.find()
   .then(have => {
     if (have.length > 0) {
-      Venta.find()
-      .then(ifCount => {
-        if (ifCount.length > 0) {
-          Venta.find().sort({count: -1}).limit(1)
-          .then(Count => {
-            venta.count = parseFloat(Count[0].count) + 1
-            Venta.create(venta)
-            .then(sale => {
-              ventaDia.idTableSales = sale._id
-              for (let index = 0; index < employeClosedDatesWithDiscount.length; index++) {
-                Manicurista.updateOne({nombre:employeClosedDatesWithDiscount[index].employe},{
-                  $inc: {comision:employeClosedDatesWithDiscount[index].comision} 
-                })    
-                .then(aver => {})  
+      if (have[0].validator) {
+        Venta.find().sort({count: -1}).limit(1)
+          .then(countSale =>{
+            var count = countSale[0].count + 1
+            for (let i = 0; i < req.body.arrayClosedDates.length; i++) {
+                const element = req.body.arrayClosedDates[i];
+                var dataSales = {
+                  cliente: element.client,
+                  manicurista: element.employe,
+                  servicios: element.services,
+                  comision: element.comision,
+                  EmployeComision: [{employe:element.employe,comision:element.comision}],
+                  pagoEfectivo:req.body.pagoEfectivo,
+                  pagoOtros:req.body.pagoOtros,
+                  pagoRedCDebito:req.body.pagoRedCDebito,
+                  pagoRedCCredito:req.body.pagoRedCCredito,
+                  pagoTransf:req.body.pagoTransf,
+                  descuento:element.descuento,
+                  ganancialocal: element.totalLocal,
+                  design: element.design,
+                  count: count+i,
+                  status: true,
+                  total: element.total,
+                  fecha: new Date()
+                }
+                Venta.create(dataSales)
+                .then(sales=>{})
+                closedDates.findByIdAndRemove(element.id)
+                .then(ready =>{})
+                Cliente.updateOne({identidad: element.client.split(" / ")[1]},{
+                    $inc: {participacion: 1},
+                    $set: {ultimaFecha: dataSales.fecha},
+                    $push: {historical: dataSales}
+                  })
+                .then(clients =>{})
+                Manicurista.updateOne({nombre:element.employe},{
+                  $inc: {comision:ventas.comision}
+                })  
               }
-              
-              for (let indexTwo = 0; indexTwo < clientClosedDatesId.length; indexTwo++) {
-                Cliente.updateOne({identidad: clientClosedDatesId[indexTwo].id},{
-                  $inc: {participacion: 1, recomendaciones: -clientClosedDatesId[indexTwo].ifrecomend},
-                  $set: {ultimaFecha: new Date()},
-                  $push: {historical: ventaDia}
-                })
-                .then(aver => {}) 
-              }
-              for (let indexThree = 0; indexThree < endDatesId.length; indexThree++) {
-                closedDates.findByIdAndRemove(endDatesId[indexThree])
-                .then(aver => {}) 
-              }
-              VentaDia.create(ventaDia)
-              .then(dayDale => {
-                res.json({status: 'Venta registrada'})
+              Venta.find().sort({count: -1}).limit(req.body.arrayClosedDates.length)
+              .then(forDay =>{
+                for (let e = 0; e < forDay.length; e++) {
+                  const element = forDay[e];
+                  var dataDay = {
+                    cliente: element.cliente,
+                    manicurista: element.manicurista,
+                    servicios: element.servicios,
+                    comision: element.comision,
+                    pagoEfectivo:element.pagoEfectivo,
+                    pagoOtros:element.pagoOtros,
+                    pagoRedCDebito:element.pagoRedCDebito,
+                    pagoRedCCredito:element.pagoRedCCredito,
+                    pagoTransf:element.pagoTransf,
+                    descuento:element.descuento,
+                    ganancialocal: element.ganancialocal,
+                    design: element.design,
+                    status: true,
+                    total: element.total,
+                    idTableSales: element._id,
+                    fecha: new Date()
+                  }
+                  VentaDia.create(dataDay)
+                  .then(ventaDia =>{})
+                  
+                }
+                res.json({status:'Venta registrada'})
               })
-              .catch(err => {
-                res.send('Error:' + err)
-              })
-            })
-            .catch(err => {
-
-              res.send('Error:' + err)
-            })
           })
-          .catch(err => {
-            res.send('Error:' + err)
-          })
-        }
-      })
-      .catch(err => {
-        res.send('Error:' + err)
-      })
+      }
+      else{
+        res.json({status:'no-cash'})
+      }
     }else{
       cashFunds.create({
         userRegister:'',
@@ -1150,8 +1132,6 @@ ventas.post('/procesar', (req, res) => {
     const dateDailyToday = dateformat.getFullYear() +"-"+(dateformat.getMonth() + 1)+"-"+dateformat.getDate()
     today = new Date(dateDailyToday+ ' 10:00')
   }
-  console.log(services)
-  console.log(req.body.descuento)
   var descuento = 100 - req.body.descuento
   var comisionTotal = 0
   for (let index = 0; index < services.length; index++) {
