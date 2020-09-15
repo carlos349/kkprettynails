@@ -46,7 +46,9 @@ ventas.post('/generateDataExcel', (req, res) => {
   if (data.rangeExcel.length > 14 ) {
     const split = data.rangeExcel.split(' a ')
     data.firstDate = split[0]
-    data.lastDate = split[1]
+    const DateUsage = new Date(split[1])
+    DateUsage.setDate(DateUsage.getDate() + 1)
+    data.lastDate = (DateUsage.getMonth() + 1)+"-"+DateUsage.getDate()+"-"+DateUsage.getFullYear()
   }else{
     const split = data.rangeExcel.split(':')
     const DateUsage = new Date(split[0])
@@ -112,7 +114,7 @@ ventas.post('/generateDataExcel', (req, res) => {
               const client = element.cliente.split(' / ')
               var clients = client[0]
             }
-            const formatDate = (element.fecha.getMonth() + 1)+"-"+element.fecha.getDate()+"-"+element.fecha.getFullYear()
+            const formatDate = element.fecha.getDate()+"-"+(element.fecha.getMonth() + 1)+"-"+element.fecha.getFullYear()
             dataTable.push({'id de ventas': 'V-'+element.count, Fecha: formatDate, Prestador: Lenders, Cliente: clients, servicios: services, Descuento: discounts, Comision: element.comision, 'Ganancia local': element.ganancialocal, Total: element.total, Efectivo: element.pagoEfectivo, 'Débito': element.pagoRedCDebito, 'Crédito':  element.pagoRedCCredito, Tranferencia: element.pagoTransf, Otros: element.pagoOtros })
         }
         res.json({status: 'ok', dataTable: dataTable})
