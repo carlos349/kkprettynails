@@ -192,7 +192,7 @@ users.post('/register', protectRoute, async (req, res, next) => {
 	const userData = {
 		first_name: req.body.first_name,
 		last_name: req.body.last_name,
-		email: req.body.email,
+		email: req.body.email.toLowerCase(),
 		password: req.body.password,
 		about: '',
 		status: 2,
@@ -230,7 +230,7 @@ users.post('/register', protectRoute, async (req, res, next) => {
 users.post('/login', (req, res) => {
 	const today = new Date()
 	User.findOne({
-		email: req.body.email
+		email: req.body.email.toLowerCase()
 	})
 	.then(user => {
 		if(user){

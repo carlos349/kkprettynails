@@ -2,7 +2,8 @@ const express = require('express');
 const pedidos = express.Router()
 const cors = require('cors');
 const Pedido = require('../models/Pedidos')
-
+const pdf = require("pdf-creator-node");
+const fs = require('fs');
 const email = require('../modelsMails/Mails')
 const Venta = require('../models/Venta')
 const kmailCredentials = require('../private/kmail-credentials')
@@ -13,9 +14,7 @@ const KMails = new email(kmailCredentials)
 const SMails = new email(smailCredentials)
 pedidos.use(cors())
 
-pedidos.post('/sendEmailPedido', async (req, res, next) => {
-    var pdf = require("pdf-creator-node");
-    var fs = require('fs');
+pedidos.post('/sendEmailPedido', (req, res, next) => {
     var html = `<!DOCTYPE html>
                 <html>
                     <head>
@@ -79,8 +78,8 @@ pedidos.post('/sendEmailPedido', async (req, res, next) => {
     };
 
     pdf.create(document, options)
-    .then(res => {
-        console.log(res)
+    .then(pdfRes => {
+        console.log(pdfRes)
         var array = {}
         let mail = {}
         
@@ -102,65 +101,62 @@ pedidos.post('/sendEmailPedido', async (req, res, next) => {
             subject: 'Pedido verificado',
             html: `
             <div style="width: 100%; padding:0;text-align:center;">
-        <div style="width: 60%;height: 8vh;margin: auto;background-color: #fdd3d7;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;text-align:justify;-webkit-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);-moz-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);">
-            <div style="width: 100px;margin:auto;border-radius:55%;background-color:#f8f9fa;padding: 10px;">     
-                <img style="width: 100%;margin-bottom:40px;" src="https://kkprettynails.cl/img/logokk.png" alt="Logo kkprettynails">
-            </div>
-        </div>
-        <div style="width: 800px;margin: auto;padding-top: 5%;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;padding-bottom: 20px;">
-            <center>
-                <div style="width:80%;text-align: center;">
-                    <h1 style="text-align: center;color:#172b4d;"> </h1>
-                    <p style="text-align:center;margin-top:10px;font-size:18px;"> <strong>Estimado(a) ${array.client} <br> Su pedido fue validado con éxito el código y detalles de su compra son los siguientes: <br> <br> (Si no puede leerlo correctamente puede descargar el pdf adjunto)</p>
-                    <p style="text-align:left;font-size:14px;font-weight: 300;text-align: center;width: 60%;margin:auto;"><strong> 
-                        
-                        </strong>
-                    </p>
-                    <img style="width:100%;margin-bottom:-135px;" src="https://kkprettynails.cl/img/giftModelTop.png" alt="">
-                    
-                    <img style="width:40%;margin-left: 180px;" src="https://kkprettynails.cl/img/giftModelCenter.png" alt=""><img style="width:30%;" src="https://kkprettynails.cl/img/giftModelInfo.png" alt="">
-
-                    <p style="font-weight: 400;font-size: 18px;color: #9ba5b1;"><b>De regalo por: </b>${array.articulo}</p>
-                    <p style="font-weight: 400;font-size: 16px;color: #9ba5b1;display: inline-block;width: 395px;"><b>Dirección: </b>Av. Pedro de Valdivia 3474, local 53B, Ñuñoa, Región Metropolitana de Santiago</p>
-                    <p style="font-weight: 400;font-size: 16px;color: #9ba5b1;background-color: #fcf8f7;padding: 10px;width: 200px;text-align: left;display: inline-block;"><b>Código: <br> </b>${array.code}</p>
-                    <img style="width:100%;" src="https://kkprettynails.cl/img/giftModelBot.png" alt="">
-                <div>
-            </center>
-        </div>
-        <div style="width: 60%;background-color: #f0f1f3;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);margin: auto;padding: 20px;font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;padding-bottom:20px;-webkit-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);-moz-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);">
-                <center>
-                <div style="width:60%;">
-                    <center>
-                    <p style="text-align:center;font-size:18px;">Contáctanos.</p>
-                <a href="mailto:kkprettynails@gmail.com"><img style="width: 4%;" src="https://kkprettynails.cl/img/maill.png" alt=""></a>
-                <a href="https://www.instagram.com/kkprettynails/?hl=es-la"><img style="width: 4.4%;margin-left:20px" src="https://kkprettynails.cl/img/ig.png" alt=""></a>
-                <a href="https://wa.me/56972628949"><img style="width:4%;margin-left:20px" src="https://kkprettynails.cl/img/ws.png" alt=""></a>
-                <a href="https://kkprettynails.cl"><img style="width: 4%;margin-left:20px" src="https://kkprettynails.cl/img/web.png" alt=""></a>
-                <a  href="https://goo.gl/maps/m5rVWDEiPj7q1Hxh9" style="margin-left:20px;text-decoration:none;">
-                    <img style="width:4%;margin-left:20px;" src="https://kkprettynails.cl/img/market.png" alt="Logo web">
-                </a>
-                </center>
+            <div style="width: 60%;height: 8vh;margin: auto;background-color: #fdd3d7;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;text-align:justify;-webkit-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);-moz-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);">
+                <div style="width: 100px;margin:auto;border-radius:55%;background-color:#f8f9fa;padding: 10px;">     
+                    <img style="width: 100%;margin-bottom:40px;" src="https://kkprettynails.cl/img/logokk.png" alt="Logo kkprettynails">
                 </div>
+            </div>
+            <div style="width: 800px;margin: auto;padding-top: 5%;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;padding-bottom: 20px;">
+                <center>
+                    <div style="width:80%;text-align: center;">
+                        <h1 style="text-align: center;color:#172b4d;"> </h1>
+                        <p style="text-align:center;margin-top:10px;font-size:18px;"> <strong>Estimado(a) ${array.client} <br> Su pedido fue validado con éxito el código y detalles de su compra son los siguientes: <br> <br> (Si no puede leerlo correctamente puede descargar el pdf adjunto)</p>
+                        <p style="text-align:left;font-size:14px;font-weight: 300;text-align: center;width: 60%;margin:auto;"><strong> 
+                            
+                            </strong>
+                        </p>
+                        <img style="width:100%;margin-bottom:-135px;" src="https://kkprettynails.cl/img/giftModelTop.png" alt="">
+                        
+                        <img style="width:40%;margin-left: 180px;" src="https://kkprettynails.cl/img/giftModelCenter.png" alt=""><img style="width:30%;" src="https://kkprettynails.cl/img/giftModelInfo.png" alt="">
+
+                        <p style="font-weight: 400;font-size: 18px;color: #9ba5b1;"><b>De regalo por: </b>${array.articulo}</p>
+                        <p style="font-weight: 400;font-size: 16px;color: #9ba5b1;display: inline-block;width: 395px;"><b>Dirección: </b>Av. Pedro de Valdivia 3474, local 53B, Ñuñoa, Región Metropolitana de Santiago</p>
+                        <p style="font-weight: 400;font-size: 16px;color: #9ba5b1;background-color: #fcf8f7;padding: 10px;width: 200px;text-align: left;display: inline-block;"><b>Código: <br> </b>${array.code}</p>
+                        <img style="width:100%;" src="https://kkprettynails.cl/img/giftModelBot.png" alt="">
+                    <div>
                 </center>
             </div>
-    </div>
-            `
+            <div style="width: 60%;background-color: #f0f1f3;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);margin: auto;padding: 20px;font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#172b4d;padding-bottom:20px;-webkit-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);-moz-box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);box-shadow: 0px -4px 11px 0px rgba(0,0,0,0.12);">
+                    <center>
+                    <div style="width:60%;">
+                        <center>
+                        <p style="text-align:center;font-size:18px;">Contáctanos.</p>
+                    <a href="mailto:kkprettynails@gmail.com"><img style="width: 4%;" src="https://kkprettynails.cl/img/maill.png" alt=""></a>
+                    <a href="https://www.instagram.com/kkprettynails/?hl=es-la"><img style="width: 4.4%;margin-left:20px" src="https://kkprettynails.cl/img/ig.png" alt=""></a>
+                    <a href="https://wa.me/56972628949"><img style="width:4%;margin-left:20px" src="https://kkprettynails.cl/img/ws.png" alt=""></a>
+                    <a href="https://kkprettynails.cl"><img style="width: 4%;margin-left:20px" src="https://kkprettynails.cl/img/web.png" alt=""></a>
+                    <a  href="https://goo.gl/maps/m5rVWDEiPj7q1Hxh9" style="margin-left:20px;text-decoration:none;">
+                        <img style="width:4%;margin-left:20px;" src="https://kkprettynails.cl/img/market.png" alt="Logo web">
+                    </a>
+                    </center>
+                    </div>
+                    </center>
+                </div>
+            </div>
+        `
         }
-        
-    
-    
-    
-    try{
-        const send = KMails.sendMail(mail)
-        console.log(send)
-    }catch(err){
-        res.send(err)
-         console.log(err)
-    }
+        KMails.sendMail(mail)
+        .then(send => {
+            console.log(send)
+            res.json({status:'ok'})
+        })
+        .catch(err => {
+            res.send(err)
+        })
     })
-    .catch(error => {
-        console.error(error)
-    });
+    .catch(err => {
+        res.send(err)
+    })
 
     
         
