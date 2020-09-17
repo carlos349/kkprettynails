@@ -416,7 +416,7 @@ ventas.get('/closingPerMonth', (req, res) => {
 })
 
 ventas.get('/Closing', (req, res) => {
-  Cierres.find()
+  Cierres.find().sort({fecha:-1})
   .then(cierres => {
 
     res.json(cierres)
