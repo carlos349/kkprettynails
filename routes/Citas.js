@@ -110,10 +110,19 @@ citas.post('/editBlocks', (req, res) => {
   const blocks = req.body.array
   const time = req.body.time
   const totalFor = parseFloat(time) / 15
+  let first = 0
   for (let index = 0; index < blocks.length; index++) {
     const element = blocks[index];
     if (element.validator == 'select') {
-      element.validator = false
+      
+      if (blocks[index + 1].validator) {
+        if (blocks[index + 1].validator == 'select') {
+          element.validator = false
+        }else{
+          blocks[index].validator = true
+        }
+      }
+      
     }
   }
   for (let i = 0; i < blocks.length; i++) {
@@ -283,7 +292,6 @@ citas.post('/getBlocks', (req,res) => {
       
     }
     for (var w = 0; w < bloques.length; w++) {
-        
       if (bloques[w].validator == true) {
         var round2 =duracion / 15
         if ( round2 < bloques.length - w ) {
@@ -291,7 +299,6 @@ citas.post('/getBlocks', (req,res) => {
           for (var e = 1; e < round; e++) {  
               if (bloques[w+e].validator == false ) {
                 bloques[w].validator = 'nDisponible'
-                 
               }   
           }
         }else{
@@ -299,7 +306,22 @@ citas.post('/getBlocks', (req,res) => {
         }  
       }  
     }
-    
+    const dateToday = new Date().getDate()
+    const selectDay = new Date(req.body.date+' 1:00').getDate()
+    console.log(dateToday)
+    console.log(selectDay)
+    if (dateToday == selectDay) {
+      const hour = new Date().getHours() + 1
+      console.log(hour)
+      console.log(bloques)
+      for (var j = 0; j < bloques.length; j++) {
+        const element = bloques[j]
+        var split = element.Horario.split(':')[0]
+        if (parseInt(split) < hour) {
+          element.validator = 'nDisponible'
+        }
+      } 
+    }
     res.json(bloques)
   })
   .catch(err => {
