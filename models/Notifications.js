@@ -18,7 +18,10 @@ const notificationsSchema = new Schema({
     date: {
 		type: Date,
 		default: Date.now
-	}
+	},
+    views: {
+        type: Array
+    }
 })
 
 module.exports = Notifications = mongoose.model('notifications', notificationsSchema)
