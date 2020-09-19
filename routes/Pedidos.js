@@ -163,8 +163,18 @@ pedidos.post('/sendEmailPedido', (req, res, next) => {
         
 })
 
-pedidos.get('/', async (req, res) => {
-    const pedidos = await Pedido.find().sort({nPedido: -1})
+pedidos.get('/findPending', async (req, res) => {
+    const pedidos = await Pedido.find({estado:'Nconfirmado'}).sort({nPedido: -1})
+    res.json(pedidos)
+})
+
+pedidos.get('/findConfirmed', async (req, res) => {
+    const pedidos = await Pedido.find({estado:'confirmado'}).sort({nPedido: -1})
+    res.json(pedidos)
+})
+
+pedidos.get('/findUsed', async (req, res) => {
+    const pedidos = await Pedido.find({$or: [{estado:'usado'}, {estado:'vencido'}]} ).sort({nPedido: -1})
     res.json(pedidos)
 })
 
@@ -208,7 +218,8 @@ pedidos.get('/useCode/:code', async (req, res) => {
     try {
         const updatePedido = await Pedido.findByIdAndUpdate(req.params.code, {
             $set: {
-              estado:"usado"
+              estado:"usado",
+              dateProccess:new Date()
             }
         })
         if (updatePedido) {
@@ -482,7 +493,8 @@ pedidos.put('/:id', async (req, res, next) => {
     try {
         const updatePedido = await Pedido.findByIdAndUpdate(req.params.id, {
             $set: {
-              estado:"confirmado"
+              estado:"confirmado",
+              dateConfirm:new Date()
             }
         })
         if (updatePedido) {

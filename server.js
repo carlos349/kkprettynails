@@ -8,6 +8,8 @@ const server = require('http').Server(app);
 const io = require('socket.io')(server);
 const port = require('./private/port.js')
 const database = require('./private/database.js')
+const verify = require('./accessFunctions/verify.js')
+
 mongoose.connect(database, {
 			useNewUrlParser: true,
 			useUnifiedTopology: true
@@ -32,7 +34,7 @@ app.use(express.json())
 app.use(bodyParser.json())
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: false }))
-
+verify()
 //Routes
 
 app.use('/users', require('./routes/Users.js'))
