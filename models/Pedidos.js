@@ -31,6 +31,12 @@ const PedidoSchema = new Schema ({
     medio:{
       type:String
     },
+    dateConfirm:{
+      type:Date
+    },
+    dateProccess:{
+      type:Date
+    },
     total: {
       type: String
     }

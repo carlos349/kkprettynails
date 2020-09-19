@@ -38,6 +38,9 @@ const VentaSchema = new Schema({
 	pagoTransf: {
 		type: Number
 	},
+	pagoOrder: {
+		type: Number
+	},
 	design: {
 		type: Number
 	},
