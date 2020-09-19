@@ -1044,7 +1044,7 @@ ventas.post('/processEndDates', (req, res) => {
                   manicurista: element.employe,
                   servicios: element.services,
                   comision: element.comision,
-                  EmployeComision: [{employe:element.employe,comision:element.comision}],
+                  EmployeComision: [{employe:element.employe, comision:element.comision}],
                   pagoEfectivo:req.body.pagoEfectivo,
                   pagoOtros:req.body.pagoOtros,
                   pagoRedCDebito:req.body.pagoRedCDebito,
@@ -1063,14 +1063,15 @@ ventas.post('/processEndDates', (req, res) => {
                 closedDates.findByIdAndRemove(element.id)
                 .then(ready =>{})
                 Cliente.updateOne({identidad: element.client.split(" / ")[1]},{
-                    $inc: {participacion: 1},
-                    $set: {ultimaFecha: dataSales.fecha},
-                    $push: {historical: dataSales}
-                  })
+                  $inc: {participacion: 1},
+                  $set: {ultimaFecha: dataSales.fecha},
+                  $push: {historical: dataSales}
+                })
                 .then(clients =>{})
                 Manicurista.updateOne({nombre:element.employe},{
-                  $inc: {comision:ventas.comision}
-                })  
+                  $inc: {comision:element.comision}
+                }) 
+                .then(clients =>{}) 
               }
               Venta.find().sort({count: -1}).limit(req.body.arrayClosedDates.length)
               .then(forDay =>{

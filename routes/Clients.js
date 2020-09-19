@@ -825,6 +825,7 @@ clients.post('/', (req, res) => {
     const ClienteData = {
         nombre: req.body.nombre,
         identidad: req.body.identidad,
+        password: '',
         correoCliente:req.body.correoCliente,
         instagramCliente: req.body.instagramCliente,
         participacion: req.body.ifCheck,
@@ -833,7 +834,9 @@ clients.post('/', (req, res) => {
         recomendaciones:0,
         historical: [],
         ultimaFecha:today,
-        fecha: today
+        fecha: today,
+        birthday: '',
+        userImage: 'person_1.jpg'
     }
 
     Cliente.findOne({
