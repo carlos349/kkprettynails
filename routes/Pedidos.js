@@ -34,9 +34,9 @@ pedidos.post('/sendEmailPedido', (req, res, next) => {
                     <img style="width:40%;margin-left: 180px;" src="https://kkprettynails.cl/img/giftModelCenter.png" alt=""><img style="width:30%;" src="https://kkprettynails.cl/img/giftModelInfo.png" alt="">
 
                     <p style="font-weight: 400;font-size: 18px;color: #9ba5b1;"><b>De regalo por: {{users.articulo}} </b></p>
-                    <p style="font-weight: 400;font-size: 16px;color: #9ba5b1;display: inline-block;width: 395px;"><b>Dirección: </b>Av. Pedro de Valdivia 3474, local 53B, Ñuñoa, Región Metropolitana de Santiago</p>
+                    <p style="font-weight: 400;font-size: 16px;color: #9ba5b1;display: inline-block;width: 395px;"><b>Dirección: </b>Av. Pedro de Valdivia 3474, local 53B, Ñuñoa, Región Metropolitana de Santiago</p> <br>
                     <p style="font-weight: 400;font-size: 16px;color: #9ba5b1;background-color: #fcf8f7;padding: 10px;width: 200px;text-align: left;display: inline-block;"><b>Código: {{users.code}} <br> </b></p>
-                    <img style="width:100%;" src="https://kkprettynails.cl/img/giftModelBot.png" alt="">
+                    <img style="width:100%;margin-top: -80px;" src="https://kkprettynails.cl/img/giftModelBot.png" alt="">
                 <div>
             </center>
         </div>
@@ -120,7 +120,7 @@ pedidos.post('/sendEmailPedido', (req, res, next) => {
                         <img style="width:40%;margin-left: 180px;" src="https://kkprettynails.cl/img/giftModelCenter.png" alt=""><img style="width:30%;" src="https://kkprettynails.cl/img/giftModelInfo.png" alt="">
 
                         <p style="font-weight: 400;font-size: 18px;color: #9ba5b1;"><b>De regalo por: </b>${array.articulo}</p>
-                        <p style="font-weight: 400;font-size: 16px;color: #9ba5b1;display: inline-block;width: 395px;"><b>Dirección: </b>Av. Pedro de Valdivia 3474, local 53B, Ñuñoa, Región Metropolitana de Santiago</p>
+                        <p style="font-weight: 400;font-size: 16px;color: #9ba5b1;display: inline-block;width: 395px;"><b>Dirección: </b>Av. Pedro de Valdivia 3474, local 53B, Ñuñoa, Región Metropolitana de Santiago</p> 
                         <p style="font-weight: 400;font-size: 16px;color: #9ba5b1;background-color: #fcf8f7;padding: 10px;width: 200px;text-align: left;display: inline-block;"><b>Código: <br> </b>${array.code}</p>
                         <img style="width:100%;" src="https://kkprettynails.cl/img/giftModelBot.png" alt="">
                     <div>
