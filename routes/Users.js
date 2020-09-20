@@ -26,7 +26,7 @@ const upload = multer({
 })
 
 users.get('/createSuperuser', async (req, res, next) => {
-	console.log(credentials)
+	
 	const access = [
 		{
 			ruta: 'usuarios',
@@ -76,7 +76,7 @@ users.post('/sendNewPass', async (req, res) => {
 	const user = await User.findOne({email: email})
 	if (user) {
 		const newPass = Date.now()
-		console.log(newPass.toString())
+		
 		const hash = await bcrypt.hash(newPass.toString(), 10)
 		if (!hash) {
 			res.status(404).send('Error en encriptado')
@@ -176,7 +176,7 @@ users.put('/:id', protectRoute, async (req, res, next) => {
 	if(status == 3){
 		const update = await User.findByIdAndUpdate(req.params.id, { $set: {status: status, linkLender: employe}})
 		if (update) {
-			console.log(update)
+			
 			res.json(update)
 		}
 	}else{

@@ -99,7 +99,7 @@ manicurista.get('/SalesByPrestAll/:nombre', async (req, res) => {
     ]   
   })
 
-  console.log(manicuristas)
+  
   res.json(manicuristas)
 })
 
@@ -120,7 +120,7 @@ manicurista.get('/SalesByPrest/:nombre', async (req, res) => {
     ]   
   })
 
-  console.log(manicuristas)
+  
   res.json(manicuristas)
 })
 manicurista.get('/advancementsProfile/:data', async (req, res, next) => {
@@ -218,7 +218,7 @@ manicurista.post('/registerAdvancement', (req, res) => {
   dateNow.setDate(dateNow.getDate() + 1)
   const formatDateTwo = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()
   const type = req.body.check ? 'Bonus' : 'Advancement'
-  console.log(type)
+  
   const dataAdvancement = {
     prest: req.body.prest,
     name: req.body.name,

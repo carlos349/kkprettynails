@@ -58,7 +58,6 @@ notification.get('/validateViews/:id', (req, res) => {
                 }
                 
                 if (inps) {
-                    console.log(onlyYours)
                     onlyYours.push(elementN)
                     Notifications.findByIdAndUpdate(elementN._id, { $push: { views: req.params.id }})
                     .then(push=>{})

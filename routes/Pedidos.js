@@ -79,7 +79,7 @@ pedidos.post('/sendEmailPedido', (req, res, next) => {
 
     pdf.create(document, options)
     .then(pdfRes => {
-        console.log(pdfRes)
+        
         var array = {}
         let mail = {}
         
@@ -147,7 +147,7 @@ pedidos.post('/sendEmailPedido', (req, res, next) => {
         }
         KMails.sendMail(mail)
         .then(send => {
-            console.log(send)
+            
             res.json({status:'ok'})
         })
         .catch(err => {
@@ -458,7 +458,7 @@ pedidos.post('/', (req, res) => {
                 
                 try{
                     const send =  KMails.sendMail(mail)
-                    console.log(send)
+                    
                 }catch(err){
                     res.send(err)
                     console.log(err)
