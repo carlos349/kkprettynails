@@ -411,7 +411,7 @@ clients.post('/sendmail', upload.array('image', 3),  async (req, res, next) => {
             </div>`
         }
     }
-    console.log(req.body.type)
+    
     if (req.body.type == 6) {
         array = {
             to: req.body.to,
@@ -498,7 +498,7 @@ clients.post('/datesPerClient', async (req, res) => {
 
 clients.get('/dataDiscount/:ident', async (req, res) => {
     const Client = await Cliente.find({identidad: req.params.ident})
-    console.log(Client)
+    
     res.json(Client)
 })
 
@@ -645,7 +645,7 @@ clients.post('/contacMail', async (req, res) => {
 
 clients.post('/registerwithpass', (req, res) => {
     const data = req.body.data
-    console.log(req.body.referidoId)
+    
     const email = data.email.toLowerCase()
     const Client = {
         nombre: data.name+ ' ' +data.lastName,
@@ -665,7 +665,7 @@ clients.post('/registerwithpass', (req, res) => {
     }
     Cliente.findOne({identidad: Client.identidad})
     .then(exist => {
-        console.log(exist)
+        
         if (exist) {
             if (exist.password == '') {
                 bcrypt.hash(Client.password, 10, (err, hash) => {
@@ -717,7 +717,7 @@ clients.post('/registerwithpass', (req, res) => {
                         Client.password = hash
                         Cliente.create(Client)
                         .then(client => {
-                            console.log(client)
+                            
                             const payload = {
                                 _id: client._id,
                                 name: client.nombre,
@@ -746,7 +746,7 @@ clients.post('/registerwithpass', (req, res) => {
                     Client.password = hash
                     Cliente.create(Client)
                     .then(client => {
-                        console.log(client)
+                        
                         const payload = {
                             _id: client._id,
                             name: client.nombre,
@@ -861,8 +861,7 @@ clients.post('/', (req, res) => {
 })
 
 clients.put('/changeImage/:id', async (req, res) => {
-    console.log(req.params.id)
-    console.log(req.body.img)
+    
     try {
         const change = await Cliente.findByIdAndUpdate(req.params.id, {
             $set: {
@@ -909,7 +908,7 @@ clients.put('/changePass/:id', async (req, res) => {
                         }
                     })
                     .then(changePass => {
-                        console.log(changePass)
+                        
                         const date = new Date()
                         if (date.getDate() < 10) {
                             var one = "0" + date.getDate()
@@ -993,7 +992,7 @@ clients.put('/changePass/:id', async (req, res) => {
 clients.get('/sendMailRegister/:id', async (req, res) => {
     try {
         const client = await Cliente.findById(req.params.id)
-        console.log(client)
+       
         if (client) {
             const mail = {
                 from: 'kkprettynails.cl',
@@ -1169,7 +1168,7 @@ clients.put('/:id', async (req, res, next) => {
         })
         if (!findClient) {
             try {
-                console.log(req.body.correoClienteEditar)
+                
                 const updateClient = await Cliente.findByIdAndUpdate(req.params.id, {
                     $set: {
                       nombre:req.body.nombreClienteEditar,
@@ -1258,12 +1257,12 @@ clients.post('/rescueChange', (req, res) => {
     })
 
 })
-clients.put('/rescuePass/:id', async (req, res, next) => { console.log(req.params.id)
+clients.put('/rescuePass/:id', async (req, res, next) => { 
     try {
         const findClient = await Cliente.findOne({
             identidad:req.params.id
         })
-        console.log(findClient)
+        
         if (!findClient) {
             res.json({status: 'No existe'})   
         }else{

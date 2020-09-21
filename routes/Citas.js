@@ -479,7 +479,7 @@ citas.post('/sendConfirmation/:id', (req, res) => {
       lender: req.body.lenders,
       payment: req.body.payment
   }
-  console.log(data)
+  
   for (let index = 0; index < req.body.service.length; index++) {
     const element = req.body.service[index].servicio;
     if (index > 0){
@@ -571,7 +571,7 @@ citas.post('/uploadPdf', upload.single('file'), (req, res, next) => {
   if (req.file) {
     res.json({nameFile: req.file.filename})
   }else{
-    console.log(req.file)
+    
   }
 })
 

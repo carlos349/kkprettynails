@@ -369,7 +369,7 @@ ventas.get('/findSalesByDate/:dates', async (req, res) => {
   const hasta = new Date(splitDates[1] + ' 10:00') 
   hasta.setDate(hasta.getDate() + 1)
   const goodHasta =  (hasta.getMonth() + 1)+"-"+hasta.getDate()+"-"+hasta.getFullYear()
-  console.log(goodHasta)
+  
   try {
     const Sales = await Venta.find({fecha: { $gte: desde, $lte: goodHasta }})
     
@@ -531,7 +531,7 @@ ventas.get('/totalSales/:month', async (req, res) => {
         
       }
       netaAnterior = localAnterior * 0.10
-      console.log("aqui")
+      
       res.json({totalLocal: totalLocal, gananciaNeta: gananciaNeta, gananciaTotal: gananciaTotal, localAnterior: localAnterior, netaAnterior: netaAnterior, totalAnterior: totalAnterior, comision:totalComision, comisionAnterior:totalComisionAnterior })
     })
     .catch(err => {
@@ -547,7 +547,7 @@ ventas.get('/totalSales/:month', async (req, res) => {
 ventas.get('/getFund', async (req, res) => {
   try{
     const idFunds = await cashFunds.find()
-    console.log(idFunds)
+   
     if (idFunds.length > 0) {
       res.status(200).json({status: 'ok', fondos:idFunds})
     }else{
@@ -1246,7 +1246,7 @@ ventas.post('/procesar', (req, res) => {
                         .then(process => {
                           Cliente.findOne({identidad: finalClient[1]})
                           .then(reco => {
-                            console.log(req.body.descuento)
+                            
                             if (req.body.descuento == 10) {
                               if (reco.idRecomendador != '') {
                                 Cliente.findByIdAndUpdate(reco.idRecomendador, {
@@ -1663,7 +1663,7 @@ ventas.get('/deleteSales/:dates', async (req, res) => {
   const sales = await Venta.deleteMany({
     fecha: {$gte:split[0] , $lte: split[1]}
   })
-  console.log(sales)
+  
 })
 
 module.exports = ventas
