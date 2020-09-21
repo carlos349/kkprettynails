@@ -310,6 +310,7 @@ citas.post('/getBlocks', (req,res) => {
     const selectDay = new Date(req.body.date+' 1:00').getDate()
     if (dateToday == selectDay) {
       const hour = new Date().getHours() + 1
+      console.log(hour)
       for (var j = 0; j < bloques.length; j++) {
         const element = bloques[j]
         var split = element.Horario.split(':')[0]
