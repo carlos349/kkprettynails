@@ -299,7 +299,7 @@ clients.get('/sendPromotionSyswa', async (req, res) => {
         to: "carlos.gomes349@gmail.com, angelacapacho64@gmail.com, cristiansleonardo@gmail.com",
         subject: "Promoción septiembre",
         html: `
-            <div style="width: 100%; padding:0;text-align:center;margin:auto;">
+            <div style="width: 90%; padding:0;text-align:center;margin:auto;">
                 <div style="width: 100%;">
                     <img style="width: 100%;height:80vh;margin-top:-50px;z-index: 0;" src="${imgMails}promotion.png" alt="">
                 </div>
