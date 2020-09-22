@@ -42,7 +42,7 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
             <div style="width: 80%;max-width:1000px;margin:auto;padding:0;text-align:center;">
                 <div style="width: 100%;height: 10vh;margin: auto;background-color: #181d81;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 10px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;text-align:justify;-webkit-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);-moz-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);">
                     <div style="width: 100px;margin:auto;border-radius:55%;background-color:#f8f9fa;padding: 10px;">     
-                        <img style="width: 100%;margin-bot:20px;" src="https://syswa.net/views/images/syswa-isotipo.png" alt="Logo kkprettynails">
+                        <img style="width: 100%;margin-bot:20px;" src="http://syswa.net/views/images/syswa-isotipo.png" alt="Logo syswa">
                     </div>
                 </div>
                 <div style="width: 100%;margin: auto;padding-top: 5%;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;padding-bottom: 20px;paddin-left:2px;">
@@ -93,7 +93,7 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
             <div style="width: 80%;max-width:1000px;margin:auto;padding:0;text-align:center;">
                 <div style="width: 100%;height: 10vh;margin: auto;background-color: #181d81;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 10px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;text-align:justify;-webkit-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);-moz-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);">
                     <div style="width: 100px;margin:auto;border-radius:55%;background-color:#f8f9fa;padding: 10px;">     
-                        <img style="width: 100%;margin-bot:20px;" src="https://syswa.net/views/images/syswa-isotipo.png" alt="Logo kkprettynails">
+                        <img style="width: 100%;margin-bot:20px;" src="http://syswa.net/views/images/syswa-isotipo.png" alt="Logo syswa">
                     </div>
                 </div>
                 <div style="width: 100%;margin: auto;padding-top: 5%;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;padding-bottom: 20px;">
@@ -127,7 +127,7 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
             <div style="width: 80%;max-width:1000px;margin:auto;padding:0;text-align:center;">
                 <div style="width: 100%;height: 10vh;margin: auto;background-color: #181d81;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 10px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;text-align:justify;-webkit-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);-moz-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);">
                     <div style="width: 100px;margin:auto;border-radius:55%;background-color:#f8f9fa;padding: 10px;">     
-                        <img style="width: 100%;margin-bot:20px;" src="https://syswa.net/views/images/syswa-isotipo.png" alt="Logo kkprettynails">
+                        <img style="width: 100%;margin-bot:20px;" src="http://syswa.net/views/images/syswa-isotipo.png" alt="Logo syswa">
                     </div>
                 </div>
                 <div style="width: 100%;margin: auto;padding-top: 5%;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;padding-bottom: 20px;padding-left:2px;">
@@ -177,7 +177,7 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
             <div style="width: 80%;max-width:1000px;margin:auto;padding:0;text-align:center;">
                 <div style="width: 100%;height: 10vh;margin: auto;background-color: #181d81;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 10px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;text-align:justify;-webkit-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);-moz-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);">
                     <div style="width: 100px;margin:auto;border-radius:55%;background-color:#f8f9fa;padding: 10px;">     
-                        <img style="width: 100%;margin-bot:20px;" src="https://syswa.net/views/images/syswa-isotipo.png" alt="Logo kkprettynails">
+                        <img style="width: 100%;margin-bot:20px;" src="http://syswa.net/views/images/syswa-isotipo.png" alt="Logo syswa">
                     </div>
                 </div>
                 <div style="width: 100%;margin: auto;padding-top: 5%;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;padding-bottom: 20px;padding-left:2px;">
@@ -209,7 +209,7 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
             <div style="width: 80%;max-width:1000px;margin:auto;padding:0;text-align:center;">
                 <div style="width: 100%;height: 10vh;margin: auto;background-color: #181d81;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 10px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;text-align:justify;-webkit-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);-moz-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);">
                     <div style="width: 100px;margin:auto;border-radius:55%;background-color:#f8f9fa;padding: 10px;">     
-                        <img style="width: 100%;margin-bot:20px;" src="https://syswa.net/views/images/syswa-isotipo.png" alt="Logo kkprettynails">
+                        <img style="width: 100%;margin-bot:20px;" src="http://syswa.net/views/images/syswa-isotipo.png" alt="Logo syswa">
                     </div>
                 </div>
                 <div style="width: 100%;margin: auto;padding-top: 5%;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;padding-bottom: 20px;padding-left:2px;">
@@ -260,7 +260,7 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
             <div style="width: 80%;max-width:1000px;margin:auto;padding:0;text-align:center;">
                 <div style="width: 100%;height: 10vh;margin: auto;background-color: #181d81;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 10px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;text-align:justify;-webkit-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);-moz-box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);box-shadow: 0px 6px 8px -8px rgba(0,0,0,0.73);">
                     <div style="width: 100px;margin:auto;border-radius:55%;background-color:#f8f9fa;padding: 10px;">     
-                        <img style="width: 100%;margin-bot:20px;" src="https://syswa.net/views/images/syswa-isotipo.png" alt="Logo kkprettynails">
+                        <img style="width: 100%;margin-bot:20px;" src="http://syswa.net/views/images/syswa-isotipo.png" alt="Logo syswa">
                     </div>
                 </div>
                 <div style="width:100%;margin: auto;padding-top: 5%;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;padding-bottom: 20px;padding-left:2px;">
@@ -296,8 +296,8 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
 clients.get('/sendPromotionSyswa', async (req, res) => {
     const mail = {
         from: "Syswa branding",
-        to: "carlos.gomes349@gmail.com, angelacapacho64@gmail.com, cristiansleonardo@gmail.com, ing.miguelpolanco92@gmail.com",
-        subject: "Promoción septiembre",
+        to: "carlos.gomes349@gmail.com, angelacapacho64@gmail.com, joeyfunaro@gmail.com, pooja@rajentech.online, leannhilton@hiltonmgmt.com, s_speights@bellsouth.net, info@hiltonmgmt.com, erosvlahos@gmail.com",
+        subject: "¡Imperdible! Aprovecha este 40% dcto. en nuestros servicios de diseño 🔥",
         html: `
             <!doctype html>
     <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
