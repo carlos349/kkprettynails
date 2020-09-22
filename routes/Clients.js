@@ -301,11 +301,11 @@ clients.get('/sendPromotionSyswa', async (req, res) => {
         html: `
             <div style="width: 60%; padding:0;text-align:center;margin:auto;">
                 <div style="width: 100%;">
-                    <img style="width: 100%;height:100vh;margin-top:-50px;z-index: 0;" src="${imgMails}promotionDesign.png" alt="">
+                    <img style="width: 100%;height:80vh;margin-top:-50px;z-index: 0;" src="${imgMails}promotionDesign.png" alt="">
                 </div>
                 <div style="width: 100%;margin: auto;padding-bottom:20px;margin-top:-10px;background-color:#f8f8f9;">
                     <center>
-                        <div style="width:60%;">
+                        <div style="width:100%;padding-top:20px;">
                             <center>
                                 <a href="https://instagram.com/syswanet?igshid=6n7g9jgq795g" style="color: white;background-color: #00003a;padding:5px 30px;margin-top:30px;border-top: 3px outset #E5E5E5;border-radius: 4px;cursor:pointer;text-decoration:none;">¡COMIENZA YA!</a><br><br>
                                 <a  href="mailto:syswainfo@gmail.com" style="text-decoration:none;"> 
