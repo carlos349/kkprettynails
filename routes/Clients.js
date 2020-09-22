@@ -301,7 +301,7 @@ clients.get('/sendPromotionSyswa', async (req, res) => {
         html: `
             <div style="width: 90%; padding:0;text-align:center;margin:auto;">
                 <div style="width: 100%;">
-                    <img style="width: 100%;height:80vh;margin-top:-50px;z-index: 0;" src="${imgMails}promotion.png" alt="">
+                    <img style="width: 100%;height:80vh;margin-top:-50px;z-index: 0;" src="${imgMails}promotion.jpg" alt="">
                 </div>
                 <div style="width: 100%;margin: auto;padding-bottom:20px;margin-top:-10px;background-color:#f8f8f9;">
                     <center>
