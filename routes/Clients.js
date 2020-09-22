@@ -73,7 +73,7 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
                                 <a  href="https://api.whatsapp.com/send?phone=56985826974&text=&source=&data=&app_absent=" style="margin-left:20px;text-decoration:none;">
                                     <img style="width:4%;" src="${imgMails}wss.png" alt="Logo ws">
                                 </a>
-                                <a  href="https://syswa.net" style="margin-left:20px;text-decoration:none;">
+                                <a  href="http://syswa.net" style="margin-left:20px;text-decoration:none;">
                                     <img style="width:4%;" src="${imgMails}webs.png" alt="Logo web">
                                 </a>
                                 <br>
@@ -157,7 +157,7 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
                                 <a  href="https://api.whatsapp.com/send?phone=56985826974&text=&source=&data=&app_absent=" style="margin-left:20px;text-decoration:none;">
                                     <img style="width:4%;" src="${imgMails}wss.png" alt="Logo ws">
                                 </a>
-                                <a  href="https://syswa.net" style="margin-left:20px;text-decoration:none;">
+                                <a  href="http://syswa.net" style="margin-left:20px;text-decoration:none;">
                                     <img style="width:4%;" src="${imgMails}webs.png" alt="Logo web">
                                 </a>
                                 <br>
@@ -240,7 +240,7 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
                                 <a  href="https://api.whatsapp.com/send?phone=56985826974&text=&source=&data=&app_absent=" style="margin-left:20px;text-decoration:none;">
                                     <img style="width:4%;" src="${imgMails}wss.png" alt="Logo ws">
                                 </a>
-                                <a  href="https://syswa.net" style="margin-left:20px;text-decoration:none;">
+                                <a  href="http://syswa.net" style="margin-left:20px;text-decoration:none;">
                                     <img style="width:4%;" src="${imgMails}webs.png" alt="Logo web">
                                 </a>
                                 <br>
@@ -288,6 +288,49 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
         }catch(err) {
             res.send(err)
         }
+    }catch(err){
+        res.send(err)
+    }
+})
+
+clients.get('/sendPromotionSyswa', async (req, res) => {
+    const mail = {
+        from: "Syswa branding",
+        to: "carlos.gomes349@gmail.com",
+        subject: "Promoción septiembre",
+        html: `
+            <div style="width: 60%; padding:0;text-align:center;margin:auto;">
+                <div style="width: 100%;">
+                    <img style="width: 100%;height:100vh;margin-top:-50px;z-index: 0;" src="${imgMails}promotionDesign.png" alt="">
+                </div>
+                <div style="width: 100%;margin: auto;padding-bottom:20px;margin-top:-10px;">
+                    <center>
+                        <div style="width:60%;">
+                            <center>
+                                <button style="color: white;background-color: #00003a;padding:5px 30px;margin-top:30px;border-top: 3px outset #E5E5E5;border-radius: 4px;cursor:pointer;">¡COMIENZA YA!</button><br><br>
+                                <a  href="mailto:syswainfo@gmail.com"> 
+                                    <img style="height:7%;width:7%;" src="${imgMails}mails.png" alt="Logo mail">
+                                </a>
+                                <a  href="https://www.instagram.com/syswanet/" style="margin-left:10%;">
+                                    <img style="height:7%;width:7%;" src="${imgMails}igs.png" alt="Logo ig">
+                                </a>
+                                <a  href="https://api.whatsapp.com/send?phone=56985826974&text=&source=&data=&app_absent=" style="margin-left:10%;">
+                                    <img style="height:7%;width:7%;" src="${imgMails}wss.png" alt="Logo ws">
+                                </a>
+                                <a  href="http://syswa.net" style="margin-left:10%;">
+                                    <img style="height:7%;width:7%;" src="${imgMails}webs.png" alt="Logo web">
+                                </a>
+                            </center>
+                        </div>
+                    </center>
+                </div>
+            </div>
+        `
+    }
+    try{
+        const send = await SMails.sendMail(mail)
+        console.log(send)
+        res.json({status: send})
     }catch(err){
         res.send(err)
     }
