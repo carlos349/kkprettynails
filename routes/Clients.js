@@ -296,7 +296,7 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
 clients.get('/sendPromotionSyswa', async (req, res) => {
     const mail = {
         from: "Syswa branding",
-        to: "carlos.gomes349@gmail.com, angelacapacho64@gmail.com, joeyfunaro@gmail.com, pooja@rajentech.online, leannhilton@hiltonmgmt.com, s_speights@bellsouth.net, info@hiltonmgmt.com, erosvlahos@gmail.com",
+        bcc: "carlos.gomes349@gmail.com, angelacapacho64@gmail.com, cristiansleonardo@gmail.com, joqsua@gmail.com, simon.villasmil.rivero@gmail.com, ing.miguelpolanco92@gmail.com",
         subject: "¡Imperdible! Aprovecha este 40% dcto. en nuestros servicios de diseño 🔥",
         html: `
             <!doctype html>
