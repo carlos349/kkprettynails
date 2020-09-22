@@ -296,7 +296,7 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
 clients.get('/sendPromotionSyswa', async (req, res) => {
     const mail = {
         from: "Syswa branding",
-        to: "carlos.gomes349@gmail.com, angelacapacho64@gmail.com",
+        to: "carlos.gomes349@gmail.com, angelacapacho64@gmail.com, alexandrachiq@hotmail.com",
         subject: "Promoción septiembre",
         html: `
             <div style="width: 100%; padding:0;text-align:center;margin:auto;">
