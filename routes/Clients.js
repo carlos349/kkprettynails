@@ -296,28 +296,28 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
 clients.get('/sendPromotionSyswa', async (req, res) => {
     const mail = {
         from: "Syswa branding",
-        to: "carlos.gomes349@gmail.com",
+        to: "carlos.gomes349@gmail.com, angelacapacho64@gmail.com",
         subject: "Promoción septiembre",
         html: `
             <div style="width: 60%; padding:0;text-align:center;margin:auto;">
                 <div style="width: 100%;">
                     <img style="width: 100%;height:100vh;margin-top:-50px;z-index: 0;" src="${imgMails}promotionDesign.png" alt="">
                 </div>
-                <div style="width: 100%;margin: auto;padding-bottom:20px;margin-top:-10px;">
+                <div style="width: 100%;margin: auto;padding-bottom:20px;margin-top:-10px;background-color:#f8f8f9;">
                     <center>
                         <div style="width:60%;">
                             <center>
-                                <button style="color: white;background-color: #00003a;padding:5px 30px;margin-top:30px;border-top: 3px outset #E5E5E5;border-radius: 4px;cursor:pointer;">¡COMIENZA YA!</button><br><br>
-                                <a  href="mailto:syswainfo@gmail.com"> 
+                                <a href="https://instagram.com/syswanet?igshid=6n7g9jgq795g" style="color: white;background-color: #00003a;padding:5px 30px;margin-top:30px;border-top: 3px outset #E5E5E5;border-radius: 4px;cursor:pointer;text-decoration:none;">¡COMIENZA YA!</a><br><br>
+                                <a  href="mailto:syswainfo@gmail.com" style="text-decoration:none;"> 
                                     <img style="height:7%;width:7%;" src="${imgMails}mails.png" alt="Logo mail">
                                 </a>
-                                <a  href="https://www.instagram.com/syswanet/" style="margin-left:10%;">
+                                <a  href="https://www.instagram.com/syswanet/" style="margin-left:10%;text-decoration:none;">
                                     <img style="height:7%;width:7%;" src="${imgMails}igs.png" alt="Logo ig">
                                 </a>
-                                <a  href="https://api.whatsapp.com/send?phone=56985826974&text=&source=&data=&app_absent=" style="margin-left:10%;">
+                                <a  href="https://api.whatsapp.com/send?phone=56985826974&text=&source=&data=&app_absent=" style="margin-left:10%;text-decoration:none;">
                                     <img style="height:7%;width:7%;" src="${imgMails}wss.png" alt="Logo ws">
                                 </a>
-                                <a  href="http://syswa.net" style="margin-left:10%;">
+                                <a  href="http://syswa.net" style="margin-left:10%;text-decoration:none;">
                                     <img style="height:7%;width:7%;" src="${imgMails}webs.png" alt="Logo web">
                                 </a>
                             </center>
