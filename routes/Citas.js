@@ -309,7 +309,8 @@ citas.post('/getBlocks', (req,res) => {
     const dateToday = new Date().getDate()
     const selectDay = new Date(req.body.date+' 1:00').getDate()
     if (dateToday == selectDay) {
-      const hour = new Date().getHours() + 1
+      const hour = new Date().getHours() - 3
+      console.log(hour)
       for (var j = 0; j < bloques.length; j++) {
         const element = bloques[j]
         var split = element.Horario.split(':')[0]
@@ -520,7 +521,7 @@ citas.post('/sendConfirmation/:id', (req, res) => {
                             <img style="height:25px;width:25px;" src="${imgMails}market.png" alt="Logo kkprettynails"><a style="text-align:center;font-size:16px;" href="https://goo.gl/maps/m5rVWDEiPj7q1Hxh9"><b style="font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#181d81;font-size:16px;margin-top:-5px"> Av. Pedro de Valdivia 3474 Caracol Ñuñoa, Local 53-B Ñuñoa, Chile. </b></a>   <br>
                             </p>
                         <center style="margin-top:40px;margin-bottom:30px;">
-                            <a style="background-color:#181d81;font-size:18px;border:none;border-radius:14px;padding:10px;margin-bottom:30px;color:#fff;cursor:pointer;" href="https://kkprettynails.syswa.net/#/ConfirmacionAgenda?id=${id}">Confirmar</a>
+                            <a style="background-color:#181d81;font-size:18px;border:none;border-radius:14px;padding:10px;margin-bottom:30px;color:#fff;cursor:pointer;" href="http://kkprettynails.syswa.net/#/ConfirmacionAgenda?id=${id}">Confirmar</a>
                         </center>
                         <hr style="border-top: 1.5px solid #ffd4d8;">
                         <p style="text-align:left;margin-top:10px;font-size:14px;font-weight: 300;"> 
