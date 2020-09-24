@@ -37,7 +37,7 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
         }
         mail = {
             from: "SYSWA WEB",
-            to: array.to,
+            bcc: array.to,
             subject: 'Informacion a cliente',
             html: `
             <div style="width: 80%;max-width:1000px;margin:auto;padding:0;text-align:center;">
@@ -122,7 +122,7 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
         }
         mail = {
             from: "SYSWA WEB",
-            to: array.to,
+            bcc: array.to,
             subject: array.subject,
             html: `
             <div style="width: 80%;max-width:1000px;margin:auto;padding:0;text-align:center;">
@@ -204,7 +204,7 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
         }
         mail = {
             from: "SYSWA WEB",
-            to: array.to,
+            bcc: array.to,
             subject: array.subject,
             html: `
             <div style="width: 80%;max-width:1000px;margin:auto;padding:0;text-align:center;">
@@ -869,7 +869,7 @@ clients.post('/sendmail', upload.array('image', 3),  async (req, res, next) => {
         }
         mail = {
             from: "kkprettynails",
-            to: array.to,
+            bcc: array.to,
             subject: array.subject,
             html: `
             <div>
@@ -889,7 +889,7 @@ clients.post('/sendmail', upload.array('image', 3),  async (req, res, next) => {
         }
         mail = {
             from: "kkprettynails",
-            to: array.to,
+            bcc: array.to,
             subject: array.subject,
             html: `
             <div style="width: 50%;margin: auto;background-color: ##f8f9fe;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;">
@@ -909,7 +909,7 @@ clients.post('/sendmail', upload.array('image', 3),  async (req, res, next) => {
         }
         mail = {
             from: "kkprettynails",
-            to: array.to,
+            bcc: array.to,
             subject: array.subject,
             html: `<div style="width: 50%;margin: auto;background-color: #f8f9fe;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#32325d;">
                     <center>
@@ -934,7 +934,7 @@ clients.post('/sendmail', upload.array('image', 3),  async (req, res, next) => {
         }
         mail = {
             from: "kkprettynails",
-            to: array.to,
+            bcc: array.to,
             subject: array.subject,
             html: `<div style="width: 50%;margin: auto;background-color: #f8f9fe;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#32325d;">
                     <center>
@@ -964,7 +964,7 @@ clients.post('/sendmail', upload.array('image', 3),  async (req, res, next) => {
         }
         mail = {
             from: "kkprettynails",
-            to: array.to,
+            bcc: array.to,
             subject: array.subject,
             html: `<div style="width: 50%;margin: auto;background-color: #f8f9fe;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#32325d;">   
                 ${array.text}
@@ -990,7 +990,7 @@ clients.post('/sendmail', upload.array('image', 3),  async (req, res, next) => {
         
         mail = {
             from: "kkprettynails",
-            to: array.to,
+            bcc: array.to,
             subject: array.subject,
             html: `<div style="width: 50%;margin: auto;background-color: #f8f9fe;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#32325d;">     
                 <center>
