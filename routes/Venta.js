@@ -1050,6 +1050,7 @@ ventas.post('/processEndDates', (req, res) => {
                   pagoRedCDebito:req.body.pagoRedCDebito,
                   pagoRedCCredito:req.body.pagoRedCCredito,
                   pagoTransf:req.body.pagoTransf,
+                  pagoOrder:req.body.pagoOrder,
                   descuento:element.descuento,
                   ganancialocal: element.totalLocal,
                   design: element.design,

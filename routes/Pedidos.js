@@ -164,17 +164,17 @@ pedidos.post('/sendEmailPedido', (req, res, next) => {
 })
 
 pedidos.get('/findPending', async (req, res) => {
-    const pedidos = await Pedido.find({estado:'Nconfirmado'}).sort({nPedido: -1})
+    const pedidos = await Pedido.find({estado:'Nconfirmado'}).sort({date: -1})
     res.json(pedidos)
 })
 
 pedidos.get('/findConfirmed', async (req, res) => {
-    const pedidos = await Pedido.find({estado:'confirmado'}).sort({nPedido: -1})
+    const pedidos = await Pedido.find({estado:'confirmado'}).sort({date: -1})
     res.json(pedidos)
 })
 
 pedidos.get('/findUsed', async (req, res) => {
-    const pedidos = await Pedido.find({$or: [{estado:'usado'}, {estado:'vencido'}]} ).sort({nPedido: -1})
+    const pedidos = await Pedido.find({$or: [{estado:'usado'}, {estado:'vencido'}]} ).sort({date: -1})
     res.json(pedidos)
 })
 
