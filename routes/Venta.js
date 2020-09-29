@@ -982,7 +982,7 @@ ventas.get('/', protectRoute, async (req, res) => {
   const dateformat = new Date()
   const dateFirst = dateformat.getFullYear() +"-"+(dateformat.getMonth() + 1)+"-1"
   const dateLast = dateformat.getFullYear() +"-"+(dateformat.getMonth() + 1)+"-31"
-  const ventas = await Venta.find({fecha: {$gte: dateFirst, $lte: dateLast}}).sort({fecha: -1})
+  const ventas = await Venta.find({fecha: {$gte: dateFirst, $lte: dateLast}}).sort({count: -1})
   res.json(ventas)
 })
 
@@ -1157,9 +1157,9 @@ ventas.post('/procesar', (req, res) => {
 
   const total = req.body.total
   const totalComisionDesign = parseFloat(req.body.diseno) * 0.50
-  const totalParaComision = req.body.totalSinDesign + totalComisionDesign
   const comision = parseFloat(comisionTotal) + parseFloat(totalComisionDesign)
-  const gananciaTotal = totalParaComision - parseFloat(comision) 
+  console.log(total  +"maaas" + comision)
+  const gananciaTotal = total - parseFloat(comision) 
   const documentoManicurista = req.body.documentoManicurista
 
   var discount
