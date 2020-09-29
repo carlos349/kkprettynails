@@ -14,6 +14,7 @@ const path = require('path')
 const kmailCredentials = require('../private/kmail-credentials')
 const smailCredentials = require('../private/smail-credentials')
 const imgMails = require('../private/endpointsLogo.js')
+const img = require('../private/endpointsImgMails.js')
 const storage = diskStorage({
 	destination: 'public/mailsImage',
 	filename: (req, files, cb) => {
@@ -36,7 +37,7 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
         }
         mail = {
             from: "SYSWA WEB",
-            to: array.to,
+            bcc: array.to,
             subject: 'Informacion a cliente',
             html: `
             <div style="width: 80%;max-width:1000px;margin:auto;padding:0;text-align:center;">
@@ -121,7 +122,7 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
         }
         mail = {
             from: "SYSWA WEB",
-            to: array.to,
+            bcc: array.to,
             subject: array.subject,
             html: `
             <div style="width: 80%;max-width:1000px;margin:auto;padding:0;text-align:center;">
@@ -203,7 +204,7 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
         }
         mail = {
             from: "SYSWA WEB",
-            to: array.to,
+            bcc: array.to,
             subject: array.subject,
             html: `
             <div style="width: 80%;max-width:1000px;margin:auto;padding:0;text-align:center;">
@@ -868,12 +869,12 @@ clients.post('/sendmail', upload.array('image', 3),  async (req, res, next) => {
         }
         mail = {
             from: "kkprettynails",
-            to: array.to,
+            bcc: array.to,
             subject: array.subject,
             html: `
             <div>
                 <center>
-                    <img style="width: 100%; heigth:auto;" src="${imgMails}${array.image}" alt="Imagen de correo">
+                    <img style="width: 100%; heigth:auto;" src="${img}${array.image}" alt="Imagen de correo">
                 </center> 
             </div>
             `
@@ -888,7 +889,7 @@ clients.post('/sendmail', upload.array('image', 3),  async (req, res, next) => {
         }
         mail = {
             from: "kkprettynails",
-            to: array.to,
+            bcc: array.to,
             subject: array.subject,
             html: `
             <div style="width: 50%;margin: auto;background-color: ##f8f9fe;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;">
@@ -908,11 +909,11 @@ clients.post('/sendmail', upload.array('image', 3),  async (req, res, next) => {
         }
         mail = {
             from: "kkprettynails",
-            to: array.to,
+            bcc: array.to,
             subject: array.subject,
             html: `<div style="width: 50%;margin: auto;background-color: #f8f9fe;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#32325d;">
                     <center>
-                       <img style="width: 50%; heigth:auto;" src="${imgMails}${array.image}" alt="Imagen de correo"> 
+                       <img style="width: 50%; heigth:auto;" src="${img}${array.image}" alt="Imagen de correo"> 
                     </center>
                     
                 ${array.text}
@@ -933,19 +934,19 @@ clients.post('/sendmail', upload.array('image', 3),  async (req, res, next) => {
         }
         mail = {
             from: "kkprettynails",
-            to: array.to,
+            bcc: array.to,
             subject: array.subject,
             html: `<div style="width: 50%;margin: auto;background-color: #f8f9fe;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#32325d;">
                     <center>
-                       <img style="width: 50%; heigth:auto;" src="${imgMails}${array.image}" alt="Imagen de correo"> 
+                       <img style="width: 50%; heigth:auto;" src="${img}${array.image}" alt="Imagen de correo"> 
                     </center>
                     
                 ${array.text}
 
                 <center>
                     <div style="display: inline-block;">
-                        <img style="width: 50%; heigth:auto;" src="${imgMails}${array.imageTwo}" alt="Imagen de correo2"> 
-                        <img style="width: 50%; heigth:auto;" src="${imgMails}${array.imageThree}" alt="Imagen de correo3"> 
+                        <img style="width: 50%; heigth:auto;" src="${img}${array.imageTwo}" alt="Imagen de correo2"> 
+                        <img style="width: 50%; heigth:auto;" src="${img}${array.imageThree}" alt="Imagen de correo3"> 
                     </div>
                 </center>
                 ${array.textTwo}
@@ -963,12 +964,12 @@ clients.post('/sendmail', upload.array('image', 3),  async (req, res, next) => {
         }
         mail = {
             from: "kkprettynails",
-            to: array.to,
+            bcc: array.to,
             subject: array.subject,
             html: `<div style="width: 50%;margin: auto;background-color: #f8f9fe;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#32325d;">   
                 ${array.text}
                 <center>
-                <img style="width: 50%; heigth:auto;" src="${imgMails}${array.image}" alt="Imagen de correo"> 
+                <img style="width: 50%; heigth:auto;" src="${img}${array.image}" alt="Imagen de correo"> 
                 </center>
                 <style>h1{color:#32325d;}h2{color:#32325d;}h3{color:#32325d;}h4{color:#32325d;}h5{color:#32325d;}</style>
             </div>`
@@ -989,15 +990,15 @@ clients.post('/sendmail', upload.array('image', 3),  async (req, res, next) => {
         
         mail = {
             from: "kkprettynails",
-            to: array.to,
+            bcc: array.to,
             subject: array.subject,
             html: `<div style="width: 50%;margin: auto;background-color: #f8f9fe;box-shadow: 0 2px 5px 0 rgba(0,0,0,.14);padding: 20px;font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;color:#32325d;">     
                 <center>
-                    <img style="width: 50%; heigth:auto;" src="${imgMails}${array.image}" alt="Imagen de correo"> 
+                    <img style="width: 50%; heigth:auto;" src="${img}${array.image}" alt="Imagen de correo"> 
                 </center>
                     ${array.text}
                 <center>
-                    <img style="width: 50%; heigth:auto;" src="${imgMails}${array.imageTwo}" alt="Imagen de correo2"> 
+                    <img style="width: 50%; heigth:auto;" src="${img}${array.imageTwo}" alt="Imagen de correo2"> 
                 </center>
                     ${array.textTwo}
                 <style>h1{color:#32325d;}h2{color:#32325d;}h3{color:#32325d;}h4{color:#32325d;}h5{color:#32325d;}</style>

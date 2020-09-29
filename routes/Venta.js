@@ -115,7 +115,7 @@ ventas.post('/generateDataExcel', (req, res) => {
               var clients = client[0]
             }
             const formatDate = element.fecha.getDate()+"-"+(element.fecha.getMonth() + 1)+"-"+element.fecha.getFullYear()
-            dataTable.push({'id de ventas': 'V-'+element.count, Fecha: formatDate, Prestador: Lenders, Cliente: clients, servicios: services, Descuento: discounts, Comision: element.comision, 'Ganancia local': element.ganancialocal, Total: element.total, Efectivo: element.pagoEfectivo, 'Débito': element.pagoRedCDebito, 'Crédito':  element.pagoRedCCredito, Tranferencia: element.pagoTransf, Otros: element.pagoOtros })
+            dataTable.push({'id de ventas': 'V-'+element.count, Fecha: formatDate, Prestador: Lenders, Cliente: clients, servicios: services, Descuento: discounts, Diseño: element.design, Comision: element.comision, 'Ganancia local': element.ganancialocal, Total: element.total, Efectivo: element.pagoEfectivo, 'Débito': element.pagoRedCDebito, 'Crédito':  element.pagoRedCCredito, Tranferencia: element.pagoTransf, Otros: element.pagoOtros })
         }
         res.json({status: 'ok', dataTable: dataTable})
       }else{
@@ -447,7 +447,6 @@ ventas.get('/getClosingDay', (req, res) => {
   .then(ventas => {
     if (ventas.length > 0) {
       for (let index = 0; index < ventas.length; index++) {
-        
         if (ventas[index].pagoEfectivo > 0) {
           data.efectivo = data.efectivo + ventas[index].pagoEfectivo
         }
@@ -463,8 +462,9 @@ ventas.get('/getClosingDay', (req, res) => {
         if (ventas[index].pagoTransf > 0) {
           data.transferencia = data.transferencia + ventas[index].pagoTransf
         }
-        data.total = data.total + ventas[index].total
-      }
+      } 
+      data.total = data.efectivo + data.redCompraDebito + data.redCompraCredito + data.otros + data.transferencia
+      console.log(data.total)
       res.json(data)
     }else{
       res.json({status: 'bad'})
@@ -1076,32 +1076,30 @@ ventas.post('/processEndDates', (req, res) => {
               }
               Venta.find().sort({count: -1}).limit(req.body.arrayClosedDates.length)
               .then(forDay =>{
-                for (let e = 0; e < forDay.length; e++) {
-                  const element = forDay[e];
-                  var dataDay = {
-                    cliente: element.cliente,
-                    manicurista: element.manicurista,
-                    servicios: element.servicios,
-                    comision: element.comision,
-                    pagoEfectivo:element.pagoEfectivo,
-                    pagoOtros:element.pagoOtros,
-                    pagoRedCDebito:element.pagoRedCDebito,
-                    pagoRedCCredito:element.pagoRedCCredito,
-                    pagoTransf:element.pagoTransf,
-                    pagoOrder:req.body.pagoOrder,
-                    descuento:element.descuento,
-                    ganancialocal: element.ganancialocal,
-                    design: element.design,
-                    status: true,
-                    total: element.total,
-                    idTableSales: element._id,
-                    fecha: new Date()
-                  }
-                  VentaDia.create(dataDay)
-                  .then(ventaDia =>{})
-                  
+                const element = forDay[0];
+                var dataDay = {
+                  cliente: element.cliente,
+                  manicurista: element.manicurista,
+                  servicios: element.servicios,
+                  comision: element.comision,
+                  pagoEfectivo:req.body.pagoEfectivo,
+                  pagoOtros:req.body.pagoOtros,
+                  pagoRedCDebito:req.body.pagoRedCDebito,
+                  pagoRedCCredito:req.body.pagoRedCCredito,
+                  pagoTransf:req.body.pagoTransf,
+                  descuento:element.descuento,
+                  ganancialocal: element.ganancialocal,
+                  design: element.design,
+                  status: true,
+                  total: element.total,
+                  idTableSales: element._id,
+                  fecha: new Date()
                 }
-                res.json({status:'Venta registrada'})
+                VentaDia.create(dataDay)
+                .then(ventaDia =>{
+                  console.log(ventaDia)
+                  res.json({status:'Venta registrada'})
+                })
               })
           })
       }
