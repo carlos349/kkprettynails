@@ -1164,7 +1164,7 @@ ventas.post('/procesar', (req, res) => {
   if (descuento == 100) {
     discount = '0%'
   }else{
-    discount = req.body.manicurista+ ' / '+ req.body.descuento+'%'
+    discount = req.body.descuento
   }
   const venta = {
     cliente: req.body.cliente,
