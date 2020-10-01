@@ -1045,12 +1045,12 @@ ventas.post('/processEndDates', (req, res) => {
                   servicios: element.services,
                   comision: element.comision,
                   EmployeComision: [{employe:element.employe, comision:element.comision}],
-                  pagoEfectivo:req.body.pagoEfectivo,
-                  pagoOtros:req.body.pagoOtros,
-                  pagoRedCDebito:req.body.pagoRedCDebito,
-                  pagoRedCCredito:req.body.pagoRedCCredito,
-                  pagoTransf:req.body.pagoTransf,
-                  pagoOrder:req.body.pagoOrder,
+                  pagoEfectivo:element.payCash,
+                  pagoOtros:element.payOthers,
+                  pagoRedCDebito:element.payDebit,
+                  pagoRedCCredito:element.payCredit,
+                  pagoTransf:element.payTransfer,
+                  pagoOrder:element.payOrder,
                   descuento:element.descuento,
                   ganancialocal: element.totalLocal,
                   design: element.design,
@@ -1074,33 +1074,42 @@ ventas.post('/processEndDates', (req, res) => {
                 }) 
                 .then(clients =>{}) 
               }
-              Venta.find().sort({count: -1}).limit(req.body.arrayClosedDates.length)
-              .then(forDay =>{
-                const element = forDay[0];
-                var dataDay = {
-                  cliente: element.cliente,
-                  manicurista: element.manicurista,
-                  servicios: element.servicios,
-                  comision: element.comision,
-                  pagoEfectivo:req.body.pagoEfectivo,
-                  pagoOtros:req.body.pagoOtros,
-                  pagoRedCDebito:req.body.pagoRedCDebito,
-                  pagoRedCCredito:req.body.pagoRedCCredito,
-                  pagoTransf:req.body.pagoTransf,
-                  descuento:element.descuento,
-                  ganancialocal: element.ganancialocal,
-                  design: element.design,
-                  status: true,
-                  total: element.total,
-                  idTableSales: element._id,
-                  fecha: new Date()
-                }
-                VentaDia.create(dataDay)
-                .then(ventaDia =>{
-                  console.log(ventaDia)
-                  res.json({status:'Venta registrada'})
+              setTimeout(() => {
+                Venta.find().sort({count: -1}).limit(req.body.arrayClosedDates.length)
+                .then(forDay =>{
+
+                  for (let index = 0; index < forDay.length; index++) {
+                    const element = forDay[index];
+                    var dataDay = {
+                      cliente: element.cliente,
+                      manicurista: element.manicurista,
+                      servicios: element.servicios,
+                      comision: element.comision,
+                      pagoEfectivo:element.pagoEfectivo,
+                      pagoOtros:element.pagoOtros,
+                      pagoRedCDebito:element.pagoRedCDebito,
+                      pagoRedCCredito:element.pagoRedCCredito,
+                      pagoTransf:element.pagoTransf,
+                      pagoOrder:element.pagoOrder,
+                      descuento:element.descuento,
+                      ganancialocal: element.ganancialocal,
+                      design: element.design,
+                      status: true,
+                      total: element.total,
+                      idTableSales: element._id,
+                      fecha: new Date()
+                    }
+                    VentaDia.create(dataDay)
+                    .then(ventaDia =>{
+                    })
+                  }
+                  
+                  
                 })
-              })
+              }, 5000);
+              
+              
+              res.json({status:'Venta registrada'})
           })
       }
       else{
