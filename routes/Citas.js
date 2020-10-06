@@ -40,7 +40,7 @@ citas.get('/availableslenders/:fecha', (req, res) => {
       for (let index = 0; index < Lenders.length; index++) {
         const element = Lenders[index];
         if (day != element.restDay) {
-          arrayLenders.push({name: element.nombre, sort: 0})
+          arrayLenders.push({name: element.nombre, sort: 0, comission: element.comision})
         }
       }
       
@@ -50,15 +50,27 @@ citas.get('/availableslenders/:fecha', (req, res) => {
           for (let j = 0; j < arrayLenders.length; j++) {
             const elementThree = arrayLenders[j];
             if (elementTwo.employe == elementThree.name) {
-              elementThree.sort = elementTwo.sort
+              if(elementTwo.sort > 1200) {
+                elementThree.sort = 0
+              }else{
+                elementThree.sort = elementTwo.sort
+              }
             }
           }
         }
-        arrayLenders.sort(function(a, b) {
+        arrayLenders.sort((a, b) => {
+          return a.comission - b.comission;
+        });
+        arrayLenders.sort((a, b) => {
           return a.sort - b.sort;
         });
+        console.log(arrayLenders)
         res.json({array: arrayLenders})
       }else{
+        arrayLenders.sort((a, b) => {
+          return a.comission - b.comission;
+        });
+        console.log(arrayLenders)
         res.json({array: arrayLenders})
       }
     })
