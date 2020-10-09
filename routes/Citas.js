@@ -64,12 +64,12 @@ citas.get('/availableslenders/:fecha', (req, res) => {
         arrayLenders.sort((a, b) => {
           return a.sort - b.sort;
         });
-        res.json({array: arrayLenders})
+        res.json({array: arrayLenders, day: day})
       }else{
         arrayLenders.sort((a, b) => {
           return a.comission - b.comission;
         });
-        res.json({array: arrayLenders})
+        res.json({array: arrayLenders, day: day})
       }
     })
     .catch(err => {
