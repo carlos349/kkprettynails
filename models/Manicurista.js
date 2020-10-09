@@ -8,11 +8,8 @@ const manicuristaSchema = new Schema({
   documento:{
     type:String
   },
-  restTime: {
-    type:String
-  },
-  restDay: {
-    type:Number
+  days: {
+    type: Array
   },
   comision: {
     type:Number

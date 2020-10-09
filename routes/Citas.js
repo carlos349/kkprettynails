@@ -64,13 +64,11 @@ citas.get('/availableslenders/:fecha', (req, res) => {
         arrayLenders.sort((a, b) => {
           return a.sort - b.sort;
         });
-        console.log(arrayLenders)
         res.json({array: arrayLenders})
       }else{
         arrayLenders.sort((a, b) => {
           return a.comission - b.comission;
         });
-        console.log(arrayLenders)
         res.json({array: arrayLenders})
       }
     })
@@ -323,7 +321,7 @@ citas.post('/getBlocks', (req,res) => {
     const selectDay = new Date(req.body.date+' 1:00').getDate()
     if (dateToday == selectDay) {
       const hour = new Date().getHours() - 3
-      console.log(hour)
+
       for (var j = 0; j < bloques.length; j++) {
         const element = bloques[j]
         var split = element.Horario.split(':')[0]

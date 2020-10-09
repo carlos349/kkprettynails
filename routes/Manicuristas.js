@@ -155,8 +155,7 @@ manicurista.post('/', (req, res) => {
   const dataManicurista = {
     nombre: req.body.nombreManicurista,
     documento: req.body.documentoManicurista,
-    restTime: req.body.restTime,
-    restDay: req.body.restDay,
+    days: req.body.days,
     comision:0,
     advancement:0,
     bonus:0,
@@ -289,8 +288,7 @@ manicurista.put('/:id', (req, res) => {
     $set: {
       nombre: req.body.nombre,
       documento: req.body.documento, 
-      restTime: req.body.restTime,
-      restDay: req.body.restDay,
+      days: req.body.days,
       comision: req.body.comision
     }
   })
