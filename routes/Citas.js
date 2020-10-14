@@ -39,8 +39,17 @@ citas.get('/availableslenders/:fecha', (req, res) => {
       const Lenders = lenders
       for (let index = 0; index < Lenders.length; index++) {
         const element = Lenders[index];
-        if (day != element.restDay) {
-          arrayLenders.push({name: element.nombre, sort: 0, comission: element.comision})
+        var valid = false
+        var restTime = ''
+        for (let index = 0; index < element.days.length; index++) {
+          const elementFour = element.days[index];
+          if (elementFour.day == day) {
+            valid = true
+            restTime = elementFour.hours[0]+'/'+elementFour.hours[1]
+          }
+        }
+        if (valid) {
+          arrayLenders.push({name: element.nombre, sort: 0, comission: element.comision, restTime: restTime})
         }
       }
       
@@ -152,6 +161,263 @@ citas.post('/editBlocks', (req, res) => {
   res.json(blocks)
 })  
 
+citas.post('/editBlocksFirst', (req, res) => {
+  const blocks = req.body.array
+  const time = req.body.time
+  const lender = req.body.lender
+  const totalFor = parseFloat(time) / 15
+  let first = 0
+  for (let index = 0; index < blocks.length; index++) {
+    const element = blocks[index];
+    if (element.validator == 'select') {
+      if (blocks[index + 1].validator) {
+        if (blocks[index + 1].validator == 'select') {
+          for (let j = 0; j < blocks[index].lenders.length; j++) {
+            if (blocks[index].lenders[j] == lender) {
+              blocks[index].lenders.splice(j, 1)
+            }
+            if (blocks[index].lenders.length > 0) {
+              element.validator = true
+            }else{
+              element.validator = false
+            }
+          }
+        }else{
+          if (blocks[index].lenders.length > 0) {
+            element.validator = true
+          }else{
+            element.validator = false
+          }
+        }
+      } 
+    }
+  }
+
+  for (let index = 0; index < blocks.length; index++) {
+    const element = blocks[index];
+    if (element.lenders.length == 0) {
+      element.validator = false
+    }
+  }
+  
+  for (let i = 0; i < blocks.length; i++) {
+    const elementTwo = blocks[i];
+    if (elementTwo.validator == false) {
+      let count = 0
+      for (let j = 0; j < totalFor + 1; j++) {
+        count = j == 0 ? parseFloat(i) - parseFloat(1) : parseFloat(count) - 1
+        if (count >= 0) {
+          if (blocks[count].validator == true) {
+            blocks[count].validator = 'nDisponible'
+          }
+        }
+      }
+    }
+  }
+  res.json(blocks)
+})  
+
+citas.post('/getBlocksFirst', (req, res) => {
+  const date = req.body.date
+  const dateNow = new Date(date+' 1:00')
+  const duration = req.body.time
+  const lenders = req.body.lenders
+  console.log(lenders)
+  const blocks = []
+  let dayNow = dateNow.getDay()
+  let hourLast = ''
+  if (dayNow == 6) {
+    hourLast = 18
+  }
+  else{
+    hourLast = 19
+  }
+  const formatDate = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()
+  dateNow.setDate(dateNow.getDate() + 1)
+  const formatDateTwo = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()
+
+  var minutes = (hourLast - 10) * 60
+  const totalFor = minutes / 15
+  var input, output
+  minutes = 0
+  var hours = 10
+  for (let index = 0; index <= totalFor; index++) {
+    if (minutes == 0) {
+      minutes = "00"
+    }
+    output = hours+":"+minutes
+    blocks.push({Horario:output , validator: true, lenders: []})
+    minutes = parseInt(minutes) + 15
+    if (minutes == 60) {
+      hours++
+      minutes = "00"
+    }
+  }
+  Citas.find({
+    $and:[
+      {date: {$gte: formatDate, $lte: formatDateTwo}}
+    ]
+  }).sort({sort:1})
+  .then(dates => {
+    var timelineBlock = []
+    for (let j = 0; j < lenders.length; j++) {
+      const elementTwo = lenders[j];
+      const datesData = []
+      for (let o = 0; o < dates.length; o++) {
+        const filter = dates[o];
+        if (filter.employe == elementTwo.name) {
+          datesData.push(filter)
+        }
+      }
+      timelineBlock.push({name: elementTwo.name, timeline: []})
+      for (let index = 0; index < datesData.length; index++) {
+        const element = datesData[index];
+        if (elementTwo.name == element.employe) {
+          if (element.start == "10:00") {
+            var count = 0
+            for (let c = 0; c < datesData.length; c++) {
+              if (elementTwo.name == datesData[c].employe) {
+                if (c == 0) {
+                  timelineBlock[j].timeline.push([datesData[c].start, datesData[c].end, false])
+                  timelineBlock[j].timeline.push([datesData[c].end])
+                  countValid = 1
+                }
+                else {
+                  timelineBlock[j].timeline[c+count].push(datesData[c].start, true)
+                  timelineBlock[j].timeline.push([datesData[c].start, datesData[c].end, false])
+                  timelineBlock[j].timeline.push([datesData[c].end])
+                  count++
+                }
+              }
+            }
+          }else{
+            var count = 1
+            for (let c = 0; c < datesData.length; c++) {
+              if (elementTwo.name == datesData[c].employe) {
+                if (c == 0) {
+                  timelineBlock[j].timeline.push(["10:00", datesData[c].start, true])
+                  timelineBlock[j].timeline.push([datesData[c].start, datesData[c].end, false])
+                  timelineBlock[j].timeline.push([datesData[c].end])
+                  countValid = 1
+                }else {
+                    timelineBlock[j].timeline[c+count].push(datesData[c].start, true)
+                    timelineBlock[j].timeline.push([datesData[c].start, datesData[c].end, false])
+                    timelineBlock[j].timeline.push([datesData[c].end])
+                    count++
+                }
+              }
+            }
+          }
+        }
+        break
+      }
+    }
+    
+    for (let index = 0; index < timelineBlock.length; index++) {
+      const element = timelineBlock[index];
+      if (element.timeline.length > 0) {
+        for (let j = 0; j < element.timeline.length; j++) {
+          const elementTwo = element.timeline[j];
+          if (elementTwo.length == 3) {
+            separ = elementTwo[0].split(':')
+            separTwo = elementTwo[1].split(':')
+            SumHours  = ((parseFloat(separTwo[0]) - parseFloat(separ[0])) * 60)
+            SumMinutes = parseFloat(separTwo[1]) - parseFloat(separ[1])
+            TotalMinutes = SumHours + SumMinutes
+          }else{
+            separ = elementTwo[0].split(':')
+            SumHours = ((19 - parseFloat(separ[0])) * 60)  
+            SumMinutes = 0 - parseFloat(separ[1])
+            TotalMinutes = SumHours + SumMinutes
+            last = true
+          }
+          const totalFor = parseInt(TotalMinutes / 15)
+          for (let c = 0; c < blocks.length; c++) {
+            const elementThree = blocks[c];
+            if (elementThree.Horario == elementTwo[0]) {
+              if (elementTwo.length > 2) {
+                if (elementTwo[2] == true) {
+                  for (let u = 0; u < totalFor; u++) {
+                    blocks[c+u].lenders.push(element.name) 
+                  }
+                }
+              }else{
+                  for (let u = c; u < blocks.length; u++) {
+                    const elementFour = blocks[u];
+                    elementFour.lenders.push(element.name)
+                  }
+              }
+            }
+          }
+        }
+      }else{
+        for (let j = 0; j < blocks.length; j++) {
+          const elementTwo = blocks[j];
+          elementTwo.lenders.push(element.name)
+        }
+      }
+    }
+
+    
+    for (let a = 0; a < lenders.length; a++) {
+      const lender = lenders[a];
+      var sepRes = lender.restTime.split('/')
+      console.log(lender.name)
+      var insp = false
+      for (let j = 0; j < blocks.length; j++) {
+        const elementBlocks = blocks[j]
+        if (sepRes[0] == elementBlocks.Horario) { 
+          for (let l = 0; l < 1000; l++) {
+            if (blocks[l+j].lenders.length > 0) {
+              for (let r = 0; r < blocks[l+j].lenders.length; r++) {
+                const element = blocks[l+j].lenders[r];
+                console.log(lender.name +'=='+ element)
+                if (lender.name == element) {
+                  blocks[l+j].lenders.splice(r, 1)
+                }
+              } 
+            }
+            if (blocks[l+j].Horario == sepRes[1]) {
+              blocks[l+j].lenders.push(lender.name)
+              insp = true
+              break
+            }
+          }
+        } 
+        if (insp == true) {
+          break
+        }
+      }
+    }
+
+    for (let index = 0; index < blocks.length; index++) {
+      const element = blocks[index];
+      if (element.lenders.length == 0) {
+        element.validator = false
+      }
+    }
+
+    for (var w = 0; w < blocks.length; w++) {
+      if (blocks[w].validator == true) {
+        var round2 = duration / 15
+        if ( round2 < blocks.length - w ) {
+          var round = (duration / 15) +1
+          for (var e = 1; e < round; e++) {  
+              if (blocks[w+e].validator == false ) {
+                blocks[w].validator = 'nDisponible'
+              }   
+          }
+        }else{
+          blocks[w].validator = 'nDisponible'
+        }  
+      }  
+    }
+    res.json({blocks: blocks})
+  }).catch(err => {
+    res.send(err)
+  })
+})
+
 citas.post('/getBlocks', (req,res) => {
   const employe = req.body.employe
   const date = req.body.date
@@ -252,33 +518,31 @@ citas.post('/getBlocks', (req,res) => {
             hours++
             minutes = "00"
           }
-        }
-        else {
+        }else {
           if (last) {
-          if (minutes == 0) {
-            minutes = "00"
-          }
-          output = hours+":"+minutes
-          bloques.push({Horario:output , validator: true})
-          minutes = parseInt(minutes) + 15
-          if (minutes == 60) {
-            hours++
-            minutes = "00"
-          }
-        }else{
-          if (minutes == 0) {
-            minutes = "00"
-          }
-          output = hours+":"+minutes
-          bloques.push({Horario:output , validator: timelineBlock[index][2]})
-          minutes = parseInt(minutes) + 15
-          if (minutes == 60) {
-            hours++
-            minutes = "00"
-          }
+            if (minutes == 0) {
+              minutes = "00"
+            }
+            output = hours+":"+minutes
+            bloques.push({Horario:output , validator: true})
+            minutes = parseInt(minutes) + 15
+            if (minutes == 60) {
+              hours++
+              minutes = "00"
+            }
+          }else{
+            if (minutes == 0) {
+              minutes = "00"
+            }
+            output = hours+":"+minutes
+            bloques.push({Horario:output , validator: timelineBlock[index][2]})
+            minutes = parseInt(minutes) + 15
+            if (minutes == 60) {
+              hours++
+              minutes = "00"
+            }
           } 
         }
-        
       } 
     }
     bloques.push({Horario:hourLast , validator: 'nDisponible'})
