@@ -293,13 +293,12 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
         res.send(err)
     }
 })
-// , angelacapacho64@gmail.com, cristiansleonardo@gmail.com, joqsua@gmail.com, simon.villasmil.rivero@gmail.com, ing.miguelpolanco92@gmail.com, joeyfunaro@gmail.com, pooja@rajentech.online, leannhilton@hiltonmgmt.com, s_speights@bellsouth.net, info@hiltonmgmt.com, erosvlahos@gmail.com
 
 clients.get('/sendPromotionSyswa', async (req, res) => {
     const mail = {
         from: "Syswa branding",
-        bcc: "carlos.gomes349@gmail.com",
-        subject: "¡Imperdible! Aprovecha este 40% dcto. en nuestros servicios de diseño 🔥",
+        bcc: "carlos.gomes349@gmail.com, angelacapacho64@gmail.com, cristiansleonardo@gmail.com, joqsua@gmail.com, simon.villasmil.rivero@gmail.com, ing.miguelpolanco92@gmail.com, joeyfunaro@gmail.com, pooja@rajentech.online, leannhilton@hiltonmgmt.com, s_speights@bellsouth.net, info@hiltonmgmt.com, erosvlahos@gmail.com, frazerkburns@me.com, qahtmo@yahoo.com, 5129819640@vtext.com, ssutko9208@aol.com, tracey.wood.calgary@gmail.com, 5122254709@txt.att.net, silvergatemanagement@gmail.com",
+        subject: "¡Promo octubre! Contrata ahora y aprovecha nuestros descuentos 🔥",
         html: `
             <!doctype html>
     <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
