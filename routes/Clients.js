@@ -293,11 +293,12 @@ clients.post('/sendEmailsSyswa', async (req, res, next) => {
         res.send(err)
     }
 })
+// , angelacapacho64@gmail.com, cristiansleonardo@gmail.com, joqsua@gmail.com, simon.villasmil.rivero@gmail.com, ing.miguelpolanco92@gmail.com, joeyfunaro@gmail.com, pooja@rajentech.online, leannhilton@hiltonmgmt.com, s_speights@bellsouth.net, info@hiltonmgmt.com, erosvlahos@gmail.com
 
 clients.get('/sendPromotionSyswa', async (req, res) => {
     const mail = {
         from: "Syswa branding",
-        bcc: "carlos.gomes349@gmail.com, angelacapacho64@gmail.com, cristiansleonardo@gmail.com, joqsua@gmail.com, simon.villasmil.rivero@gmail.com, ing.miguelpolanco92@gmail.com, joeyfunaro@gmail.com, pooja@rajentech.online, leannhilton@hiltonmgmt.com, s_speights@bellsouth.net, info@hiltonmgmt.com, erosvlahos@gmail.com",
+        bcc: "carlos.gomes349@gmail.com",
         subject: "¡Imperdible! Aprovecha este 40% dcto. en nuestros servicios de diseño 🔥",
         html: `
             <!doctype html>
@@ -442,7 +443,7 @@ clients.get('/sendPromotionSyswa', async (req, res) => {
           <tr>
             <td style="width:600px;">
               
-      <img height="auto" src="https://s3-eu-west-1.amazonaws.com/topolio/uploads/5f6a6e46dec34/1600810616.jpg" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:13px;" width="600">
+      <img height="auto" src="${imgMails}promotion.jpg" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:13px;" width="600">
     
             </td>
           </tr>
@@ -586,7 +587,7 @@ clients.get('/sendPromotionSyswa', async (req, res) => {
       <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse:separate;width:auto;line-height:100%;">
         <tr>
           <td align="center" bgcolor="#00003A" role="presentation" style="border:0px solid #000;border-radius:5px;cursor:auto;mso-padding-alt:8px 40px 8px 40px;background:#00003A;" valign="middle">
-            <a href="https://instagram.com/syswanet?igshid=6n7g9jgq795g" style="display:inline-block;background:#00003A;color:#ffffff;font-family:Ubuntu, Helvetica, Arial, sans-serif, Helvetica, Arial, sans-serif;font-size:18px;font-weight:normal;line-height:100%;Margin:0;text-decoration:none;text-transform:none;padding:8px 40px 8px 40px;mso-padding-alt:0px;border-radius:5px;" target="_blank">
+            <a href="https://www.instagram.com/p/CGI72pUl5ub/" style="display:inline-block;background:#00003A;color:#ffffff;font-family:Ubuntu, Helvetica, Arial, sans-serif, Helvetica, Arial, sans-serif;font-size:18px;font-weight:normal;line-height:100%;Margin:0;text-decoration:none;text-transform:none;padding:8px 40px 8px 40px;mso-padding-alt:0px;border-radius:5px;" target="_blank">
               <div>&iexcl;COMIENZA YA!</div>
             </a>
           </td>
@@ -677,7 +678,7 @@ clients.get('/sendPromotionSyswa', async (req, res) => {
               
         <a href="mailto:syswainfo@gmail.com" target="_blank">
           
-      <img height="auto" src="https://s3-eu-west-1.amazonaws.com/topolio/uploads/5f6a6e46dec34/1600810634.jpg" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:13px;" width="38">
+      <img height="auto" src="${imgMails}mails.png" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:13px;" width="38">
     
         </a>
       
@@ -715,7 +716,7 @@ clients.get('/sendPromotionSyswa', async (req, res) => {
               
         <a href="https://www.instagram.com/syswanet/" target="_blank">
           
-      <img height="auto" src="https://s3-eu-west-1.amazonaws.com/topolio/uploads/5f6a6e46dec34/1600810643.jpg" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:13px;" width="38">
+      <img height="auto" src="${imgMails}igs.png" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:13px;" width="38">
     
         </a>
       
@@ -753,7 +754,7 @@ clients.get('/sendPromotionSyswa', async (req, res) => {
               
         <a href="https://api.whatsapp.com/send?phone=56985826974&text=&source=&data=&app_absent=" target="_blank">
           
-      <img height="auto" src="https://s3-eu-west-1.amazonaws.com/topolio/uploads/5f6a6e46dec34/1600810652.jpg" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:13px;" width="38">
+      <img height="auto" src="${imgMails}wss.png" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:13px;" width="38">
     
         </a>
       
@@ -791,7 +792,7 @@ clients.get('/sendPromotionSyswa', async (req, res) => {
               
         <a href="http://syswa.net/" target="_blank">
           
-      <img height="auto" src="https://s3-eu-west-1.amazonaws.com/topolio/uploads/5f6a6e46dec34/1600810704.jpg" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:13px;" width="38">
+      <img height="auto" src="${imgMails}webs.png" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:13px;" width="38">
     
         </a>
       
