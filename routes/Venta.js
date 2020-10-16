@@ -67,6 +67,7 @@ ventas.post('/generateDataExcel', (req, res) => {
     })
     .then(sales => {
       if(sales.length > 0){
+        console.log(sales)
         for (let index = 0; index < sales.length; index++) {
           const element = sales[index];
           var services = ''
@@ -88,34 +89,28 @@ ventas.post('/generateDataExcel', (req, res) => {
             }
           }
           if(element.EmployeComision.length > 1){
-              const client = element.cliente.split(' - ')
-              const discount = element.descuento.split(' - ')
-              var clients = ''
-              var discounts = ''
-              for (let indexFour = 0; indexFour < client.length; indexFour++) {
-                const clientFinal = client[indexFour].split(' / ')
-                const discountFinal = discount[indexFour].split(' / ')
-                if (indexFour == 0) {
-                  clients = clientFinal[0]
-                  discounts = discountFinal[1]
-                }else{
-                  clients = clients+ ' , ' +clientFinal[0]
-                  discounts = discounts+ ' , ' +discountFinal[1]
-                } 
-              }
-            }else{
-              var discounts = ''
-              if (element.descuento != '0%') {
-                const discount = element.descuento.split(' / ')
-                discounts = discount[1]
+            const client = element.cliente.split(' - ')
+            const discount = element.descuento.split(' - ')
+            var clients = ''
+            var discounts = ''
+            for (let indexFour = 0; indexFour < client.length; indexFour++) {
+              const clientFinal = client[indexFour].split(' / ')
+              const discountFinal = discount[indexFour].split(' / ')
+              if (indexFour == 0) {
+                clients = clientFinal[0]
+                discounts = discountFinal[1]
               }else{
-                discounts = element.descuento
-              }
-              const client = element.cliente.split(' / ')
-              var clients = client[0]
+                clients = clients+ ' , ' +clientFinal[0]
+                discounts = discounts+ ' , ' +discountFinal[1]
+              } 
             }
-            const formatDate = element.fecha.getDate()+"-"+(element.fecha.getMonth() + 1)+"-"+element.fecha.getFullYear()
-            dataTable.push({'id de ventas': 'V-'+element.count, Fecha: formatDate, Prestador: Lenders, Cliente: clients, servicios: services, Descuento: discounts, Diseño: element.design, Comision: element.comision, 'Ganancia local': element.ganancialocal, Total: element.total, Efectivo: element.pagoEfectivo, 'Débito': element.pagoRedCDebito, 'Crédito':  element.pagoRedCCredito, Tranferencia: element.pagoTransf, Otros: element.pagoOtros })
+          }else{
+            discounts = element.descuento
+            const client = element.cliente.split(' / ')
+            var clients = client[0]
+          }
+          const formatDate = element.fecha.getDate()+"-"+(element.fecha.getMonth() + 1)+"-"+element.fecha.getFullYear()
+          dataTable.push({'id de ventas': 'V-'+element.count, Fecha: formatDate, Prestador: Lenders, Cliente: clients, servicios: services, Descuento: discounts, Diseño: element.design, Comision: element.comision, 'Ganancia local': element.ganancialocal, Total: element.total, Efectivo: element.pagoEfectivo, 'Débito': element.pagoRedCDebito, 'Crédito':  element.pagoRedCCredito, Tranferencia: element.pagoTransf, Otros: element.pagoOtros })
         }
         res.json({status: 'ok', dataTable: dataTable})
       }else{
@@ -173,13 +168,7 @@ ventas.post('/generateDataExcel', (req, res) => {
                 } 
               }
             }else{
-              var discounts = ''
-              if (element.descuento != '0%') {
-                const discount = element.descuento.split(' / ')
-                discounts = discount[1]
-              }else{
-                discounts = element.descuento
-              }
+              discounts = element.descuento
               const client = element.cliente.split(' / ')
               var clients = client[0]
             }
@@ -241,13 +230,7 @@ ventas.post('/generateDataExcel', (req, res) => {
                 } 
               }
             }else{
-              var discounts = ''
-              if (element.descuento != '0%') {
-                const discount = element.descuento.split(' / ')
-                discounts = discount[1]
-              }else{
-                discounts = element.descuento
-              }
+              discounts = element.descuento
               const client = element.cliente.split(' / ')
               var clients = client[0]
             }
@@ -1017,13 +1000,10 @@ ventas.put('/:id', async (req, res, next) => {
     })
     if (cancelSale) {
       const removeSale = await VentaDia.findOneAndRemove({idTableSales: id})
-      if (removeSale) {
-        for (let index = 0; index < dataComision.length; index++) {
-          var comisionNega = '-'+dataComision[index].comision
-          var removeComision = await Manicurista.updateOne({nombre:dataComision[index].employe},{$inc: {comision: parseFloat(comisionNega)}})
-        }
-        res.status(200).json({status: 'ok'})
-      }  
+      for (let index = 0; index < dataComision.length; index++) {
+        var comisionNega = '-'+dataComision[index].comision
+        var removeComision = await Manicurista.updateOne({nombre:dataComision[index].employe},{$inc: {comision: parseFloat(comisionNega)}})
+      }
       res.status(200).json({status: 'ok'})
     }
     res.json({status: 'bad'})
@@ -1171,7 +1151,7 @@ ventas.post('/procesar', (req, res) => {
 
   var discount
   if (descuento == 100) {
-    discount = '0%'
+    discount = '0'
   }else{
     discount = req.body.descuento
   }
