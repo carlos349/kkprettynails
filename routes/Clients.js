@@ -1386,6 +1386,12 @@ clients.post('/', (req, res) => {
         finalRecommender = recommender
     }
     const today = new Date()
+    var birthday = req.body.birthday
+    if (birthday != '') {
+        birthday = new Date(req.body.birthday)
+    }else{
+        birthday = ''
+    }
     const ClienteData = {
         nombre: req.body.nombre,
         identidad: req.body.identidad,
@@ -1399,7 +1405,7 @@ clients.post('/', (req, res) => {
         historical: [],
         ultimaFecha:today,
         fecha: today,
-        birthday: '',
+        birthday: birthday,
         userImage: 'person_1.jpg'
     }
 
