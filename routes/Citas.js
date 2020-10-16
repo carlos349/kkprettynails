@@ -739,8 +739,8 @@ citas.get('/confirmDate/:id', (req, res) => {
                         <div style="width:100%;text-align: center;">
                           <h1 style="text-align: center;color:#181d81;">Información </h1>
                           <img style="height:80px;width:100px;margin-top:-20px;" src="${imgMails}logokk.png" alt="Logo kkprettynails">
-                          <p style="text-align:center;margin-top:10px;font-size:16px;"> <strong>Hola ${split[0]}, le informamos que se ha confirmado su cita con exito.</strong> <br> 
-                          Si por algún mptivo desea cambiar o cancelar su cita por favor comunicarnos a la brevedad para liberar la hora tomada. <br> Los detalles del agendamiento se encuentran espeficicados a continuación. <br>
+                          <p style="margin-top:10px;font-size:16px;"> <strong>Hola ${split[0]}, le informamos que se ha confirmado su cita con exito.</strong> <br> 
+                          Si por algún motivo desea cambiar o cancelar su cita por favor comunicarnos a la brevedad para liberar la hora tomada. <br> Los detalles del agendamiento se encuentran espeficicados a continuación. <br>
                           </p> <br>
                           <p style="text-align:left;margin-top:10px;font-size:14px;font-weight: 300;"> 
                               <strong> Profesional: </strong> ${lenders}. <br>
