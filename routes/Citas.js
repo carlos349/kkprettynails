@@ -944,7 +944,7 @@ citas.post('/noOneLender',  (req, res) => {
       sort: element.sort,
       date: date,
       services: [{servicio: element.servicio, comision: element.comision, precio: element.precio, discount:element.discount}],
-      client: ClientAgend+ ' / '+client.mail,
+      client: ClientAgend+ ' / '+client.mail+ ' / '+client.phone,
       employe: element.realLender,
       class: element.class,
       process: true,
