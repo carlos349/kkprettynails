@@ -110,7 +110,7 @@ ventas.post('/generateDataExcel', (req, res) => {
             var clients = client[0]
           }
           const formatDate = element.fecha.getDate()+"-"+(element.fecha.getMonth() + 1)+"-"+element.fecha.getFullYear()
-          dataTable.push({'id de ventas': 'V-'+element.count, Fecha: formatDate, Prestador: Lenders, Cliente: clients, servicios: services, Descuento: discounts, Diseño: element.design, Comision: element.comision, 'Ganancia local': element.ganancialocal, Total: element.total, Efectivo: element.pagoEfectivo, 'Débito': element.pagoRedCDebito, 'Crédito':  element.pagoRedCCredito, Tranferencia: element.pagoTransf, Otros: element.pagoOtros })
+          dataTable.push({'id de ventas': 'V-'+element.count, Fecha: formatDate, Prestador: Lenders, Cliente: clients, servicios: services, Descuento: discounts+'%', Diseño: element.design, Comision: element.comision, 'Ganancia local': element.ganancialocal, Total: element.total, Efectivo: element.pagoEfectivo, 'Débito': element.pagoRedCDebito, 'Crédito':  element.pagoRedCCredito, Tranferencia: element.pagoTransf, Otros: element.pagoOtros })
         }
         res.json({status: 'ok', dataTable: dataTable})
       }else{
@@ -173,7 +173,7 @@ ventas.post('/generateDataExcel', (req, res) => {
               var clients = client[0]
             }
             const formatDate = (element.fecha.getMonth() + 1)+"-"+element.fecha.getDate()+"-"+element.fecha.getFullYear()
-            dataTable.push({'id de ventas': 'V-'+element.count, Fecha: formatDate, Prestador: Lenders, Cliente: clients, servicios: services, Descuento: discounts, Comision: element.comision, 'Ganancia local': element.ganancialocal, Total: element.total, Efectivo: element.pagoEfectivo, 'Débito': element.pagoRedCDebito, 'Crédito':  element.pagoRedCCredito, Tranferencia: element.pagoTransf, Otros: element.pagoOtros })
+            dataTable.push({'id de ventas': 'V-'+element.count, Fecha: formatDate, Prestador: Lenders, Cliente: clients, servicios: services, Descuento: discounts+'%', Comision: element.comision, 'Ganancia local': element.ganancialocal, Total: element.total, Efectivo: element.pagoEfectivo, 'Débito': element.pagoRedCDebito, 'Crédito':  element.pagoRedCCredito, Tranferencia: element.pagoTransf, Otros: element.pagoOtros })
           }
           res.json({status: 'ok', dataTable: dataTable})
         }else{
@@ -235,7 +235,7 @@ ventas.post('/generateDataExcel', (req, res) => {
               var clients = client[0]
             }
             const formatDate = (element.fecha.getMonth() + 1)+"-"+element.fecha.getDate()+"-"+element.fecha.getFullYear()
-            dataTable.push({'id de ventas': 'V-'+element.count, Fecha: formatDate, Prestador: Lenders, Cliente: clients, servicios: services, Descuento: discounts, Comision: element.comision, 'Ganancia local': element.ganancialocal, Total: element.total, Efectivo: element.pagoEfectivo, 'Débito': element.pagoRedCDebito, 'Crédito':  element.pagoRedCCredito, Tranferencia: element.pagoTransf, Otros: element.pagoOtros })
+            dataTable.push({'id de ventas': 'V-'+element.count, Fecha: formatDate, Prestador: Lenders, Cliente: clients, servicios: services, Descuento: discounts+'%', Comision: element.comision, 'Ganancia local': element.ganancialocal, Total: element.total, Efectivo: element.pagoEfectivo, 'Débito': element.pagoRedCDebito, 'Crédito':  element.pagoRedCCredito, Tranferencia: element.pagoTransf, Otros: element.pagoOtros })
           }
           res.json({status: 'ok', dataTable: dataTable})
         }else{

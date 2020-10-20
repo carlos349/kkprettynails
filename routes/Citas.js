@@ -165,6 +165,7 @@ citas.post('/editBlocksFirst', (req, res) => {
   const blocks = req.body.array
   const time = req.body.time
   const lender = req.body.lender
+  const lendersService = req.body.lendersService
   const totalFor = parseFloat(time) / 15
   let first = 0
   for (let index = 0; index < blocks.length; index++) {
@@ -173,7 +174,8 @@ citas.post('/editBlocksFirst', (req, res) => {
       if (blocks[index + 1].validator) {
         if (blocks[index + 1].validator == 'select') {
           for (let j = 0; j < blocks[index].lenders.length; j++) {
-            if (blocks[index].lenders[j] == lender) {
+            blocks[index].lenders[j].valid = false
+            if (blocks[index].lenders[j].name == lender) {
               blocks[index].lenders.splice(j, 1)
             }
             if (blocks[index].lenders.length > 0) {
@@ -193,10 +195,34 @@ citas.post('/editBlocksFirst', (req, res) => {
     }
   }
 
+  for (let j = 1; j < lendersService.length; j++) {
+    const element = lendersService[j];
+    for (let r = 0; r < blocks.length; r++) {
+      const elementTwo = blocks[r];
+      for (let l = 0; l < elementTwo.lenders.length; l++) {
+        const elementThree = elementTwo.lenders[l];
+        if (element.lender == elementThree.name) {
+          elementThree.valid = true
+        }
+      }
+    }
+  }
+
   for (let index = 0; index < blocks.length; index++) {
     const element = blocks[index];
     if (element.lenders.length == 0) {
       element.validator = false
+    }else{
+      var valid = true
+      for (let j = 0; j < element.lenders.length; j++) {
+        const elementTwo = element.lenders[j];
+        if (elementTwo.valid == true) {
+          valid = false
+        }
+      }
+      if (valid) {
+        element.validator = false
+      }
     }
   }
   
@@ -222,7 +248,8 @@ citas.post('/getBlocksFirst', (req, res) => {
   const dateNow = new Date(date+' 1:00')
   const duration = req.body.time
   const lenders = req.body.lenders
-  console.log(lenders)
+  const lendersService = req.body.lendersService
+  console.log(lendersService)
   const blocks = []
   let dayNow = dateNow.getDay()
   let hourLast = ''
@@ -338,13 +365,13 @@ citas.post('/getBlocksFirst', (req, res) => {
               if (elementTwo.length > 2) {
                 if (elementTwo[2] == true) {
                   for (let u = 0; u < totalFor; u++) {
-                    blocks[c+u].lenders.push(element.name) 
+                    blocks[c+u].lenders.push({name: element.name, valid: false}) 
                   }
                 }
               }else{
                   for (let u = c; u < blocks.length; u++) {
                     const elementFour = blocks[u];
-                    elementFour.lenders.push(element.name)
+                    elementFour.lenders.push({name: element.name, valid: false})
                   }
               }
             }
@@ -353,7 +380,7 @@ citas.post('/getBlocksFirst', (req, res) => {
       }else{
         for (let j = 0; j < blocks.length; j++) {
           const elementTwo = blocks[j];
-          elementTwo.lenders.push(element.name)
+          elementTwo.lenders.push({name: element.name, valid: false})
         }
       }
     }
@@ -362,7 +389,6 @@ citas.post('/getBlocksFirst', (req, res) => {
     for (let a = 0; a < lenders.length; a++) {
       const lender = lenders[a];
       var sepRes = lender.restTime.split('/')
-      console.log(lender.name)
       var insp = false
       for (let j = 0; j < blocks.length; j++) {
         const elementBlocks = blocks[j]
@@ -371,14 +397,13 @@ citas.post('/getBlocksFirst', (req, res) => {
             if (blocks[l+j].lenders.length > 0) {
               for (let r = 0; r < blocks[l+j].lenders.length; r++) {
                 const element = blocks[l+j].lenders[r];
-                console.log(lender.name +'=='+ element)
-                if (lender.name == element) {
+                if (lender.name == element.name) {
                   blocks[l+j].lenders.splice(r, 1)
                 }
               } 
             }
             if (blocks[l+j].Horario == sepRes[1]) {
-              blocks[l+j].lenders.push(lender.name)
+              blocks[l+j].lenders.push({name: lender.name, valid: false})
               insp = true
               break
             }
@@ -390,10 +415,34 @@ citas.post('/getBlocksFirst', (req, res) => {
       }
     }
 
+    for (let j = 1; j < lendersService.length; j++) {
+      const element = lendersService[j];
+      for (let r = 0; r < blocks.length; r++) {
+        const elementTwo = blocks[r];
+        for (let l = 0; l < elementTwo.lenders.length; l++) {
+          const elementThree = elementTwo.lenders[l];
+          if (element.lender == elementThree.name) {
+            elementThree.valid = true
+          }
+        }
+      }
+    }
+
     for (let index = 0; index < blocks.length; index++) {
       const element = blocks[index];
       if (element.lenders.length == 0) {
         element.validator = false
+      }else{
+        var valid = true
+        for (let j = 0; j < element.lenders.length; j++) {
+          const elementTwo = element.lenders[j];
+          if (elementTwo.valid == true) {
+            valid = false
+          }
+        }
+        if (valid) {
+          element.validator = false
+        }
       }
     }
 
