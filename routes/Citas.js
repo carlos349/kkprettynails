@@ -161,6 +161,86 @@ citas.post('/editBlocks', (req, res) => {
   res.json(blocks)
 })  
 
+citas.post('/verifyDate', (req, res) => {
+  const dataDate = req.body.dataDate
+  const date = req.body.date
+  const dateNow = new Date(date+' 1:00')
+  const formatDate = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()
+  dateNow.setDate(dateNow.getDate() + 1)
+  const formatDateTwo = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()
+  Citas.find({
+    $and:[
+      {date: {$gte: formatDate, $lte: formatDateTwo}}
+    ]
+  }).sort({sort:1})
+  .then(dates => {
+    if (dates.length > 0) {
+      for (let i = 0; i < dataDate.serviceSelectds.length; i++) {
+        var validFinally = false
+        const element = dataDate.serviceSelectds[i];
+        const datesData = []
+        for (let o = 0; o < dates.length; o++) {
+          const filter = dates[o];
+          if (filter.employe == element.realLender) {
+            datesData.push(filter)
+          }
+        }
+        for (let r = 0; r < datesData.length; r++) {
+          const elementTwo = datesData[r];
+          var separ = elementTwo.start.split(':')
+          var separTwo = elementTwo.end.split(':')
+          var SumHours  = ((parseFloat(separTwo[0]) - parseFloat(separ[0])) * 60)
+          var SumMinutes = parseFloat(separTwo[1]) - parseFloat(separ[1])
+          var TotalMinutes = SumHours + SumMinutes
+          const totalFor = TotalMinutes / 15
+          var input, output
+          var minutes = parseInt(separ[1])
+          var hours = parseInt(separ[0])
+          var blockDate = []
+          for (let index = 0; index <= totalFor - 1; index++) {
+            if (minutes == 0) {
+              minutes = "00"
+            }
+            output = hours+":"+minutes
+            blockDate.push(output)
+            minutes = parseInt(minutes) + 15
+            if (minutes == 60) {
+              hours++
+              minutes = "00"
+            }
+          }
+          console.log(blockDate)
+          var valid = false
+          for (let j = 0; j < element.blocks.length; j++) {
+            const elementBlocks = element.blocks[j];
+            if (elementBlocks.validator == 'select') {
+              for (let l = 0; l < blockDate.length; l++) {
+                const elementBlockDate = blockDate[l];
+                if (elementBlockDate == elementBlocks.Horario) {
+                  valid = true
+                  break
+                }
+              }
+            }
+          }
+          if (valid) {
+            validFinally = true
+            break
+          }
+        }
+        if (validFinally) {
+          break
+        }
+      }
+      res.json({status: validFinally})
+    }else{
+      res.json({status: false})
+    }
+  }).catch(err => {
+    res.send(err)
+  })
+})
+
 citas.post('/editBlocksFirst', (req, res) => {
   const blocks = req.body.array
   const time = req.body.time
