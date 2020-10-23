@@ -1157,7 +1157,7 @@ ventas.post('/procesar', (req, res) => {
   }
   const venta = {
     cliente: req.body.cliente,
-    manicurista: req.body.manicurista+" / "+documentoManicurista,
+    manicurista: req.body.manicurista,
     servicios: req.body.servicios,
     comision: comision,
     EmployeComision: [{employe: req.body.manicurista, comision: comision}],
@@ -1213,7 +1213,7 @@ ventas.post('/procesar', (req, res) => {
               Venta.create(venta)
               .then(ventas => {
                 ventaDia.idTableSales = ventas._id
-                Manicurista.updateOne({documento:documentoManicurista},{
+                Manicurista.findByIdAndUpdate(documentoManicurista,{
                   $inc: {comision:ventas.comision}
                 })
                 .then(comision => {
