@@ -1162,11 +1162,9 @@ citas.delete('/:id', async (req, res) => {
 
 citas.post('/endDate/:id', (req, res) => {
   const id = req.params.id
-
-  const split = req.body.client.split('/')
-  const splitTwo = split[1].split(' ')
+  const splitTwo = req.body.client.split(' / ')[1]
   
-  Cliente.find({identidad: splitTwo[1]})
+  Cliente.find({identidad: splitTwo})
   .then(cliente => {
     const ifRecomend = cliente[0].recomendaciones > 0 ? true : false
     const ifFirst = cliente[0].participacion == 0 ? true : false
@@ -1220,7 +1218,7 @@ citas.post('/endDate/:id', (req, res) => {
       Citas.findByIdAndUpdate(id, {$set: {process: false}})
       .then(end => {
         if (discount == 85) {
-          Cliente.findOneAndUpdate({identidad: splitTwo[1]}, {
+          Cliente.findOneAndUpdate({identidad: splitTwo}, {
             $inc: {recomendaciones: -1}
           })
           .then(recomend => {
