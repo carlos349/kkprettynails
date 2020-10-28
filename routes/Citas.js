@@ -586,7 +586,7 @@ citas.post('/getBlocksFirst', (req, res) => {
       if (blocks[w].validator == true) {
         var round2 = duration / 15
         if ( round2 < blocks.length - w ) {
-          var round = (duration / 15) +1
+          var round = (duration / 15)
           for (var e = 1; e < round; e++) {  
               if (blocks[w+e].validator == false ) {
                 blocks[w].validator = 'nDisponible'
