@@ -305,6 +305,31 @@ citas.post('/editBlocksFirst', (req, res) => {
       }
     }
   }
+
+  for (let j = 0; j < blocks.length; j++) {
+    const elementTwo = blocks[j];
+    var validEntry = true
+    for (let r = 0; r < elementTwo.lenders.length; r++) {
+      const elementThree = elementTwo.lenders[r];
+      if (lender == elementThree.name) {
+        validEntry = false
+        break
+      }
+    }
+    if (validEntry) {
+      var round = totalFor + 1
+      for (var e = 1; e < round; e++) { 
+        if (blocks[j-e]) {
+          for (let i = 0; i < blocks[j - e].lenders.length; i++) {
+            const elementFour = blocks[j - e].lenders[i];
+            if (elementFour.name == lender) {
+              blocks[j-e].lenders.splice(i, 1)
+            }
+          }
+        } 
+      }
+    }
+  }
   
   for (let i = 0; i < blocks.length; i++) {
     const elementTwo = blocks[i];
@@ -478,6 +503,7 @@ citas.post('/getBlocksFirst', (req, res) => {
               for (let r = 0; r < blocks[l+j].lenders.length; r++) {
                 const element = blocks[l+j].lenders[r];
                 if (lender.name == element.name) {
+
                   blocks[l+j].lenders.splice(r, 1)
                 }
               } 
@@ -522,6 +548,34 @@ citas.post('/getBlocksFirst', (req, res) => {
         }
         if (valid) {
           element.validator = false
+        }
+      }
+    }
+
+    for (let index = 0; index < lenders.length; index++) {
+      const element = lenders[index];
+      for (let j = 0; j < blocks.length; j++) {
+        const elementTwo = blocks[j];
+        var validEntry = true
+        for (let r = 0; r < elementTwo.lenders.length; r++) {
+          const elementThree = elementTwo.lenders[r];
+          if (element.name == elementThree.name) {
+            validEntry = false
+            break
+          }
+        }
+        if (validEntry) {
+          var round = (duration / 15) + 1
+          for (var e = 1; e < round; e++) { 
+            if (blocks[j-e]) {
+              for (let i = 0; i < blocks[j - e].lenders.length; i++) {
+                const elementFour = blocks[j - e].lenders[i];
+                if (elementFour.name == element.name) {
+                  blocks[j-e].lenders.splice(i, 1)
+                }
+              }
+            } 
+          }
         }
       }
     }
