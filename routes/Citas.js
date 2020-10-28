@@ -202,7 +202,9 @@ citas.post('/verifyDate', (req, res) => {
               minutes = "00"
             }
             output = hours+":"+minutes
-            blockDate.push(output)
+            if(index > 0){
+              blockDate.push(output)
+            }
             minutes = parseInt(minutes) + 15
             if (minutes == 60) {
               hours++
@@ -503,13 +505,13 @@ citas.post('/getBlocksFirst', (req, res) => {
               for (let r = 0; r < blocks[l+j].lenders.length; r++) {
                 const element = blocks[l+j].lenders[r];
                 if (lender.name == element.name) {
-
-                  blocks[l+j].lenders.splice(r, 1)
+                  if (blocks[l+j].Horario != sepRes[1]) {
+                    blocks[l+j].lenders.splice(r, 1)
+                  }
                 }
               } 
             }
             if (blocks[l+j].Horario == sepRes[1]) {
-              blocks[l+j].lenders.push({name: lender.name, valid: false})
               insp = true
               break
             }
@@ -565,7 +567,7 @@ citas.post('/getBlocksFirst', (req, res) => {
           }
         }
         if (validEntry) {
-          var round = (duration / 15) + 1
+          var round = (duration / 15)
           for (var e = 1; e < round; e++) { 
             if (blocks[j-e]) {
               for (let i = 0; i < blocks[j - e].lenders.length; i++) {
