@@ -247,6 +247,7 @@ citas.post('/editBlocksFirst', (req, res) => {
   const blocks = req.body.array
   const time = req.body.time
   const lender = req.body.lender
+  console.log(lender)
   const lendersService = req.body.lendersService
   const totalFor = parseFloat(time) / 15
   let first = 0
