@@ -359,7 +359,6 @@ citas.post('/editBlocksFirst', (req, res) => {
   const blocks = req.body.array
   const time = req.body.time
   const lender = req.body.lender
-  console.log(lender)
   const lendersService = req.body.lendersService
   const totalFor = parseFloat(time) / 15
   let first = 0
@@ -477,17 +476,17 @@ citas.post('/getBlocksFirst', (req, res) => {
     hourLast = 18
   }
   else{
-    hourLast = 19
+    hourLast = 20
   }
   const formatDate = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()
   dateNow.setDate(dateNow.getDate() + 1)
   const formatDateTwo = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()
 
-  var minutes = (hourLast - 10) * 60
+  var minutes = ((hourLast - 9) * 60) + 30
   const totalFor = minutes / 15
   var input, output
   minutes = 0
-  var hours = 10
+  var hours = 9
   for (let index = 0; index <= totalFor; index++) {
     if (minutes == 0) {
       minutes = "00"
@@ -739,10 +738,10 @@ citas.post('/getBlocks', (req,res) => {
   let dayNow = dateNow.getDay()
   let hourLast = ''
   if (dayNow == 6) {
-    hourLast = '18:00'
+    hourLast = '20:30'
   }
   else{
-    hourLast = '19:00'
+    hourLast = '20:30'
   }
   const sepRes = resTimes.split('/')
   const formatDate = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()
@@ -759,9 +758,9 @@ citas.post('/getBlocks', (req,res) => {
     var timelineBlock = []
     var bloques = []
     if (citas.length == 0) {
-      timelineBlock.push(["10:00",hourLast,true])
+      timelineBlock.push(["9:00",hourLast,true])
     }else{
-      if (citas[0].start == "10:00") {
+      if (citas[0].start == "9:00") {
         var count = 0
         for (let c = 0; c < citas.length; c++) {
           if (c == 0) {
@@ -779,7 +778,7 @@ citas.post('/getBlocks', (req,res) => {
         var count = 1
         for (let c = 0; c < citas.length; c++) {
           if (c == 0) {
-            timelineBlock.push(["10:00", citas[c].start, true])
+            timelineBlock.push(["9:00", citas[c].start, true])
             timelineBlock.push([citas[c].start, citas[c].end, false])
             timelineBlock.push([citas[c].end])
           }else {
@@ -807,7 +806,7 @@ citas.post('/getBlocks', (req,res) => {
         TotalMinutes = SumHours + SumMinutes
       }else{
         separ = timelineBlock[index][0].split(':')
-        SumHours = ((19 - parseFloat(separ[0])) * 60)  
+        SumHours = ((20 - parseFloat(separ[0])) * 60)
         SumMinutes = 0 - parseFloat(separ[1])
         TotalMinutes = SumHours + SumMinutes
         last = true
@@ -819,7 +818,7 @@ citas.post('/getBlocks', (req,res) => {
       var prueba = hours+":"+minutes
       var ind = parseFloat(index) + parseFloat(1)
       for (let indexTwo = 0; indexTwo < totalFor; indexTwo++) {
-        if (indexTwo == 0 && prueba != '10:0' && timelineBlock[index][2] == false) {
+        if (indexTwo == 0 && prueba != '9:0' && timelineBlock[index][2] == false) {
           if (minutes == 0) {
             minutes = "00"
           }

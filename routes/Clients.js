@@ -1394,7 +1394,7 @@ clients.post('/', (req, res) => {
     }
     const ClienteData = {
         nombre: req.body.nombre,
-        identidad: req.body.identidad,
+        identidad: req.body.identidad.toLowerCase(),
         password: '',
         correoCliente:req.body.correoCliente,
         instagramCliente: req.body.instagramCliente,
