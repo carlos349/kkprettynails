@@ -133,7 +133,7 @@ citas.post('/editBlocks', (req, res) => {
   for (let index = 0; index < blocks.length; index++) {
     const element = blocks[index];
     if (element.validator == 'select') {
-      
+      if (blocks[index + 1]) {
       if (blocks[index + 1].validator) {
         if (blocks[index + 1].validator == 'select') {
           element.validator = false
@@ -141,7 +141,7 @@ citas.post('/editBlocks', (req, res) => {
           blocks[index].validator = true
         }
       }
-      
+    }
     }
   }
   for (let i = 0; i < blocks.length; i++) {
@@ -364,22 +364,25 @@ citas.post('/editBlocksFirst', (req, res) => {
   let first = 0
   for (let index = 0; index < blocks.length; index++) {
     const element = blocks[index];
-    if (element.validator == 'select') {
+    if (blocks[index].validator == 'select') {
       if (blocks[index + 1]) {
         if (blocks[index + 1].validator) {
-          if (blocks[index + 1].validator == 'select') {
-            for (let j = 0; j < blocks[index].lenders.length; j++) {
-              blocks[index].lenders[j].valid = false
-              if (blocks[index].lenders[j].name == lender) {
-                blocks[index].lenders.splice(j, 1)
-              }
-              if (blocks[index].lenders.length > 0) {
-                element.validator = true
-              }else{
-                element.validator = false
+          if (index != 0) {
+            if (blocks[index + 1].validator != true) {
+              for (let j = 0; j < blocks[index].lenders.length; j++) {
+                blocks[index].lenders[j].valid = false
+                if (blocks[index].lenders[j].name == lender) {
+                  blocks[index].lenders.splice(j, 1)
+                }
+                if (blocks[index].lenders.length > 0) {
+                  element.validator = true
+                }else{
+                  element.validator = false
+                }
               }
             }
-          }else{
+          }
+          else{
             if (blocks[index].lenders.length > 0) {
               element.validator = true
             }else{
@@ -574,7 +577,7 @@ citas.post('/getBlocksFirst', (req, res) => {
             TotalMinutes = SumHours + SumMinutes
           }else{
             separ = elementTwo[0].split(':')
-            SumHours = ((19 - parseFloat(separ[0])) * 60)  
+            SumHours = ((20 - parseFloat(separ[0])) * 60)+ 30  
             SumMinutes = 0 - parseFloat(separ[1])
             TotalMinutes = SumHours + SumMinutes
             last = true
@@ -808,7 +811,7 @@ citas.post('/getBlocks', (req,res) => {
         TotalMinutes = SumHours + SumMinutes
       }else{
         separ = timelineBlock[index][0].split(':')
-        SumHours = ((20 - parseFloat(separ[0])) * 60)
+        SumHours = ((20 - parseFloat(separ[0])) * 60)+30
         SumMinutes = 0 - parseFloat(separ[1])
         TotalMinutes = SumHours + SumMinutes
         last = true
