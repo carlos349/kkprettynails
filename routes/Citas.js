@@ -365,24 +365,26 @@ citas.post('/editBlocksFirst', (req, res) => {
   for (let index = 0; index < blocks.length; index++) {
     const element = blocks[index];
     if (element.validator == 'select') {
-      if (blocks[index + 1].validator) {
-        if (blocks[index + 1].validator == 'select') {
-          for (let j = 0; j < blocks[index].lenders.length; j++) {
-            blocks[index].lenders[j].valid = false
-            if (blocks[index].lenders[j].name == lender) {
-              blocks[index].lenders.splice(j, 1)
+      if (blocks[index + 1]) {
+        if (blocks[index + 1].validator) {
+          if (blocks[index + 1].validator == 'select') {
+            for (let j = 0; j < blocks[index].lenders.length; j++) {
+              blocks[index].lenders[j].valid = false
+              if (blocks[index].lenders[j].name == lender) {
+                blocks[index].lenders.splice(j, 1)
+              }
+              if (blocks[index].lenders.length > 0) {
+                element.validator = true
+              }else{
+                element.validator = false
+              }
             }
+          }else{
             if (blocks[index].lenders.length > 0) {
               element.validator = true
             }else{
               element.validator = false
             }
-          }
-        }else{
-          if (blocks[index].lenders.length > 0) {
-            element.validator = true
-          }else{
-            element.validator = false
           }
         }
       } 
