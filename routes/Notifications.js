@@ -73,7 +73,7 @@ notification.get('/validateViews/:id', (req, res) => {
 })
 
 notification.get('/getAll', (req, res) => {
-    Notifications.find().sort({date: -1}).limit(150)
+    Notifications.find().sort({date: -1}).limit(500)
     .then(getNotifications=>{
         res.json(getNotifications)
     })

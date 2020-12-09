@@ -373,46 +373,42 @@ citas.post('/editBlocksFirst', (req, res) => {
   const lender = req.body.lender
   const lendersService = req.body.lendersService
   const totalFor = parseFloat(time) / 15
-  let first = 0
+  let first = false
   for (let index = 0; index < blocks.length; index++) {
     const element = blocks[index];
     if (blocks[index].validator == 'select') {
-      if (blocks[index + 1]) {
-        if (blocks[index + 1].validator) {
-          if (index != 0) {
-            if (blocks[index + 1].validator != true) {
-              if (blocks.length != index+1) {
-                for (let j = 0; j < blocks[index].lenders.length; j++) {
-                  blocks[index].lenders[j].valid = false
-                  if (blocks[index].lenders[j].name == lender) {
-                    blocks[index].lenders.splice(j, 1)
-                  }
-                  if (blocks[index].lenders.length > 0) {
-                    element.validator = true
-                  }else{
-                    element.validator = false
-                  }
-                }
-              }
-              
-            }
-            else{
-              if (blocks[index].lenders.length > 0) {
-                element.validator = true
-              }else{
-                element.validator = false
-              }
-            }
-          }
-          else{
-            if (blocks[index].lenders.length > 0) {
-              element.validator = true
-            }else{
-              element.validator = false
-            }
+      if (index == 0) {
+        for (let j = 0; j < blocks[index].lenders.length; j++) {
+          if (blocks[index].lenders[j].name == lender) {
+            blocks[index].lenders.splice(j, 1)
           }
         }
-      } 
+        if (blocks[index].lenders.length == 0) {
+          element.validator = false
+        }
+        else{
+          element.validator = true
+        }
+      }
+      else{
+        if (first) {
+          for (let j = 0; j < blocks[index].lenders.length; j++) {
+            if (blocks[index].lenders[j].name == lender) {
+              blocks[index].lenders.splice(j, 1)
+            }
+          }
+          if (blocks[index].lenders.length == 0) {
+            element.validator = false
+          }
+          else{
+            element.validator = true
+          }
+        }
+        else{
+          element.validator = true
+        }
+      }
+      first = true 
     }
   }
 
