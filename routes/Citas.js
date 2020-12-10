@@ -258,21 +258,25 @@ citas.post('/editBlocksLenders', (req, res) => {
   const prevBlocks = req.body.prevBlocks
   const time = req.body.time
   const lender = req.body.lender
-  console.log(prevBlocks)
   const lendersService = req.body.lendersService
   const totalFor = parseFloat(time) / 15
   let first = false
   for (let index = 0; index < blocks.length; index++) {
     const element = blocks[index];
     if (prevBlocks[index].validator == 'select') {
-      if (index == 0) {
+      if (index == 0 || index == blocks.length - 1) {
         for (let j = 0; j < blocks[index].lenders.length; j++) {
           if (blocks[index].lenders[j].name == lender) {
             blocks[index].lenders.splice(j, 1)
           }
         }
         if (blocks[index].lenders.length == 0) {
-          element.validator = false
+          if (prevBlocks[index].origin && prevBlocks[index].origin == 'nDisponible') {
+            element.validator = 'nDisponible'
+          }
+          else{
+            element.validator = false
+          }
         }
         else{
           element.validator = true
@@ -286,57 +290,69 @@ citas.post('/editBlocksLenders', (req, res) => {
             }
           }
           if (blocks[index].lenders.length == 0) {
-            element.validator = false
+            if (prevBlocks[index].origin && prevBlocks[index].origin == 'nDisponible') {
+              element.validator = 'nDisponible'
+            }
+            else{
+              element.validator = false
+            }
           }
           else{
             element.validator = true
           }
         }
         else{
-          element.validator = true
+          for (let j = 0; j < blocks[index].lenders.length; j++) {
+            if (blocks[index].lenders[j].name == lender) {
+              blocks[index].lenders.splice(j, 1)
+            }
+          }
+          element.validator = 'from'
         }
       }
       first = true 
     }
   }
 
-  for (let j = 1; j < lendersService.length; j++) {
-    const element = lendersService[j];
-    for (let r = 0; r < blocks.length; r++) {
-      const elementTwo = blocks[r];
-      for (let l = 0; l < elementTwo.lenders.length; l++) {
-        const elementThree = elementTwo.lenders[l];
-        if (element.lender == elementThree.name) {
-          elementThree.valid = true
-        }
-      }
-    }
-  }
+  // for (let j = 1; j < lendersService.length; j++) {
+  //   const element = lendersService[j];
+  //   for (let r = 0; r < blocks.length; r++) {
+  //     const elementTwo = blocks[r];
+  //     for (let l = 0; l < elementTwo.lenders.length; l++) {
+  //       const elementThree = elementTwo.lenders[l];
+  //       if (element.lender == elementThree.name) {
+  //         elementThree.valid = true
+  //       }
+  //     }
+  //   }
+  // }
 
   
   
 
   for (let j = 0; j < blocks.length; j++) {
-    const elementTwo = blocks[j];
-    var validEntry = true
-    for (let r = 0; r < elementTwo.lenders.length; r++) {
-      const elementThree = elementTwo.lenders[r];
-      if (lender == elementThree.name) {
-        validEntry = false
-        break
-      }
-    }
-    if (validEntry) {
-      var round = totalFor + 1
-      for (var e = 1; e < round; e++) { 
-        if (blocks[j-e]) {
-          for (let i = 0; i < blocks[j - e].lenders.length; i++) {
-            const elementFour = blocks[j - e].lenders[i];
-            if (elementFour.name == lender) {
-              blocks[j-e].lenders.splice(i, 1)
+    const block = blocks[j];
+    if (block.validator == 'from') {
+      for (let r = 0; r < totalFor; r++) {
+        if (blocks[j-r]) {
+          for (let i = 0; i < blocks[j - r].lenders.length; i++) {
+            const prevBlock = blocks[j - r].lenders[i];
+            if (prevBlock.name == lender) {
+              blocks[j-r].lenders.splice(i, 1)
             }
           }
         } 
+      }
+      if (block.lenders == 0) {
+        if (block.origin && block.origin == 'nDisponible') {
+          block.validator = 'nDisponible'
+        }
+        else{
+          block.validator = false
+        }
+      }
+      else{
+        block.validator = true
       }
     }
   }
@@ -350,6 +366,7 @@ citas.post('/editBlocksLenders', (req, res) => {
         if (count >= 0) {
           if (blocks[count].validator == true) {
             blocks[count].validator = 'nDisponible'
+            blocks[count].origin = 'nDisponible'
           }
         }
       }
@@ -361,31 +378,31 @@ citas.post('/editBlocksLenders', (req, res) => {
     if (r+1 == blocks.length) {
       for (let t = 0; t < time/15; t++) {
         blocks[r-t].validator = 'nDisponible'
-        
+        blocks[r-t].origin = 'nDisponible'
       }
     }
   }
 
-  for (let index = 0; index < blocks.length; index++) {
-    const element = blocks[index];
-    if (element.validator != 'nDisponible') {
-      if (element.lenders.length == 0) {
-        element.validator = false
-      }else{
-        var valid = true
-        for (let j = 0; j < element.lenders.length; j++) {
-          const elementTwo = element.lenders[j];
-          if (elementTwo.valid == true) {
-            valid = false
-          }
-        }
-        if (valid) {
-          element.validator = false
-        }
-      }
-    }
+  // for (let index = 0; index < blocks.length; index++) {
+  //   const element = blocks[index];
+  //   if (element.validator != 'nDisponible') {
+  //     if (element.lenders.length == 0) {
+  //       element.validator = false
+  //     }else{
+  //       var valid = true
+  //       for (let j = 0; j < element.lenders.length; j++) {
+  //         const elementTwo = element.lenders[j];
+  //         if (elementTwo.valid == true) {
+  //           valid = false
+  //         }
+  //       }
+  //       if (valid) {
+  //         element.validator = false
+  //       }
+  //     }
+  //   }
     
-  }
+  // }
   res.json(blocks)
 }) 
 
@@ -399,14 +416,19 @@ citas.post('/editBlocksFirst', (req, res) => {
   for (let index = 0; index < blocks.length; index++) {
     const element = blocks[index];
     if (blocks[index].validator == 'select') {
-      if (index == 0) {
+      if (index == 0 || index == blocks.length - 1 ) {
         for (let j = 0; j < blocks[index].lenders.length; j++) {
           if (blocks[index].lenders[j].name == lender) {
             blocks[index].lenders.splice(j, 1)
           }
         }
         if (blocks[index].lenders.length == 0) {
-          element.validator = false
+          if (blocks[index].origin && blocks[index].origin == 'nDisponible') {
+            element.validator = 'nDisponible'
+          }
+          else{
+            element.validator = false
+          }
         }
         else{
           element.validator = true
@@ -415,68 +437,74 @@ citas.post('/editBlocksFirst', (req, res) => {
       else{
         if (first) {
           for (let j = 0; j < blocks[index].lenders.length; j++) {
-            if (blocks[index].lenders[j].name == lender && blocks[index+1].validator == 'select') {
+            if (blocks[index].lenders[j].name == lender && blocks[index+1] && blocks[index+1].validator == 'select') {
               blocks[index].lenders.splice(j, 1)
             }
           }
           if (blocks[index].lenders.length == 0) {
-            element.validator = false
+            if (blocks[index].origin && blocks[index].origin == 'nDisponible') {
+              element.validator = 'nDisponible'
+            }
+            else{
+              element.validator = false
+            }
           }
           else{
             element.validator = true
           }
         }
         else{
-          element.validator = true
+          for (let j = 0; j < blocks[index].lenders.length; j++) {
+            if (blocks[index].lenders[j].name == lender) {
+              blocks[index].lenders.splice(j, 1)
+            }
+          }
+          element.validator = 'from'
         }
       }
       first = true 
     }
   }
 
-  for (let j = 1; j < lendersService.length; j++) {
-    const element = lendersService[j];
-    for (let r = 0; r < blocks.length; r++) {
-      const elementTwo = blocks[r];
-      for (let l = 0; l < elementTwo.lenders.length; l++) {
-        const elementThree = elementTwo.lenders[l];
-        if (element.lender == elementThree.name) {
-          elementThree.valid = true
-        }
-      }
-    }
-  }
-
-  console.log("primer bloque")
-  console.log(blocks[10].lenders)
+  // for (let j = 1; j < lendersService.length; j++) {
+  //   const element = lendersService[j];
+  //   for (let r = 0; r < blocks.length; r++) {
+  //     const elementTwo = blocks[r];
+  //     for (let l = 0; l < elementTwo.lenders.length; l++) {
+  //       const elementThree = elementTwo.lenders[l];
+  //       if (element.lender == elementThree.name) {
+  //         elementThree.valid = true
+  //       }
+  //     }
+  //   }
+  // }
 
   for (let j = 0; j < blocks.length; j++) {
-    const elementTwo = blocks[j];
-    var validEntry = true
-    for (let r = 0; r < elementTwo.lenders.length; r++) {
-      const elementThree = elementTwo.lenders[r];
-      if (lender == elementThree.name) {
-        validEntry = false
-        break
-      }
-    }
-    if (validEntry) {
-      var round = totalFor + 1
-      for (var e = 1; e < round; e++) { 
-        if (blocks[j-e]) {
-          for (let i = 0; i < blocks[j - e].lenders.length; i++) {
-            const elementFour = blocks[j - e].lenders[i];
-            if (elementFour.name == lender) {
-              blocks[j-e].lenders.splice(i, 1)
+    const block = blocks[j];
+    if (block.validator == 'from') {
+      for (let r = 0; r < totalFor; r++) {
+        if (blocks[j-r]) {
+          for (let i = 0; i < blocks[j - r].lenders.length; i++) {
+            const prevBlock = blocks[j - r].lenders[i];
+            if (prevBlock.name == lender) {
+              blocks[j-r].lenders.splice(i, 1)
             }
           }
         } 
       }
+      if (block.lenders == 0) {
+        if (block.origin && block.origin == 'nDisponible') {
+          block.validator = 'nDisponible'
+        }
+        else{
+          block.validator = false
+        }
+      }
+      else{
+        block.validator = true
+      }
     }
   }
-
-  console.log("segundo bloque")
-  console.log(blocks[13].lenders)
   
   for (let i = 0; i < blocks.length; i++) {
     const elementTwo = blocks[i];
@@ -487,6 +515,7 @@ citas.post('/editBlocksFirst', (req, res) => {
         if (count >= 0) {
           if (blocks[count].validator == true) {
             blocks[count].validator = 'nDisponible'
+            blocks[count].origin = 'nDisponible'
           }
         }
       }
@@ -498,30 +527,30 @@ citas.post('/editBlocksFirst', (req, res) => {
     if (r+1 == blocks.length) {
       for (let t = 0; t < time/15; t++) {
         blocks[r-t].validator = 'nDisponible'
-        
+        blocks[r-t].origin = 'nDisponible'
       }
     }
   }
-  for (let index = 0; index < blocks.length; index++) {
-    const element = blocks[index];
-    if (element.validator != 'nDisponible') {
-      if (element.lenders.length == 0) {
-        element.validator = false
-      }else{
-        var valid = true
-        for (let j = 0; j < element.lenders.length; j++) {
-          const elementTwo = element.lenders[j];
-          if (elementTwo.valid == true) {
-            valid = false
-          }
-        }
-        if (valid) {
-          element.validator = false
-        }
-      }
-    }
+  // for (let index = 0; index < blocks.length; index++) {
+  //   const element = blocks[index];
+  //   if (element.validator != 'nDisponible') {
+  //     if (element.lenders.length == 0) {
+  //       element.validator = false
+  //     }else{
+  //       var valid = true
+  //       for (let j = 0; j < element.lenders.length; j++) {
+  //         const elementTwo = element.lenders[j];
+  //         if (elementTwo.valid == true) {
+  //           valid = false
+  //         }
+  //       }
+  //       if (valid) {
+  //         element.validator = false
+  //       }
+  //     }
+  //   }
     
-  }
+  // }
   
   res.json(blocks)
 })  
@@ -766,6 +795,7 @@ citas.post('/getBlocksFirst', (req, res) => {
           for (var e = 1; e < round; e++) {  
               if (blocks[w+e].validator == false ) {
                 blocks[w].validator = 'nDisponible'
+                blocks[w].origin = 'nDisponible'
               }   
           }
         }else{
@@ -784,6 +814,7 @@ citas.post('/getBlocksFirst', (req, res) => {
         var split = element.Horario.split(':')[0]
         if (parseInt(split) < hour) {
           element.validator = 'nDisponible'
+          element.origin = 'nDisponible'
         }
       } 
     }
