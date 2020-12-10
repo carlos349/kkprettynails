@@ -818,6 +818,13 @@ citas.post('/getBlocksFirst', (req, res) => {
         }
       } 
     }
+
+    for (let index = 0; index < blocks.length; index++) {
+      const element = blocks[index];
+      if (element.lenders.length == 0) {
+        element.validator = false
+      }
+    }
     res.json({blocks: blocks})
   }).catch(err => {
     res.send(err)
