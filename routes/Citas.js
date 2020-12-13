@@ -258,6 +258,7 @@ citas.post('/editBlocksLenders', (req, res) => {
   const prevBlocks = req.body.prevBlocks
   const time = req.body.time
   const lender = req.body.lender
+  const nBlocks = req.body.blocksNFirst
   const lendersService = req.body.lendersService
   const totalFor = parseFloat(time) / 15
   let first = false
@@ -313,6 +314,65 @@ citas.post('/editBlocksLenders', (req, res) => {
       first = true 
     }
   }
+  first = false
+  if (nBlocks.length > 0) {
+      for (let p = 0; p < nBlocks.length; p++) {
+      const nBlock = nBlocks[p];
+      for (let u = 0; u < nBlock.block.length; u++) {
+        const nBlockTwo = nBlock.block[u];
+        if (nBlockTwo.validator == 'select') {
+          if (u == 0 || u == nBlock.block.length - 1) {
+            for (let j = 0; j < blocks[u].lenders.length; j++) {
+              if (blocks[u].lenders[j].name == nBlock.lender) {
+                blocks[u].lenders.splice(j, 1)
+              }
+            }
+            if (blocks[u].lenders.length == 0) {
+              if (blocks[u].origin && blocks[u].origin == 'nDisponible') {
+                blocks[u].validator = 'nDisponible'
+              }
+              else{
+                blocks[u].validator = false
+              }
+            }
+            else{
+              blocks[u].validator = true
+            }
+          }
+          else{
+            if (first) {
+              for (let j = 0; j < blocks[u].lenders.length; j++) {
+                if (blocks[u].lenders[j].name == nBlock.lender && nBlock.block[u+1].validator == 'select') {
+                  blocks[u].lenders.splice(j, 1)
+                }
+              }
+              if (blocks[u].lenders.length == 0) {
+                if (nBlockTwo.origin && nBlockTwo.origin == 'nDisponible') {
+                  blocks[u].validator = 'nDisponible'
+                }
+                else{
+                  blocks[u].validator = false
+                }
+              }
+              else{
+                blocks[u].validator = true
+              }
+            }
+            else{
+              for (let j = 0; j < blocks[u].lenders.length; j++) {
+                if (blocks[u].lenders[j].name == nBlock.lender) {
+                  blocks[u].lenders.splice(j, 1)
+                }
+              }
+              blocks[u].validator = 'from'
+            }
+          }
+          first = true 
+        }
+      }
+    }
+  }
+  
 
   // for (let j = 1; j < lendersService.length; j++) {
   //   const element = lendersService[j];
@@ -821,7 +881,7 @@ citas.post('/getBlocksFirst', (req, res) => {
 
     for (let index = 0; index < blocks.length; index++) {
       const element = blocks[index];
-      if (element.lenders.length == 0) {
+      if (element.lenders.length == 0 && element.validator != 'nDisponible') {
         element.validator = false
       }
     }
