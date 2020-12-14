@@ -526,18 +526,18 @@ citas.post('/editBlocksFirst', (req, res) => {
     }
   }
 
-  // for (let j = 1; j < lendersService.length; j++) {
-  //   const element = lendersService[j];
-  //   for (let r = 0; r < blocks.length; r++) {
-  //     const elementTwo = blocks[r];
-  //     for (let l = 0; l < elementTwo.lenders.length; l++) {
-  //       const elementThree = elementTwo.lenders[l];
-  //       if (element.lender == elementThree.name) {
-  //         elementThree.valid = true
-  //       }
-  //     }
-  //   }
-  // }
+  for (let j = 1; j < lendersService.length; j++) {
+    const element = lendersService[j];
+    for (let r = 0; r < blocks.length; r++) {
+      const elementTwo = blocks[r];
+      for (let l = 0; l < elementTwo.lenders.length; l++) {
+        const elementThree = elementTwo.lenders[l];
+        if (element.lender == elementThree.name) {
+          elementThree.valid = true
+        }
+      }
+    }
+  }
 
   for (let j = 0; j < blocks.length; j++) {
     const block = blocks[j];
@@ -591,26 +591,26 @@ citas.post('/editBlocksFirst', (req, res) => {
       }
     }
   }
-  // for (let index = 0; index < blocks.length; index++) {
-  //   const element = blocks[index];
-  //   if (element.validator != 'nDisponible') {
-  //     if (element.lenders.length == 0) {
-  //       element.validator = false
-  //     }else{
-  //       var valid = true
-  //       for (let j = 0; j < element.lenders.length; j++) {
-  //         const elementTwo = element.lenders[j];
-  //         if (elementTwo.valid == true) {
-  //           valid = false
-  //         }
-  //       }
-  //       if (valid) {
-  //         element.validator = false
-  //       }
-  //     }
-  //   }
+  for (let index = 0; index < blocks.length; index++) {
+    const element = blocks[index];
+    if (element.validator != 'nDisponible') {
+      if (element.lenders.length == 0) {
+        element.validator = false
+      }else{
+        var valid = true
+        for (let j = 0; j < element.lenders.length; j++) {
+          const elementTwo = element.lenders[j];
+          if (elementTwo.valid == true) {
+            valid = false
+          }
+        }
+        if (valid) {
+          element.validator = false
+        }
+      }
+    }
     
-  // }
+  }
   
   res.json(blocks)
 })  
