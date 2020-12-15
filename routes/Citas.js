@@ -884,6 +884,15 @@ citas.post('/getBlocksFirst', (req, res) => {
       if (element.lenders.length == 0 && element.validator != 'nDisponible') {
         element.validator = false
       }
+      else{
+        element.validator = false
+        for (let y = 0; y < element.lenders.length; y++) {
+          const elementL = element.lenders[y];
+          if (elementL.valid) {
+            element.validator = true
+          }
+        }
+      }
     }
     res.json({blocks: blocks})
   }).catch(err => {
