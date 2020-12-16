@@ -658,6 +658,8 @@ citas.post('/getBlocksFirst', (req, res) => {
   }).sort({sort:1})
   .then(dates => {
     var timelineBlock = []
+    console.log("aqui")
+    console.log(lenders)
     for (let j = 0; j < lenders.length; j++) {
       const elementTwo = lenders[j];
       const datesData = []
@@ -710,7 +712,6 @@ citas.post('/getBlocksFirst', (req, res) => {
         break
       }
     }
-    console.log(timelineBlock)
     for (let index = 0; index < timelineBlock.length; index++) {
       const element = timelineBlock[index];
       if (element.timeline.length > 0) {
