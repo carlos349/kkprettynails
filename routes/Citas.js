@@ -757,7 +757,7 @@ citas.post('/getBlocksFirst', (req, res) => {
       }
     }
 
-    
+    console.log(blocks)
     for (let a = 0; a < lenders.length; a++) {
       const lender = lenders[a];
       var sepRes = lender.restTime.split('/')
