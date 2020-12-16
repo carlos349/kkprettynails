@@ -896,7 +896,7 @@ citas.post('/getBlocksFirst', (req, res) => {
         
       }
     }
-    res.json({blocks: blocks})
+    res.json({blocks: timelineBlock})
   }).catch(err => {
     res.send(err)
   })
