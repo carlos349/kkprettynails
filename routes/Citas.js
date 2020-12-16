@@ -59,14 +59,11 @@ citas.get('/availableslenders/:fecha', (req, res) => {
           for (let j = 0; j < arrayLenders.length; j++) {
             const elementThree = arrayLenders[j];
             if (elementTwo.employe == elementThree.name) {
-              if(elementTwo.sort > 1200) {
-                elementThree.sort = 0
-              }else{
-                elementThree.sort = elementTwo.sort
-              }
+              elementThree.sort = elementTwo.sort
             }
           }
         }
+        console.log(arrayLenders)
         arrayLenders.sort((a, b) => {
           return a.comission - b.comission;
         });
@@ -221,7 +218,6 @@ citas.post('/verifyDate', (req, res) => {
               minutes = "00"
             }
           }
-          console.log(blockDate)
           var valid = false
           for (let j = 0; j < element.blocks.length; j++) {
             const elementBlocks = element.blocks[j];
@@ -658,8 +654,6 @@ citas.post('/getBlocksFirst', (req, res) => {
   }).sort({sort:1})
   .then(dates => {
     var timelineBlock = []
-    console.log("aqui")
-    console.log(lenders)
     for (let j = 0; j < lenders.length; j++) {
       const elementTwo = lenders[j];
       const datesData = []
@@ -897,7 +891,7 @@ citas.post('/getBlocksFirst', (req, res) => {
         
       }
     }
-    res.json({blocks: timelineBlock})
+    res.json({blocks: blocks})
   }).catch(err => {
     res.send(err)
   })
