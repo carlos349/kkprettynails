@@ -621,7 +621,6 @@ citas.post('/getBlocksFirst', (req, res) => {
   const duration = req.body.time
   const lenders = req.body.lenders
   const lendersService = req.body.lendersService
-  console.log(lendersService)
   const blocks = []
   let dayNow = dateNow.getDay()
   let hourLast = ''
@@ -711,7 +710,7 @@ citas.post('/getBlocksFirst', (req, res) => {
         break
       }
     }
-    console.log(blocks[4].lenders)
+    console.log(timelineBlock)
     for (let index = 0; index < timelineBlock.length; index++) {
       const element = timelineBlock[index];
       if (element.timeline.length > 0) {
