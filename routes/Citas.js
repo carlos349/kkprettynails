@@ -711,7 +711,7 @@ citas.post('/getBlocksFirst', (req, res) => {
         break
       }
     }
-    
+    console.log(blocks[4].lenders)
     for (let index = 0; index < timelineBlock.length; index++) {
       const element = timelineBlock[index];
       if (element.timeline.length > 0) {
@@ -757,7 +757,7 @@ citas.post('/getBlocksFirst', (req, res) => {
       }
     }
 
-    console.log(blocks[4].lenders)
+    
     for (let a = 0; a < lenders.length; a++) {
       const lender = lenders[a];
       var sepRes = lender.restTime.split('/')
