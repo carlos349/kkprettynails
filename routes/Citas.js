@@ -624,7 +624,7 @@ citas.post('/getBlocksFirst', (req, res) => {
     hourLast = 18
   }
   else{
-    hourLast = 20
+    hourLast = 19
   }
   const formatDate = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()
   dateNow.setDate(dateNow.getDate() + 1)
@@ -719,7 +719,7 @@ citas.post('/getBlocksFirst', (req, res) => {
             TotalMinutes = SumHours + SumMinutes
           }else{
             separ = elementTwo[0].split(':')
-            SumHours = ((20 - parseFloat(separ[0])) * 60)+ 30  
+            SumHours = ((19 - parseFloat(separ[0])) * 60)+ 30  
             SumMinutes = 0 - parseFloat(separ[1])
             TotalMinutes = SumHours + SumMinutes
             last = true
@@ -906,10 +906,10 @@ citas.post('/getBlocks', (req,res) => {
   let dayNow = dateNow.getDay()
   let hourLast = ''
   if (dayNow == 6) {
-    hourLast = '20:30'
+    hourLast = '19:30'
   }
   else{
-    hourLast = '20:30'
+    hourLast = '19:30'
   }
   const sepRes = resTimes.split('/')
   const formatDate = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()
@@ -974,7 +974,7 @@ citas.post('/getBlocks', (req,res) => {
         TotalMinutes = SumHours + SumMinutes
       }else{
         separ = timelineBlock[index][0].split(':')
-        SumHours = ((20 - parseFloat(separ[0])) * 60)+30
+        SumHours = ((19 - parseFloat(separ[0])) * 60)+30
         SumMinutes = 0 - parseFloat(separ[1])
         TotalMinutes = SumHours + SumMinutes
         last = true
