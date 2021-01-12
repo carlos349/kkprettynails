@@ -145,7 +145,7 @@ citas.post('/editBlocks', (req, res) => {
     const elementTwo = blocks[i];
     if (elementTwo.validator == false) {
       let count = 0
-      for (let j = 0; j < totalFor - 1; j++) {
+      for (let j = 0; j < totalFor; j++) {
         count = j == 0 ? parseFloat(i) - parseFloat(1) : parseFloat(count) - 1
         if (count >= 0) {
           if (blocks[count].validator == true) {
@@ -1188,7 +1188,6 @@ citas.get('/confirmDate/:id', (req, res) => {
                               <strong> Servicios:</strong> ${services}. <br>
                               <strong> Horarios de entrada:</strong> ${start}. <br>
                           </p>
-
                           <p style="text-align:left;margin-top:10px;font-size:16px;"> 
                             <img style="height:25px;width:25px;" src="${imgMails}calendar.png" alt="Logo kkprettynails"> 
                             <b style="margin-top:-5px">${splitDate}</b> <br>
@@ -1226,7 +1225,6 @@ citas.get('/confirmDate/:id', (req, res) => {
                               <strong> Servicios:</strong> ${services}. <br>
                               <strong> Horarios de entrada:</strong> ${start}. <br>
                           </p>
-
                           <p style="text-align:left;margin-top:10px;font-size:16px;"> 
                             <img style="height:25px;width:25px;" src="${imgMails}calendar.png" alt="Logo kkprettynails"> 
                             <b style="margin-top:-5px">${splitDate}</b> <br>
@@ -1333,7 +1331,6 @@ citas.post('/sendConfirmation/:id', (req, res) => {
                                 <strong> Servicios:</strong> ${data.services}. <br>
                                 <strong> Horarios de entrada:</strong> ${data.start}. <br>
                             </p>
-
                             <p style="text-align:left;margin-top:10px;font-size:16px;"> 
                              <img style="height:25px;width:25px;" src="${imgMails}calendar.png" alt="Logo kkprettynails"> 
                             <b style="margin-top:-5px">${split[1]}-${split[0]}-${split[2]}</b> <br>
