@@ -1027,11 +1027,11 @@ citas.post('/getBlocks', (req,res) => {
     bloques.push({Horario:hourLast , validator: 'nDisponible'})
     var insp = false
     for (let j = 0; j < bloques.length; j++) {
+      console.log("aqui")
+      console.log(sepRes[0])
+      console.log(bloques[j].Horario)
       if (sepRes[0] == bloques[j].Horario) {
-        if (j == 0) {
-          bloques[j].validator = true
-        }
-        else{
+        
           for (let l = 0; l < 1000; l++) {
             if(l == 0){
               bloques[j+l].validator = true
@@ -1044,13 +1044,13 @@ citas.post('/getBlocks', (req,res) => {
               break
             }
           }
-        }
         
       } 
       if (insp == true) {
         break
       }
     }
+    
     for (var w = 0; w < bloques.length; w++) {
       if (bloques[w].validator == true) {
         var round2 =duracion / 15
