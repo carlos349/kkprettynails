@@ -1028,18 +1028,24 @@ citas.post('/getBlocks', (req,res) => {
     var insp = false
     for (let j = 0; j < bloques.length; j++) {
       if (sepRes[0] == bloques[j].Horario) {
-        for (let l = 0; l < 1000; l++) {
-          if(l == 0){
-            bloques[j+l].validator = true
-          }else{
-            bloques[j+l].validator = false
-          }
-          if (bloques[j+l].Horario == sepRes[1]) {
-            bloques[j+l].validator = true
-            insp = true
-            break
+        if (j == 0) {
+          bloques[j].validator = true
+        }
+        else{
+          for (let l = 0; l < 1000; l++) {
+            if(l == 0){
+              bloques[j+l].validator = true
+            }else{
+              bloques[j+l].validator = false
+            }
+            if (bloques[j+l].Horario == sepRes[1]) {
+              bloques[j+l].validator = true
+              insp = true
+              break
+            }
           }
         }
+        
       } 
       if (insp == true) {
         break
