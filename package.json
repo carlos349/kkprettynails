@@ -23,7 +23,7 @@
     "nodemailer": "^6.4.2",
     "nodemon": "^1.19.1",
     "pdf-creator-node": "^1.4.1",
-    "socket.io": "^2.3.0",
+    "socket.io": "^2.4.0",
     "vhost": "^3.0.2",
     "vue-apexcharts": "^1.5.2",
     "vue-good-table": "^2.19.1",
