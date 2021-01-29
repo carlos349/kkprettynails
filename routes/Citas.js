@@ -926,9 +926,9 @@ citas.post('/getBlocks', (req,res) => {
     var timelineBlock = []
     var bloques = []
     if (citas.length == 0) {
-      timelineBlock.push(["9:00",hourLast,true])
+      timelineBlock.push(["10:00",hourLast,true])
     }else{
-      if (citas[0].start == "9:00") {
+      if (citas[0].start == "10:00") {
         var count = 0
         for (let c = 0; c < citas.length; c++) {
           if (c == 0) {
@@ -946,7 +946,7 @@ citas.post('/getBlocks', (req,res) => {
         var count = 1
         for (let c = 0; c < citas.length; c++) {
           if (c == 0) {
-            timelineBlock.push(["9:00", citas[c].start, true])
+            timelineBlock.push(["10:00", citas[c].start, true])
             timelineBlock.push([citas[c].start, citas[c].end, false])
             timelineBlock.push([citas[c].end])
           }else {
@@ -986,7 +986,7 @@ citas.post('/getBlocks', (req,res) => {
       var prueba = hours+":"+minutes
       var ind = parseFloat(index) + parseFloat(1)
       for (let indexTwo = 0; indexTwo < totalFor; indexTwo++) {
-        if (indexTwo == 0 && prueba != '9:0' && timelineBlock[index][2] == false) {
+        if (indexTwo == 0 && prueba != '10:0' && timelineBlock[index][2] == false) {
           if (minutes == 0) {
             minutes = "00"
           }
