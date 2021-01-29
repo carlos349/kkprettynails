@@ -621,7 +621,7 @@ citas.post('/getBlocksFirst', (req, res) => {
   let dayNow = dateNow.getDay()
   let hourLast = ''
   if (dayNow == 6) {
-    hourLast = 18
+    hourLast = 17
   }
   else{
     hourLast = 19
@@ -906,7 +906,7 @@ citas.post('/getBlocks', (req,res) => {
   let dayNow = dateNow.getDay()
   let hourLast = ''
   if (dayNow == 6) {
-    hourLast = '19:30'
+    hourLast = '17:00'
   }
   else{
     hourLast = '19:30'
