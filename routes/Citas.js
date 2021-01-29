@@ -667,7 +667,7 @@ citas.post('/getBlocksFirst', (req, res) => {
       for (let index = 0; index < datesData.length; index++) {
         const element = datesData[index];
         if (elementTwo.name == element.employe) {
-          if (element.start == "9:00") {
+          if (element.start == "10:00") {
             var count = 0
             for (let c = 0; c < datesData.length; c++) {
               if (elementTwo.name == datesData[c].employe) {
@@ -689,7 +689,7 @@ citas.post('/getBlocksFirst', (req, res) => {
             for (let c = 0; c < datesData.length; c++) {
               if (elementTwo.name == datesData[c].employe) {
                 if (c == 0) {
-                  timelineBlock[j].timeline.push(["9:00", datesData[c].start, true])
+                  timelineBlock[j].timeline.push(["10:00", datesData[c].start, true])
                   timelineBlock[j].timeline.push([datesData[c].start, datesData[c].end, false])
                   timelineBlock[j].timeline.push([datesData[c].end])
                   countValid = 1
