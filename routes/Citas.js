@@ -857,20 +857,21 @@ citas.post('/getBlocksFirst', (req, res) => {
         }  
       }  
     }
+    if (new Date(req.body.date).getMonth() == new Date().getMonth) {
+      const dateToday = new Date().getDate()
+      const selectDay = new Date(req.body.date+' 1:00').getDate()
+      if (dateToday == selectDay) {
+        const hour = new Date().getHours() - 3 
 
-    const dateToday = new Date().getDate()
-    const selectDay = new Date(req.body.date+' 1:00').getDate()
-    if (dateToday == selectDay) {
-      const hour = new Date().getHours() - 3 
-
-      for (var j = 0; j < blocks.length; j++) {
-        const element = blocks[j]
-        var split = element.Horario.split(':')[0]
-        if (parseInt(split) < hour) {
-          element.validator = 'nDisponible'
-          element.origin = 'nDisponible'
-        }
-      } 
+        for (var j = 0; j < blocks.length; j++) {
+          const element = blocks[j]
+          var split = element.Horario.split(':')[0]
+          if (parseInt(split) < hour) {
+            element.validator = 'nDisponible'
+            element.origin = 'nDisponible'
+          }
+        } 
+      }
     }
 
     for (let index = 0; index < blocks.length; index++) {
