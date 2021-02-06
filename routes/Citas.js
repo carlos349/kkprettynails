@@ -857,8 +857,10 @@ citas.post('/getBlocksFirst', (req, res) => {
         }  
       }  
     }
-    console.log(new Date(req.body.date).getMonth()+"es igual a:"+ new Date().getMonth)
-    if (new Date(req.body.date).getMonth() == new Date().getMonth) {
+    const daySelected = new Date(req.body.date).getMonth()
+    const actualDay = new Date().getMonth()
+    console.log(daySelected+"es igual a:"+ actualDay)
+    if (daySelected == actualDay) {
       console.log("entro")
       const dateToday = new Date().getDate()
       const selectDay = new Date(req.body.date+' 1:00').getDate()
@@ -1066,8 +1068,10 @@ citas.post('/getBlocks', (req,res) => {
         }  
       }  
     }
-    console.log(new Date(req.body.date).getMonth()+"es igual a:"+ new Date().getMonth)
-    if (new Date(req.body.date).getMonth() == new Date().getMonth) {
+    const daySelected = new Date(req.body.date).getMonth()
+    const actualDay = new Date().getMonth()
+    console.log(daySelected+"es igual a:"+ actualDay)
+    if (daySelected == actualDay) {
       console.log("Entro!")
       const dateToday = new Date().getDate()
       const selectDay = new Date(req.body.date+' 1:00').getDate()
