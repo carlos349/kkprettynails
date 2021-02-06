@@ -857,7 +857,9 @@ citas.post('/getBlocksFirst', (req, res) => {
         }  
       }  
     }
+    console.log(new Date(req.body.date).getMonth()+"es igual a:"+ new Date().getMonth)
     if (new Date(req.body.date).getMonth() == new Date().getMonth) {
+      console.log("entro")
       const dateToday = new Date().getDate()
       const selectDay = new Date(req.body.date+' 1:00').getDate()
       if (dateToday == selectDay) {
@@ -1028,9 +1030,6 @@ citas.post('/getBlocks', (req,res) => {
     bloques.push({Horario:hourLast , validator: 'nDisponible'})
     var insp = false
     for (let j = 0; j < bloques.length; j++) {
-      console.log("aqui")
-      console.log(sepRes[0])
-      console.log(bloques[j].Horario)
       if (sepRes[0] == bloques[j].Horario) {
         
           for (let l = 0; l < 1000; l++) {
@@ -1067,6 +1066,7 @@ citas.post('/getBlocks', (req,res) => {
         }  
       }  
     }
+    console.log(new Date(req.body.date).getMonth()+"es igual a:"+ new Date().getMonth)
     if (new Date(req.body.date).getMonth() == new Date().getMonth) {
       console.log("Entro!")
       const dateToday = new Date().getDate()
