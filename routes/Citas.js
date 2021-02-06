@@ -1067,6 +1067,7 @@ citas.post('/getBlocks', (req,res) => {
       }  
     }
     if (new Date(req.body.date).getMonth() == new Date().getMonth) {
+      console.log("Entro!")
       const dateToday = new Date().getDate()
       const selectDay = new Date(req.body.date+' 1:00').getDate()
       if (dateToday == selectDay) {
