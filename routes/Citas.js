@@ -911,10 +911,10 @@ citas.post('/getBlocks', (req,res) => {
   let dayNow = dateNow.getDay()
   let hourLast = ''
   if (dayNow == 6) {
-    hourLast = '17:00'
+    hourLast = 17
   }
   else{
-    hourLast = '19:30'
+    hourLast = 19
   }
   const sepRes = resTimes.split('/')
   const formatDate = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()
@@ -979,7 +979,7 @@ citas.post('/getBlocks', (req,res) => {
         TotalMinutes = SumHours + SumMinutes
       }else{
         separ = timelineBlock[index][0].split(':')
-        SumHours = ((19 - parseFloat(separ[0])) * 60)+30
+        SumHours = ((hourLast - parseFloat(separ[0])) * 60)+30
         SumMinutes = 0 - parseFloat(separ[1])
         TotalMinutes = SumHours + SumMinutes
         last = true
