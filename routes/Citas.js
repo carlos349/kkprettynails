@@ -909,7 +909,7 @@ citas.post('/getBlocks', (req,res) => {
   const dateNow = new Date(date+' 1:00')
   const resTimes = req.body.resTime
   let dayNow = dateNow.getDay()
-  let hourLast = ''
+  let hourLast = 0
   if (dayNow == 6) {
     hourLast = 17
   }
@@ -931,7 +931,7 @@ citas.post('/getBlocks', (req,res) => {
     var timelineBlock = []
     var bloques = []
     if (citas.length == 0) {
-      timelineBlock.push(["10:00",hourLast,true])
+      timelineBlock.push(["10:00",hourLast+":30",true])
     }else{
       if (citas[0].start == "10:00") {
         var count = 0
@@ -979,7 +979,7 @@ citas.post('/getBlocks', (req,res) => {
         TotalMinutes = SumHours + SumMinutes
       }else{
         separ = timelineBlock[index][0].split(':')
-        SumHours = ((hourLast - parseFloat(separ[0])) * 60)+30
+        SumHours = ((19 - parseFloat(separ[0])) * 60)+30
         SumMinutes = 0 - parseFloat(separ[1])
         TotalMinutes = SumHours + SumMinutes
         last = true
@@ -1070,9 +1070,7 @@ citas.post('/getBlocks', (req,res) => {
     }
     const daySelected = new Date(req.body.date).getMonth()
     const actualDay = new Date().getMonth()
-    console.log(daySelected+"es igual a:"+ actualDay)
     if (daySelected == actualDay) {
-      console.log("Entro!")
       const dateToday = new Date().getDate()
       const selectDay = new Date(req.body.date+' 1:00').getDate()
       if (dateToday == selectDay) {
@@ -1087,7 +1085,6 @@ citas.post('/getBlocks', (req,res) => {
         } 
       }
     }
-    console.log(bloques)
     res.json(bloques)
   })
   .catch(err => {
