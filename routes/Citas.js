@@ -1087,7 +1087,7 @@ citas.post('/getBlocks', (req,res) => {
         } 
       }
     }
-   
+    console.log(bloques)
     res.json(bloques)
   })
   .catch(err => {
