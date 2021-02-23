@@ -521,7 +521,7 @@ citas.post('/editBlocksFirst', (req, res) => {
       first = true 
     }
   }
-  let ifLender = false
+  var ifLender = false
   for (let j = 1; j < lendersService.length; j++) {
     const element = lendersService[j];
     for (let r = 0; r < blocks.length; r++) {
