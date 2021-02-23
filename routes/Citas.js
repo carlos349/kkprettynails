@@ -537,7 +537,7 @@ citas.post('/editBlocksFirst', (req, res) => {
       }
     }
   }
-  if (iflender == false) {
+  if (ifLender == false) {
     for (let u = 0; u < blocks.length; u++) {
       const elementTwoU = blocks[u];
       for (let y = 0; y < elementTwoU.lenders.length; y++) {
