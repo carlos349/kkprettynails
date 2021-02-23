@@ -521,7 +521,7 @@ citas.post('/editBlocksFirst', (req, res) => {
       first = true 
     }
   }
-
+  let ifLender = false
   for (let j = 1; j < lendersService.length; j++) {
     const element = lendersService[j];
     for (let r = 0; r < blocks.length; r++) {
@@ -530,6 +530,20 @@ citas.post('/editBlocksFirst', (req, res) => {
         const elementThree = elementTwo.lenders[l];
         if (element.lender == elementThree.name) {
           elementThree.valid = true
+        }
+        if (element.lender == lender) {
+          ifLender = true
+        }
+      }
+    }
+  }
+  if (iflender == false) {
+    for (let u = 0; u < blocks.length; u++) {
+      const elementTwoU = blocks[u];
+      for (let y = 0; y < elementTwoU.lenders.length; y++) {
+        const elementThreeY = elementTwoU.lenders[y];
+        if (lender == elementThreeY.name) {
+          elementThreeY.valid = false
         }
       }
     }
