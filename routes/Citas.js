@@ -145,7 +145,7 @@ citas.post('/editBlocks', (req, res) => {
     const elementTwo = blocks[i];
     if (elementTwo.validator == false) {
       let count = 0
-      for (let j = 0; j < totalFor - 1; j++) {
+      for (let j = 0; j < totalFor; j++) {
         count = j == 0 ? parseFloat(i) - parseFloat(1) : parseFloat(count) - 1
         if (count >= 0) {
           if (blocks[count].validator == true) {
@@ -521,7 +521,7 @@ citas.post('/editBlocksFirst', (req, res) => {
       first = true 
     }
   }
-
+  var ifLender = false
   for (let j = 1; j < lendersService.length; j++) {
     const element = lendersService[j];
     for (let r = 0; r < blocks.length; r++) {
@@ -530,6 +530,20 @@ citas.post('/editBlocksFirst', (req, res) => {
         const elementThree = elementTwo.lenders[l];
         if (element.lender == elementThree.name) {
           elementThree.valid = true
+        }
+        if (element.lender == lender) {
+          ifLender = true
+        }
+      }
+    }
+  }
+  if (ifLender == false) {
+    for (let u = 0; u < blocks.length; u++) {
+      const elementTwoU = blocks[u];
+      for (let y = 0; y < elementTwoU.lenders.length; y++) {
+        const elementThreeY = elementTwoU.lenders[y];
+        if (lender == elementThreeY.name) {
+          elementThreeY.valid = false
         }
       }
     }
@@ -621,7 +635,7 @@ citas.post('/getBlocksFirst', (req, res) => {
   let dayNow = dateNow.getDay()
   let hourLast = ''
   if (dayNow == 6) {
-    hourLast = 18
+    hourLast = 17
   }
   else{
     hourLast = 19
@@ -630,11 +644,15 @@ citas.post('/getBlocksFirst', (req, res) => {
   dateNow.setDate(dateNow.getDate() + 1)
   const formatDateTwo = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()
 
+<<<<<<< HEAD
   var minutes = ((hourLast - 9) * 60)
+=======
+  var minutes = ((hourLast - 10) * 60) + 30
+>>>>>>> c9745114bab2473e80b029318adfb332d8696e07
   const totalFor = minutes / 15
   var input, output
   minutes = 0
-  var hours = 9
+  var hours = 10
   for (let index = 0; index <= totalFor; index++) {
     if (minutes == 0) {
       minutes = "00"
@@ -667,7 +685,7 @@ citas.post('/getBlocksFirst', (req, res) => {
       for (let index = 0; index < datesData.length; index++) {
         const element = datesData[index];
         if (elementTwo.name == element.employe) {
-          if (element.start == "9:00") {
+          if (element.start == "10:00") {
             var count = 0
             for (let c = 0; c < datesData.length; c++) {
               if (elementTwo.name == datesData[c].employe) {
@@ -689,7 +707,7 @@ citas.post('/getBlocksFirst', (req, res) => {
             for (let c = 0; c < datesData.length; c++) {
               if (elementTwo.name == datesData[c].employe) {
                 if (c == 0) {
-                  timelineBlock[j].timeline.push(["9:00", datesData[c].start, true])
+                  timelineBlock[j].timeline.push(["10:00", datesData[c].start, true])
                   timelineBlock[j].timeline.push([datesData[c].start, datesData[c].end, false])
                   timelineBlock[j].timeline.push([datesData[c].end])
                   countValid = 1
@@ -857,20 +875,25 @@ citas.post('/getBlocksFirst', (req, res) => {
         }  
       }  
     }
+    const daySelected = new Date(req.body.date).getMonth()
+    const actualDay = new Date().getMonth()
+    console.log(daySelected+"es igual a:"+ actualDay)
+    if (daySelected == actualDay) {
+      console.log("entro")
+      const dateToday = new Date().getDate()
+      const selectDay = new Date(req.body.date+' 1:00').getDate()
+      if (dateToday == selectDay) {
+        const hour = new Date().getHours() - 3 
 
-    const dateToday = new Date().getDate()
-    const selectDay = new Date(req.body.date+' 1:00').getDate()
-    if (dateToday == selectDay) {
-      const hour = new Date().getHours() - 3 
-
-      for (var j = 0; j < blocks.length; j++) {
-        const element = blocks[j]
-        var split = element.Horario.split(':')[0]
-        if (parseInt(split) < hour) {
-          element.validator = 'nDisponible'
-          element.origin = 'nDisponible'
-        }
-      } 
+        for (var j = 0; j < blocks.length; j++) {
+          const element = blocks[j]
+          var split = element.Horario.split(':')[0]
+          if (parseInt(split) < hour) {
+            element.validator = 'nDisponible'
+            element.origin = 'nDisponible'
+          }
+        } 
+      }
     }
 
     for (let index = 0; index < blocks.length; index++) {
@@ -904,12 +927,19 @@ citas.post('/getBlocks', (req,res) => {
   const dateNow = new Date(date+' 1:00')
   const resTimes = req.body.resTime
   let dayNow = dateNow.getDay()
-  let hourLast = ''
+  let hourLast = 0
   if (dayNow == 6) {
+<<<<<<< HEAD
     hourLast = '19:00'
   }
   else{
     hourLast = '19:00'
+=======
+    hourLast = 17
+  }
+  else{
+    hourLast = 19
+>>>>>>> c9745114bab2473e80b029318adfb332d8696e07
   }
   const sepRes = resTimes.split('/')
   const formatDate = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()
@@ -926,9 +956,9 @@ citas.post('/getBlocks', (req,res) => {
     var timelineBlock = []
     var bloques = []
     if (citas.length == 0) {
-      timelineBlock.push(["9:00",hourLast,true])
+      timelineBlock.push(["10:00",hourLast+":30",true])
     }else{
-      if (citas[0].start == "9:00") {
+      if (citas[0].start == "10:00") {
         var count = 0
         for (let c = 0; c < citas.length; c++) {
           if (c == 0) {
@@ -946,7 +976,7 @@ citas.post('/getBlocks', (req,res) => {
         var count = 1
         for (let c = 0; c < citas.length; c++) {
           if (c == 0) {
-            timelineBlock.push(["9:00", citas[c].start, true])
+            timelineBlock.push(["10:00", citas[c].start, true])
             timelineBlock.push([citas[c].start, citas[c].end, false])
             timelineBlock.push([citas[c].end])
           }else {
@@ -974,7 +1004,7 @@ citas.post('/getBlocks', (req,res) => {
         TotalMinutes = SumHours + SumMinutes
       }else{
         separ = timelineBlock[index][0].split(':')
-        SumHours = ((19 - parseFloat(separ[0])) * 60)+30
+        SumHours = ((parseFloat(hourLast) - parseFloat(separ[0])) * 60)+30
         SumMinutes = 0 - parseFloat(separ[1])
         TotalMinutes = SumHours + SumMinutes
         last = true
@@ -986,7 +1016,7 @@ citas.post('/getBlocks', (req,res) => {
       var prueba = hours+":"+minutes
       var ind = parseFloat(index) + parseFloat(1)
       for (let indexTwo = 0; indexTwo < totalFor; indexTwo++) {
-        if (indexTwo == 0 && prueba != '9:0' && timelineBlock[index][2] == false) {
+        if (indexTwo == 0 && prueba != '10:0' && timelineBlock[index][2] == false) {
           if (minutes == 0) {
             minutes = "00"
           }
@@ -1024,27 +1054,30 @@ citas.post('/getBlocks', (req,res) => {
         }
       } 
     }
-    bloques.push({Horario:hourLast , validator: 'nDisponible'})
+    bloques.push({Horario:hourLast+":30" , validator: 'nDisponible'})
     var insp = false
     for (let j = 0; j < bloques.length; j++) {
       if (sepRes[0] == bloques[j].Horario) {
-        for (let l = 0; l < 1000; l++) {
-          if(l == 0){
-            bloques[j+l].validator = true
-          }else{
-            bloques[j+l].validator = false
+        
+          for (let l = 0; l < 1000; l++) {
+            if(l == 0){
+              bloques[j+l].validator = true
+            }else{
+              bloques[j+l].validator = false
+            }
+            if (bloques[j+l].Horario == sepRes[1]) {
+              bloques[j+l].validator = true
+              insp = true
+              break
+            }
           }
-          if (bloques[j+l].Horario == sepRes[1]) {
-            bloques[j+l].validator = true
-            insp = true
-            break
-          }
-        }
+        
       } 
       if (insp == true) {
         break
       }
     }
+    
     for (var w = 0; w < bloques.length; w++) {
       if (bloques[w].validator == true) {
         var round2 =duracion / 15
@@ -1060,18 +1093,22 @@ citas.post('/getBlocks', (req,res) => {
         }  
       }  
     }
-    const dateToday = new Date().getDate()
-    const selectDay = new Date(req.body.date+' 1:00').getDate()
-    if (dateToday == selectDay) {
-      const hour = new Date().getHours() - 3
+    const daySelected = new Date(req.body.date).getMonth()
+    const actualDay = new Date().getMonth()
+    if (daySelected == actualDay) {
+      const dateToday = new Date().getDate()
+      const selectDay = new Date(req.body.date+' 1:00').getDate()
+      if (dateToday == selectDay) {
+        const hour = new Date().getHours() - 3
 
-      for (var j = 0; j < bloques.length; j++) {
-        const element = bloques[j]
-        var split = element.Horario.split(':')[0]
-        if (parseInt(split) < hour) {
-          element.validator = 'nDisponible'
-        }
-      } 
+        for (var j = 0; j < bloques.length; j++) {
+          const element = bloques[j]
+          var split = element.Horario.split(':')[0]
+          if (parseInt(split) < hour) {
+            element.validator = 'nDisponible'
+          }
+        } 
+      }
     }
     res.json(bloques)
   })
@@ -1188,7 +1225,6 @@ citas.get('/confirmDate/:id', (req, res) => {
                               <strong> Servicios:</strong> ${services}. <br>
                               <strong> Horarios de entrada:</strong> ${start}. <br>
                           </p>
-
                           <p style="text-align:left;margin-top:10px;font-size:16px;"> 
                             <img style="height:25px;width:25px;" src="${imgMails}calendar.png" alt="Logo kkprettynails"> 
                             <b style="margin-top:-5px">${splitDate}</b> <br>
@@ -1226,7 +1262,6 @@ citas.get('/confirmDate/:id', (req, res) => {
                               <strong> Servicios:</strong> ${services}. <br>
                               <strong> Horarios de entrada:</strong> ${start}. <br>
                           </p>
-
                           <p style="text-align:left;margin-top:10px;font-size:16px;"> 
                             <img style="height:25px;width:25px;" src="${imgMails}calendar.png" alt="Logo kkprettynails"> 
                             <b style="margin-top:-5px">${splitDate}</b> <br>
@@ -1333,7 +1368,6 @@ citas.post('/sendConfirmation/:id', (req, res) => {
                                 <strong> Servicios:</strong> ${data.services}. <br>
                                 <strong> Horarios de entrada:</strong> ${data.start}. <br>
                             </p>
-
                             <p style="text-align:left;margin-top:10px;font-size:16px;"> 
                              <img style="height:25px;width:25px;" src="${imgMails}calendar.png" alt="Logo kkprettynails"> 
                             <b style="margin-top:-5px">${split[1]}-${split[0]}-${split[2]}</b> <br>
