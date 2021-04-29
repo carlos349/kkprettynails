@@ -644,7 +644,7 @@ citas.post('/getBlocksFirst', (req, res) => {
   dateNow.setDate(dateNow.getDate() + 1)
   const formatDateTwo = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()
 
-  var minutes = ((hourLast - 7) * 60)
+  var minutes = ((hourLast - 11) * 60)
   const totalFor = minutes / 15
   var input, output
   minutes = 0
