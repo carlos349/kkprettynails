@@ -875,7 +875,6 @@ citas.post('/getBlocksFirst', (req, res) => {
     const actualDay = new Date().getMonth()
     console.log(daySelected+"es igual a:"+ actualDay)
     if (daySelected == actualDay) {
-      console.log("entro")
       const dateToday = new Date().getDate()
       const selectDay = new Date(req.body.date+' 1:00').getDate()
       if (dateToday == selectDay) {
@@ -945,7 +944,7 @@ citas.post('/getBlocks', (req,res) => {
     var timelineBlock = []
     var bloques = []
     if (citas.length == 0) {
-      timelineBlock.push(["10:00",hourLast+":30",true])
+      timelineBlock.push(["10:00",hourLast,true])
     }else{
       if (citas[0].start == "10:00") {
         var count = 0
@@ -1043,7 +1042,7 @@ citas.post('/getBlocks', (req,res) => {
         }
       } 
     }
-    bloques.push({Horario:hourLast+":30" , validator: 'nDisponible'})
+    bloques.push({Horario:hourLast , validator: 'nDisponible'})
     var insp = false
     for (let j = 0; j < bloques.length; j++) {
       if (sepRes[0] == bloques[j].Horario) {
