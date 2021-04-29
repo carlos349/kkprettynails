@@ -646,9 +646,6 @@ citas.post('/getBlocksFirst', (req, res) => {
 
 <<<<<<< HEAD
   var minutes = ((hourLast - 9) * 60)
-=======
-  var minutes = ((hourLast - 10) * 60) + 30
->>>>>>> c9745114bab2473e80b029318adfb332d8696e07
   const totalFor = minutes / 15
   var input, output
   minutes = 0
@@ -929,17 +926,10 @@ citas.post('/getBlocks', (req,res) => {
   let dayNow = dateNow.getDay()
   let hourLast = 0
   if (dayNow == 6) {
-<<<<<<< HEAD
     hourLast = '19:00'
   }
   else{
     hourLast = '19:00'
-=======
-    hourLast = 17
-  }
-  else{
-    hourLast = 19
->>>>>>> c9745114bab2473e80b029318adfb332d8696e07
   }
   const sepRes = resTimes.split('/')
   const formatDate = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()
