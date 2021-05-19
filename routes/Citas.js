@@ -879,7 +879,7 @@ citas.post('/getBlocksFirst', (req, res) => {
       const dateToday = new Date().getDate()
       const selectDay = new Date(req.body.date+' 1:00').getDate()
       if (dateToday == selectDay) {
-        const hour = new Date().getHours() - 3 
+        const hour = new Date().getHours() - 4
 
         for (var j = 0; j < blocks.length; j++) {
           const element = blocks[j]
@@ -1088,7 +1088,7 @@ citas.post('/getBlocks', (req,res) => {
       const dateToday = new Date().getDate()
       const selectDay = new Date(req.body.date+' 1:00').getDate()
       if (dateToday == selectDay) {
-        const hour = new Date().getHours() - 3
+        const hour = new Date().getHours() - 4
 
         for (var j = 0; j < bloques.length; j++) {
           const element = bloques[j]
