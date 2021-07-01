@@ -681,7 +681,7 @@ citas.post('/getBlocksFirst', (req, res) => {
       for (let index = 0; index < datesData.length; index++) {
         const element = datesData[index];
         if (elementTwo.name == element.employe) {
-          if (element.start == "10:00") {
+          if (element.start == "9:30") {
             var count = 0
             for (let c = 0; c < datesData.length; c++) {
               if (elementTwo.name == datesData[c].employe) {
@@ -703,7 +703,7 @@ citas.post('/getBlocksFirst', (req, res) => {
             for (let c = 0; c < datesData.length; c++) {
               if (elementTwo.name == datesData[c].employe) {
                 if (c == 0) {
-                  timelineBlock[j].timeline.push(["10:00", datesData[c].start, true])
+                  timelineBlock[j].timeline.push(["9:30", datesData[c].start, true])
                   timelineBlock[j].timeline.push([datesData[c].start, datesData[c].end, false])
                   timelineBlock[j].timeline.push([datesData[c].end])
                   countValid = 1
@@ -945,9 +945,9 @@ citas.post('/getBlocks', (req,res) => {
     var timelineBlock = []
     var bloques = []
     if (citas.length == 0) {
-      timelineBlock.push(["10:00",hourLast+":30",true])
+      timelineBlock.push(["9:30",hourLast+":30",true])
     }else{
-      if (citas[0].start == "10:00") {
+      if (citas[0].start == "9:30") {
         var count = 0
         for (let c = 0; c < citas.length; c++) {
           if (c == 0) {
@@ -965,7 +965,7 @@ citas.post('/getBlocks', (req,res) => {
         var count = 1
         for (let c = 0; c < citas.length; c++) {
           if (c == 0) {
-            timelineBlock.push(["10:00", citas[c].start, true])
+            timelineBlock.push(["9:30", citas[c].start, true])
             timelineBlock.push([citas[c].start, citas[c].end, false])
             timelineBlock.push([citas[c].end])
           }else {
@@ -1134,7 +1134,7 @@ citas.post('/getDateByMani', (req, res) => {
 })
 
 citas.post('/', (req, res) => {
-  const DateSelect = new Date(req.body.fecha+' 10:00')
+  const DateSelect = new Date(req.body.fecha+' 9:30')
   const dateID = new Date()
   const id = dateID.getTime()
   const dataCitas = {
@@ -1423,7 +1423,7 @@ citas.post('/noOneLender',  (req, res) => {
   const dataCitas = []
   const dataDate = req.body.dataDate
   const client = req.body.client
-  const date = new Date(req.body.date+' 10:00')
+  const date = new Date(req.body.date+' 9:30')
   var ClientAgend = ''
   if (req.body.ifClient) {
     ClientAgend = client.name+' '+client.lastName
@@ -1606,7 +1606,7 @@ citas.put('/removeImage/:id', (req, res) => {
 })
 
 citas.put('/editDate/:id', async (req, res) => {
-  const dateDate = new Date(req.body.fecha+' 10:00')
+  const dateDate = new Date(req.body.fecha+' 9:30')
   const data = {
     entrada: req.body.entrada,
     salida: req.body.salida,
