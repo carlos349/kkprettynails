@@ -647,7 +647,7 @@ citas.post('/getBlocksFirst', (req, res) => {
   var minutes = ((hourLast - 9) * 60) + 30
   const totalFor = minutes / 15
   var input, output
-  minutes = 0
+  minutes = 30
   var hours = 9
   for (let index = 0; index <= totalFor; index++) {
     if (minutes == 0) {
