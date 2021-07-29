@@ -945,7 +945,7 @@ citas.post('/getBlocks', (req,res) => {
     var timelineBlock = []
     var bloques = []
     if (citas.length == 0) {
-      timelineBlock.push(["9:30",hourLast,true])
+      timelineBlock.push(["9:30",hourLast+":00",true])
     }else{
       if (citas[0].start == "9:30") {
         var count = 0
@@ -1043,7 +1043,7 @@ citas.post('/getBlocks', (req,res) => {
         }
       } 
     }
-    bloques.push({Horario:hourLast , validator: 'nDisponible'})
+    bloques.push({Horario:hourLast+":00" , validator: 'nDisponible'})
     var insp = false
     for (let j = 0; j < bloques.length; j++) {
       if (sepRes[0] == bloques[j].Horario) {
