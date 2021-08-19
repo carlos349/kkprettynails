@@ -635,7 +635,7 @@ citas.post('/getBlocksFirst', (req, res) => {
   let dayNow = dateNow.getDay()
   let hourLast = ''
   if (dayNow == 6) {
-    hourLast = 17
+    hourLast = 16
   }
   else{
     hourLast = 19
@@ -644,11 +644,11 @@ citas.post('/getBlocksFirst', (req, res) => {
   dateNow.setDate(dateNow.getDate() + 1)
   const formatDateTwo = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()
 
-  var minutes = ((hourLast - 10) * 60)
+  var minutes = ((hourLast - 10) * 60) + 30
   const totalFor = minutes / 15
   var input, output
-  minutes = 0
-  var hours = 10
+  minutes = 30
+  var hours = 9
   for (let index = 0; index <= totalFor; index++) {
     if (minutes == 0) {
       minutes = "00"
@@ -681,7 +681,7 @@ citas.post('/getBlocksFirst', (req, res) => {
       for (let index = 0; index < datesData.length; index++) {
         const element = datesData[index];
         if (elementTwo.name == element.employe) {
-          if (element.start == "10:00") {
+          if (element.start == "9:30") {
             var count = 0
             for (let c = 0; c < datesData.length; c++) {
               if (elementTwo.name == datesData[c].employe) {
@@ -703,7 +703,7 @@ citas.post('/getBlocksFirst', (req, res) => {
             for (let c = 0; c < datesData.length; c++) {
               if (elementTwo.name == datesData[c].employe) {
                 if (c == 0) {
-                  timelineBlock[j].timeline.push(["10:00", datesData[c].start, true])
+                  timelineBlock[j].timeline.push(["9:30", datesData[c].start, true])
                   timelineBlock[j].timeline.push([datesData[c].start, datesData[c].end, false])
                   timelineBlock[j].timeline.push([datesData[c].end])
                   countValid = 1
@@ -733,7 +733,7 @@ citas.post('/getBlocksFirst', (req, res) => {
             TotalMinutes = SumHours + SumMinutes
           }else{
             separ = elementTwo[0].split(':')
-            SumHours = ((19 - parseFloat(separ[0])) * 60)
+            SumHours = ((19 - parseFloat(separ[0])) * 60)+ 30  
             SumMinutes = 0 - parseFloat(separ[1])
             TotalMinutes = SumHours + SumMinutes
             last = true
@@ -875,10 +875,11 @@ citas.post('/getBlocksFirst', (req, res) => {
     const actualDay = new Date().getMonth()
     console.log(daySelected+"es igual a:"+ actualDay)
     if (daySelected == actualDay) {
+      console.log("entro")
       const dateToday = new Date().getDate()
       const selectDay = new Date(req.body.date+' 1:00').getDate()
       if (dateToday == selectDay) {
-        const hour = new Date().getHours() - 4
+        const hour = new Date().getHours() - 3 
 
         for (var j = 0; j < blocks.length; j++) {
           const element = blocks[j]
@@ -924,10 +925,10 @@ citas.post('/getBlocks', (req,res) => {
   let dayNow = dateNow.getDay()
   let hourLast = 0
   if (dayNow == 6) {
-    hourLast = '19:00'
+    hourLast = 16
   }
   else{
-    hourLast = '19:00'
+    hourLast = 19
   }
   const sepRes = resTimes.split('/')
   const formatDate = dateNow.getFullYear() +"-"+(dateNow.getMonth() + 1)+"-"+dateNow.getDate()
@@ -944,9 +945,9 @@ citas.post('/getBlocks', (req,res) => {
     var timelineBlock = []
     var bloques = []
     if (citas.length == 0) {
-      timelineBlock.push(["10:00",hourLast,true])
+      timelineBlock.push(["9:30",hourLast+":00",true])
     }else{
-      if (citas[0].start == "10:00") {
+      if (citas[0].start == "9:30") {
         var count = 0
         for (let c = 0; c < citas.length; c++) {
           if (c == 0) {
@@ -964,7 +965,7 @@ citas.post('/getBlocks', (req,res) => {
         var count = 1
         for (let c = 0; c < citas.length; c++) {
           if (c == 0) {
-            timelineBlock.push(["10:00", citas[c].start, true])
+            timelineBlock.push(["9:30", citas[c].start, true])
             timelineBlock.push([citas[c].start, citas[c].end, false])
             timelineBlock.push([citas[c].end])
           }else {
@@ -1004,7 +1005,7 @@ citas.post('/getBlocks', (req,res) => {
       var prueba = hours+":"+minutes
       var ind = parseFloat(index) + parseFloat(1)
       for (let indexTwo = 0; indexTwo < totalFor; indexTwo++) {
-        if (indexTwo == 0 && prueba != '10:0' && timelineBlock[index][2] == false) {
+        if (indexTwo == 0 && prueba != '9:30' && timelineBlock[index][2] == false) {
           if (minutes == 0) {
             minutes = "00"
           }
@@ -1042,7 +1043,7 @@ citas.post('/getBlocks', (req,res) => {
         }
       } 
     }
-    bloques.push({Horario:hourLast , validator: 'nDisponible'})
+    bloques.push({Horario:hourLast+":00" , validator: 'nDisponible'})
     var insp = false
     for (let j = 0; j < bloques.length; j++) {
       if (sepRes[0] == bloques[j].Horario) {
@@ -1087,7 +1088,7 @@ citas.post('/getBlocks', (req,res) => {
       const dateToday = new Date().getDate()
       const selectDay = new Date(req.body.date+' 1:00').getDate()
       if (dateToday == selectDay) {
-        const hour = new Date().getHours() - 4
+        const hour = new Date().getHours() - 3
 
         for (var j = 0; j < bloques.length; j++) {
           const element = bloques[j]
@@ -1133,7 +1134,7 @@ citas.post('/getDateByMani', (req, res) => {
 })
 
 citas.post('/', (req, res) => {
-  const DateSelect = new Date(req.body.fecha+' 10:00')
+  const DateSelect = new Date(req.body.fecha+' 9:30')
   const dateID = new Date()
   const id = dateID.getTime()
   const dataCitas = {
@@ -1422,7 +1423,7 @@ citas.post('/noOneLender',  (req, res) => {
   const dataCitas = []
   const dataDate = req.body.dataDate
   const client = req.body.client
-  const date = new Date(req.body.date+' 10:00')
+  const date = new Date(req.body.date+' 9:30')
   var ClientAgend = ''
   if (req.body.ifClient) {
     ClientAgend = client.name+' '+client.lastName
@@ -1605,7 +1606,7 @@ citas.put('/removeImage/:id', (req, res) => {
 })
 
 citas.put('/editDate/:id', async (req, res) => {
-  const dateDate = new Date(req.body.fecha+' 10:00')
+  const dateDate = new Date(req.body.fecha+' 9:30')
   const data = {
     entrada: req.body.entrada,
     salida: req.body.salida,
