@@ -1020,6 +1020,15 @@ clients.get('/', async (req, res) => {
     res.json(Clients)
 })
 
+clients.get('/getJson', async (req, res) => {
+    try {
+        const Clients = await Cliente.find()
+        res.json(Clients)
+    }catch(err){
+        res.send(err)
+    }
+})
+
 clients.get('/bestClient', async (req, res) => {
     const Clients = await Cliente.find().sort({participacion: -1})
     res.json(Clients)
