@@ -1056,7 +1056,8 @@ clients.get('/getJson', async (req, res) => {
                     userImg: client.userImage
                 })
             }
-            res.json(dataClient)
+            console.log(dataClient.length)
+            res.json({data: dataClient})
         }catch(err){
             res.send(err)
         }
