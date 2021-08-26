@@ -1028,20 +1028,20 @@ clients.get('/getJson', async (req, res) => {
         for (const client of Clients) {
             dataClient.push({
                 historical: [],
-                firstName: client.nombre.split(' ')[0],
-                lastName: client.nombre.split(' ')[1],
+                firstName: client.nombre.split(' ')[0] ? client.nombre.split(' ')[0] : client.nombre,
+                lastName: client.nombre.split(' ')[1] ? client.nombre.split(' ')[1] : client.nombre,
                 block: false,
                 email: client.identidad,
                 password: client.password,
                 phone: {
-                    countryCode:"CL",
-                    isValid:true,
-                    phoneNumber: client.correoCliente.split(' ')[1].split('-').join(' '),
-                    countryCallingCode:"56",
+                    countryCode: "CL",
+                    isValid: true,
+                    phoneNumber: client.correoCliente.split(' ')[1] ? client.correoCliente.split(' ')[1].split('-').join(' ') : '',
+                    countryCallingCode: "56",
                     formattedNumber: client.correoCliente.split('-').join(''),
-                    nationalNumber: client.correoCliente.split(' ')[1].split('-').join(' '),
+                    nationalNumber: client.correoCliente.split(' ')[1] ? client.correoCliente.split(' ')[1].split('-').join(' ') : '',
                     formatInternational: client.correoCliente.split('-').join(' '),
-                    formatNational: client.correoCliente.split(' ')[1].split('-').join(' '),
+                    formatNational: client.correoCliente.split(' ')[1] ? client.correoCliente.split(' ')[1].split('-').join(' ') : '',
                     uri: 'tel:'+client.correoCliente.split('-').join(''),
                     e164: client.correoCliente.split('-').join('')
                 },
