@@ -1021,42 +1021,45 @@ clients.get('/', async (req, res) => {
 })
 
 clients.get('/getJson', async (req, res) => {
-    client.correoCliente
     try {
         const Clients = await Cliente.find()
         var dataClient = []
-        for (const client of Clients) {
-            dataClient.push({
-                historical: [],
-                firstName: client.nombre.split(' ')[0] ? client.nombre.split(' ')[0] : client.nombre,
-                lastName: client.nombre.split(' ')[1] ? client.nombre.split(' ')[1] : client.nombre,
-                block: false,
-                email: client.identidad,
-                password: client.password,
-                phone: {
-                    countryCode: "CL",
-                    isValid: true,
-                    phoneNumber: client.correoCliente.split(' ')[1] ? client.correoCliente.split(' ')[1].split('-').join(' ') : '',
-                    countryCallingCode: "56",
-                    formattedNumber: client.correoCliente.split('-').join(''),
-                    nationalNumber: client.correoCliente.split(' ')[1] ? client.correoCliente.split(' ')[1].split('-').join(' ') : '',
-                    formatInternational: client.correoCliente.split('-').join(' '),
-                    formatNational: client.correoCliente.split(' ')[1] ? client.correoCliente.split(' ')[1].split('-').join(' ') : '',
-                    uri: 'tel:'+client.correoCliente.split('-').join(''),
-                    e164: client.correoCliente.split('-').join('')
-                },
-                codeRescue: "",
-                instagram: client.instagramCliente,
-                attends: client.participacion,
-                recommender: client.idRecomendador,
-                recommendations: client.recomendaciones,
-                lastAttend: client.ultimaFecha,
-                createdAt: client.fecha,
-                birthday: client.birthday,
-                userImg: client.userImage
-            })
+        try {
+            for (const client of Clients) {
+                dataClient.push({
+                    historical: [],
+                    firstName: client.nombre.split(' ')[0] ? client.nombre.split(' ')[0] : client.nombre,
+                    lastName: client.nombre.split(' ')[1] ? client.nombre.split(' ')[1] : client.nombre,
+                    block: false,
+                    email: client.identidad,
+                    password: client.password,
+                    phone: {
+                        countryCode: "CL",
+                        isValid: true,
+                        phoneNumber: client.correoCliente.split(' ')[1] ? client.correoCliente.split(' ')[1].split('-').join(' ') : '',
+                        countryCallingCode: "56",
+                        formattedNumber: client.correoCliente.split('-').join(''),
+                        nationalNumber: client.correoCliente.split(' ')[1] ? client.correoCliente.split(' ')[1].split('-').join(' ') : '',
+                        formatInternational: client.correoCliente.split('-').join(' '),
+                        formatNational: client.correoCliente.split(' ')[1] ? client.correoCliente.split(' ')[1].split('-').join(' ') : '',
+                        uri: 'tel:'+client.correoCliente.split('-').join(''),
+                        e164: client.correoCliente.split('-').join('')
+                    },
+                    codeRescue: "",
+                    instagram: client.instagramCliente,
+                    attends: client.participacion,
+                    recommender: client.idRecomendador,
+                    recommendations: client.recomendaciones,
+                    lastAttend: client.ultimaFecha,
+                    createdAt: client.fecha,
+                    birthday: client.birthday,
+                    userImg: client.userImage
+                })
+            }
+            res.json(dataClient)
+        }catch(err){
+            res.send(err)
         }
-        res.json(dataClient)
     }catch(err){
         res.send(err)
     }
