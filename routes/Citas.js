@@ -100,9 +100,9 @@ citas.get('/getActuallyDates', async (req, res) => {
   try {
     const getActuallyDates = await Citas.find({
       date: { 
-        $gte: '09-01-2021 00:00', $lte: '01-01-2022 24:00' 
+        $gte: '09-01-2021 00:00', $lte: '11-01-2022 24:00' 
       }
-    }).sort({date: -1})
+    }).sort({date: 1})
     res.json(getActuallyDates)
   }catch(err){
     res.send(err)
