@@ -102,7 +102,7 @@ citas.get('/getActuallyDates', async (req, res) => {
       date: { 
         $gte: '09-01-2021 00:00', $lte: '11-01-2022 24:00' 
       }
-    }).sort({date: 1})
+    }).sort({date: 1, sort: 1})
     res.json(getActuallyDates)
   }catch(err){
     res.send(err)
