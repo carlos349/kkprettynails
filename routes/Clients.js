@@ -21,6 +21,7 @@ const storage = diskStorage({
 		cb(null, Date.now() + path.extname(files.originalname));
 	}
 })
+const clientsData = require('../clients.json')
 const upload = multer({
 	storage:storage
 })
@@ -1022,10 +1023,11 @@ clients.get('/', async (req, res) => {
 
 clients.get('/getJson', async (req, res) => {
     try {
-        const Clients = await Cliente.find()
+        const Clients = clientsData
         var dataClient = []
         try {
             for (const client of Clients) {
+                console.log(client.correoCliente.split(' ')[1] ? client.correoCliente.split(' ')[1].split('-').join(' ') : '')
                 dataClient.push({
                     historical: [],
                     firstName: client.nombre.split(' ')[0] ? client.nombre.split(' ')[0] : client.nombre,

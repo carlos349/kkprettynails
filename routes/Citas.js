@@ -96,6 +96,19 @@ citas.get('/getClients', async (req, res) => {
   res.json(client)
 })
 
+citas.get('/getActuallyDates', async (req, res) => {
+  try {
+    const getActuallyDates = await Citas.find({
+      date: { 
+        $gte: '09-01-2021 00:00', $lte: '01-01-2022 24:00' 
+      }
+    })
+    res.json(getActuallyDates)
+  }catch(err){
+    res.send(err)
+  }
+})
+
 citas.get('/endingdates', async (req, res) => {
   const client = await closedDates.find()
   res.json(client)
