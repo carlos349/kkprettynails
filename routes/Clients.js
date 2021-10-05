@@ -1036,7 +1036,7 @@ clients.get('/getJson', async (req, res) => {
                     block: false,
                     email: client.identidad,
                     password: client.password,
-                    phone: {
+                    phone: client.correoCliente.split(' ')[1] ? {
                         countryCode: "CL",
                         isValid: true,
                         phoneNumber: client.correoCliente.split(' ')[1] ? client.correoCliente.split(' ')[1].split('-').join(' ') : '',
@@ -1047,6 +1047,17 @@ clients.get('/getJson', async (req, res) => {
                         formatNational: client.correoCliente.split(' ')[1] ? client.correoCliente.split(' ')[1].split('-').join(' ') : '',
                         uri: 'tel:'+client.correoCliente.split('-').join(''),
                         e164: client.correoCliente.split('-').join('')
+                    } : {
+                        "countryCode": "CL", 
+                        "isValid": false, 
+                        "phoneNumber": "", 
+                        "countryCallingCode": "", 
+                        "formattedNumber": "", 
+                        "nationalNumber": "", 
+                        "formatInternational": "", 
+                        "formatNational": "", 
+                        "uri": "", 
+                        "e164": ""
                     },
                     codeRescue: "",
                     instagram: client.instagramCliente,
