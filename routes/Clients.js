@@ -1023,7 +1023,8 @@ clients.get('/', async (req, res) => {
 
 clients.get('/getJson', async (req, res) => {
     try {
-        const Clients = clientsData
+        const Clients = await Cliente.find()
+        
         var dataClient = []
         try {
             for (const client of Clients) {
