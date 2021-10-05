@@ -1092,7 +1092,7 @@ clients.get('/findOne/:id', async (req, res) => {
 })
 
 clients.get('/onlyData', async (req, res) => {
-    const Clients = await Cliente.find()
+    const Clients = await Cliente.find({},{historical: 0})
     res.json(Clients)
 })
 
