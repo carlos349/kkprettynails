@@ -22,7 +22,6 @@ const storage = diskStorage({
 const upload = multer({
 	storage
 })
-const data = require('dates-json.json')
 
 citas.get('/availableslenders/:fecha', (req, res) => {
 
@@ -90,10 +89,6 @@ citas.get('/availableslenders/:fecha', (req, res) => {
 citas.get('/', async (req, res) => {
   const citas = await Citas.find()
   res.json(citas)
-})
-
-citas.get('/countActuallyDates', async (req, res) => {
-  console.log(data.length)
 })
 
 citas.get('/getClients', async (req, res) => {
