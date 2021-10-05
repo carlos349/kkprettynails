@@ -1027,7 +1027,7 @@ clients.get('/getJson', async (req, res) => {
         var dataClient = []
         try {
             for (const client of Clients) {
-                console.log(client.correoCliente.split(' ')[1] ? client.correoCliente.split(' ')[1].split('-').join(' ') : '')
+                // console.log(client.correoCliente.split(' ')[1] ? client.correoCliente.split(' ')[1].split('-').join(' ') : '')
                 dataClient.push({
                     historical: [],
                     firstName: client.nombre.split(' ')[0] ? client.nombre.split(' ')[0] : client.nombre,

@@ -22,6 +22,7 @@ const storage = diskStorage({
 const upload = multer({
 	storage
 })
+const data = require('dates-json.json')
 
 citas.get('/availableslenders/:fecha', (req, res) => {
 
@@ -91,6 +92,10 @@ citas.get('/', async (req, res) => {
   res.json(citas)
 })
 
+citas.get('/countActuallyDates', async (req, res) => {
+  console.log(data.length)
+})
+
 citas.get('/getClients', async (req, res) => {
   const client = await Cliente.find()
   res.json(client)
@@ -100,7 +105,7 @@ citas.get('/getActuallyDates', async (req, res) => {
   try {
     const getActuallyDates = await Citas.find({
       date: { 
-        $gte: '10-01-2021 00:00', $lte: '11-01-2022 24:00' 
+        $gte: '09-01-2021 00:00', $lte: '11-01-2022 24:00' 
       }
     }).sort({date: 1, sort: 1})
     res.json(getActuallyDates)
@@ -117,15 +122,6 @@ citas.get('/endingdates', async (req, res) => {
 citas.get('/:employe', async (req, res) => {
   const citasByEmploye = await Citas.find({'employe': req.params.employe})
   res.json(citasByEmploye)
-})
-
-citas.get('/getDatesJson', async (req, res) => {
-  const datesJson = await Citas.find({
-    "date": {
-      $gte: '10-01-2021 00:00'
-    }
-  })
-  res.json(datesJson)
 })
 
 citas.get('/getDataToDate/:id', async (req, res) => {
